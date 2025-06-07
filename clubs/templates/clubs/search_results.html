@@ -1,0 +1,58 @@
+{% extends 'clubs/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container"> 
+        <!-- Flecha volver arriba -->
+        <a href="#" class="back-button" onclick="window.history.back(); return false;">⬅ Volver</a>
+
+
+        <form method="get" class="sort-form">
+            <input type="hidden" name="q" value="{{ search_query }}"> 
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                <option value="">-- Seleccionar --</option>
+                <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Mejor valorados</option>
+                <option value="reviews" {% if request.GET.sort == 'reviews' %}selected{% endif %}>Más comentados</option>
+                <option value="recent" {% if request.GET.sort == 'recent' %}selected{% endif %}>Añadidos recientemente</option>
+            </select>
+        </form>
+
+    {% if clubs %}
+        <div class="club-grid">
+            {% for club in clubs %}
+                <div class="club-card">
+                    <a href="{% url 'club_profile' club.slug %}">
+                        {% if club.logo %}
+                            <img src="{{ club.logo.url }}" alt="{{ club.name }}" class="club-logo">
+                        {% else %}
+                            <div class="club-logo-placeholder">Sin logo</div>
+                        {% endif %}
+
+                        <div class="club-info">
+                            <h3 class="club-name">{{ club.name }}</h3>
+                        
+                            <div class="club-meta">
+                                <span class="category-tag">{{ club.get_category_display }}</span>
+                                <div class="club-rating">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" viewBox="0 0 24 24" stroke="gold">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    {% if club.average_rating %}
+                                        {{ club.average_rating }} ({{ club.reviews_count }})
+                                    {% else %}
+                                        Sin reseñas
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <p>No se encontraron resultados para "{{ search_query }}"</p>
+    {% endif %}
+
+</div>
+{% endblock %}

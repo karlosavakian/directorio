@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block header_class %}header-hero-page{% endblock %}
+
+{% block content %}
+<main class="flex-grow-1">
+    <div class="col-10 container-fluid py-1">
+        <section class="hero text-center">
+            <div class="hero-wrapper">
+                <div class="hero-text">
+                    <h1 class="display-1 fw-bold">Boxeo Local.Impacto Global.</h1>
+                    <p class="fs-5   p-1">Explora nuestro directorio verificado de clubs de boxeo y empieza a entrenar con la mejor esquina.</p>
+                    {% if not search_query %}
+                        {% include 'partials/_search_form.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+{% endblock %}
+

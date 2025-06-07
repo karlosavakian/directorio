@@ -1,0 +1,21 @@
+     <form method="get" class="d-flex align-items-center" style="gap: 10px;">
+    <input type="hidden" name="q" value="{{ search_query }}">
+    <input type="hidden" name="sort" id="sort-input" value="{{ request.GET.sort|default:'' }}">
+
+    <div class="custom-dropdown small" id="sort-dropdown">
+        <div class="selected">
+            <span class="selected-text">
+                {% if request.GET.sort == 'rating' %}Mejor valorados
+                {% elif request.GET.sort == 'reviews' %}Más comentados
+                {% elif request.GET.sort == 'recent' %}Añadidos recientemente
+                {% else %}Ordenar por{% endif %}
+            </span>
+            <span class="select-arrow"></span>
+        </div>
+        <div class="dropdown-menu" id="sort-menu">
+            <div class="dropdown-item" data-value="rating">Mejor valorados</div>
+            <div class="dropdown-item" data-value="reviews">Más comentados</div>
+            <div class="dropdown-item" data-value="recent">Añadidos recientemente</div>
+        </div>
+    </div>
+        </form>
