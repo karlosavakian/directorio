@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const scrolledHeight = initialHeight - 10;
     header.style.height = initialHeight + 'px';
 
+
+    header.style.position = 'sticky';
+    header.style.top = '0';
+    header.style.zIndex = '1030';
+
     window.addEventListener('scroll', function() {
         if (window.scrollY > 0) {
             header.style.height = scrolledHeight + 'px';
