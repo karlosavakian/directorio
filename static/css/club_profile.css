@@ -1,0 +1,250 @@
+ 
+ body.club-profile-page {
+       background-color: #fdfdfd;
+
+}
+
+/* Layout refinements */
+ 
+
+/* Cards / Boxes */
+.bg-light {
+    background-color: #f5f5f5 !important;
+    border: 1px solid #ddd;
+}
+
+.border {
+    border: 1px solid #e5e5e5 !important;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.75rem;
+    background-color: #000000 !important;
+    color: #ffffff;
+    border-radius: 6px;
+}
+
+/* List groups */
+.list-group-item {
+    background: none;
+    border: none;
+    padding: 0.4rem 0;
+    color: #333;
+}
+
+.list-group-item.fw-bold {
+    margin-top: 0.75rem;
+    color: #000;
+}
+
+/* Stars */
+.star-rating svg {
+    fill: #ccc;
+    stroke: #666;
+    transition: fill 0.2s;
+}
+
+.star-rating svg:hover,
+.star-rating svg:hover ~ svg {
+    fill: #111;
+}
+
+/* Features */
+.text-center img {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.text-center img:hover {
+    filter: grayscale(0%);
+}
+
+/* Gallery */
+.glightbox img {
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.img-thumbnail{
+ border: none !important; 
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 4px !important;
+  box-shadow: none !important;
+  padding:2px;
+}
+
+.glightbox,.img-thumbnail:hover {
+    transform: scale(1.01); 
+}
+
+/* Forms */
+textarea.form-control {
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+ 
+/* Reviews */
+.club-reviews .border {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-left: 4px solid #0f5132;
+    border-radius: 4px;
+    font-weight: 500;
+} 
+
+
+.review-carousel {
+  position: relative;
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+ 
+ 
+ 
+ 
+.review-slide {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+.review-slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.review-text {
+  font-size: 1rem;
+  font-style: italic;
+  color: #333;  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  margin-bottom: 2rem;
+}
+
+.review-user {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.review-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #000000;
+  border-radius: 50%;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+}
+
+.review-user .fw-medium {
+  font-size: 0.8rem;
+  color: #555;
+  margin-left: 0.5rem;
+}
+
+
+.review-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  pointer-events: none; /* no molesta cuando oculto */
+}
+
+.review-arrow svg {
+  fill: #444;
+  pointer-events: auto; /* permite clickar en el svg */
+}
+
+/* Alineación izquierda y derecha */
+.review-arrow.left {
+  left: 0;
+}
+
+.review-arrow.right {
+  right: 0;
+}
+
+/* Mostrar en hover */
+.review-carousel:hover .review-arrow {
+  opacity: 0.7;
+  pointer-events: auto;
+}
+
+.review-arrow:hover {
+  opacity: 1;
+}
+
+
+ /* Contenedor del menú con línea inferior gris continua */
+.custom-tab-menu {
+  border-bottom: 1px solid #ccc;
+}
+
+/* Estilo de los tabs */
+.custom-tab-menu .nav-link {
+  color: #000 !important;
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  font-weight: 500;
+  margin-right: 1rem;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Hover: fondo gris claro */
+.custom-tab-menu .nav-link:hover {
+  background-color: #f5f5f5;
+  color: #000000 !important;
+}
+
+/* Activo: borde inferior negro bien alineado */
+.custom-tab-menu .nav-link.active {
+  border-bottom: 1px solid #000;
+  font-weight: 600;
+}

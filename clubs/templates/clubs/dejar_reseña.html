@@ -1,0 +1,43 @@
+{% extends "clubs/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Deja tu valoración para {{ club.name }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.instalaciones.label_tag }}<br>
+            {{ form.instalaciones }}
+        </div>
+
+        <div class="form-group">
+            {{ form.entrenadores.label_tag }}<br>
+            {{ form.entrenadores }}
+        </div>
+
+        <div class="form-group">
+            {{ form.ambiente.label_tag }}<br>
+            {{ form.ambiente }}
+        </div>
+
+        <div class="form-group">
+            {{ form.calidad_precio.label_tag }}<br>
+            {{ form.calidad_precio }}
+        </div>
+
+        <div class="form-group">
+            {{ form.variedad_clases.label_tag }}<br>
+            {{ form.variedad_clases }}
+        </div>
+
+        <div class="form-group">
+            {{ form.comentario.label_tag }}<br>
+            {{ form.comentario }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar reseña</button>
+    </form>
+</div>
+{% endblock %}

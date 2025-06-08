@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Editar reseña para {{ reseña.club.name }}</h2>
+
+    <form method="POST">
+        {% csrf_token %} 
+      
+        <div class="rating-block">
+            <label>🏋 Instalaciones:</label>
+            <div class="star-rating" data-field="instalaciones" data-score="{{ form.initial.instalaciones|default:0 }}"></div>
+            <input type="hidden" name="instalaciones" id="input-instalaciones">
+        </div>
+        
+        <div class="rating-block">
+            <label>🥊 Entrenadores:</label>
+            <div class="star-rating" data-field="entrenadores" data-score="{{ form.initial.entrenadores|default:0 }}"></div>
+            <input type="hidden" name="entrenadores" id="input-entrenadores">
+        </div>
+        
+        <div class="rating-block">
+            <label>🧑‍🤝‍🧑 Ambiente:</label>
+            <div class="star-rating" data-field="ambiente" data-score="{{ form.initial.ambiente|default:0 }}"></div>
+            <input type="hidden" name="ambiente" id="input-ambiente">
+        </div>
+        
+        <div class="rating-block">
+            <label>💰 Calidad/precio:</label>
+            <div class="star-rating" data-field="calidad_precio" data-score="{{ form.initial.calidad_precio|default:0 }}"></div>
+            <input type="hidden" name="calidad_precio" id="input-calidad_precio">
+        </div>
+        
+        <div class="rating-block">
+            <label>📆 Variedad de clases:</label>
+            <div class="star-rating" data-field="variedad_clases" data-score="{{ form.initial.variedad_clases|default:0 }}"></div>
+            <input type="hidden" name="variedad_clases" id="input-variedad_clases">
+        </div>
+        
+      
+        <div class="form-group">
+          <label for="comentario">¿Qué te ha gustado o qué mejorarías del club?</label>
+          {{ form.comentario }}
+        </div>
+      
+        <button type="submit" class="btn-submit">Actualizar reseña</button>
+      </form>
+
+    <a href="{% url 'club_profile' reseña.club.slug %}" class="btn btn-secondary">Cancelar</a>
+</div>
+
+
+{% endblock %}

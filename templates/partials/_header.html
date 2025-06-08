@@ -1,0 +1,51 @@
+{% load static %}
+ 
+<!-- Header con Bootstrap -->
+<header class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container-fluid px-3">
+        
+        <!-- Logo -->
+        <a href="/" class="navbar-brand d-flex align-items-center">
+            <img src="{% static 'img/logo.svg' %}" alt="Logo" height="50">
+            <div class="ms-2 d-grid lh-1" style="font-weight:800;">
+                <span>CLUBS</span>
+                <span> DE BOXEO</span>
+                <span>.COM</span>
+            </div>
+        </a>
+        {% if not request.path == '/' %}
+    {% include 'partials/_search_form.html' %}
+{% endif %}
+
+        <!-- Botón Responsive -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links de Navegación -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link">Hola, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{% url 'logout' %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link text-dark p-0" style="text-decoration: none;">
+                                Cerrar sesión
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link text-dark">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'register' %}" class="btn btn-dark text-light ms-2">Registro</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

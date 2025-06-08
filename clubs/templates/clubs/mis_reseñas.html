@@ -1,0 +1,32 @@
+{% extends 'clubs/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Mis Reseñas</h2>
+
+    {% if reseñas %}
+        <ul class="reseña-list">
+            {% for r in reseñas %}
+                <li class="reseña-item">
+                    <h4>
+                        <a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a>
+                    </h4>
+                    <p>⭐ Promedio: {{ r.promedio }} | "{{ r.comentario }}"</p>
+                    <small>{{ r.creado|date:"d/m/Y H:i" }}</small>
+
+                    <div class="reseña-actions">
+                        <a href="{% url 'editar_reseña' r.id %}">✏️ Editar</a>
+                        <form method="POST" action="{% url 'eliminar_reseña' r.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">🗑️ Eliminar</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No has escrito ninguna reseña todavía.</p>
+    {% endif %}
+</div>
+{% endblock %}
