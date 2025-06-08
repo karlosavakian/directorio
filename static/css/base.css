@@ -149,3 +149,18 @@ p {
 .container-fluid {
     max-width: 1600px;
 }
+
+#loader {
+    position: fixed;
+    inset: 0;
+    background-color: #fff;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
