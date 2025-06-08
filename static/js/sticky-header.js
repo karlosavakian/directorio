@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initialHeight = header.offsetHeight;
     const scrolledHeight = initialHeight - 10;
+    header.style.height = initialHeight + 'px';
+
 
     header.style.position = 'sticky';
     header.style.top = '0';
