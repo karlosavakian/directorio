@@ -3,6 +3,32 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reseña
 from django.contrib.auth.forms import AuthenticationForm
+ 
+
+class RegistroUsuarioForm(UserCreationForm):
+    email = forms.EmailField(label='Correo electrónico', required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+        labels = {
+            'username': 'Nombre de usuario',
+            'email': 'Correo electrónico',
+            'password1': 'Contraseña',
+            'password2': 'Confirmar contraseña',
+        }
+        help_texts = {
+            'username': None,
+            'password1': None,
+            'password2': None,
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Aplica Bootstrap form-control a todos los campos para igualar el login
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control'})
+
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -14,29 +40,6 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
  
-class RegistroUsuarioForm(UserCreationForm):
-    email = forms.EmailField(label='Correo electrónico', required=True)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-        labels = {
-            'username': 'Nombre de usuario',
-            'email': 'Correo electrónico',
-        }
-        help_texts = {
-            'username': None,
-            'password1': None,
-            'password2': None,
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].label = 'Contraseña'
-        self.fields['password2'].label = 'Confirmar contraseña'
-
- 
-
 class ReseñaForm(forms.ModelForm):
     class Meta:
         model = Reseña

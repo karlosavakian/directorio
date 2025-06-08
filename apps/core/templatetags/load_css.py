@@ -6,6 +6,8 @@ from django.utils.safestring import mark_safe
 import os
 
 register = template.Library()
+ 
+
 
 @register.simple_tag
 def load_css_files():
