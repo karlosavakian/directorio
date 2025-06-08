@@ -15,15 +15,12 @@
     flex-direction: column;
 }
 
-#searchModal .modal-header {
-    background: #000;
+#searchModal .modal-header { 
     justify-content: center;
     position: relative;
 }
 
-#searchModal .modal-header img {
-    height: 60px;
-}
+ 
 
 #searchModal .close-btn {
     position: absolute;
