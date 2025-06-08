@@ -202,25 +202,9 @@
 
   </div>
 
- {% for reseña in reseñas %}
-  <div class="mb-3 rounded p-4 border position-relative" style="min-height: 120px;">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <div class="d-flex align-items-center">
-        <div class="review-avatar">{{ reseña.usuario.username|first|upper }}</div>
-        <div class="fw-medium ms-2">{{ reseña.usuario.username }}</div>
-      </div>
-      <div class=" fw-bold text-warning">⭐ {{ reseña.promedio }}</div>
-    </div>
-
-    <p class="mb-3">{{ reseña.comentario }}</p>
-
-    <div class="position-absolute text-muted small " style="bottom: 1rem; right: 1rem;">
-      {{ reseña.creado|date:"SHORT_DATE_FORMAT" }}
-    </div>
+  <div id="review-list">
+      {% include 'clubs/reviews_list.html' %}
   </div>
-{% empty %}
-  <p class="text-muted">Este club todavía no tiene comentarios escritos.</p>
-{% endfor %}
 
 </div>
 
@@ -330,7 +314,7 @@
     </div>
   </div>
 </div>
-<script src="{% static 'js/sort.js' %}"></script>
+<script src="{% static 'js/review-filter.js' %}"></script>
 <script src="{% static 'js/slides.js' %}"></script>
 <script src="{% static 'js/stars.js' %}"></script>
 <script src="{% static 'js/star-rating.js' %}"></script>
