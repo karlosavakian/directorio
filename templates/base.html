@@ -19,7 +19,9 @@
     </div>
 
     {% include 'partials/_header.html' %}
-    {% include 'partials/_search_modal.html' %}
+      {% if request.path != '/' %}
+        {% include 'partials/_search_modal.html' %}
+    {% endif %}
 
     {% block content %}{% endblock %}
 
