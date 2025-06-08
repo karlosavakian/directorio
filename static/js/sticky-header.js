@@ -4,10 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const initialHeight = header.offsetHeight;
     const scrolledHeight = initialHeight - 10;
-
-    header.style.position = 'sticky';
-    header.style.top = '0';
-    header.style.zIndex = '1030';
+    header.style.height = initialHeight + 'px';
 
     window.addEventListener('scroll', function() {
         if (window.scrollY > 0) {
