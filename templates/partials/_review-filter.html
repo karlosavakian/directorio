@@ -1,5 +1,5 @@
  
-      <form method="get" class="d-flex align-items-center" style="gap: 10px;">
+      <form method="get" id="review-filter-form" action="{% url 'ajax_reviews' club.slug %}" class="d-flex align-items-center" style="gap: 10px;">
         <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
 
     <div class="custom-dropdown small" id="sort-dropdown">

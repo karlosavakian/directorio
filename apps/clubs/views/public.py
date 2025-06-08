@@ -45,5 +45,25 @@ def club_profile(request, slug):
         'reseña_existente': reseña_existente,
         'detallado': detallado,
         'competidores': competidores,
-        
+
     })
+
+
+def ajax_reviews(request, slug):
+    """Devolver la lista de reseñas ordenada sin recargar la página."""
+    club = get_object_or_404(Club, slug=slug)
+    reseñas = club.reseñas.select_related('usuario').all()
+    orden = request.GET.get('orden', 'relevantes')
+
+    if orden == 'recientes':
+        reseñas = reseñas.order_by('-creado')
+    elif orden == 'antiguos':
+        reseñas = reseñas.order_by('creado')
+    elif orden == 'puntuacion_alta':
+        reseñas = sorted(reseñas, key=lambda r: r.promedio(), reverse=True)
+    elif orden == 'puntuacion_baja':
+        reseñas = sorted(reseñas, key=lambda r: r.promedio())
+    else:
+        reseñas = reseñas.order_by('-creado')
+
+    return render(request, 'clubs/reviews_list.html', {'reseñas': reseñas})
