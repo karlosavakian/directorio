@@ -1,18 +1,22 @@
 # directorio_boxeo/config/urls.py
 
 from django.contrib import admin
-from django.urls import path, include    
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from apps.clubs.views import public as club_public
   
 from apps.users.forms import LoginForm   
  
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     # Core: Página principal
-    path('', include('apps.core.urls')),  
+    path('', include('apps.core.urls')),
+
+    # Perfil público de clubs
+    path('@<slug:slug>/', club_public.club_profile, name='club_profile'),
 
     # Clubs: Gestión de Clubs y búsqueda
     path('clubs/', include('apps.clubs.urls')),

@@ -134,10 +134,12 @@
   border-radius:5px; 
   overflow-y: auto; 
 }
-
+#autocomplete-list{
+    margin:0;
+}
 .dropdown-option, #autocomplete-list li {
   padding: 10px 15px;
-  cursor: pointer;
+  cursor: pointer; 
 }
 
 .dropdown-option:hover, #autocomplete-list li:hover {

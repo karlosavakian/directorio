@@ -198,7 +198,8 @@
   <!-- Comentarios -->
 <div class="tab-pane fade" id="comments">
   <div class="d-flex justify-content-end mb-3">
-    {% include 'partials/_review-filter.html' with orden=orden %}
+       {% include 'partials/_review-filter.html' with orden=orden club=club %}
+
   </div>
 
  {% for reseña in reseñas %}

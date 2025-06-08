@@ -7,11 +7,10 @@ from .views import (
     public, 
 )
 
-urlpatterns = [                       
-    path('resultados/', search.search_results, name='search_results'),  
-    path('<slug:slug>/', public.club_profile, name='club_profile'),    
+urlpatterns = [
+    path('resultados/', search.search_results, name='search_results'),
+    
+    # El perfil público ahora se maneja desde config.urls con la ruta '@slug'
  
 ]
 
-
- 
