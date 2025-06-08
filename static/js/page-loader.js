@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!loader) return;
     setTimeout(() => {
         loader.classList.add('hidden');
-    }, 600);
+    }, 300);
 });
 
 window.addEventListener('beforeunload', function () {
