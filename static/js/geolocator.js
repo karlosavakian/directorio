@@ -85,6 +85,24 @@ document.addEventListener('DOMContentLoaded', function () {
             wrapper.style.display = 'none';
         }
     });
-    
+
+    // Prevent empty searches
+    const form = document.getElementById('main-search-form');
+    if (form && input) {
+        form.addEventListener('submit', function (e) {
+            if (input.value.trim() === '') {
+                e.preventDefault();
+                input.classList.add('input-alert');
+                alert('Por favor ingresa el nombre de un club, ciudad o código postal');
+                input.focus();
+            }
+        });
+
+        input.addEventListener('input', function () {
+            if (input.value.trim() !== '') {
+                input.classList.remove('input-alert');
+            }
+        });
+    }
 
 });
