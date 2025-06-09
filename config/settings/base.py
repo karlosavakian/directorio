@@ -58,6 +58,11 @@ INSTALLED_APPS = [
     'apps.users'
 ]
 
+# Ensure Django uses the migrations from the legacy "clubs" app path.
+MIGRATION_MODULES = {
+    'clubs': 'clubs.migrations',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
