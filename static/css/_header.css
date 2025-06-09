@@ -1,8 +1,0 @@
-header.navbar {
-
-    position: sticky;
-    top: 0;
-    z-index: 1030;
-    transition: height 0.3s ease;
-}
-

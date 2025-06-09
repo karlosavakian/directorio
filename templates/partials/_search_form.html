@@ -1,15 +1,20 @@
+ 
 <form method="GET" action="{% url 'search_results' %}" id="main-search-form"
-      class="d-flex align-items-center position-relative" style="max-width: 600px; margin: 0 auto; z-index:10;">
-
-    <!-- Input de texto -->
+      class=" d-flex align-items-center my-3 position-relative  {% if header %}header-search-form{% endif %}" 
+      style="max-width:  600px;  margin: 0 auto; z-index:10;"
+      > 
+ 
+ 
     <input 
-        type="text"
-        name="q"
-        id="search-input"
-        class="form-control border-0"
-        placeholder="Ciudad, dirección o código postal"
-        autocomplete="off"
-    >
+    type="text"
+    name="q"
+    id="search-input"
+    class="form-control border-0"
+    placeholder="Ciudad, dirección o código postal"
+    autocomplete="off"
+>
+
+ 
 
     <!-- Dropdown personalizado -->
     <div class="custom-dropdown" id="category-dropdown">
@@ -27,23 +32,23 @@
 
     <!-- Input oculto -->
     <input type="hidden" name="category" id="category-input" value="club">
- 
-    <div class="autocomplete-wrapper bg-white  position-absolute start-0 text-start"
-         style="display: none; top:100%;  width: 100%;  ">
-        <div class="dropdown-option fw-medium  " id="use-location-option">
+
+    <!-- Autocomplete -->
+    <div class="autocomplete-wrapper bg-white position-absolute start-0 text-start"
+         style="display: none; top:100%; width: 100%;">
+        <div class="dropdown-option fw-medium" id="use-location-option">
             📍 Usar ubicación actual
         </div>
-        <ul id="autocomplete-list" class=" list-unstyled  " style=" max-height:150px;"></ul>
+        <ul id="autocomplete-list" class="list-unstyled" style="max-height:150px;"></ul>
     </div>
 
     <!-- Botón búsqueda -->
-    <button type="submit" id="search-button">
+    <button type="submit" id="search-button" class=" px-2 py-1 ms-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-             viewBox="0 0 24 24" stroke="currentColor">
+             viewBox="0 0 24 24" stroke="currentColor"  >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 21l-4.35-4.35m1.15-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
         </svg>
     </button>
 </form>
-
-
+ 
