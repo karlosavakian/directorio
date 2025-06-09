@@ -24,6 +24,12 @@
     box-shadow: none;
 }
 
+/* Highlight for empty search */
+#search-input.input-alert {
+    border: 2px solid #dc3545;
+    border-radius: 4px;
+}
+
 .custom-dropdown {
     position: relative;
     user-select: none;
