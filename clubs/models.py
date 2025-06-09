@@ -18,6 +18,7 @@ class Club(models.Model):
     features = models.ManyToManyField('Feature', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    verified = models.BooleanField(default=False)
     CATEGORY_CHOICES = [
         ('club', 'Club'),
         ('entrenador', 'Entrenador'),
