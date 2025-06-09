@@ -1,25 +1,35 @@
-function hideLoader() {
+document.addEventListener('DOMContentLoaded', () => {
     const loader = document.getElementById('loader');
-    if (loader) {
-        loader.classList.add('hidden');
-    }
-}
+    if (!loader) return;
 
-document.addEventListener('DOMContentLoaded', hideLoader);
-window.addEventListener('load', hideLoader);
-window.addEventListener('pageshow', hideLoader);
+    const hide = () => loader.classList.add('is-hidden');
+    const show = () => loader.classList.remove('is-hidden');
 
-// Ensure the loader is hidden when navigating back from bfcache
-window.addEventListener('pageshow', function (event) {
-    const loader = document.getElementById('loader');
-    if (loader && event.persisted) {
-        loader.classList.add('hidden');
-    }
-});
+    hide();
 
-window.addEventListener('beforeunload', function () {
-    const loader = document.getElementById('loader');
-    if (loader) {
-        loader.classList.remove('hidden');
-    }
+    // Asegura que el loader se oculte al cargar la página normalmente
+    window.addEventListener('load', hide);
+
+    // Asegura que el loader se oculte si la página se recupera de la caché (bfcache)
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            hide();
+        } else {
+            hide();
+        }
+    });
+
+    // Muestra el loader al hacer clic en enlaces (salvo externos o anclas)
+    document.body.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href]');
+        if (link && link.target !== '_blank' && !link.href.startsWith('#')) {
+            show();
+        }
+    });
+
+    // Muestra el loader al enviar formularios
+    document.body.addEventListener('submit', show, true);
+
+    // Evita que el loader se quede atascado al retroceder usando el historial
+    window.addEventListener('beforeunload', show);
 });

@@ -160,7 +160,7 @@ p {
     align-items: center;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-#loader.hidden {
+#loader.is-hidden {
     opacity: 0;
     visibility: hidden;
 }
