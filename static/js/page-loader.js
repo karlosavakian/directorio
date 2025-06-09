@@ -1,10 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
+function hideLoader() {
     const loader = document.getElementById('loader');
-    if (!loader) return;
-    setTimeout(() => {
+    if (loader) {
         loader.classList.add('hidden');
-    }, 300);
-});
+    }
+}
+
+document.addEventListener('DOMContentLoaded', hideLoader);
+window.addEventListener('load', hideLoader);
+window.addEventListener('pageshow', hideLoader);
 
 // Ensure the loader is hidden when navigating back from bfcache
 window.addEventListener('pageshow', function (event) {
