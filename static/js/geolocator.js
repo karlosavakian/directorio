@@ -92,9 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.addEventListener('submit', function (e) {
             if (input.value.trim() === '') {
                 e.preventDefault();
-                input.classList.add('input-alert'); 
-                alert('Por favor ingresa el nombre de un club, ciudad o código postal');
- 
+                input.classList.add('input-alert');
                 input.focus();
             }
         });

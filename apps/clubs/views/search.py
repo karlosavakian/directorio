@@ -16,7 +16,7 @@ def search_results(request):
         clubs = clubs.filter(
             Q(name__icontains=search_query) |
             Q(city__icontains=search_query) |
-            Q(postal_code__icontains=search_query)
+            Q(address__icontains=search_query)
         )
 
     if selected_category:

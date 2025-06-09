@@ -30,7 +30,7 @@ class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ClubPhotoInline, HorarioInline]  
-    fields = ('logo', 'name', 'slug', 'city', 'postal_code', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
+    fields = ('logo', 'name', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')   
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
