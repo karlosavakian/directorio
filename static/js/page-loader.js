@@ -6,6 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 300);
 });
 
+// Ensure the loader is hidden when navigating back from bfcache
+window.addEventListener('pageshow', function (event) {
+    const loader = document.getElementById('loader');
+    if (loader && event.persisted) {
+        loader.classList.add('hidden');
+    }
+});
+
 window.addEventListener('beforeunload', function () {
     const loader = document.getElementById('loader');
     if (loader) {
