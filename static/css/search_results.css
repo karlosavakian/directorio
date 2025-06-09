@@ -10,7 +10,7 @@
 
 /* Card limpia sin subrayado al hacer hover */
 .card a:hover {
-  text-decoration: none;
+  text-decoration: none; 
 }
 .back-button {
     font-weight: bold;
