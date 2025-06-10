@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from ..models import Club
 from django.contrib import messages
 from apps.users.forms import ReseñaForm
+from apps.users.models import Follow
+from django.contrib.contenttypes.models import ContentType
 
 
 def club_profile(request, slug):
@@ -10,6 +12,16 @@ def club_profile(request, slug):
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
     orden = request.GET.get('orden', 'relevantes')
+    club_followed = False
+    if request.user.is_authenticated:
+        ct_user = ContentType.objects.get_for_model(request.user)
+        ct_club = ContentType.objects.get_for_model(Club)
+        club_followed = Follow.objects.filter(
+            follower_content_type=ct_user,
+            follower_object_id=request.user.id,
+            followed_content_type=ct_club,
+            followed_object_id=club.id,
+        ).exists()
 
     reseña_existente = None
     if request.user.is_authenticated:
@@ -46,6 +58,7 @@ def club_profile(request, slug):
         'reseña_existente': reseña_existente,
         'detallado': detallado,
         'competidores': competidores,
+        'club_followed': club_followed,
 
     })
 

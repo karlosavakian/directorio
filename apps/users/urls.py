@@ -1,6 +1,6 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import auth, review
+from .views import auth, review, follow
 from .views import profile as profile_views
 from .forms import LoginForm
 from .views import public, review
@@ -30,4 +30,6 @@ urlpatterns = [
   
     path('club/<slug:slug>/editar_reseña/<int:reseña_id>/', review.editar_reseña, name='editar_reseña'),
     path('reseña/<int:reseña_id>/eliminar/', review.eliminar_reseña, name='eliminar-reseña'),
+    path('follow/<str:model>/<int:object_id>/', follow.toggle_follow, name='toggle_follow'),
+    path('feed/', follow.feed, name='feed'),
 ]
