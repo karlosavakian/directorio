@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils.text import slugify
-from django.contrib.auth.models import User 
-from django.db.models import Avg, Count 
+from django.contrib.auth.models import User
+from django.db.models import Avg, Count
 from django.utils.translation import gettext_lazy as _
+
+from apps.core.utils.image_utils import resize_image
 
  
 class Club(models.Model):
@@ -70,4 +72,10 @@ class ClubPhoto(models.Model):
     def __str__(self):
         return f"Foto de {self.club.name if self.club else 'Sin club'}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image and hasattr(self.image, 'path'):
+            resize_image(self.image.path)
+
  
+
