@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect 
-from ..models import Club
+from ..models import Club, ClubPost
 from django.contrib import messages
 from apps.users.forms import ReseñaForm
 from apps.users.models import Follow
@@ -11,6 +11,7 @@ def club_profile(request, slug):
     reseñas = club.reseñas.select_related('usuario').all()
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
+    posts = club.posts.all()
     orden = request.GET.get('orden', 'relevantes')
     club_followed = False
     if request.user.is_authenticated:
@@ -54,6 +55,7 @@ def club_profile(request, slug):
     return render(request, 'clubs/club_profile.html', {
         'club': club,
         'reseñas': reseñas,
+        'posts': posts,
         'form': form,
         'reseña_existente': reseña_existente,
         'detallado': detallado,

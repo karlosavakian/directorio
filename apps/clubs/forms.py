@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reseña
+from . import models
 from django.contrib.auth.forms import AuthenticationForm
 
 class LoginForm(AuthenticationForm):
@@ -67,3 +68,11 @@ class ReseñaForm(forms.ModelForm):
             'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
             'comentario': forms.Textarea(attrs={'rows': 4}),
         }
+class ClubPostForm(forms.ModelForm):
+    class Meta:
+        model = models.ClubPost
+        fields = ['titulo', 'contenido', 'evento_fecha']
+        widgets = {
+            'evento_fecha': forms.DateInput(attrs={'type': 'date'})
+        }
+

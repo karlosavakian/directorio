@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 
-from apps.clubs.models import Club, Reseña
+from apps.clubs.models import Club, Reseña, ClubPost
 from ..models import Follow
 
 
@@ -35,7 +35,8 @@ def feed(request):
     for f in follows:
         if f.followed_content_type == ct_club:
             posts.extend(Reseña.objects.filter(club_id=f.followed_object_id))
+            posts.extend(ClubPost.objects.filter(club_id=f.followed_object_id))
         elif f.followed_content_type == ct_user:
             posts.extend(Reseña.objects.filter(usuario_id=f.followed_object_id))
-    posts = sorted(posts, key=lambda r: r.creado, reverse=True)[:20]
+    posts = sorted(posts, key=lambda r: getattr(r, 'creado', r.created_at), reverse=True)[:20]
     return render(request, 'users/feed.html', {'posts': posts})

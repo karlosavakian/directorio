@@ -6,3 +6,4 @@ from .horario import Horario
 from .resena import Reseña
 from .clase import Clase
 from .competidor import Competidor
+from .post import ClubPost
