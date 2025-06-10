@@ -13,6 +13,7 @@ class LoginForm(AuthenticationForm):
     )
     password = forms.CharField(
         label="Contraseña",
+        strip=False,
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
     remember_me = forms.BooleanField(

@@ -6,7 +6,8 @@ from .views import profile as profile_views
 from .views.auth import LoginView
 
 urlpatterns = [
-    path('register/', auth.register, name='register'),
+    # Registro de usuarios
+    path('signup/', auth.register, name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('profile/', profile_views.profile, name='profile'),
