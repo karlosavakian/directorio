@@ -39,6 +39,8 @@
 
                 <div class="mb-3">
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
+                    {{ form.username.label_tag }}
+
                     <input type="text"
                            name="{{ form.username.name }}"
                            value="{{ form.username.value|default_if_none:'' }}"
@@ -55,6 +57,10 @@
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
                     <div class="input-group">
                         {{ form.password }}
+                        <input type="password"
+                               name="{{ form.password.name }}"
+                               class="form-control"
+                               id="{{ form.password.id_for_label }}">
                         <button type="button" class="btn btn-outline-secondary" id="toggle-password">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z"/>
