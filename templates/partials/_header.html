@@ -33,7 +33,17 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <span class="nav-link">Hola, {{ user.username }}</span>
+                        <div class="custom-dropdown small" id="user-dropdown">
+                            <div class="selected">
+                                <span class="selected-text">{{ user.username }}</span>
+                                <span class="select-arrow"></span>
+                            </div>
+                            <div class="dropdown-menu" id="user-menu">
+                                <a href="{% url 'profile' %}" class="dropdown-item">Mi perfil</a>
+                                <a href="{% url 'favoritos' %}" class="dropdown-item">Favoritos</a>
+                                <a href="{% url 'mis-reseñas' %}" class="dropdown-item">Valoraciones</a>
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <form method="POST" action="{% url 'logout' %}" class="d-inline">

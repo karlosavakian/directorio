@@ -4,6 +4,7 @@ from apps.clubs.models import Reseña
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Profile
 
 
 class LoginForm(AuthenticationForm):
@@ -74,3 +75,9 @@ class ReseñaForm(forms.ModelForm):
             'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
             'comentario': forms.Textarea(attrs={'rows': 4}),
         }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'bio', 'location']
+
