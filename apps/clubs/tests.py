@@ -23,3 +23,36 @@ class SearchResultsTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.club.name)
+
+    def test_pagination_limits_results(self):
+        """Only 12 results should appear on the first page."""
+        for i in range(13):
+            Club.objects.create(
+                name=f"Extra Club {i}",
+                city="NY",
+                address="addr",
+                phone="123",
+                email=f"{i}@ex.com",
+            )
+
+        url = reverse("search_results")
+        response = self.client.get(url, {"q": "Club", "page": 1})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["clubs"]), 12)
+
+    def test_second_page_contains_remaining_results(self):
+        for i in range(13):
+            Club.objects.create(
+                name=f"Another Club {i}",
+                city="NY",
+                address="addr",
+                phone="123",
+                email=f"{i}@ex2.com",
+            )
+
+        url = reverse("search_results")
+        response = self.client.get(url, {"q": "Club", "page": 2})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["clubs"]), 1)
