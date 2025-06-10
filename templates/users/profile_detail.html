@@ -7,7 +7,17 @@
         {% if profile.avatar %}
             <img src="{{ profile.avatar.url }}" class="rounded-circle me-3" style="width:100px;height:100px;object-fit:cover;">
         {% endif %}
-        <h1 class="h3 mb-0">{{ user_obj.username }}</h1>
+        <h1 class="h3 mb-0">{{ user_obj.username }}
+        {% if user.is_authenticated and user != user_obj %}
+            <form action="{% url 'toggle_follow' 'user' user_obj.id %}" method="post" class="d-inline ms-2">
+                {% csrf_token %}
+                {% if is_following %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
+                {% else %}
+                <button type="submit" class="btn btn-sm btn-primary">Seguir</button>
+                {% endif %}
+            </form>
+        {% endif %}</h1>
     </div>
     {% if profile.bio %}
         <p>{{ profile.bio }}</p>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h3 mb-4">Feed</h1>
+    {% for post in posts %}
+        <div class="mb-3">
+            <p class="mb-1">
+                <strong>{{ post.usuario.username }}</strong> en
+                <a href="{% url 'club_profile' slug=post.club.slug %}">{{ post.club.name }}</a>
+            </p>
+            <p class="mb-0">{{ post.comentario }}</p>
+            <small class="text-muted">{{ post.creado }}</small>
+        </div>
+    {% empty %}
+        <p>No hay publicaciones aún.</p>
+    {% endfor %}
+</div>
+{% endblock %}

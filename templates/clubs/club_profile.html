@@ -18,7 +18,17 @@
     <div class="d-flex align-items-start mt-4 mb-4 gap-3 ">
        <div>
         
-     <h1 class="h3 mb-0" style="font-weight:900;">{{ club.name }}</h1>
+     <h1 class="h3 mb-0" style="font-weight:900;">{{ club.name }}
+     {% if user.is_authenticated %}
+       <form action="{% url 'toggle_follow' 'club' club.id %}" method="post" class="d-inline ms-2">
+         {% csrf_token %}
+         {% if club_followed %}
+         <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
+         {% else %}
+         <button type="submit" class="btn btn-sm btn-primary">Seguir</button>
+         {% endif %}
+       </form>
+     {% endif %}</h1>
 
 <div class="d-flex align-items-center mb-3">
     <span class="badge bg-secondary">{{ club.get_category_display }}</span>
