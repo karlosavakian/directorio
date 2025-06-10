@@ -24,7 +24,8 @@ def club_profile(request, slug):
             nueva.usuario = request.user
             nueva.save()
             messages.success(request, "Gracias por tu valoración, será publicada en breve.")
-            return redirect('club_profile', slug=reseña.club.slug)
+            return redirect('club_profile', slug=club.slug)
+
         
         
     if orden == 'recientes':
