@@ -3,7 +3,9 @@
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from ..forms import RegistroUsuarioForm
+from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.conf import settings
+from ..forms import RegistroUsuarioForm, LoginForm
 from apps.core.services.email_service import send_welcome_email
 
 
@@ -22,3 +24,19 @@ def register(request):
     return render(request, 'users/register.html', {
         'form': form
     })
+
+
+class LoginView(DjangoLoginView):
+    """Custom login view that handles the remember me option."""
+    authentication_form = LoginForm
+    template_name = 'users/login.html'
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        remember = form.cleaned_data.get('remember_me')
+        if not remember:
+            # Expire session when the browser closes
+            self.request.session.set_expiry(0)
+        else:
+            self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+        return response
