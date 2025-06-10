@@ -1,5 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+
 from django.shortcuts import render, redirect
+
 from ..forms import ProfileForm
 from ..models import Profile
 
@@ -18,4 +22,20 @@ def profile(request):
         'form': form,
         'profile': profile_obj,
     })
+
+def profile_detail(request, username):
+    """Public profile page"""
+    user_obj = get_object_or_404(User, username=username)
+    profile_obj, _ = Profile.objects.get_or_create(user=user_obj)
+    return render(request, 'users/profile_detail.html', {
+        'user_obj': user_obj,
+        'profile': profile_obj,
+    })
+
+
+@login_required
+def favorites(request):
+    """Placeholder view for user favorites."""
+    return render(request, 'users/favorites.html')
+
 
