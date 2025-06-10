@@ -1,5 +1,6 @@
 {% load static %}
 {% load load_css %}
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -46,8 +47,14 @@
                     {{ form.password }}
                 </div>
 
+
                 <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
             </form>
+
+            <div class="text-center my-3">
+                <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100 mb-2">Continuar con Google</a>
+                <a href="{% provider_login_url 'facebook' %}" class="btn btn-outline-primary w-100">Continuar con Facebook</a>
+            </div>
 
             <div class="mt-3 text-center">
                 <a href="#">¿Olvidaste tu contraseña?</a>
