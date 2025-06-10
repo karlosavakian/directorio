@@ -26,6 +26,7 @@ urlpatterns = [
     path('clubs/', include('apps.clubs.urls')),
 
 
+    path('accounts/', include('allauth.urls')),
     path('accounts/', include('apps.users.urls')),  # <-- Aquí incluimos las rutas de registro
 ]
 
