@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 
 from ..forms import ProfileForm
 from ..models import Profile, Follow
+from apps.clubs.models import Booking
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -19,9 +20,11 @@ def profile(request):
             return redirect('profile')
     else:
         form = ProfileForm(instance=profile_obj)
+    bookings = Booking.objects.filter(user=request.user).select_related('clase', 'evento')
     return render(request, 'users/profile.html', {
         'form': form,
         'profile': profile_obj,
+        'bookings': bookings,
     })
 
 def profile_detail(request, username):

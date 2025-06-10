@@ -7,3 +7,4 @@ from .resena import Reseña
 from .clase import Clase
 from .competidor import Competidor
 from .post import ClubPost
+from .booking import Booking

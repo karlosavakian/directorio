@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h5 mb-4">Cancelar reserva</h1>
+    <p>¿Seguro que deseas cancelar esta reserva?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Cancelar reserva</button>
+    </form>
+</div>
+{% endblock %}
