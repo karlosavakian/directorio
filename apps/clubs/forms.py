@@ -76,3 +76,14 @@ class ClubPostForm(forms.ModelForm):
             'evento_fecha': forms.DateInput(attrs={'type': 'date'})
         }
 
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = models.Booking
+        fields = []
+
+
+class CancelBookingForm(forms.Form):
+    """Simple form used to confirm cancellation."""
+    pass
+
