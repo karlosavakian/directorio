@@ -50,3 +50,19 @@ class LoginRememberMeTests(TestCase):
         self.assertTrue("_auth_user_id" in self.client.session)
         self.assertFalse(self.client.session.get_expire_at_browser_close())
 
+
+class LoginPageTests(TestCase):
+    def test_login_form_shows_username_and_password_fields(self):
+        url = reverse("login")
+        response = self.client.get(url)
+        self.assertContains(response, 'name="username"')
+        self.assertContains(response, 'name="password"')
+
+    def test_login_page_includes_labels_and_toggle(self):
+        url = reverse("login")
+        response = self.client.get(url)
+        self.assertContains(response, 'Nombre de usuario o correo electrónico')
+        self.assertContains(response, 'Contraseña')
+        self.assertContains(response, 'Recordar contraseña')
+        self.assertContains(response, 'toggle-password')
+
