@@ -31,3 +31,22 @@ class RegistrationTests(TestCase):
             self.client.post(url, data)
             mock_send.assert_called_once_with("email@example.com")
 
+
+class LoginRememberMeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="loginuser", password="pass")
+
+    def test_unchecked_remember_me_expires_on_close(self):
+        url = reverse("login")
+        data = {"username": "loginuser", "password": "pass"}
+        self.client.post(url, data)
+        self.assertTrue("_auth_user_id" in self.client.session)
+        self.assertTrue(self.client.session.get_expire_at_browser_close())
+
+    def test_checked_remember_me_persists_session(self):
+        url = reverse("login")
+        data = {"username": "loginuser", "password": "pass", "remember_me": "on"}
+        self.client.post(url, data)
+        self.assertTrue("_auth_user_id" in self.client.session)
+        self.assertFalse(self.client.session.get_expire_at_browser_close())
+

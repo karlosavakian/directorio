@@ -15,6 +15,11 @@ class LoginForm(AuthenticationForm):
         label="Contraseña",
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
+    remember_me = forms.BooleanField(
+        label="Recordarme",
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "form-check-input"})
+    )
  
 class RegistroUsuarioForm(UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True)
