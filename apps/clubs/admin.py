@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Club, Feature, ClubPhoto, Clase, Competidor, Reseña, Horario
+from .models import Club, Feature, ClubPhoto, Clase, Competidor, Reseña, Horario, ClubPost
 from django import forms 
 
 class ClubPhotoInline(admin.TabularInline):
@@ -62,4 +62,9 @@ class CompetidorAdmin(admin.ModelAdmin):
 class ReseñaAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'club', 'promedio', 'creado')  # ✅ Quitamos 'stars'
     readonly_fields = ('creado',)
+
+
+@admin.register(ClubPost)
+class ClubPostAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'club', 'created_at', 'evento_fecha')
 
