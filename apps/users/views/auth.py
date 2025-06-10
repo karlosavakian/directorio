@@ -4,6 +4,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from ..forms import RegistroUsuarioForm
+from apps.core.services.email_service import send_welcome_email
 
 
 def register(request):
@@ -12,6 +13,7 @@ def register(request):
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
             user = form.save()
+            send_welcome_email(user.email)
             login(request, user)
             return redirect('home')
     else:
