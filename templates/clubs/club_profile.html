@@ -195,6 +195,9 @@
               {% csrf_token %}
               <button type="submit" class="btn btn-sm btn-primary">Reservar</button>
             </form>
+            {% else %}
+            <button type="button" class="btn btn-sm btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#signupModal">Reservar</button>
+
             {% endif %}
           </li>
         {% endfor %}
@@ -380,6 +383,7 @@
     </div>
   </div>
 </div>
+{% include 'partials/_register_modal.html' %}
 <script src="{% static 'js/review-filter.js' %}"></script>
 <script src="{% static 'js/slides.js' %}"></script>
 <script src="{% static 'js/stars.js' %}"></script>
