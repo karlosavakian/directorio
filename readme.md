@@ -1,3 +1,27 @@
+## Puesta en marcha
+
+1. Crea un entorno virtual e instala las dependencias:
+```bash
+python -m venv venv
+source venv/bin/activate  # En Windows usa 'venv\\Scripts\\activate'
+pip install -r requirements.txt
+```
+
+2. Aplica las migraciones de la base de datos:
+```bash
+python manage.py migrate
+```
+
+3. Inicia el servidor de desarrollo:
+```bash
+python manage.py runserver
+```
+
+El sitio quedará disponible en http://127.0.0.1:8000/.
+
+
+
+
 directorio_boxeo/
 │
 ├── apps/
@@ -72,6 +96,4 @@ directorio_boxeo/
 ├── manage.py                        -> Script de Django para tareas administrativas.
 │
 └── requirements.txt                 -> Dependencias del proyecto.
-
----
  
