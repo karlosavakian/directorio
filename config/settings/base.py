@@ -37,12 +37,19 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-$7vs#$s_tmzf+&g(h^@xm1mk9@i6*3keei77zn=btl$4lmif@k'
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-$7vs#$s_tmzf+&g(h^@xm1mk9@i6*3keei77zn=btl$4lmif@k",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+_hosts = os.environ.get("ALLOWED_HOSTS")
+if _hosts:
+    ALLOWED_HOSTS = [host.strip() for host in _hosts.split(",") if host.strip()]
+else:
+    ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [

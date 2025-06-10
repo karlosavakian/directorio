@@ -1,3 +1,5 @@
 from .base import *
-DEBUG = True
-ALLOWED_HOSTS = []
+
+# Override debug regardless of environment variable
+DEBUG = False
+
