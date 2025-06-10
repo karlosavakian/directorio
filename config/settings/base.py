@@ -60,7 +60,7 @@ INSTALLED_APPS = [
 
 # Ensure Django uses the migrations from the legacy "clubs" app path.
 MIGRATION_MODULES = {
-    'clubs': 'clubs.migrations',
+    'clubs': 'apps.clubs.migrations',
 }
 
 MIDDLEWARE = [
