@@ -35,7 +35,6 @@
 
             <form method="post">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
 
                 <div class="mb-3">
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
@@ -44,7 +43,8 @@
                            name="{{ form.username.name }}"
                            value="{{ form.username.value|default_if_none:'' }}"
                            class="form-control"
-                           id="{{ form.username.id_for_label }}">
+                           id="{{ form.username.id_for_label }}"
+                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                     {% if form.username.errors %}
                       <div class="invalid-feedback d-block">
                         {{ form.username.errors.as_text|striptags }}
@@ -58,7 +58,8 @@
                         <input type="password"
                                name="{{ form.password.name }}"
                                class="form-control"
-                               id="{{ form.password.id_for_label }}">
+                               id="{{ form.password.id_for_label }}"
+                               required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                         <button type="button" class="btn btn-outline-secondary" id="toggle-password">
 
 
@@ -73,10 +74,15 @@
                         {{ form.password.errors.as_text|striptags }}
                       </div>
                     {% endif %}
+                    {% if form.non_field_errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ form.non_field_errors }}
+                      </div>
+                    {% endif %}
                 </div>
 
                 <div class="form-check mb-3">
-                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}">
+                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
                     <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
                 </div>
 
