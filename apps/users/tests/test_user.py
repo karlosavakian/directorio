@@ -17,6 +17,8 @@ class RegistrationTests(TestCase):
         response = self.client.post(url, data)
 
         self.assertTrue(User.objects.filter(username="newuser").exists())
+        # And the view should redirect to home
+        self.assertRedirects(response, reverse("home"))
         self.assertRedirects(response, reverse("home"))
 
     def test_welcome_email_sent(self):
