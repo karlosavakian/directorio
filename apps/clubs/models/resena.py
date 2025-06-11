@@ -35,4 +35,3 @@ class Reseña(models.Model):
     @property
     def reviews_count(self):
         return self.reseñas.count()
-    
