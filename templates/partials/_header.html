@@ -38,22 +38,25 @@
                                 <span class="selected-text">{{ user.username }}</span>
                                 <span class="select-arrow"></span>
                             </div>
-                            <div class="dropdown-menu" id="user-menu">
-                                <a href="{% url 'profile' %}" class="dropdown-item">Mi perfil</a>
-                                <a href="{% url 'favoritos' %}" class="dropdown-item">Favoritos</a>
-                                <a href="{% url 'mis-reseñas' %}" class="dropdown-item">Valoraciones</a>
-                                <a href="{% url 'feed' %}" class="dropdown-item">Feed</a>
+                            <div class="dropdown-menu " id="user-menu" >
+                                <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a>
+                                <a href="{% url 'favoritos' %}" class="dropdown-item text-light">Favoritos</a>
+                                <a href="{% url 'mis-reseñas' %}" class="dropdown-item text-light">Valoraciones</a>
+                                <a href="{% url 'feed' %}" class="dropdown-item text-light">Feed</a>
+
+                               <a href=""  class="dropdown-item">
+                                 <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class=" text-start text-light p-0" style="text-decoration: none;">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                               </a>
                             </div>
+
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <form method="POST" action="{% url 'logout' %}" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-link nav-link text-dark p-0" style="text-decoration: none;">
-                                Cerrar sesión
-                            </button>
-                        </form>
-                    </li>
+                     
                 {% else %}
                     <li class="nav-item">
                         <a href="{% url 'login' %}" class="nav-link text-dark">Iniciar Sesión</a>
