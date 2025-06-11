@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         fake = Faker('es_ES')
-        image_path = os.path.join(settings.STATICFILES_DIRS[0], 'img', 'register-bg.jpg')
+        image_path = os.path.join(settings.STATICFILES_DIRS[0], 'img', 'register-bg.png')
         features = list(Feature.objects.all())
         if not features:
             default_names = [
