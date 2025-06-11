@@ -5,6 +5,7 @@ function showGallerySlide(i) {
   const dots = document.querySelectorAll('.gallery-dot');
   const prev = document.getElementById('galleryPrev');
   const next = document.getElementById('galleryNext');
+
   if (!slides.length) return;
   galleryIndex = (i + slides.length) % slides.length;
   slides.forEach((s, idx) => {
@@ -17,6 +18,7 @@ function showGallerySlide(i) {
     prev.style.display = galleryIndex === 0 ? 'none' : 'flex';
     next.style.display = galleryIndex === slides.length - 1 ? 'none' : 'flex';
   }
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
