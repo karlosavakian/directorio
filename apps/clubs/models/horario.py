@@ -23,4 +23,3 @@ class Horario(models.Model):
 
     def __str__(self):
         return f"{self.club.name} - {self.get_dia_display()} {self.hora_inicio} - {self.hora_fin}"
-    
