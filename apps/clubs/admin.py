@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Club, Feature, ClubPhoto, Clase, Competidor, Reseña, Horario, ClubPost
+from .models import Club, Feature, ClubPhoto, Clase, Competidor, Reseña, Horario, ClubPost, Entrenador
 from django import forms 
 
 class ClubPhotoInline(admin.TabularInline):
@@ -12,6 +12,10 @@ class ClaseInline(admin.TabularInline):
 
 class CompetidorInline(admin.TabularInline):
     model = Competidor
+    extra = 1
+
+class EntrenadorInline(admin.TabularInline):
+    model = Entrenador
     extra = 1
 
 class ReseñaInline(admin.TabularInline):
@@ -29,7 +33,7 @@ class HorarioInline(admin.TabularInline):
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, HorarioInline]  
+    inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
     fields = ('logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
 
 @admin.register(Feature)
@@ -67,4 +71,9 @@ class ReseñaAdmin(admin.ModelAdmin):
 @admin.register(ClubPost)
 class ClubPostAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'club', 'created_at', 'evento_fecha')
+
+
+@admin.register(Entrenador)
+class EntrenadorAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'apellidos', 'club')
 
