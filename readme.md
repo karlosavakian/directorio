@@ -25,6 +25,19 @@ python manage.py runserver
 El sitio quedará disponible en http://127.0.0.1:8000/.
 
 
+## Instalación de dependencias
+
+Para instalar las dependencias en un entorno virtual:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Las pruebas requieren Django y Pillow, ya incluidos en `requirements.txt`.
+
+
 
 
 directorio_boxeo/
