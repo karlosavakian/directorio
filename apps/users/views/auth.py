@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.conf import settings
 from ..forms import RegistroUsuarioForm, LoginForm
-from apps.core.services.email_service import send_welcome_email
+from apps.core.services.email_service import send_welcome_email, send_confirmation_email
 
 
 def register(request):
@@ -16,6 +16,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             send_welcome_email(user.email)
+            send_confirmation_email(user.email)
             # authenticate to attach backend info before login
             auth_user = authenticate(
                 request,

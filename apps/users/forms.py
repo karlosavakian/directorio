@@ -10,8 +10,10 @@ from .models import Profile
 class LoginForm(AuthenticationForm):
     error_messages = {
         "invalid_login": _("El usuario o la contraseña introducida no es correcta, por favor intente de nuevo"),
+        "inactive": _("Esta cuenta está inactiva."),
+
         "inactive": _("This account is inactive."),
-    }
+
 
     username = forms.CharField(
         label="Usuario",
@@ -38,6 +40,10 @@ class LoginForm(AuthenticationForm):
 class RegistroUsuarioForm(UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
 
+    error_messages = {
+        **UserCreationForm.error_messages,
+        'password_mismatch': _('Las contraseñas no coinciden'),
+    }
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
@@ -64,6 +70,15 @@ class RegistroUsuarioForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('Este correo electrónico ya está registrado')
         return email
+
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        if password:
+            if len(password) < 6 or not any(c.islower() for c in password) or not any(c.isupper() for c in password) or not any(c.isdigit() for c in password):
+                raise forms.ValidationError(
+                    'La contraseña debe tener al menos 6 caracteres e incluir mayúsculas, minúsculas y números.'
+                )
+        return password
 
 class ProfileForm(forms.ModelForm):
     class Meta:
