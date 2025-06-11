@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q, F, FloatField, Avg, Count, ExpressionWrapper
 from django.db.models.functions import Round
+from django.core.paginator import Paginator
 from apps.clubs.models import Club
 
 
@@ -49,8 +50,14 @@ def search_results(request):
     elif sort_option == 'recent':
         clubs = clubs.order_by('-created_at')
 
+    # Paginación: 12 resultados por página
+    paginator = Paginator(clubs, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, 'clubs/search_results.html', {
-        'clubs': clubs,
+        'clubs': page_obj,
+        'page_obj': page_obj,
         'search_query': search_query,
         'selected_category': selected_category,
         'sort_option': sort_option,

@@ -16,6 +16,11 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
+4. Configura los proveedores sociales (Google o Facebook) en el panel de
+   administración dentro de "Social applications". Guarda las credenciales
+   correspondientes y ejecuta `python manage.py migrate` para aplicar las
+   tablas de `django-allauth`.
+
 
 El sitio quedará disponible en http://127.0.0.1:8000/.
 

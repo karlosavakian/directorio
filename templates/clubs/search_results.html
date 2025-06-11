@@ -59,6 +59,38 @@
         </div>
         {% endfor %}
     </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="mt-4" aria-label="Resultados de búsqueda">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                    &laquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                    &raquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
     {% else %}
     <p>No se encontraron resultados para "{{ search_query }}"</p>
     {% endif %}

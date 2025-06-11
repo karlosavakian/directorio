@@ -26,8 +26,9 @@ urlpatterns = [
     path('clubs/', include('apps.clubs.urls')),
 
 
-    path('accounts/', include('allauth.urls')),
-    path('accounts/', include('apps.users.urls')),  # <-- Aquí incluimos las rutas de registro
+    # Rutas de autenticación sin el prefijo "accounts/"
+    path('', include('apps.users.urls')),
+    path('', include('allauth.urls')),
 ]
 
 # Archivos estáticos en modo DEBUG
