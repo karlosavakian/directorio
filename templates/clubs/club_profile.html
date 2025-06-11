@@ -299,17 +299,60 @@
 
 
   <!-- Comentarios -->
-<div class="tab-pane fade" id="comments">
-  <div class="d-flex justify-content-end mb-3">
-       {% include 'partials/_review-filter.html' with orden=orden club=club %}
+  <div class="tab-pane fade" id="comments">
+    <div class="mb-4">
+      <p class="fw-bold">Nota media: {{ club.average_rating }} / 5 ⭐ <span class="small" style="font-weight:300;"> ({{ club.reviews_count }})</span></p>
+      <ul class="list-group">
+        <li class="list-group-item">🏋 Instalaciones: {{ detallado.instalaciones|floatformat:1 }}/5</li>
+        <li class="list-group-item">🥊 Entrenadores: {{ detallado.entrenadores|floatformat:1 }}/5</li>
+        <li class="list-group-item">🧑‍🤝‍🧑 Ambiente: {{ detallado.ambiente|floatformat:1 }}/5</li>
+        <li class="list-group-item">💰 Calidad/precio: {{ detallado.calidad_precio|floatformat:1 }}/5</li>
+        <li class="list-group-item">📆 Variedad de clases: {{ detallado.variedad_clases|floatformat:1 }}/5</li>
+      </ul>
+    </div>
 
-  </div>
+    {% if user.is_authenticated and not reseña_existente %}
+    <form method="POST" id="reseña-form" class="rating-form mb-4">
+      {% csrf_token %}
+      <div class="rating-block mb-2">
+        <label class="form-label">Instalaciones:</label>
+        <div class="star-rating" data-name="instalaciones"></div>
+      </div>
+      <div class="rating-block mb-2">
+        <label class="form-label">Entrenadores:</label>
+        <div class="star-rating" data-name="entrenadores"></div>
+      </div>
+      <div class="rating-block mb-2">
+        <label class="form-label">Ambiente:</label>
+        <div class="star-rating" data-name="ambiente"></div>
+      </div>
+      <div class="rating-block mb-2">
+        <label class="form-label">Calidad-precio:</label>
+        <div class="star-rating" data-name="calidad_precio"></div>
+      </div>
+      <div class="rating-block mb-2">
+        <label class="form-label">Variedad de clases:</label>
+        <div class="star-rating" data-name="variedad_clases"></div>
+      </div>
+      <div class="mb-3">
+        <textarea name="comentario" class="form-control" rows="4" placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-dark">Enviar Reseña</button>
+    </form>
+    <div id="mensaje-gracias" class="alert alert-success mt-3" style="display:none;">
+      Gracias por valorar el club. Tu reseña será publicada en breve.
+    </div>
+    {% endif %}
 
-  <div id="review-list">
+    <div class="d-flex justify-content-end mb-3">
+      {% include 'partials/_review-filter.html' with orden=orden club=club %}
+    </div>
+
+    <div id="review-list">
       {% include 'clubs/reviews_list.html' %}
-  </div>
+    </div>
 
-</div>
+  </div>
 
 
 </div>
@@ -320,102 +363,6 @@
 
     </div>
 
-    <!-- Columna Derecha: Valoraciones y Reseñas -->
-    <div class="col-lg-2">
-      <!-- Reseñas -->
-      <div c >
-        {% if user.is_authenticated %}
-          {% if not reseña_existente %}
-            <form method="POST" id="reseña-form">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Instalaciones:</label>
-                  <div class="star-rating" data-name="instalaciones"></div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Entrenadores:</label>
-                  <div class="star-rating" data-name="entrenadores"></div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Ambiente:</label>
-                  <div class="star-rating" data-name="ambiente"></div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Calidad-precio:</label>
-                  <div class="star-rating" data-name="calidad_precio"></div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label class="form-label">Variedad de clases:</label>
-                  <div class="star-rating" data-name="variedad_clases"></div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <textarea name="comentario" class="form-control" rows="4" placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
-              </div>
-              <button type="submit" class="btn btn-dark">Enviar Reseña</button>
-            </form>
-            <div id="mensaje-gracias" class="alert alert-success mt-3" style="display:none;">
-              Gracias por valorar el club. Tu reseña será publicada en breve.
-            </div>
-          {% else %}
-            <!-- <p>Ya has dejado una reseña para este club.</p> -->
-          {% endif %}
-        {% else %}
-          <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
-        {% endif %}
-      </div>
-
-      <!-- Carrusel de reseñas -->
-      {% if reseñas %}
-        <div class="club-reviews">
-
-          <div class="review-carousel" id="review-carousel" onmouseenter="pauseAutoplay()" onmouseleave="startAutoplay()">
-            {% for reseña in reseñas %}
-              <div class="review-slide{% if forloop.first %} active{% endif %}">
-      <p class="review-text">“{{ reseña.comentario }}”</p>
-
-      <div class="review-user-container d-flex align-items-center">
-        <div class="review-avatar">{{ reseña.usuario.username|first|upper }}</div>
-        <div class="fw-medium ms-2">{{ reseña.usuario.username }}</div>
-      </div>
-    </div>
-
-
-            {% endfor %}
-
-            <!-- Arrows -->
-            <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
-              <svg viewBox="0 0 48 48" width="20" height="20">
-                <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"/>
-                <path d="M0-.5h48v48h-48z" fill="none"/>
-              </svg>
-            </button>
-            <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
-              <svg viewBox="0 0 48 48" width="20" height="20" style="transform: rotate(180deg);">
-                <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"/>
-                <path d="M0-.5h48v48h-48z" fill="none"/>
-              </svg>
-            </button>
-
-
-          </div>
-
-            <ul class="list-group mb-3 my-5">
-                <p class="fw-bold">Nota media: {{ club.average_rating }} / 5 ⭐ <span class="small" style="font-weight:300;"> ({{ club.reviews_count }})</span></p>
-
-                <li class="list-group-item">🏋 Instalaciones: {{ detallado.instalaciones|floatformat:1 }}/5</li>
-                <li class="list-group-item">🥊 Entrenadores: {{ detallado.entrenadores|floatformat:1 }}/5</li>
-                <li class="list-group-item">🧑‍🤝‍🧑 Ambiente: {{ detallado.ambiente|floatformat:1 }}/5</li>
-                <li class="list-group-item">💰 Calidad/precio: {{ detallado.calidad_precio|floatformat:1 }}/5</li>
-                <li class="list-group-item">📆 Variedad de clases: {{ detallado.variedad_clases|floatformat:1 }}/5</li>
-            </ul>
-        </div>
-      {% else %}
-        <p class="mt-4">Este club aún no tiene reseñas.</p>
-      {% endif %}
-    </div>
-  </div>
 </div>
 {% include 'partials/_register_modal.html' %}
 <script src="{% static 'js/review-filter.js' %}"></script>

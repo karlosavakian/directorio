@@ -264,3 +264,10 @@ textarea.form-control {
   border-bottom: 1px solid #000;
   font-weight: 600;
 }
+
+/* Rating form */
+.rating-form .rating-block {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
