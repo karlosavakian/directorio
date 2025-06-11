@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="form-check mb-3">
-                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}">
+                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
                     <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
                 </div>
 

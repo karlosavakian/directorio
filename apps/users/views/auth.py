@@ -2,7 +2,7 @@
 # apps/users/views/auth.py
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.conf import settings
 from ..forms import RegistroUsuarioForm, LoginForm
@@ -16,7 +16,14 @@ def register(request):
         if form.is_valid():
             user = form.save()
             send_welcome_email(user.email)
-            login(request, user)
+            # authenticate to attach backend info before login
+            auth_user = authenticate(
+                request,
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"],
+            )
+            if auth_user is not None:
+                login(request, auth_user)
             return redirect('home')
     else:
         form = RegistroUsuarioForm()

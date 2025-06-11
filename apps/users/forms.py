@@ -29,6 +29,11 @@ class LoginForm(AuthenticationForm):
         required=False,
         widget=forms.CheckboxInput(attrs={"class": "form-check-input"})
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Mark "recordar contraseña" checked by default
+        self.fields["remember_me"].initial = True
  
 class RegistroUsuarioForm(UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
@@ -47,13 +52,18 @@ class RegistroUsuarioForm(UserCreationForm):
         }
 
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
         self.fields['password1'].label = 'Contraseña'
         self.fields['password2'].label = 'Confirmar contraseña'
         # Custom required messages
         for field in ['username', 'password1', 'password2', 'email']:
             self.fields[field].error_messages['required'] = 'Rellene este campo'
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Este correo electrónico ya está registrado')
+        return email
 
 class ProfileForm(forms.ModelForm):
     class Meta:
