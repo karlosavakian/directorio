@@ -3,18 +3,26 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import gettext_lazy as _
 from .models import Profile
 
 
 class LoginForm(AuthenticationForm):
+    error_messages = {
+        "invalid_login": _("El usuario o la contraseña introducida no es correcta, por favor intente de nuevo"),
+        "inactive": _("This account is inactive."),
+    }
+
     username = forms.CharField(
         label="Usuario",
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        error_messages={"required": "Rellene este campo"},
     )
     password = forms.CharField(
         label="Contraseña",
         strip=False,
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        error_messages={"required": "Rellene este campo"},
     )
     remember_me = forms.BooleanField(
         label="Recordarme",
@@ -23,7 +31,7 @@ class LoginForm(AuthenticationForm):
     )
  
 class RegistroUsuarioForm(UserCreationForm):
-    email = forms.EmailField(label='Correo electrónico', required=True)
+    email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
 
     class Meta:
         model = User
@@ -43,6 +51,9 @@ class RegistroUsuarioForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         self.fields['password1'].label = 'Contraseña'
         self.fields['password2'].label = 'Confirmar contraseña'
+        # Custom required messages
+        for field in ['username', 'password1', 'password2', 'email']:
+            self.fields[field].error_messages['required'] = 'Rellene este campo'
 
 class ProfileForm(forms.ModelForm):
     class Meta:
