@@ -6,5 +6,10 @@ def resize_image(image_path, max_size=(800, 800)):
     img = Image.open(image_path)
     img = ImageOps.exif_transpose(img)
     img.thumbnail(max_size, Image.LANCZOS)
-    img.save(image_path, format=img.format)
+
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+
+    fmt = img.format or "JPEG"
+    img.save(image_path, format=fmt)
 
