@@ -11,7 +11,9 @@ class LoginForm(AuthenticationForm):
     error_messages = {
         "invalid_login": _("El usuario o la contraseña introducida no es correcta, por favor intente de nuevo"),
         "inactive": _("Esta cuenta está inactiva."),
-    }
+
+        "inactive": _("This account is inactive."),
+
 
     username = forms.CharField(
         label="Usuario",
@@ -42,7 +44,6 @@ class RegistroUsuarioForm(UserCreationForm):
         **UserCreationForm.error_messages,
         'password_mismatch': _('Las contraseñas no coinciden'),
     }
-
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']

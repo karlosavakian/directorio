@@ -9,7 +9,6 @@ def send_welcome_email(user_email):
         'noreply@clubsdeboxeo.com',
         [user_email],
         fail_silently=True,
-    )
 
 
 def send_confirmation_email(user_email):
@@ -20,4 +19,3 @@ def send_confirmation_email(user_email):
         'noreply@clubsdeboxeo.com',
         [user_email],
         fail_silently=True,
-    )
