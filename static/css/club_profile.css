@@ -79,12 +79,19 @@
   color: #000;
   cursor: pointer;
   opacity: 0.7;
+  z-index: 10;
 }
 .slide-arrow.left { left: 10px; }
 .slide-arrow.right { right: 10px; }
 .slide-arrow:hover { opacity: 1; }
 .slide-arrow svg { width: 10px; height: 10px; fill: #000; }
-.gallery-dots { display: flex; justify-content: center; gap: 6px; margin-top: 0.5rem; }
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 0.5rem;
+  z-index: 5;
+}
 .gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; cursor: pointer; }
 .gallery-dot.active { width: 10px; height: 10px; background: #000; }
 
