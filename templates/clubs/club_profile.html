@@ -300,29 +300,8 @@
 
   <!-- Comentarios -->
 <div class="tab-pane fade" id="comments">
-  <div class="d-flex justify-content-end mb-3">
-       {% include 'partials/_review-filter.html' with orden=orden club=club %}
 
-  </div>
-
-  <div id="review-list">
-      {% include 'clubs/reviews_list.html' %}
-  </div>
-
-</div>
-
-
-</div>
-
-
-
-      
-
-    </div>
-
-    <!-- Columna Derecha: Valoraciones y Reseñas -->
-    <div class="col-lg-2">
-      <!-- Reseñas -->
+  <!-- Reseñas -->
       <div c >
         {% if user.is_authenticated %}
           {% if not reseña_existente %}
@@ -365,6 +344,29 @@
           <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
         {% endif %}
       </div>
+  <div class="d-flex justify-content-end mb-3">
+       {% include 'partials/_review-filter.html' with orden=orden club=club %}
+
+  </div>
+
+  <div id="review-list">
+      {% include 'clubs/reviews_list.html' %}
+  </div>
+
+</div>
+
+
+</div>
+
+
+
+      
+
+    </div>
+
+    <!-- Columna Derecha: Valoraciones y Reseñas -->
+    <div class="col-lg-2">
+      
 
       <!-- Carrusel de reseñas -->
       {% if reseñas %}
