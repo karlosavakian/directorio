@@ -39,14 +39,17 @@
 }
 
 /* Stars */
+.star-rating {
+    display: inline-flex;
+}
 .star-rating svg {
     fill: #ccc;
     stroke: #666;
+    cursor: pointer;
     transition: fill 0.2s;
 }
-
-.star-rating svg:hover,
-.star-rating svg:hover ~ svg {
+.star-rating svg.active,
+.star-rating svg:hover {
     fill: #111;
 }
 
