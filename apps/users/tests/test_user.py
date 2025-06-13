@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from apps.users.models import Profile
 from unittest.mock import patch
 
 
@@ -67,4 +68,10 @@ class LoginPageTests(TestCase):
         self.assertContains(response, 'Contraseña')
         self.assertContains(response, 'Recordar contraseña')
         self.assertContains(response, 'toggle-password')
+
+
+class ProfileCreationTests(TestCase):
+    def test_profile_created_on_user_creation(self):
+        user = User.objects.create_user(username="signaluser", password="pass")
+        self.assertTrue(Profile.objects.filter(user=user).exists())
 
