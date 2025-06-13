@@ -1,4 +1,4 @@
-# apps/clubs/views/review.py
+# Vistas para gestionar reseñas de clubes
 
 from django.shortcuts import render, get_object_or_404, redirect
 from apps.clubs.models import Reseña, Club

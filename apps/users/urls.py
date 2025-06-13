@@ -15,8 +15,8 @@ urlpatterns = [
     path('mis-reseñas/', review.mis_reseñas, name='mis-reseñas'),
     path('reseña/<slug:slug>/', review.dejar_reseña, name='dejar-reseña'),
   
-    path('club/<slug:slug>/editar_reseña/<int:reseña_id>/', review.editar_reseña, name='editar_reseña'),
-    path('reseña/<int:reseña_id>/eliminar/', review.eliminar_reseña, name='eliminar-reseña'),
+    path('reseña/<int:reseña_id>/editar/', review.editar_reseña, name='editar_reseña'),
+    path('reseña/<int:reseña_id>/eliminar/', review.eliminar_reseña, name='eliminar_reseña'),
     path('follow/<str:model>/<int:object_id>/', follow.toggle_follow, name='toggle_follow'),
     path('feed/', follow.feed, name='feed'),
 ]

@@ -61,8 +61,8 @@ directorio_boxeo/
 │   │   │   ├── __init__.py          -> Importación centralizada de vistas.
 │   │   │   ├── dashboard.py         -> Vistas para el panel de administración de un club.
 │   │   │   ├── public.py            -> Vistas públicas para navegación y detalle de clubes.
-│   │   │   ├── review.py            -> Vistas para gestionar reseñas (crear, editar, eliminar).
-│   │   │   └── search.py            -> Vistas para realizar búsquedas de clubes.
+│   │   │   ├── search.py            -> Vistas para realizar búsquedas de clubes.
+│   │   │   ├── (las vistas de reseñas se movieron a `apps/users/views/review.py`).
 │   │   │
 │   │   └── migrations/              -> Migraciones de base de datos para los modelos de clubs.
 │   │
@@ -87,7 +87,8 @@ directorio_boxeo/
 │       ├── views/
 │       │   ├── __init__.py          -> Importación centralizada de vistas.
 │       │   ├── auth.py              -> Vistas de autenticación (login, logout, registro).
-│       │   └── public.py            -> Vistas públicas relacionadas con usuarios.
+│       │   ├── public.py            -> Vistas públicas relacionadas con usuarios.
+│       │   └── review.py            -> Vistas para gestionar reseñas (crear, editar, eliminar).
 │       │
 │       └── migrations/              -> Migraciones de base de datos para los modelos de users.
 │
