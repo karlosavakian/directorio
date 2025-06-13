@@ -41,7 +41,7 @@ class RegistroUsuarioForm(UserCreationForm):
 
 class ReseñaForm(forms.ModelForm):
     comentario = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4}),
+        widget=forms.Textarea(attrs={'rows': 4, 'minlength': 200}),
         min_length=200,
         required=True,
         error_messages={
@@ -49,6 +49,12 @@ class ReseñaForm(forms.ModelForm):
             'min_length': 'El comentario debe tener al menos 200 caracteres.'
         },
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        required_msg = 'Debes puntuar esta categoría.'
+        for field in ['instalaciones', 'entrenadores', 'ambiente', 'calidad_precio', 'variedad_clases']:
+            self.fields[field].error_messages['required'] = required_msg
 
     class Meta:
         model = Reseña

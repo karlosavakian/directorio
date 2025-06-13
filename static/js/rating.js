@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             input.type = 'hidden';
             input.name = name;
             input.id = id;
+            input.required = true;
             container.appendChild(input);
         }
 
