@@ -71,3 +71,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('reseña-form');
+    if (!form) return;
+
+    form.addEventListener('submit', e => {
+        const fields = [
+            'instalaciones',
+            'entrenadores',
+            'ambiente',
+            'calidad_precio',
+            'variedad_clases'
+        ];
+
+        for (const name of fields) {
+            const input = form.querySelector(`input[name="${name}"]`);
+            if (!input || parseInt(input.value, 10) < 1) {
+                alert('Debes completar la valoración en todas las categorías.');
+                e.preventDefault();
+                return;
+            }
+        }
+
+        const comment = form.querySelector('textarea[name="comentario"]');
+        if (!comment || comment.value.trim().length < 200) {
+            alert('El comentario debe tener al menos 200 caracteres.');
+            e.preventDefault();
+        }
+    });
+});

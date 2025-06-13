@@ -40,6 +40,16 @@ class RegistroUsuarioForm(UserCreationForm):
  
 
 class ReseñaForm(forms.ModelForm):
+    comentario = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 4}),
+        min_length=200,
+        required=True,
+        error_messages={
+            'required': 'Este campo es obligatorio.',
+            'min_length': 'El comentario debe tener al menos 200 caracteres.'
+        },
+    )
+
     class Meta:
         model = Reseña
         exclude = ('usuario', 'club', 'creado')
@@ -62,12 +72,11 @@ class ReseñaForm(forms.ModelForm):
         }
         
         widgets = {
-            'instalaciones': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
-            'entrenadores': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
-            'ambiente': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
-            'calidad_precio': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
-            'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input'}),
-            'comentario': forms.Textarea(attrs={'rows': 4}),
+            'instalaciones': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
+            'entrenadores': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
+            'ambiente': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
+            'calidad_precio': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
+            'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
         }
 class ClubPostForm(forms.ModelForm):
     class Meta:
