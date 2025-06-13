@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect 
-from ..models import Club, ClubPost
+from ..models import Club
 from django.contrib import messages
 from apps.clubs.forms import ReseñaForm
 from apps.users.forms import RegistroUsuarioForm
