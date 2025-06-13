@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import Profile
+import os
 
 
 class LoginForm(AuthenticationForm):
@@ -82,4 +83,23 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar', 'bio', 'location']
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if not avatar:
+            return avatar
+
+        max_size = 2 * 1024 * 1024  # 2MB
+        if avatar.size > max_size:
+            raise forms.ValidationError(
+                'El archivo excede el tamaño máximo de 2MB.'
+            )
+
+        ext = os.path.splitext(avatar.name)[1].lower()
+        if ext not in ['.jpg', '.jpeg', '.png']:
+            raise forms.ValidationError(
+                'Formato de imagen no soportado. Usa JPG o PNG.'
+            )
+
+        return avatar
 
