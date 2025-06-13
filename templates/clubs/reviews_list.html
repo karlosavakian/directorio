@@ -7,10 +7,19 @@
       </div>
       <div class=" fw-bold text-warning">⭐ {{ reseña.promedio }}</div>
     </div>
-    <p class="mb-3">{{ reseña.comentario }}</p>
+    <p class="mb-3 review-text">{{ reseña.comentario }}</p>
     <div class="position-absolute text-muted small " style="bottom: 1rem; right: 1rem;">
       {{ reseña.creado|date:"SHORT_DATE_FORMAT" }}
     </div>
+    {% if user.is_authenticated and user == reseña.usuario %}
+      <div class="mt-2">
+        <a href="{% url 'editar_reseña' reseña.id %}" class="btn btn-sm btn-link">Editar</a>
+        <form action="{% url 'eliminar_reseña' reseña.id %}" method="post" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-link text-danger">Eliminar</button>
+        </form>
+      </div>
+    {% endif %}
   </div>
 {% empty %}
   <p class="text-muted">Este club todavía no tiene comentarios escritos.</p>

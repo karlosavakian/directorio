@@ -306,28 +306,36 @@
         {% if not reseña_existente %}
           <form method="POST" id="reseña-form">
             {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>
+            {% endif %}
             <div class="mb-3">
               <label class="form-label">Instalaciones:</label>
               <div class="star-rating" data-name="instalaciones"></div>
+              <input type="hidden" name="instalaciones" required id="input-instalaciones">
             </div>
             <div class="mb-3">
               <label class="form-label">Entrenadores:</label>
               <div class="star-rating" data-name="entrenadores"></div>
+              <input type="hidden" name="entrenadores" required id="input-entrenadores">
             </div>
             <div class="mb-3">
               <label class="form-label">Ambiente:</label>
               <div class="star-rating" data-name="ambiente"></div>
+              <input type="hidden" name="ambiente" required id="input-ambiente">
             </div>
             <div class="mb-3">
               <label class="form-label">Calidad-precio:</label>
               <div class="star-rating" data-name="calidad_precio"></div>
+              <input type="hidden" name="calidad_precio" required id="input-calidad_precio">
             </div>
             <div class="mb-3">
               <label class="form-label">Variedad de clases:</label>
               <div class="star-rating" data-name="variedad_clases"></div>
+              <input type="hidden" name="variedad_clases" required id="input-variedad_clases">
             </div>
             <div class="mb-3">
-              <textarea name="comentario" class="form-control" rows="4" placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
+              <textarea name="comentario" class="form-control" rows="4" minlength="200" placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
             </div>
             <button type="submit" class="btn btn-dark">Enviar Reseña</button>
           </form>
