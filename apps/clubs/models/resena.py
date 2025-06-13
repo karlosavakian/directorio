@@ -24,14 +24,3 @@ class Reseña(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.club.name} ({self.promedio()}⭐)"
-    @property
-    def average_rating(self):
-        reseñas = self.reseñas.all()
-        if not reseñas.exists():
-            return None
-        total = sum([r.promedio() for r in reseñas])
-        return round(total / reseñas.count(), 1)
-
-    @property
-    def reviews_count(self):
-        return self.reseñas.count()
