@@ -4,11 +4,19 @@
 {% block content %}
 <div class="container py-4">
     <h1 class="mb-4">Mi Perfil</h1>
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
+    {% endif %}
     <form method="post" enctype="multipart/form-data" class="mb-5">
         {% csrf_token %}
         <div class="mb-3">
             {{ form.avatar.label_tag }}
             {{ form.avatar }}
+            {% if form.avatar.errors %}
+            <div class="invalid-feedback d-block">
+                {{ form.avatar.errors.as_text|striptags }}
+            </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             {{ form.bio.label_tag }}

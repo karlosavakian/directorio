@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from ..forms import ProfileForm
 from ..models import Profile, Follow
@@ -18,7 +19,11 @@ def profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile_obj)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Perfil actualizado exitosamente.')
             return redirect('profile')
+        else:
+            for error in form.errors.get('avatar', []):
+                messages.error(request, error)
     else:
         form = ProfileForm(instance=profile_obj)
     bookings = Booking.objects.filter(user=request.user).select_related('clase', 'evento')
