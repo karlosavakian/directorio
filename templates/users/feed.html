@@ -6,10 +6,15 @@
     {% for post in posts %}
         <div class="mb-3">
             {% if post.__class__.__name__ == 'Reseña' %}
-                <p class="mb-1">
+                <div class="d-flex align-items-center mb-1">
+                    {% if post.usuario.profile.avatar %}
+                        <img src="{{ post.usuario.profile.avatar.url }}" alt="{{ post.usuario.username }}" class="review-avatar-img rounded-circle me-2">
+                    {% else %}
+                        <div class="review-avatar me-2">{{ post.usuario.username|first|upper }}</div>
+                    {% endif %}
                     <strong>{{ post.usuario.username }}</strong> en
                     <a href="{% url 'club_profile' slug=post.club.slug %}">{{ post.club.name }}</a>
-                </p>
+                </div>
                 <p class="mb-0">{{ post.comentario }}</p>
                 <small class="text-muted">{{ post.creado }}</small>
             {% else %}
