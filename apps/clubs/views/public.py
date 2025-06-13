@@ -3,13 +3,15 @@ from ..models import Club, ClubPost
 from django.contrib import messages
 from apps.clubs.forms import ReseñaForm
 from apps.users.forms import RegistroUsuarioForm
-from apps.users.models import Follow
+from apps.users.models import Follow, Profile
 from django.contrib.contenttypes.models import ContentType
 
 
 def club_profile(request, slug):
     club = get_object_or_404(Club, slug=slug)
-    reseñas = club.reseñas.select_related('usuario').all()
+    reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
+    for r in reseñas:
+        Profile.objects.get_or_create(user=r.usuario)
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
     posts = club.posts.all()
@@ -71,7 +73,9 @@ def club_profile(request, slug):
 def ajax_reviews(request, slug):
     """Devolver la lista de reseñas ordenada sin recargar la página."""
     club = get_object_or_404(Club, slug=slug)
-    reseñas = club.reseñas.select_related('usuario').all()
+    reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
+    for r in reseñas:
+        Profile.objects.get_or_create(user=r.usuario)
     orden = request.GET.get('orden', 'relevantes')
 
     if orden == 'recientes':
