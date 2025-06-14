@@ -41,44 +41,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const shareBtn = document.getElementById('club-share');
   if (shareBtn) {
-    let menu = null;
-    shareBtn.addEventListener('click', async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: document.title,
-            url: window.location.href
-          });
-        } catch (err) {
-          console.error('Share failed:', err);
-        }
-        return;
-      }
-
-      if (!menu) {
-        menu = document.createElement('div');
-        menu.className = 'share-menu';
+    shareBtn.addEventListener('click', () => {
+      const modalEl = document.getElementById('shareProfileModal');
+      if (modalEl) {
         const url = encodeURIComponent(window.location.href);
         const title = encodeURIComponent(document.title);
-        menu.innerHTML = `
-          <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank">Facebook</a>
-          <a href="https://twitter.com/intent/tweet?url=${url}&text=${title}" target="_blank">Twitter</a>
-          <a href="https://wa.me/?text=${url}" target="_blank">WhatsApp</a>
-          <button type="button" class="copy-link">Copiar enlace</button>
-          <a href="mailto:?subject=${title}&body=${url}">Email</a>
-        `;
-        shareBtn.parentElement.appendChild(menu);
-        menu.querySelector('.copy-link').addEventListener('click', () => {
-          navigator.clipboard.writeText(window.location.href);
-          showToast('Enlace copiado');
-        });
-      }
-      menu.classList.toggle('show');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (menu && !shareBtn.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.remove('show');
+        modalEl.querySelector('#share-email').href = `mailto:?subject=${title}&body=${url}`;
+        modalEl.querySelector('#share-whatsapp').href = `https://wa.me/?text=${title}%20${url}`;
+        modalEl.querySelector('#share-messenger').href = `fb-messenger://share/?link=${url}`;
+        modalEl.querySelector('#share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        modalEl.querySelector('#share-instagram').href = `https://www.instagram.com/?url=${url}`;
+        modalEl.querySelector('#share-telegram').href = `https://t.me/share/url?url=${url}&text=${title}`;
+        modalEl.querySelector('#share-x').href = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+        new bootstrap.Modal(modalEl).show();
       }
     });
   }
