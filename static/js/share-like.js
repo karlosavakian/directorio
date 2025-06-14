@@ -38,11 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const res = await fetch(url, {
           method: 'POST',
-          headers: { 'X-CSRFToken': csrf }
+          headers: { 'X-CSRFToken': csrf },
+          credentials: 'same-origin'
         });
+
+        if (res.redirected && res.url.includes('login')) {
+          window.location.href = res.url;
+          return;
+        }
+
         if (res.ok) {
-          heart.classList.toggle('liked');
-          const followed = heart.classList.contains('liked');
+          let followed = heart.classList.contains('liked');
+          if (res.headers.get('Content-Type')?.includes('application/json')) {
+            const data = await res.json();
+            followed = data.following;
+            heart.classList.toggle('liked', followed);
+          } else {
+            heart.classList.toggle('liked');
+            followed = heart.classList.contains('liked');
+          }
           showToast(followed ? 'Ahora sigues al club' : 'Has dejado de seguir al club');
         }
       } catch (err) {

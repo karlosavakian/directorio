@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 
 from apps.clubs.models import Club, Reseña, ClubPost
@@ -19,6 +20,13 @@ def toggle_follow(request, model, object_id):
     )
     if not created:
         follow.delete()
+        following = False
+    else:
+        following = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'following': following})
+
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
