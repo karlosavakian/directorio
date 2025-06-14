@@ -298,6 +298,10 @@ textarea.form-control {
   fill: none;
 }
 
+.gallery-actions svg path {
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
 #club-heart.liked path {
   fill: #fff !important;
   stroke: #fff !important;
