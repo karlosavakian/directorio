@@ -299,10 +299,37 @@ textarea.form-control {
 }
 
 #club-heart.liked path {
-  fill: #fff;
-  stroke: #fff;
-
+  fill: #fff !important;
+  stroke: #fff !important;
 }
-#club-share  path, #club-heart path { 
-  stroke: #fff;
+
+#club-share path,
+#club-heart path {
+  stroke: #fff !important;
+}
+
+.share-menu {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.share-menu.show {
+  display: flex;
+}
+
+.share-menu a,
+.share-menu button {
+  color: #fff;
+  background: none;
+  border: none;
+  text-decoration: none;
+  font-size: 0.875rem;
+  text-align: left;
 }
