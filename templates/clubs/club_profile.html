@@ -31,16 +31,7 @@
         </span>
         {% endif %}
     </div>
-    {% if user.is_authenticated %}
-    <form action="{% url 'toggle_follow' 'club' club.id %}" method="post" class="mb-3">
-        {% csrf_token %}
-        {% if club_followed %}
-        <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
-        {% else %}
-        <button type="submit" class="btn btn-sm btn-primary">Seguir</button>
-        {% endif %}
-    </form>
-    {% endif %}
+    {# Botón de seguir sustituido por el corazón de la galería #}
     <p class="mb-1 small d-flex align-items-center">
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
        stroke-linecap="round" stroke-linejoin="round" class="me-2" viewBox="0 0 24 24">
@@ -107,6 +98,20 @@
       <div class="mb-4   rounded">
         {% if club.photos.all %}
   <div class="mb-4 gallery-slideshow">
+    <div class="gallery-actions">
+      {% if user.is_authenticated %}
+      <button id="club-heart" aria-label="Seguir" data-url="{% url 'toggle_follow' 'club' club.id %}" class="{% if club_followed %}liked{% endif %}">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21s-8.5-6.1-10-10.5C1 6 4 3 7.5 3c2.5 0 4.5 1.8 4.5 1.8S14 3 16.5 3C20 3 23 6 22 10.5 20.5 14.9 12 21 12 21z"/>
+        </svg>
+      </button>
+      {% endif %}
+      <button id="club-share" aria-label="Compartir">
+        <svg data-name="Livello 1" id="Livello_1" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+          <path d="M105,82a23,23,0,0,0-22.49,18.17L41.74,77.29a23,23,0,0,0,0-26.57L82.51,27.83a23,23,0,1,0-.44-6.63l-44.53,25a23,23,0,1,0,0,35.62l44.53,25A23,23,0,1,0,105,82Zm0-76A17,17,0,1,1,88,23,17,17,0,0,1,105,6ZM11,76A17,17,0,0,1,35,52h0A17,17,0,0,1,11,76Zm94,46a17,17,0,1,1,17-17A17,17,0,0,1,105,122Z"/>
+        </svg>
+      </button>
+    </div>
     {% for photo in club.photos.all %}
       <div class="gallery-slide{% if forloop.first %} active{% endif %}">
         <img src="{{ photo.image.url }}" alt="Foto" class="img-fluid rounded shadow-sm" style="width:100%; max-height:450px; object-fit:contain; background:rgb(85, 85, 85);">
@@ -432,6 +437,8 @@
 <script src="{% static 'js/review-filter.js' %}"></script>
 <script src="{% static 'js/slides.js' %}"></script>
 <script src="{% static 'js/rating.js' %}"></script>
+
+<script src="{% static 'js/share-like.js' %}"></script>
 
 <script src="{% static 'js/gallery-slideshow.js' %}"></script>
 {% endblock %}
