@@ -22,3 +22,12 @@ window.addEventListener('beforeunload', function () {
         loader.classList.remove('hidden');
     }
 });
+
+// Clean up lingering Bootstrap modal overlays when a modal is fully hidden
+document.addEventListener('hidden.bs.modal', function () {
+    if (!document.querySelector('.modal.show')) {
+        document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.removeProperty('padding-right');
+    }
+});
