@@ -9,6 +9,7 @@ class Profile(models.Model):
     avatar = models.ImageField(upload_to="avatars/", blank=True, null=True)
     bio = models.TextField(blank=True)
     location = models.CharField(max_length=100, blank=True)
+    notifications = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Perfil de {self.user.username}"

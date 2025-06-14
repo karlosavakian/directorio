@@ -103,3 +103,55 @@ class ProfileForm(forms.ModelForm):
 
         return avatar
 
+
+class AccountForm(forms.ModelForm):
+    new_password1 = forms.CharField(
+        label='Nueva contraseña', widget=forms.PasswordInput, required=False
+    )
+    new_password2 = forms.CharField(
+        label='Confirmar contraseña', widget=forms.PasswordInput, required=False
+    )
+    email = forms.EmailField(label='Correo electrónico', required=False)
+    username = forms.CharField(label='Nombre de usuario')
+    notifications = forms.BooleanField(
+        label='Recibir notificaciones', required=False
+    )
+
+    class Meta:
+        model = Profile
+        fields = ['avatar', 'notifications']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['username'].initial = user.username
+            self.fields['email'].initial = user.email
+            self.user = user
+
+    def clean(self):
+        cleaned = super().clean()
+        p1 = cleaned.get('new_password1')
+        p2 = cleaned.get('new_password2')
+        if p1 or p2:
+            if p1 != p2:
+                self.add_error('new_password2', 'Las contraseñas no coinciden')
+            elif p1 and len(p1) < 6:
+                self.add_error('new_password1', 'La contraseña es muy corta')
+        return cleaned
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        user = self.user
+        user.username = self.cleaned_data['username']
+        if self.cleaned_data.get('email'):
+            user.email = self.cleaned_data['email']
+        new_pass = self.cleaned_data.get('new_password1')
+        if new_pass:
+            user.set_password(new_pass)
+        if commit:
+            user.save()
+            profile.user = user
+            profile.save()
+        return profile
+
