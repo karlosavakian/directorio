@@ -19,6 +19,9 @@
 
     {% include 'partials/_header.html' %}
     {% include 'partials/_messages.html' %}
+    {% if not request.user.is_authenticated %}
+        {% include 'partials/_login_modal.html' %}
+    {% endif %}
       {% if request.path != '/' %}
         {% include 'partials/_search_modal.html' %}
     {% endif %}
