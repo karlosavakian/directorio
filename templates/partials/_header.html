@@ -34,9 +34,12 @@
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <div class="custom-dropdown small" id="user-dropdown">
-                            <div class="selected">
-                                <span class="selected-text">{{ user.username }}</span>
-                                <span class="select-arrow"></span>
+                            <div class="selected d-flex align-items-center">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="nav-avatar-img">
+                                {% else %}
+                                    <div class="nav-avatar">{{ user.username|first|upper }}</div>
+                                {% endif %}
                             </div>
                             <div class="dropdown-menu " id="user-menu" >
                                 <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a> 
