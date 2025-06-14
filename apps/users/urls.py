@@ -19,4 +19,5 @@ urlpatterns = [
     path('reseña/<int:reseña_id>/eliminar/', review.eliminar_reseña, name='eliminar_reseña'),
     path('follow/<str:model>/<int:object_id>/', follow.toggle_follow, name='toggle_follow'),
     path('feed/', follow.feed, name='feed'),
+    path('eliminar-cuenta/', profile_views.delete_account, name='delete_account'),
 ]

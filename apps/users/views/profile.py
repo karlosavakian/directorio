@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import logout
 
 from ..forms import ProfileForm, AccountForm
 from ..models import Profile, Follow
@@ -118,5 +119,18 @@ def favorites(request):
         'clubs': page_obj,
         'page_obj': page_obj,
     })
+
+
+@login_required
+def delete_account(request):
+    """Allow a logged in user to delete their account."""
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        logout(request)
+        messages.success(request, 'Cuenta eliminada exitosamente.')
+        return redirect('home')
+
+    return render(request, 'users/delete_account_confirm.html')
 
 
