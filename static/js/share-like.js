@@ -4,15 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
     heart.addEventListener('click', async () => {
       const url = heart.dataset.url;
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      // Optimistic UI update
+      heart.classList.toggle('liked');
+
       try {
         const res = await fetch(url, {
           method: 'POST',
-          headers: { 'X-CSRFToken': csrftoken },
+          headers: {
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
           credentials: 'same-origin'
         });
         if (res.redirected) {
           const modal = new bootstrap.Modal(document.getElementById('loginModal'));
           modal.show();
+          heart.classList.toggle('liked'); // revert optimistic update
           return;
         }
         if (res.ok) {
@@ -21,9 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.message) {
             showToast(data.message);
           }
+        } else {
+          heart.classList.toggle('liked'); // revert on error
         }
       } catch (err) {
         console.error(err);
+        heart.classList.toggle('liked'); // revert on error
       }
     });
   }
