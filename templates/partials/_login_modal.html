@@ -1,16 +1,13 @@
 <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="p-3 modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Iniciar Sesión</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="post" action="{% url 'login' %}">
-          {% csrf_token %}
-          {{ login_form.as_p }}
-          <button type="submit" class="btn btn-dark w-100">Iniciar Sesión</button>
-        </form>
+            {% include 'partials/_login-form.html' %}
+
       </div>
     </div>
   </div>
