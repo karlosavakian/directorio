@@ -19,36 +19,36 @@
             {% if profile.avatar %}
                 <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
             {% endif %}
-            <form method="post" enctype="multipart/form-data" class="mb-5">
+            <form method="post" enctype="multipart/form-data" class="profile-form mb-5">
                 {% csrf_token %}
-                <div class="mb-3">
-                    {{ form.avatar.label_tag }}
-                    {{ form.avatar }}
+                <div class="form-field">
+                    {{ form.avatar.as_widget }}
+                    <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
                     {% if form.avatar.errors %}
                     <div class="invalid-feedback d-block">
                         {{ form.avatar.errors.as_text|striptags }}
                     </div>
                     {% endif %}
                 </div>
-                <div class="mb-3">
-                    {{ form.username.label_tag }}
-                    {{ form.username }}
+                <div class="form-field">
+                    {{ form.username.as_widget(attrs={'placeholder': ' '}) }}
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
-                <div class="mb-3">
-                    {{ form.email.label_tag }}
-                    {{ form.email }}
+                <div class="form-field">
+                    {{ form.email.as_widget(attrs={'placeholder': ' '}) }}
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 </div>
-                <div class="mb-3">
-                    {{ form.new_password1.label_tag }}
-                    {{ form.new_password1 }}
+                <div class="form-field">
+                    {{ form.new_password1.as_widget(attrs={'placeholder': ' '}) }}
+                    <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
                 </div>
-                <div class="mb-3">
-                    {{ form.new_password2.label_tag }}
-                    {{ form.new_password2 }}
+                <div class="form-field">
+                    {{ form.new_password2.as_widget(attrs={'placeholder': ' '}) }}
+                    <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
                 </div>
-                <div class="form-check mb-3">
+                <div class="form-field checkbox-field">
                     {{ form.notifications }}
-                    {{ form.notifications.label_tag }}
+                    <label for="{{ form.notifications.id_for_label }}">{{ form.notifications.label }}</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar cambios</button>
             </form>

@@ -27,3 +27,65 @@
   display: block;
   opacity: 1;
 }
+/* Form styles inspired by Zellwk CodePen */
+.profile-form .form-field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.profile-form .form-field input[type="text"],
+.profile-form .form-field input[type="email"],
+.profile-form .form-field input[type="password"],
+.profile-form .form-field input[type="file"],
+.profile-form .form-field textarea {
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-form .form-field input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.profile-form .form-field input:focus,
+.profile-form .form-field textarea:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+.profile-form .form-field label {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  padding: 0 0.25rem;
+  color: #666;
+  pointer-events: none;
+  transition: transform 0.2s, font-size 0.2s, color 0.2s;
+}
+
+.profile-form .checkbox-field label {
+  position: static;
+  transform: none;
+  padding: 0;
+}
+
+.profile-form .checkbox-field {
+  display: flex;
+  align-items: center;
+}
+
+.profile-form .form-field input:not(:placeholder-shown) + label,
+.profile-form .form-field input:focus + label,
+.profile-form .form-field textarea:not(:placeholder-shown) + label,
+.profile-form .form-field textarea:focus + label {
+  top: -0.6rem;
+  font-size: 0.75rem;
+  color: #000;
+}
