@@ -27,6 +27,50 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  const shareBtn = document.getElementById('club-share');
+  if (shareBtn) {
+    let menu = null;
+    shareBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            url: window.location.href
+          });
+        } catch (err) {
+          console.error('Share failed:', err);
+        }
+        return;
+      }
+
+      if (!menu) {
+        menu = document.createElement('div');
+        menu.className = 'share-menu';
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        menu.innerHTML = `
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank">Facebook</a>
+          <a href="https://twitter.com/intent/tweet?url=${url}&text=${title}" target="_blank">Twitter</a>
+          <a href="https://wa.me/?text=${url}" target="_blank">WhatsApp</a>
+          <button type="button" class="copy-link">Copiar enlace</button>
+          <a href="mailto:?subject=${title}&body=${url}">Email</a>
+        `;
+        shareBtn.parentElement.appendChild(menu);
+        menu.querySelector('.copy-link').addEventListener('click', () => {
+          navigator.clipboard.writeText(window.location.href);
+          showToast('Enlace copiado');
+        });
+      }
+      menu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (menu && !shareBtn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('show');
+      }
+    });
+  }
 });
 
 function showToast(message) {
