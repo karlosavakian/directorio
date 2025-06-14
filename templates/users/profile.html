@@ -31,19 +31,19 @@
                     {% endif %}
                 </div>
                 <div class="form-field">
-                    {{ form.username.as_widget(attrs={'placeholder': ' '}) }}
+                    {{ form.username }}
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
                 <div class="form-field">
-                    {{ form.email.as_widget(attrs={'placeholder': ' '}) }}
+                    {{ form.email }}
                     <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 </div>
                 <div class="form-field">
-                    {{ form.new_password1.as_widget(attrs={'placeholder': ' '}) }}
+                    {{ form.new_password1 }}
                     <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
                 </div>
                 <div class="form-field">
-                    {{ form.new_password2.as_widget(attrs={'placeholder': ' '}) }}
+                    {{ form.new_password2 }}
                     <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
                 </div>
                 <div class="form-field checkbox-field">
