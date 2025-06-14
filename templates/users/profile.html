@@ -32,18 +32,22 @@
                 </div>
                 <div class="form-field">
                     {{ form.username }}
+                    <button type="button" class="clear-btn">×</button>
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
                 <div class="form-field">
                     {{ form.email }}
+                    <button type="button" class="clear-btn">×</button>
                     <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 </div>
                 <div class="form-field">
                     {{ form.new_password1 }}
+                    <button type="button" class="clear-btn">×</button>
                     <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
                 </div>
                 <div class="form-field">
                     {{ form.new_password2 }}
+                    <button type="button" class="clear-btn">×</button>
                     <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
                 </div>
                 <div class="form-field checkbox-field">
@@ -142,4 +146,5 @@
 
 {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
+<script src="{% static 'js/clear-input.js' %}"></script>
 {% endblock %}
