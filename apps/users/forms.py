@@ -128,6 +128,9 @@ class AccountForm(forms.ModelForm):
             self.fields['username'].initial = user.username
             self.fields['email'].initial = user.email
             self.user = user
+        placeholder_fields = ['username', 'email', 'new_password1', 'new_password2']
+        for f in placeholder_fields:
+            self.fields[f].widget.attrs.setdefault('placeholder', ' ')
 
     def clean(self):
         cleaned = super().clean()
