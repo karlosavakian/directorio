@@ -26,7 +26,11 @@
 
     {% block content %}{% endblock %}
 
-    {% include 'partials/_footer.html' %} 
+      {% include 'partials/_footer.html' %}
+
+      {% if not user.is_authenticated %}
+        {% include 'partials/_login_modal.html' %}
+      {% endif %}
 
 <script src="{% static 'js/search-results.js' %}"></script>
 <script src="{% static 'js/geolocator.js' %}"></script>
