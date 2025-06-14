@@ -87,7 +87,7 @@
 .profile-form .form-field textarea:focus ~ label {
   top: 0;
   transform: translateY(-50%);
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   color: #000;
 }
 
