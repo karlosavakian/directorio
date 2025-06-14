@@ -294,11 +294,15 @@ textarea.form-control {
   width: 24px;
   height: 24px;
   stroke: #fff;
-  stroke-width: 1;
+  stroke-width: 2;
   fill: none;
 }
 
 #club-heart.liked path {
   fill: #fff;
+  stroke: #fff;
+
+}
+#club-share  path, #club-heart path { 
   stroke: #fff;
 }
