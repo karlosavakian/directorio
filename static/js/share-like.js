@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const res = await fetch(url, {
           method: 'POST',
-          headers: { 'X-CSRFToken': csrftoken },
+          headers: {
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
           credentials: 'same-origin'
         });
         if (res.redirected) {

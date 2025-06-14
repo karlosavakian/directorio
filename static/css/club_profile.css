@@ -303,8 +303,8 @@ textarea.form-control {
 }
 
 #club-heart.liked path {
-  fill: #fff !important;
-  stroke: #fff !important;
+  fill: #e63946 !important;
+  stroke: #e63946 !important;
 }
 
 #club-share path,
