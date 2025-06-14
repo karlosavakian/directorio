@@ -274,13 +274,13 @@ textarea.form-control {
   border-bottom: 1px solid #000;
   font-weight: 600;
 }
-
 /* Acciones en la galería */
 .gallery-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
-  margin-bottom: 0.25rem;
 }
 
 .gallery-actions button {
@@ -293,11 +293,12 @@ textarea.form-control {
 .gallery-actions svg {
   width: 24px;
   height: 24px;
-  stroke: #000;
+  stroke: #fff;
   stroke-width: 1;
   fill: none;
 }
 
 #club-heart.liked path {
-  fill: #000;
+  fill: #fff;
+  stroke: #fff;
 }
