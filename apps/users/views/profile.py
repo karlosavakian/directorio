@@ -83,40 +83,4 @@ def profile_detail(request, username):
         'is_following': is_following,
     })
 
-
-@login_required
-def favorites(request):
-    follower_ct = ContentType.objects.get_for_model(request.user)
-    club_ct = ContentType.objects.get_for_model(Club)
-
-    follow_qs = Follow.objects.filter(
-        follower_content_type=follower_ct,
-        follower_object_id=request.user.id,
-        followed_content_type=club_ct,
-    )
-    club_ids = follow_qs.values_list('followed_object_id', flat=True)
-
-    clubs = Club.objects.filter(id__in=club_ids)
-
-    average_expr = ExpressionWrapper(
-        (F('reseñas__instalaciones') + F('reseñas__entrenadores') +
-         F('reseñas__ambiente') + F('reseñas__calidad_precio') +
-         F('reseñas__variedad_clases')) / 5.0,
-        output_field=FloatField(),
-    )
-
-    clubs = clubs.annotate(
-        average_rating=Round(Avg(average_expr), precision=1),
-        reviews_count=Count('reseñas')
-    )
-
-    paginator = Paginator(clubs, 12)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    return render(request, 'users/favorites.html', {
-        'clubs': page_obj,
-        'page_obj': page_obj,
-    })
-
-
+ 

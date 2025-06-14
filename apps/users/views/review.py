@@ -67,10 +67,4 @@ def eliminar_reseña(request, reseña_id):
     })
 
 
-@login_required
-def mis_reseñas(request):
-    """ Vista para listar todas las reseñas de un usuario """
-    reseñas = Reseña.objects.filter(usuario=request.user)
-    return render(request, 'clubs/mis_reseñas.html', {
-        'reseñas': reseñas
-    })
+ 
