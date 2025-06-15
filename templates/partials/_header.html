@@ -1,0 +1,72 @@
+{% load static %}
+ 
+<!-- Header con Bootstrap -->
+<header class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container-fluid px-3">
+        
+        <!-- Logo -->
+        <a href="/" class="navbar-brand d-flex align-items-center">
+            <img src="{% static 'img/logo.svg' %}" alt="Logo" height="50">
+            <div class="ms-2 d-grid lh-1" style="font-weight:800;">
+                <span>CLUBS</span>
+                <span> DE BOXEO</span>
+                <span>.COM</span>
+            </div>
+        </a>
+ 
+        <!-- Botón Responsive -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links de Navegación -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                {% if request.path != '/' %}
+                <li class="nav-item">
+                    <button class="btn nav-link text-dark" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.15-5.15a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/>
+                        </svg>
+                    </button>
+                </li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <div class="custom-dropdown small" id="user-dropdown">
+                           <div class="selected d-flex align-items-center">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="nav-avatar-img">
+                                {% else %}
+                                    <div class="nav-avatar">{{ user.username|first|upper }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="dropdown-menu " id="user-menu" >
+                                <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a> 
+                                <a href="{% url 'feed' %}" class="dropdown-item text-light">Feed</a>
+
+                               <a href=""  class="dropdown-item">
+                                 <form method="POST" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class=" text-start text-light p-0" style="text-decoration: none;">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                               </a>
+                            </div>
+
+                        </div>
+                    </li>
+                     
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link text-dark">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'signup' %}" class="btn btn-dark text-light ms-2">Registro</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,116 @@
+{% load static %}
+{% load load_css %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clubs De Boxeo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/logo.svg' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+    {% load_css_files %}
+</head>
+
+<body>
+<div class="d-flex flex-column min-vh-100">
+    <!-- Main content -->
+    <main class="flex-grow-1 d-flex flex-column align-items-center justify-content-start py-5">
+        <!-- Logo at the top -->
+        <div class="mb-4">
+           <a href="/" class="navbar-brand d-flex align-items-center">
+            <img src="{% static 'img/logo.svg' %}" alt="Logo" height="50">
+            <div class="ms-2 d-grid lh-1" style="font-weight:800;">
+                <span>CLUBS</span>
+                <span> DE BOXEO</span>
+                <span>.COM</span>
+            </div>
+        </a>
+        </div>
+
+        <!-- Card -->
+        <div class="card p-4" style="width: 100%; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+        
+
+            <form method="post" class="profile-form">
+                {% csrf_token %}
+
+                <div class="form-field">
+                    <input type="text"
+                           name="{{ form.username.name }}"
+                           value="{{ form.username.value|default_if_none:'' }}"
+                           class="form-control"
+                           id="{{ form.username.id_for_label }}"
+                           placeholder=" "
+                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
+                    {% if form.username.errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ form.username.errors.as_text|striptags }}
+                      </div>
+                    {% endif %}
+                </div>
+
+
+                <div class="form-field">
+                    <input type="password"
+                           name="{{ form.password.name }}"
+                           class="form-control"
+                           id="{{ form.password.id_for_label }}"
+                           placeholder=" "
+                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    {% if form.password.errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ form.password.errors.as_text|striptags }}
+                      </div>
+                    {% endif %}
+                    {% if form.non_field_errors %}
+                      <div class="invalid-feedback d-block">
+                        {{ form.non_field_errors }}
+                      </div>
+                    {% endif %}
+                </div>
+                <div class="form-check mb-3">
+                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
+                    <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
+                </div>
+
+
+                <button type="submit" class="btn btn-dark w-100">Iniciar Sesión</button>
+            </form>
+
+            <div class="text-center my-3">
+                <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100 mb-2">Continuar con Google</a> 
+            </div>
+
+            <div class="mt-3 text-center">
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <div class="border-top mt-4 pt-3 text-center">
+                <p class="mb-0">¿Nuevo en nuestra comunidad? <a href="{% url 'signup' %}">Crea tu cuenta</a></p>
+            </div>
+        </div>
+    </main>
+
+<footer class="bg-white border-top py-3">
+    <div class="container text-center text-muted small">
+        <div class="mb-2">
+            <a href="#" class="text-muted text-decoration-none me-3">Terminos y condiciones</a>
+            <a href="#" class="text-muted text-decoration-none me-3">Política de Privacidad</a>
+            <a href="#" class="text-muted text-decoration-none">Política de cookies</a>
+        </div>
+        <div>
+            &copy; 2025 ClubsDeBoxeo.com
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/page-loader.js' %}"></script>
+<script src="{% static 'js/clear-input.js' %}"></script>
+</body>
+</html>

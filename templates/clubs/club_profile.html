@@ -1,0 +1,688 @@
+{% extends 'base.html' %}
+{% block body_class %}club-profile-page{% endblock %}
+{% load static star_rating %}
+{% block content %}
+    <div class="container-fluid col-12 px-3 my-3" id="profile-container">
+        <!-- Flecha volver arriba -->
+        {% include 'partials/_back-btn.html' %}
+        <div class="row">
+            <!-- Columna Izquierda: Info del Club -->
+            <div class="col-lg-2  ">
+                {% if club.logo %}<img src="{{ club.logo.url }}" alt="{{ club.name }}">{% endif %}
+                <div class="d-flex align-items-start mt-4 mb-4 gap-3 ">
+                    <div>
+                        <h1 class="h3 mb-0" style="font-weight:900;">{{ club.name }}</h1>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge bg-secondary">{{ club.get_category_display }}</span>
+                            {% if club.verified %}
+                                <span class="ms-2" title="Verificado">
+                                    <!-- Tu SVG -->
+                                    <svg fill="none"
+                                         height="24"
+                                         viewBox="0 0 24 24"
+                                         width="15"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            {% endif %}
+                        </div>
+                        <p class="mb-1 small d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="20"
+                                 height="20"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="me-2"
+                                 viewBox="0 0 24 24">
+                                <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
+                               target="_blank"
+                               class="text-decoration-none text-reset">{{ club.city }} - {{ club.address }}</a>
+                        </p>
+                        <p class="mb-1 small d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="me-2"
+                                 viewBox="0 0 24 24">
+                                <path d="M22 16.92V21a2 2 0 01-2.18 2A19.86 19.86 0 013 5.18 2 2 0 015 3h4.09a2 2 0 012 1.72c.12.81.37 1.6.73 2.33a2 2 0 01-.45 2.11L9.91 10.09a16 16 0 006 6l1.93-1.93a2 2 0 012.11-.45c.73.36 1.52.61 2.33.73a2 2 0 011.72 2z" />
+                            </svg>
+                            <a href="tel:{{ club.phone }}" class="text-decoration-none text-reset">{{ club.phone }}</a>
+                        </p>
+                        <p class="mb-1 small d-flex align-items-center">
+                            {% if club.whatsapp_link %}
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="me-2"
+                                     viewBox="0 0 24 24">
+                                    <path d="M21.05 16.86a9.88 9.88 0 001.41-5.09 10 10 0 10-18.36 5.9L2 22l4.39-1.48a10 10 0 0014.66-3.66z" />
+                                    <path d="M8 9c.6 1.1 1.6 2.6 3 3.5s2.4 1.1 2.9 1.2" />
+                                </svg>
+                                <a href="{{ club.whatsapp_link }}"
+                                   target="_blank"
+                                   class="text-decoration-none text-reset">WhatsApp</a>
+                            {% endif %}
+                        </p>
+                        <p class="mb-1 small d-flex align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 class="me-2"
+                                 viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12a2 2 0 0 1-2 2H4c-1.1 0-2-.9-2-2V6a2 2 0 0 1 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                            <a href="mailto:{{ club.email }}"
+                               class="text-decoration-none text-reset">{{ club.email }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap gap-4 justify-content-start">
+                    {% for feature in club.features.all %}
+                        <div class="d-flex flex-column align-items-center text-center"
+                             style="width:4rem">
+                            {% if feature.icon %}
+                                <img src="{{ feature.icon.url }}"
+                                     alt="{{ feature.name }}"
+                                     style="width:20px;
+                                            height:20px">
+                            {% endif %}
+                            <div class="fw-medium d-flex align-items-center justify-content-center text-wrap mt-2"
+                                 style="height: 2.5rem;
+                                        font-size:12px">{{ feature.name }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Columna Central: Galería y Features -->
+            <div class="col-lg-8">
+                <div class="mb-4   rounded">
+                    {% if club.photos.all %}
+                        <div class="mb-4 gallery-slideshow position-relative">
+    <div class="gallery-actions">
+        <!-- Heart and Share buttons -->
+        <button id="club-heart"
+                aria-label="Seguir"
+                data-url="{% url 'toggle_follow' 'club' club.id %}"
+                class="{% if club_followed %}liked{% endif %}">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                 aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+            </svg>
+        </button>
+        <button id="club-share" aria-label="Compartir">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                 aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                      d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+            </svg>
+        </button>
+    </div>
+
+    {% for photo in club.photos.all %}
+        <div class="gallery-slide{% if forloop.first %} active{% endif %}">
+            <img src="{{ photo.image.url }}"
+                 alt="Foto"
+                 class="img-fluid rounded shadow-sm"
+                 style="width:100%;
+                        max-height:450px;
+                        object-fit:contain;
+                        background:rgb(85, 85, 85)">
+        </div>
+    {% endfor %}
+
+    <button id="galleryPrev" class="slide-arrow left">
+        <svg viewBox="0 0 48 48">
+            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+            <path d="M0-.5h48v48h-48z" fill="none" />
+        </svg>
+    </button>
+    <button id="galleryNext" class="slide-arrow right">
+        <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
+            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+            <path d="M0-.5h48v48h-48z" fill="none" />
+        </svg>
+    </button>
+
+    <!-- Bottom-centered Dots -->
+    <div class="gallery-dots-container"
+         style="position: absolute; bottom: 15px; width: 100%; display: flex; justify-content: center;">
+        <div class="gallery-dots d-flex gap-1">
+            {% for photo in club.photos.all %}
+                <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+                    {% else %}
+                        <p>No hay fotos todavía.</p>
+                    {% endif %}
+                </div>
+                <!-- Menú de pestañas -->
+                <ul class="nav custom-tab-menu mb-3 border-bottom justify-content-center"
+                    id="clubTabs"
+                    role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active"
+                                id="about-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#about"
+                                type="button"
+                                role="tab">Sobre el club</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="schedule-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#schedule"
+                                type="button"
+                                role="tab">Horarios</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="posts-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#posts"
+                                type="button"
+                                role="tab">Publicaciones</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="competitors-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#competitors"
+                                type="button"
+                                role="tab">Competidores</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="comments-tab"
+                                data-bs-toggle="tab"
+                                data-bs-target="#comments"
+                                type="button"
+                                role="tab">Valoraciones</button>
+                    </li>
+                </ul>
+                <!-- Contenido de pestañas -->
+                <div class="tab-content" id="clubTabsContent">
+                    <!-- About -->
+                    <div class="tab-pane fade show active" id="about" role="tabpanel">
+                        <div class="row p-3">
+                            <div class="col-lg-7">
+                                <div class="col-12">
+                                    <p>{{ club.about|linebreaks }}</p>
+                                </div>
+                                {% if club.entrenadores.all %}
+                                    <h5 class="mt-4 mb-4">Entrenadores</h5>
+                                    <div class="row">
+                                        {% for e in club.entrenadores.all %}
+                                            <div class="col-6 d-flex align-items-center mb-3">
+                                                {% if e.avatar %}
+                                                    <img src="{{ e.avatar.url }}"
+                                                         alt="{{ e.nombre }}"
+                                                         class="rounded-circle me-2"
+                                                         style="width:60px;
+                                                                height:60px;
+                                                                object-fit:cover">
+                                                {% else %}
+                                                    <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2"
+                                                         style="width:60px;
+                                                                height:50px">{{ e.nombre|first|upper }}</div>
+                                                {% endif %}
+                                                <div>{{ e.nombre }} {{ e.apellidos }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-5 p-2">
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
+                                   target="_blank">
+                                    <iframe src="https://maps.google.com/maps?q={{ club.address|urlencode }}&output=embed"
+                                            width="100%"
+                                            height="250"
+                                            style="border:0"
+                                            loading="lazy"
+                                            allowfullscreen></iframe>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Horarios -->
+                    <div class="tab-pane fade" id="schedule" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered text-center align-middle mb-0"
+                                   style="min-width: 700px">
+                                <thead class="table-dark">
+                                    <tr>
+                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
+                                            <td>
+                                                {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
+                                                    {% for h in horarios_dia %}
+                                                        {% if h.dia == dia %}
+                                                            <div class="border-bottom py-1 small text-muted">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
+                                                        {% endif %}
+                                                    {% empty %}
+                                                        <span class="text-muted">—</span>
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if club.clases.all %}
+                            <div class="mt-4">
+                                <h5>Clases</h5>
+                                <ul class="list-group">
+                                    {% for c in club.clases.all %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span>{{ c.nombre }} ({{ c.hora_inicio|time:"H:i" }} - {{ c.hora_fin|time:"H:i" }})</span>
+                                            {% if user.is_authenticated %}
+                                                <form action="{% url 'book_clase' c.id %}" method="post" class="ms-2">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm btn-primary">Reservar</button>
+                                                </form>
+                                            {% else %}
+                                                <button type="button"
+                                                        class="btn btn-sm btn-primary ms-2"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#signupModal">Reservar</button>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Posts -->
+                    <div class="tab-pane fade" id="posts" role="tabpanel">
+                        {% for post in posts %}
+                            <div class="mb-3 border rounded p-3">
+                                <h5 class="mb-1">{{ post.titulo }}</h5>
+                                <p class="mb-1">{{ post.contenido }}</p>
+                                {% if post.evento_fecha %}
+                                    <p class="mb-1">
+                                        <strong>Evento:</strong> {{ post.evento_fecha }}
+                                    </p>
+                                {% endif %}
+                                <small class="text-muted">{{ post.created_at }}</small>
+                                {% if user.is_authenticated %}
+                                    <div class="mt-2">
+                                        <a href="{% url 'clubpost_update' post.pk %}"
+                                           class="btn btn-sm btn-outline-secondary">Editar</a>
+                                        <a href="{% url 'clubpost_delete' post.pk %}"
+                                           class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                            <p>No hay publicaciones.</p>
+                        {% endfor %}
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'clubpost_create' club.slug %}"
+                               class="btn btn-primary mt-3">Crear publicación</a>
+                        {% endif %}
+                    </div>
+                    <!-- Competidores -->
+                    <div class="tab-pane fade" id="competitors">
+                        {% if competidores %}
+                            <div class="table-responsive mt-3">
+                                <table class="table table-sm table-striped table-bordered text-center">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Victorias</th>
+                                            <th>Derrotas</th>
+                                            <th>Empates</th>
+                                            <th>Títulos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for competidor in competidores %}
+                                            <tr>
+                                                <td>{{ competidor.nombre }}</td>
+                                                <td style="color:#008800;">{{ competidor.victorias }}</td>
+                                                <td style="color:#c60300;">{{ competidor.derrotas }}</td>
+                                                <td style="color:#7faefc;">{{ competidor.empates }}</td>
+                                                <td>{{ competidor.titulos|default:"—" }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="mt-3 text-muted">Este club aún no tiene competidores registrados.</p>
+                        {% endif %}
+                    </div>
+                    <!-- Comentarios -->
+                    <div class="tab-pane fade" id="comments">
+                        <div class="row py-3">
+                            <div class="col-lg-6 mb-4">
+                                {% if user.is_authenticated %}
+                                    {% if not reseña_existente %}
+                                        <form method="POST" id="reseña-form">
+                                            {% csrf_token %}
+                                            {% if form.errors %}<div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>{% endif %}
+                                            <div class="mb-3">
+                                                <label class="form-label">Instalaciones:</label>
+                                                <div class="star-rating" data-name="instalaciones"></div>
+                                                <input type="hidden" name="instalaciones" required id="input-instalaciones">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Entrenadores:</label>
+                                                <div class="star-rating" data-name="entrenadores"></div>
+                                                <input type="hidden" name="entrenadores" required id="input-entrenadores">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Ambiente:</label>
+                                                <div class="star-rating" data-name="ambiente"></div>
+                                                <input type="hidden" name="ambiente" required id="input-ambiente">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Calidad-precio:</label>
+                                                <div class="star-rating" data-name="calidad_precio"></div>
+                                                <input type="hidden"
+                                                       name="calidad_precio"
+                                                       required
+                                                       id="input-calidad_precio">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Variedad de clases:</label>
+                                                <div class="star-rating" data-name="variedad_clases"></div>
+                                                <input type="hidden"
+                                                       name="variedad_clases"
+                                                       required
+                                                       id="input-variedad_clases">
+                                            </div>
+                                            <div class="mb-3">
+                                                <textarea name="comentario"
+                                                          class="form-control"
+                                                          rows="4"
+                                                          minlength="200"
+                                                          placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-dark">Enviar Reseña</button>
+                                        </form>
+                                        <div id="mensaje-gracias"
+                                             class="alert alert-success mt-3"
+                                             style="display:none">
+                                            Gracias por valorar el club. Tu reseña será publicada en breve.
+                                        </div>
+                                    {% else %}
+                                        <!-- <p>Ya has dejado una reseña para este club.</p> -->
+                                    {% endif %}
+                                {% else %}
+                                    <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="d-flex justify-content-end mb-3">
+                                    {% include 'partials/_review-filter.html' with orden=orden club=club %}
+                                </div>
+                                <div id="review-list">{% include 'clubs/reviews_list.html' %}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Columna Derecha: Valoraciones y Reseñas -->
+            <div class="col-lg-2">
+                <!-- Carrusel de reseñas -->
+                {% if reseñas %}
+                    <div class="club-reviews"> 
+                        <div class="review-carousel"
+                             id="review-carousel"
+                             onmouseenter="pauseAutoplay()"
+                             onmouseleave="startAutoplay()">
+                            {% for reseña in reseñas %}
+                                <div class="review-slide{% if forloop.first %} active{% endif %}">
+                                    <p class="review-text">“{{ reseña.comentario }}”</p>
+                                    <div class="review-user-container d-flex align-items-center">
+                                        {% if reseña.usuario.profile.avatar %}
+                                            <img src="{{ reseña.usuario.profile.avatar.url }}"
+                                                 alt="{{ reseña.usuario.username }}"
+                                                 class="review-avatar-img rounded-circle">
+                                        {% else %}
+                                            <div class="review-avatar">{{ reseña.usuario.username|first|upper }}</div>
+                                        {% endif %}
+                                        <div class="fw-medium ms-2">{{ reseña.usuario.username }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- Arrows -->
+                            <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
+                                <svg viewBox="0 0 48 48" width="20" height="20">
+                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                    <path d="M0-.5h48v48h-48z" fill="none" />
+                                </svg>
+                            </button>
+                            <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
+                                <svg viewBox="0 0 48 48"
+                                     width="20"
+                                     height="20"
+                                     style="transform: rotate(180deg)">
+                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                    <path d="M0-.5h48v48h-48z" fill="none" />
+                                </svg>
+                            </button>
+                        </div> 
+                        <ul class="list-group mt-4 mb-3 "> 
+                           <div class="p-1 badge mb-3 d-flex flex-column align-items-center justify-content-center col-6" style="background-color:transparent !important; border:1px solid black; color:black;">   
+                                <span class="fs-5 fw-bold">{{ club.average_rating }} / 5</span>
+                                <span  class="mt-1 fw-light" >({{ club.reviews_count }} reseñas)  </span>
+                            </div>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <svg class="d-inline pe-2"
+                                         id="svg"
+                                         version="1.1"
+                                         viewBox="0 0 300 300"
+                                         width="40"
+                                         height="40"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
+                                            <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                            <path d="M58.17847,0h136.14331c1.43848,0.84309 2.68359,1.78771 3.11133,3.49482c0.28271,1.10092 0.09961,2.26995 -0.5083,3.23061c-0.74561,1.17467 -1.98633,1.85937 -3.33105,2.10145c-2.29687,0.41332 -6.86719,0.10701 -9.38965,0.10625l-21.13916,0.00009l-78.04893,0.00423l-15.85166,-0.00555c-3.29429,-0.00579 -7.05659,-0.34978 -10.27749,0.33343c-1.58921,0.3371 -3.06284,1.45931 -4.02671,2.74783c-0.92988,1.24317 -1.30972,2.64568 -1.42134,4.16927c-0.17256,2.354 -0.08423,4.76045 -0.0813,7.12017l0.00981,11.85938l0.00234,37.62305l-0.00674,22.37622c-0.00557,3.07178 -0.33179,8.34434 0.18252,11.16592c0.35303,1.93755 1.5728,3.78838 3.23174,4.84028c1.58701,1.0062 3.1147,1.20806 4.94224,1.27075c4.74551,0.16274 9.54961,0.01597 14.30083,0.01494l27.77065,-0.00469l84.69639,-0.00073l36.3457,0.0019l9.32373,0.00659c2.10645,-0.00029 4.5498,0.22368 6.59473,-0.26133c1.98779,-0.46099 3.70313,-1.7083 4.75342,-3.45688c0.75586,-1.25947 0.99902,-2.63921 1.08398,-4.08047c0.32813,-5.62969 0.05859,-11.99839 0.05566,-17.72271l-0.00732,-33.83364v-24.51797c0,-3.43623 0.40869,-11.32236 -0.39551,-14.24739c-0.53906,-1.89911 -1.81494,-3.5036 -3.54492,-4.45564c-0.98584,-0.54129 -2.0918,-0.73576 -3.19775,-0.84428c-2.74219,-0.26905 -5.60596,-0.1137 -8.36133,-0.11014l-14.40381,0.02184c-2.33203,0.004 -5.33643,0.35805 -7.5542,-0.4171c-1.23193,-0.43065 -2.14014,-1.51255 -2.52393,-2.74012c-0.34717,-1.10832 -0.26514,-2.41734 0.31201,-3.43583c0.60645,-1.07011 1.62451,-1.76041 2.66748,-2.35453h32.03027c0.03662,0.01653 0.07471,0.03347 0.11133,0.04959c1.26123,0.54162 2.61475,0.83231 3.88623,1.37864c3.94043,1.68605 7.05029,4.8686 8.64404,8.8474c0.64893,1.58383 0.98291,3.23156 1.13086,4.93267c0.17578,2.01577 0.08496,4.0957 0.08057,6.12056l-0.00732,9.5811c0,8.41816 0.19629,16.88335 -0.02051,25.29609c8.04199,0.05449 16.08398,0.06548 24.12598,0.03281c3.34863,-0.00088 8.94727,-0.37002 12.05127,0.33237c1.89404,0.42861 3.68848,1.51084 5.02881,2.90435c1.67432,1.73833 2.62207,3.92769 2.83301,6.32637c0.25781,2.92544 0.05273,6.03706 0.05127,8.97891v18.12612l-0.00146,57.05347l-0.00293,93.37646v30.44238c0.00439,5.14014 0.1582,10.32715 0.00879,15.46289c-0.08496,2.87402 -0.94629,5.68945 -3.0791,7.70947c-1.39893,1.32422 -3.12305,2.15771 -4.90869,2.82861c-0.25781,0.09668 -0.1582,0.0542 -0.42187,0.21973h-79.62305c-0.6958,-0.41602 -1.43408,-0.82617 -2.02588,-1.38574c-0.82471,-0.77637 -1.22754,-1.68164 -1.25391,-2.8125c-0.03076,-1.35059 0.44971,-2.59424 1.43408,-3.53467c0.65479,-0.62549 1.33887,-0.88184 2.21777,-1.03564c2.5166,-0.44092 5.39209,-0.17871 7.94531,-0.17725c4.2876,0.00293 8.60156,-0.09082 12.88477,0.07031l0.05859,-111.37061l-0.00146,-38.38564c0,-6.62563 -0.2124,-13.32158 0.03369,-19.93975c-15.68848,0.18706 -31.40332,-0.02256 -47.09619,-0.02197l-20.64551,0.00234c-3.54785,0.00088 -7.12354,0.11733 -10.66553,-0.01172c0.09668,3.51841 0.01318,7.05469 0.01172,10.57529l-0.00146,20.58369l-0.00146,61.66699v50.63672l0.01025,16.36816c0.00293,3.25781 0.08203,6.53174 -0.05273,9.78516c9.81738,0.21094 19.6626,0.0542 29.48291,0.05127c2.79053,-0.00146 9.61377,-0.30469 11.94287,0.17432c1.11035,0.22852 2.16357,0.97119 2.78613,1.90869c0.68408,1.02246 0.90088,2.28662 0.59766,3.47754c-0.43506,1.70361 -1.71533,2.53857 -3.1333,3.375h-187.26415c-0.69902,-0.39258 -1.51745,-0.65039 -2.24956,-0.98437c-2.1798,-0.99609 -4.03595,-2.58252 -5.10127,-4.75635c-0.73657,-1.50146 -0.99024,-3.16406 -1.04601,-4.82227c-0.08786,-2.61328 -0.0063,-5.24414 -0.00126,-7.86035l0.00144,-14.32031l-0.00145,-44.83008l0.00255,-68.1167l-0.00862,-17.74644c-0.00734,-3.10693 -0.17677,-6.29941 0.00944,-9.39609c0.04237,-0.70459 0.12962,-1.41694 0.37104,-2.08359c0.41646,-1.1499 1.08598,-1.82183 2.19513,-2.29731c1.17337,-0.50317 2.50207,-0.47593 3.68048,0.02051c2.65393,1.11797 2.67675,3.86865 2.67772,6.32681l-0.02358,136.48374c0.00013,2.99707 -0.2936,23.46387 0.26402,24.82178c0.56121,0.49072 1.35804,0.52734 2.0869,0.58301c3.99819,0.29883 8.16201,0.05127 12.18256,0.0498l21.95405,-0.00586c4.14023,0 8.30991,-0.1084 12.44443,0.06445c-0.14033,-1.73291 -0.00044,-3.55664 0.00088,-5.30273l0.00322,-10.9248l0.00161,-35.12402l-0.02725,-118.51758c-3.32505,-0.68818 -6.57349,-2.32456 -8.97744,-4.73804c-2.18789,-2.18335 -3.70254,-4.94912 -4.36377,-7.96846c-0.80962,-3.76494 -0.39829,-10.93506 -0.39844,-15.0731l0.01772,-28.22095c-2.22612,0.04058 -4.47188,-0.05801 -6.70122,-0.06079l-17.47222,-0.00688c-3.01509,0.00029 -6.77694,-0.27202 -9.69593,0.10239c-1.08038,0.13872 -1.15469,0.99668 -1.26914,1.95015c-0.14791,1.23223 -0.06164,2.55234 -0.06064,3.79438l0.0036,6.6041l0.01893,22.4751c0.00211,3.06401 0.29981,6.50317 -0.15201,9.52837c-0.1166,0.78076 -0.39655,1.46719 -0.88736,2.09033c-0.76014,0.96504 -1.93813,1.68325 -3.17906,1.76338c-1.18594,0.07676 -2.39616,-0.33999 -3.25078,-1.16924c-1.21855,-1.18242 -1.48244,-2.81089 -1.49178,-4.43643l0.03902,-28.61104l-0.0051,-7.84219c-0.0113,-2.32222 -0.17649,-4.74814 0.26847,-7.03652c0.37844,-1.94634 1.42343,-3.80112 2.82226,-5.19844c1.15651,-1.15532 2.78399,-2.18892 4.38514,-2.56641c3.37566,-0.796 9.27231,-0.40444 12.88345,-0.40371l23.7123,-0.0085l0.0186,-26.3499c0.00029,-4.57236 -0.29121,-10.19502 0.06973,-14.65005c0.1374,-1.69523 0.45249,-3.33262 1.09482,-4.91243c1.58525,-3.89832 4.54482,-7.16883 8.43208,-8.83957c1.29653,-0.55728 2.68198,-0.87018 3.97295,-1.42774zM67.12192,291.03369l49.27251,0.03516h19.62935c2.99194,0 6.01084,0.10107 8.99941,0.02344c0.17886,-0.00439 0.2874,-0.04687 0.427,-0.1582c0.00864,-0.00732 0.01538,-0.01611 0.023,-0.0249c0.28037,-14.38037 0.06064,-28.79883 0.0605,-43.18359l-0.00103,-80.32324l-0.00073,-30.49028c-0.00015,-5.12944 -0.19907,-10.34927 0.02637,-15.4686l-55.14126,-0.03706l-15.44473,0.00264c-2.59233,0.00059 -5.21323,0.09082 -7.80146,-0.0063c0.18398,12.21577 0.00674,24.46011 0.00659,36.67881v72.65332l0.00088,40.52344l0.00278,12.68848c0.00132,2.34521 0.12217,4.75195 -0.05918,7.08691zM241.78711,121.37285c-0.20947,4.52095 -0.06738,9.09536 -0.06592,13.62217l0.00146,24.17197v87.73242l0.00439,28.86914c0.00146,5.06396 0.17285,10.18359 -0.03662,15.23877c11.73779,0.22412 23.49902,0.06445 35.23828,0.05859c1.89844,0.00586 12.36768,0.31934 13.18799,-0.41748c0.49512,-0.44385 0.52881,-2.05371 0.55225,-2.72314c0.16846,-4.70947 0.02197,-9.479 0.02197,-14.19434v-27.48633l-0.00146,-83.60303l0.00293,-63.65479l-0.00146,-20.57871c0,-3.53408 0.17285,-7.17187 -0.04395,-10.69512c-0.04102,-0.66401 -0.0835,-1.47319 -0.35303,-2.08257c-0.6123,-0.29429 -1.27002,-0.35552 -1.93945,-0.39858c-3.03076,-0.19512 -6.14502,-0.04951 -9.18896,-0.04731l-17.04639,0.02168c-2.01855,0.00425 -4.6626,0.33765 -6.58008,-0.08569l-0.03223,28.20439c0.00146,4.28818 0.44092,11.348 -0.4292,15.26704c-0.69141,3.0249 -2.22803,5.79082 -4.43262,7.9752c-2.54443,2.52217 -5.52246,3.70928 -8.85791,4.80571z" fill="#000000" />
+                                            <path d="M117.78486,181.55273c0.76465,-0.0542 1.53018,-0.0498 2.29644,-0.05566c2.9417,-0.02344 9.53218,-0.70312 11.59248,1.44141c0.81445,0.84668 1.21641,2.00684 1.18418,3.17432c-0.03369,1.22168 -0.57246,2.42139 -1.49897,3.22412c-1.92231,1.66699 -7.71885,1.27295 -10.29521,1.12646c0.06943,5.51367 0.02227,11.0332 0.02314,16.54834c0.00044,3.60352 0.14063,7.27441 -0.07646,10.86914c2.50283,0.02197 5.76753,-0.31348 8.175,0.20801c1.59199,0.3457 2.47837,1.11475 3.34219,2.43164c0.07148,0.24023 0.13652,0.48193 0.19512,0.7251c0.2915,1.26123 0.06182,2.58545 -0.63691,3.67383c-0.64102,0.97852 -1.59302,1.57764 -2.73911,1.78125c-2.16621,0.38232 -10.08926,0.4043 -12.23467,0.00879c-0.99404,-0.18311 -1.94854,-0.55225 -2.77559,-1.13965c-1.19297,-0.84668 -1.81729,-2.12842 -2.0502,-3.54932c-0.31831,-1.94238 -0.13887,-4.14844 -0.13813,-6.11865l0.00791,-10.72705l-0.00396,-11.62207c-0.00117,-2.41992 -0.15059,-4.94824 0.18574,-7.34473c0.1333,-0.95068 0.53364,-1.73584 1.11079,-2.49756c1.09746,-1.4458 2.60303,-1.95703 4.33623,-2.15771z" fill="#000000" />
+                                            <path d="M112.89888,128.36704c0.83994,-0.05303 1.73965,0.05786 2.50459,0.42202c0.99961,0.47607 1.90664,1.38457 2.26523,2.44219c0.39243,1.15679 0.30234,2.49185 -0.2688,3.57393c-0.8127,1.53955 -13.25581,13.27881 -15.28784,14.85059c-0.70107,0.54199 -1.31191,0.87305 -2.16768,1.13672c-0.89165,0.09521 -1.93638,-0.15088 -2.72695,-0.56396c-1.02363,-0.53613 -1.80864,-1.41211 -2.13413,-2.52832c-0.33076,-1.13379 -0.22983,-2.54736 0.39653,-3.56792c0.84287,-1.37314 13.65967,-13.7146 15.39492,-14.9666c0.63955,-0.46143 1.26841,-0.62461 2.02412,-0.79863z" fill="#000000" />
+                                            <path d="M111.79688,156.18164c0.91011,-0.08789 1.74785,-0.06738 2.60654,0.28711c1.0103,0.41602 1.98486,1.32275 2.40103,2.34082c0.47813,1.17041 0.38057,2.54443 -0.14224,3.68408c-0.72656,1.5835 -11.07554,11.24268 -13.19619,12.87158c-0.52925,0.40723 -1.04561,0.69287 -1.6793,0.91113c-0.9356,0.09521 -1.75737,0.06445 -2.63467,-0.31201c-1.09351,-0.47021 -2.02939,-1.3916 -2.41714,-2.52539c-0.35171,-1.02979 -0.41338,-2.38037 0.08906,-3.37354c0.9731,-1.92334 11.46577,-11.74805 13.4436,-13.21143c0.47036,-0.34717 0.97295,-0.50977 1.5293,-0.67236z" fill="#000000" />
+                                            <path d="M85.3251,154.30518c0.74253,-0.10254 1.48169,-0.13623 2.21382,0.06006c1.21597,0.32373 2.30991,1.12061 2.89805,2.24414c0.54917,1.04883 0.58945,2.24707 0.21387,3.36035c-0.74443,2.20605 -6.09521,6.92725 -8.24341,7.96729c-1.03169,0.13916 -1.80864,0.12598 -2.77896,-0.29443c-1.14858,-0.49951 -2.12798,-1.42676 -2.54297,-2.625c-0.375,-1.08398 -0.26367,-2.3335 0.25327,-3.35303c1.02773,-2.02588 5.88706,-6.61963 7.98633,-7.35937z" fill="#000000" />
+                                            <path d="M166.37402,43.27295c0.08643,-4.59521 0.03076,-9.20332 0.02344,-13.8c-0.00439,-2.31855 -0.15381,-4.74756 0.07764,-7.05454c0.10547,-1.04985 0.28418,-2.05342 0.81445,-2.98271c0.9082,-1.5895 2.24854,-2.60215 4.01953,-3.05845c1.75195,-0.45146 3.70752,-0.29326 5.49902,-0.28359c4.69482,0.0252 8.8623,-0.19512 13.06055,2.29658c4.37402,2.59526 6.44531,6.43418 7.65967,11.22554c2.81104,-0.17827 5.96631,-0.15981 8.7627,0.20698c4.14697,0.53188 7.90869,2.70366 10.44287,6.02974c1.48535,1.96479 2.4873,4.252 2.92236,6.67617c0.48633,2.69355 0.34131,5.51045 0.33838,8.23887l-0.01025,10.33506l0.01465,9.85635c0.00439,2.43618 0.11133,4.9437 -0.24609,7.35923c-0.63428,4.16895 -2.91504,7.90898 -6.33105,10.3812c-3.70605,2.68638 -7.43555,3.15308 -11.88281,3.2146c-1.30811,0.01802 -2.66162,0.1062 -3.95508,-0.09316c-0.71338,2.39868 -1.44873,4.63008 -2.90771,6.69229c-2.75244,3.8915 -6.67969,5.95195 -11.3042,6.72217c-0.49512,0.03545 -0.9917,0.06284 -1.48682,0.08232c-1.57617,0.06006 -3.16113,0.04922 -4.7373,0.06006c-3.0791,0.02124 -6.40869,0.28901 -8.81836,-2.04111c-0.9082,-0.87686 -1.46484,-1.94355 -1.72852,-3.17197c-0.50684,-2.35693 -0.18896,-5.14819 -0.18896,-7.56372l-0.00586,-14.34492l-21.92534,-0.04849c-3.06709,0.00161 -8.07642,0.32681 -10.83618,-0.06182c-0.15996,4.77407 -0.03032,9.58594 -0.02695,14.36382c0.00161,2.19858 0.14546,4.52578 -0.11646,6.70811c-0.11206,0.93398 -0.30161,1.81523 -0.78281,2.63481c-0.95962,1.63418 -2.38931,2.74644 -4.23369,3.21196c-1.71064,0.43169 -3.58022,0.30293 -5.32896,0.29985c-4.7436,-0.0085 -9.03428,0.09932 -13.23677,-2.48335c-4.22534,-2.59688 -6.28184,-6.35889 -7.42925,-11.0603c-1.09673,0.0457 -2.19434,0.06562 -3.29194,0.05962c-5.50254,0.00264 -10.54687,-0.68555 -14.60054,-4.78652c-1.97827,-2.00156 -3.38013,-4.49956 -4.0582,-7.23091c-1.021,-4.17393 -0.55928,-10.12339 -0.55342,-14.51587l-0.01128,-18.10928c0.01348,-5.0666 1.1792,-9.58315 4.89521,-13.22783c4.99028,-4.89434 11.15962,-4.47554 17.60874,-4.40259c0.38291,-2.55396 1.60679,-5.20166 3.14648,-7.25933c2.8292,-3.78076 6.73755,-5.5396 11.3127,-6.18618c0.32681,-0.02432 0.65435,-0.04028 0.98203,-0.0479c2.88428,-0.05479 8.08535,-0.39946 10.70742,0.29502c1.15752,0.30659 2.22891,0.87583 3.08247,1.72178c0.91377,0.90557 1.45254,2.04521 1.70845,3.29561c0.48047,2.34727 0.18091,5.0748 0.18135,7.47451l0.00952,14.35737c3.64307,-0.19863 7.40522,-0.00586 11.06221,-0.00557zM175.26123,96.24771c3.82324,0.08013 8.12109,0.81152 11.21484,-1.89873c1.0957,-1.16016 1.84424,-2.27476 2.0874,-3.89766c0.35596,-2.37773 0.17285,-5.00098 0.17139,-7.40566l-0.00732,-13.31733l-0.00439,-24.40972c0,-4.15796 0.11426,-8.34492 -0.01172,-12.49893c-0.07031,-2.28457 -0.48047,-4.23999 -2.21924,-5.88223c-3.10547,-2.93247 -7.36816,-1.31528 -11.09912,-1.846c-0.34131,2.11978 -0.11719,4.53354 -0.11426,6.6895l0.01758,13.06157l-0.00586,33.3126c0,6.02578 0.10693,12.06987 -0.0293,18.09258zM133.6437,52.14565c-0.18105,5.66704 -0.04072,11.37305 -0.03472,17.04434c10.91455,0.02725 21.84756,-0.14062 32.75918,0.04233c0.16406,-5.64214 -0.01172,-11.30391 0.06299,-16.95c-7.55713,-0.05391 -15.11426,-0.06973 -22.67109,-0.04717c-2.7624,0.00337 -7.59463,0.34614 -10.11636,-0.0895zM124.71973,96.32651l0.00747,-71.16445c-1.57559,-0.01948 -3.16802,-0.0832 -4.74229,-0.04482c-2.54604,0.05493 -4.88804,0.10063 -6.78662,2.10249c-1.02847,1.08457 -1.61147,2.39048 -1.80571,3.86279c-0.30908,2.34185 -0.10371,4.91821 -0.10459,7.28745l-0.00322,14.15186l0.00059,24.09624c0.00059,4.321 -0.1415,8.69839 0.04512,13.01265c0.07939,1.83457 0.79512,3.52559 2.16313,4.78066c0.89399,0.82002 1.84878,1.27764 2.97759,1.66128c2.71816,0.48457 5.50591,0.13652 8.24854,0.25386zM97.39907,38.59087c-2.42915,0.0665 -4.63462,0.14678 -6.46465,2.02207c-0.99331,1.01763 -1.57998,2.2374 -1.82798,3.62944c-0.51372,2.88237 -0.19937,8.43413 -0.20054,11.56494c-0.00264,6.44663 -0.19893,12.96152 0.02607,19.40127c0.07734,2.21206 0.4875,4.09775 2.15962,5.69736c0.86558,0.82822 1.92173,1.36523 3.06533,1.69644c2.0647,0.22222 5.77603,0.55942 7.72661,0.01157c0.39023,-0.40488 0.37266,-1.27017 0.4043,-1.83311c0.29736,-5.28677 0.07222,-10.69937 0.07383,-15.99917c0.00234,-7.91543 0.12773,-15.85283 -0.01069,-23.76606c-0.00791,-0.77578 -0.06592,-1.55024 -0.17344,-2.31855c-1.59023,-0.11265 -3.18486,-0.1481 -4.77847,-0.1062zM198.03809,38.70469c-0.29443,0.45688 -0.35449,0.88608 -0.38232,1.42207c-0.17139,3.21958 -0.0498,6.49878 -0.0498,9.72349l-0.00146,18.18721l0.00439,9.21753c0.00146,1.53237 -0.16406,3.32095 0.14502,4.82036c0.06445,0.31523 0.12305,0.35801 0.40723,0.5209c1.30225,0.74399 7.23779,0.173 8.71289,-0.41851c0.70313,-0.28169 1.30078,-0.70884 1.88379,-1.18374c0.98438,-1.07988 1.76221,-2.14629 2.0874,-3.60586c0.57715,-2.59995 0.23877,-9.83452 0.23877,-12.95508l-0.00439,-12.03984c-0.00146,-2.2396 0.06738,-4.50352 -0.04834,-6.7396c-0.10547,-2.06367 -0.67383,-3.84609 -2.23389,-5.29922c-2.61182,-2.43369 -7.47656,-1.75122 -10.75928,-1.64971z" fill="#000000" />
+                                            <path d="M171.27539,181.56006c2.66602,-0.16846 5.38037,-0.08789 8.05371,-0.08789c2.3877,0.00146 5.09473,0.00293 6.87305,1.86914c0.76758,0.80566 1.28174,1.81787 1.47949,2.91211c0.45557,2.59131 0.15088,8.07715 0.15234,10.97314l-0.00586,22.52051c-0.01904,2.12842 -0.23877,3.99316 -1.89258,5.53857c-0.75439,0.70605 -1.72119,1.1499 -2.72461,1.37256c-2.57959,0.57129 -8.58545,0.24316 -11.45508,0.19629c-1.28613,-0.09375 -2.26904,-0.33838 -3.24902,-1.2334c-0.86865,-0.79248 -1.38721,-1.86621 -1.43262,-3.04395c-0.04541,-1.16748 0.32666,-2.31592 1.14111,-3.16406c2.14307,-2.22949 7.68018,-1.48682 10.62891,-1.47803c0.14063,-6.14795 0.06885,-12.30908 0.05713,-18.4585c-0.00586,-2.97949 -0.09082,-5.98682 0.0542,-8.96191c-2.55615,0.00586 -7.92773,0.54199 -10.02393,-0.93311c-0.96533,-0.67969 -1.61133,-1.64648 -1.80176,-2.81836c-0.19775,-1.21582 0.15381,-2.53564 0.91113,-3.50391c0.86279,-1.10449 1.88672,-1.50732 3.23438,-1.69922z" fill="#000000" />
+                                            <path d="M195.39697,245.82861c0.79248,-0.0791 1.51758,-0.11426 2.28516,0.13477c1.20264,0.38965 2.25586,1.24072 2.80078,2.39209c0.50098,1.05762 0.51416,2.24268 0.08936,3.32813c-0.29736,0.75879 -0.81445,1.3623 -1.35937,1.9541c-3.21826,3.49072 -7.15283,6.8877 -10.60547,10.21289c-2.90479,2.81396 -5.82715,5.61035 -8.76562,8.3877c-1.75195,1.6582 -3.47314,3.375 -5.33057,4.91309c-0.61963,0.5127 -1.19531,0.90527 -1.93066,1.23779c-0.96094,0.1377 -2.0332,0.05713 -2.9165,-0.36621c-1.08545,-0.52002 -2.04932,-1.49561 -2.4082,-2.65723c-0.34424,-1.11768 -0.19189,-2.50635 0.38232,-3.52734c1.0415,-1.85156 12.91846,-12.68701 15.25049,-14.91357c3.42041,-3.2666 6.72949,-6.85254 10.3374,-9.90234c0.67383,-0.56836 1.33154,-0.91553 2.1709,-1.19385z" fill="#000000" />
+                                            <path d="M212.51074,256.53809c0.91553,0.04102 1.71826,0.12012 2.52246,0.59326c1.01221,0.59326 1.79443,1.48975 2.06836,2.64258c0.27246,1.15576 0.12451,2.53564 -0.55811,3.53027c-1.3418,1.95557 -11.36426,11.36719 -13.36963,12.72656c-0.5918,0.3999 -1.10596,0.55371 -1.80615,0.68701c-1.06201,-0.07324 -1.94238,-0.19775 -2.85498,-0.80566c-0.99609,-0.66211 -1.68164,-1.66406 -1.89551,-2.84473c-0.21533,-1.19092 0.12158,-2.49609 0.84814,-3.46289c1.28027,-1.70361 11.47998,-11.44482 13.00049,-12.4292c0.63281,-0.40869 1.31543,-0.52295 2.04492,-0.63721z" fill="#000000" />
+                                            <path d="M215.36426,227.39063c0.87158,0.06299 1.61719,0.16406 2.3877,0.59912c1.09277,0.61816 1.93506,1.61719 2.21777,2.85352c0.26074,1.13965 -0.01172,2.31299 -0.64893,3.27979c-1.24365,1.88672 -6.11133,6.46875 -8.0083,7.63477c-0.58008,0.35889 -1.11475,0.54639 -1.78125,0.68115c-0.98584,-0.08643 -1.77979,-0.27393 -2.62061,-0.82764c-1.06055,-0.69727 -1.83984,-1.76074 -2.05078,-3.02637c-0.20215,-1.2085 0.15527,-2.2998 0.84814,-3.28418c1.21582,-1.72705 6.16406,-6.46582 7.95557,-7.45898c0.51416,-0.28564 1.12793,-0.36035 1.70068,-0.45117z" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </svg>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <small>Instalaciones</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.instalaciones %}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <svg class="d-inline pe-2"
+                                         id="svg"
+                                         version="1.1"
+                                         viewBox="0 0 300 300"
+                                         width="40"
+                                         height="40"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath><linearGradient x1="153.56982" y1="237.28564" x2="146.07173" y2="246.55518" gradientUnits="userSpaceOnUse" id="color-1"><stop offset="0" stop-color="#000000" stop-opacity="0.94902" /><stop offset="1" stop-color="#000000" stop-opacity="0.98824" /></linearGradient></defs>
+                                            <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                            <path d="M145.6229,0h8.98696c2.26758,0.5409 4.56592,0.73196 6.854,1.12821c1.59375,0.27593 3.21533,0.74773 4.76807,1.19776c13.94092,4.15147 25.8457,13.32867 33.40869,25.75436c3.22852,5.26626 5.75244,11.64741 7.03125,17.71157c0.57275,2.71318 0.76318,5.46431 0.97119,8.22012c0.11279,1.49854 0.37061,2.98389 0.43799,4.48608c0.21094,4.68135 0.06006,9.427 0.06006,14.11641c0,4.55215 0.14648,9.16611 -0.04834,13.7105c-0.06592,1.55815 -0.34131,3.09331 -0.45264,4.64634c-0.09521,1.35 -0.08203,2.71846 -0.24023,4.0626c-0.22852,1.96377 -0.66943,4.01968 -1.13086,5.94185c-2.41699,10.05322 -8.01562,20.12153 -15.41455,27.36035c-1.26855,1.24131 -2.6748,2.33335 -4.06641,3.43169c-1.02246,0.80698 -2.05664,1.69497 -3.14941,2.40015c-0.07764,10.02861 -0.07617,20.05811 0.00293,30.08643c4.74316,0.86572 9.47607,2.01123 14.18848,3.03955l20.8916,4.51611l14.59131,3.17285c3.86865,0.81885 7.81348,1.55713 11.58984,2.75098c13.08398,4.21143 24.42188,12.60205 32.27197,23.88428c3.43359,4.94092 6.12451,10.35791 7.98633,16.07959c1.12354,3.43506 1.78564,6.9624 2.48584,10.5c1.00781,5.14893 1.96289,10.30957 2.86523,15.47754c1.99658,10.98926 4.23779,21.94336 6.1626,32.94287c0.46875,2.67627 2.3584,14.74512 3.3252,16.5498v3.28271c-0.9624,1.8252 -1.80176,2.50488 -3.55518,3.54932h-293.01697c-1.59501,-0.95508 -2.48786,-2.25879 -3.42785,-3.82178v-3.15381c0.77297,-1.14551 1.94613,-9.62842 2.31688,-11.62939l7.16839,-38.81396c0.76103,-4.39014 1.57315,-8.77148 2.43623,-13.14258c0.8828,-4.66553 1.76722,-9.19336 3.30467,-13.70361c1.84482,-5.41113 5.09326,-11.67334 8.60317,-16.18359c8.22744,-10.57324 18.93911,-18.52881 31.82344,-22.42969c4.97769,-1.50732 10.10537,-2.4375 15.19702,-3.46143l17.05386,-3.52295l18.80713,-3.88916c3.17681,-0.65332 6.352,-1.51172 9.57319,-1.91016c0.29341,-0.12744 0.29341,-0.08496 0.58799,-0.02344c0.173,-0.35596 0.09946,-25.11445 -0.08071,-27.34556l-0.0353,0.33618c-0.03765,-0.56191 -0.09346,-1.12852 -0.08818,-1.69175c0.00542,-0.56558 -0.07529,-0.85386 -0.36182,-1.34473c-0.7749,-1.09263 -4.60063,-3.65918 -5.86509,-4.76162c-1.64297,-1.43218 -3.06299,-3.12861 -4.46177,-4.7937c-5.47705,-6.52104 -9.0397,-12.9293 -11.56304,-21.05215c-0.85972,-2.76753 -1.64839,-5.75273 -1.84746,-8.65664l0.26206,-0.32153c0.38511,-1.69849 0.01069,-9.58594 0.00732,-12.03281l-0.0126,-19.42837c0.01245,-3.91582 0.11543,-7.84541 0.04175,-11.75991c-0.01406,-0.74766 -0.03149,-1.45254 -0.22954,-2.17939c-0.09536,-1.18726 0.3791,-2.79287 0.65947,-3.95801c1.61104,-6.67324 4.31045,-13.0355 7.98984,-18.83115c7.34985,-11.63467 19.61631,-20.65081 32.88999,-24.3473c3.78721,-1.05463 7.63066,-1.28649 11.446,-2.14601zM72.35156,271.00928l0.01934,-29.20752c-0.00073,-4.67139 -0.1897,-9.4292 -0.00703,-14.0918c1.93125,-0.18164 7.81597,-0.44971 9.46099,0.09814c0.67676,1.64941 0.32563,11.8418 0.32388,14.39209l-0.00278,31.74316c0.00073,5.55322 -0.29487,11.45361 0.12788,16.95703l92.38828,-0.01025l29.23828,-0.00146l8.896,-0.00146c1.60254,-0.00146 3.26807,-0.11426 4.86035,0.03955l0.00293,-42.79834l0.00146,-13.11621c0,-2.42285 -0.07324,-4.875 0.03223,-7.29346c1.87939,-0.18896 7.71826,-0.44238 9.31055,0.12598c0.35889,0.49072 0.40869,1.23486 0.45117,1.83105c0.24756,3.54053 0.02051,7.229 0.01758,10.78857l-0.00732,21.31641c0,3.24463 -0.16113,6.57715 0.12158,9.80566c4.95557,-0.17285 9.95654,-0.03223 14.91797,-0.03076h28.11621l9.89063,-0.00146c1.62451,0 3.49512,0.16992 5.08887,-0.11426l0.18457,-0.20654c-1.62158,-9.57715 -3.32666,-19.13818 -5.11523,-28.68457c-2.78467,-15.00146 -3.50684,-25.6875 -13.71533,-38.19287c-2.521,-3.08936 -5.58398,-6.30322 -8.83594,-8.62061c-2.85205,-2.0332 -5.90625,-4.09131 -9.06592,-5.5957c-6.20654,-2.95605 -12.67383,-4.28467 -19.33301,-5.74072l-15.75439,-3.43799c-2.6748,-0.59619 -8.39941,-1.46191 -10.60547,-2.44775c-0.28125,0.23438 -0.30762,0.50537 -0.35303,0.85986c-0.16406,1.30078 -0.0542,2.72168 -0.05273,4.03857l0.01318,7.57471c0.00146,1.42383 0.15381,3.19482 -0.30029,4.5542c-0.68701,2.05957 -6.14502,8.65137 -7.70361,10.73438c-6.49219,8.6748 -13.1748,17.25293 -19.4751,26.06396c-0.54785,0.76611 -2.07422,2.14746 -2.27637,2.9751c-0.17871,0.73389 0.83496,4.63184 0.88916,5.87842c0.30029,6.9126 0.02783,13.93066 0.03809,20.85352l0.02344,9.05859c0.00439,1.66406 0.1084,3.41016 -0.06885,5.06396c-0.12012,1.12207 -0.45996,1.96582 -0.93164,2.97363c-0.6665,0.48486 -1.32275,1.00195 -2.15479,1.15576c-2.55029,0.47314 -7.85449,0.15967 -10.66113,0.16406c-3.31348,0.00586 -8.84766,0.30908 -11.90918,-0.13477c-0.88477,-0.12744 -1.73877,-0.71484 -2.24136,-1.4458c-2.48613,-3.6123 -0.24111,-10.85742 -1.42061,-12.83496c-0.27334,-0.4585 -6.04307,-2.63672 -7.16294,-3.32959c-2.97876,-1.84131 -6.17651,-5.00391 -8.0688,-7.94971c-2.87842,-4.48096 -4.30869,-10.4209 -3.48076,-15.6958c0.11675,-0.74414 0.76362,-3.29297 0.6583,-3.79248c-0.16348,-0.77344 -25.87881,-34.77832 -28.8063,-38.56201c0.09331,-0.83789 -0.36079,-1.59375 -0.3917,-2.43311c-0.09521,-2.59277 0.44707,-14.42578 -0.44824,-15.86865c-2.71655,-0.18018 -8.94141,1.64063 -11.90889,2.2749l-12.36167,2.69531c-4.17275,0.89063 -8.33701,1.71533 -12.45498,2.85352c-2.97832,0.82324 -6.0876,1.84131 -8.90435,3.11719c-4.28057,1.93652 -9.20918,5.50488 -12.72949,8.59863c-3.91143,3.43506 -7.1521,7.4458 -9.8187,11.90039c-1.8627,3.10986 -3.49233,6.17432 -4.75107,9.58594c-1.51934,4.11621 -2.34141,8.49463 -3.14531,12.79541c-1.00942,5.40088 -1.86357,10.83105 -2.87915,16.23047l-2.58984,14.17383c-0.45776,2.48584 -1.17398,5.146 -1.32951,7.6626c-0.01374,0.22266 -0.02093,0.44531 -0.02156,0.6665l39.67021,0.00586l12.27012,-0.00293c2.05137,-0.00146 4.19487,-0.14795 6.23115,0.03662zM189.31348,114.93062c1.34766,-2.01855 2.72754,-4.01338 3.84375,-6.17197c2.74512,-5.30435 4.6626,-12.34526 5.09912,-18.29048c0.20801,-2.82129 0.08936,-5.71919 0.08789,-8.54883c-0.00146,-3.95654 0.05713,-7.92891 -0.09814,-11.88281c-2.36426,2.31885 -4.7124,4.65469 -7.04297,7.00752c-1.24219,1.24658 -2.46094,2.64404 -3.81885,3.75586c-0.60791,0.49878 -1.28613,0.90659 -2.01123,1.2104c-0.29883,0.1229 -0.6167,0.24902 -0.94189,0.27817c-2.60742,0.23364 -5.3291,0.07559 -7.95117,0.07603l-15.07617,-0.00029l-43.47041,0.00161c-0.88872,-0.00806 -1.75708,-0.08262 -2.63789,-0.19336c-2.61562,-0.32871 -9.41748,-8.30596 -11.775,-10.4959c-0.554,-0.51489 -1.18022,-1.21699 -1.83633,-1.58584c-0.1251,4.48213 -0.21431,8.93159 -0.20698,13.41855c0.00337,2.11318 -0.06548,4.26387 0.09961,6.37163c0.84536,11.43413 5.60669,22.22725 13.48154,30.5603c8.11318,8.63877 19.49326,13.63462 31.16294,14.79712c1.14053,0.11367 2.29189,0.30088 3.43594,0.3334c1.55566,0.04409 3.16113,-0.23306 4.70947,-0.39873c10.7915,-1.15503 21.07324,-5.61504 28.9541,-13.18901c2.2998,-2.21016 4.13379,-4.46104 5.99268,-7.05337zM102.57305,48.30645l50.2834,0.00586l29.80664,-0.00059l9.19775,0.00146c1.84863,0.00073 3.76318,-0.08994 5.60303,0.08188c-1.11182,-3.36064 -1.97021,-6.71528 -3.37939,-9.98481c-4.4502,-10.1083 -12.2666,-18.36196 -22.11768,-23.35547c-7.59814,-3.83213 -16.04736,-5.66834 -24.55078,-5.33585c-2.70454,0.30045 -5.46431,0.62971 -8.11655,1.24434c-10.51743,2.4069 -19.92979,8.2568 -26.74424,16.62164c-3.71792,4.62568 -6.45015,9.72495 -8.35298,15.34087c-0.60293,1.77949 -1.00327,3.61128 -1.6292,5.38066zM106.22974,191.85352c1.36304,1.45166 2.5251,3.16992 3.7248,4.76074l6.5688,8.72607c3.39023,4.39453 6.74854,8.8125 10.07461,13.25537c1.85728,2.4668 3.85942,4.90723 5.50649,7.51904c2.82554,-3.50977 6.87217,-6.2417 11.24355,-7.41504c0.05464,0.00586 0.10913,0.01318 0.16377,0.01904c0.08291,0.00879 0.16611,0.01465 0.24902,0.02344c0.87217,0.08936 1.59023,-0.23291 2.44204,-0.28857c2.10527,-0.14062 4.42412,-0.02051 6.53789,0.0835c0.41748,0.02051 0.68994,0.0542 1.07373,-0.14795c0.22852,-0.12158 0.39844,-0.20801 0.65332,-0.271l0.25928,-0.06152c3.67676,0.77344 7.05762,2.17676 10.06641,4.46631c0.54932,0.41748 3.13184,3.20361 3.52588,2.95752c1.52637,-0.95654 11.90186,-15.37207 13.89404,-18.02051l6.40723,-8.35986c1.54688,-2.05518 3.67969,-5.45947 5.61182,-7.05029c-0.12744,-2.44922 0.36035,-13.86035 -0.22119,-15.1626c-1.19531,-0.52588 -7.04297,-2.21924 -8.07422,-1.95264c-1.25684,0.84521 -2.2793,2.146 -3.3252,3.23877c-1.33008,1.38721 -2.7041,2.77295 -4.1543,4.03564c-2.35693,2.05225 -4.69775,4.08252 -7.36377,5.73047c-8.72314,5.39355 -19.65967,6.84961 -29.64331,4.91455c-5.62837,-1.09131 -11.41934,-3.60791 -15.85151,-7.24365c-2.38491,-1.95703 -4.49355,-4.21143 -6.63149,-6.42627c-1.45298,-1.50586 -3.04395,-2.94434 -4.4146,-4.51758c-2.68315,0.8584 -5.48423,1.3418 -8.18379,2.16504c-0.43682,4.94385 -0.16802,10.05615 -0.13931,15.02197zM147.95508,227.68506c-3.18091,0.31348 -6.96753,2.35986 -9.01084,4.81641c-2.41333,2.90186 -3.81108,6.86719 -3.45703,10.63037c0.37163,3.94775 2.21235,7.48389 5.29424,10.00195c1.4168,1.15723 3.13608,2.18115 4.91646,2.65137c3.88901,1.02539 8.41831,-0.32227 9.02476,5.16357c0.27393,2.47559 0.06885,5.09766 0.09668,7.59375c0.02197,0.82324 0.06152,1.64502 0.12158,2.46533c3.0498,-0.0498 6.38525,-0.29736 9.41309,0.01465l-0.00879,-20.83887c0.00586,-3.19775 0.36035,-8.18994 -0.2168,-11.12549c-0.51855,-2.63672 -1.83545,-5.50049 -3.76025,-7.40771c-2.64844,-2.625 -6.66943,-4.08105 -10.36523,-4.03271c-0.68262,0.01465 -1.36523,0.03662 -2.04785,0.06738zM196.10742,58.38091c-7.72705,-0.27393 -15.53467,-0.05581 -23.27197,-0.0542l-43.6604,0.00352l-16.23501,-0.00278c-2.98521,-0.00073 -6.12729,0.20317 -9.08687,-0.14048c0.75117,1.18755 2.20576,2.31284 3.21475,3.33091c3.5543,3.58594 7.44844,7.08179 10.76323,10.87939c10.95645,-0.19761 21.9334,-0.06738 32.89248,-0.06724c10.43701,0 20.89746,-0.14238 31.33154,0.07793c2.13867,-2.51177 4.66846,-4.81846 7.021,-7.13364c2.27344,-2.34946 4.6084,-4.69819 7.03125,-6.89341zM227.59277,290.35107c5.43604,-0.19629 10.92773,-0.04541 16.36963,-0.04248l29.15625,0.00146l10.37842,0.00879c1.94238,0.00146 3.92578,0.08936 5.8623,-0.04834c-0.8335,-2.77441 -1.7959,-6.95654 -2.03467,-9.78955l-41.11963,-0.0249l-12.75879,0.00293c-1.95264,0.00146 -4.00342,0.14795 -5.9458,-0.00146c-0.05859,3.26953 -0.15674,6.63281 0.09229,9.89355zM72.39888,280.49121l-34.45269,-0.03955c-8.46108,0 -16.9437,-0.12012 -25.40227,0.05273c-0.61068,3.24756 -1.13676,6.54785 -1.89205,9.76611c8.11497,0.18164 16.25687,0.04688 24.37503,0.04395l35.76167,-0.02344c0.52134,0.00879 1.03931,0.01758 1.55947,0.05566c0.00366,-3 -0.24653,-6.97998 0.05083,-9.85547zM174.27686,140.41567c-0.49805,-0.23262 -0.74561,-0.18164 -1.26123,0.00381c-2.88867,1.04063 -5.70264,2.13823 -8.6792,2.92837c-8.96484,2.38081 -19.07505,2.42197 -28.06743,0.13608c-1.67695,-0.41235 -3.3312,-0.91143 -4.9563,-1.49546c-1.82007,-0.66563 -3.62739,-1.48652 -5.52715,-1.89609c-0.43535,5.14585 -0.23643,10.37197 -0.23643,15.53555c0,5.49023 -0.14795,11.03174 0.03003,16.51904c0.04131,0.03076 0.08306,0.06006 0.12393,0.09082c2.06792,1.58057 3.68481,3.79688 5.67788,5.49463c5.91284,5.03613 14.33525,7.31396 21.9999,6.37061c4.36963,-0.5376 9.38086,-2.43018 13.0166,-4.96436c1.29492,-0.90234 2.51074,-2.0376 3.7002,-3.07471c1.33008,-1.15869 2.58398,-2.72314 4.06348,-3.66064c0.25488,-0.01172 0.43213,-0.03369 0.66797,-0.13184c0.26807,-0.86133 0.19775,-28.80352 -0.0542,-30.96694l-0.01904,0.30469c-0.10254,-0.55181 -0.06592,-0.79805 -0.479,-1.19355z" fill-opacity="0.98431" fill="#000000" />
+                                            <path d="M146.39238,236.93262c1.81172,0.06738 6.71309,-0.34277 8.08564,0.32666c0.66211,1.98633 0.44385,7.3125 0.41602,9.60645c-0.40576,0.26514 -0.72656,0.16699 -1.20264,0.15234c-2.86523,-0.03955 -5.74951,0.1333 -8.60933,0.00586c-0.18193,-2.00391 -0.26792,-8.00977 0.01187,-9.81738c0.34893,-0.25195 0.88008,-0.23145 1.29844,-0.27393z" fill="url(#color-1)" />
+                                            <path d="M174.27686,140.41567c0.41309,0.39551 0.37646,0.64175 0.479,1.19355l0.01904,-0.30469c0.25195,2.16343 0.32227,30.10562 0.0542,30.96694c-0.23584,0.09814 -0.41309,0.12012 -0.66797,0.13184c0.42773,-0.87744 0.15234,-23.69678 0.14502,-27.11118c-0.00439,-1.60781 -0.15674,-3.28184 -0.0293,-4.87646z" fill-opacity="0.95686" fill="#000000" />
+                                            <path d="M97.07461,178.41504c0.89531,1.44287 0.35303,13.27588 0.44824,15.86865c0.03091,0.83936 0.48501,1.59521 0.3917,2.43311c-0.22324,-0.271 -0.37441,-0.55371 -0.53687,-0.86572c-0.22163,-0.4248 -0.33501,-0.71631 -0.38335,-1.20117c-0.16245,-1.62598 -0.21387,-15.30762 0.08027,-16.23486z" fill-opacity="0.95294" fill="#000000" />
+                                            <path d="M143.348,218.69971c3.91714,-1.05029 7.35806,-1.37109 11.37905,-0.64307l-0.25928,0.06152c-0.25488,0.06299 -0.4248,0.14941 -0.65332,0.271c-0.38379,0.20215 -0.65625,0.16846 -1.07373,0.14795c-2.11377,-0.104 -4.43262,-0.22412 -6.53789,-0.0835c-0.85181,0.05566 -1.56987,0.37793 -2.44204,0.28857c-0.08291,-0.00879 -0.16611,-0.01465 -0.24902,-0.02344c-0.05464,-0.00586 -0.10913,-0.01318 -0.16377,-0.01904z" fill-opacity="0.93333" fill="#000000" />
+                                            <path d="M92.6376,49.28247c0.19805,0.72686 0.21548,1.43174 0.22954,2.17939c0.07368,3.9145 -0.0293,7.84409 -0.04175,11.75991l0.0126,19.42837c0.00337,2.44687 0.37778,10.33433 -0.00732,12.03281l-0.26206,0.32153c-0.69888,-2.25937 -0.41704,-15.34248 -0.4188,-18.64966c-0.03105,-6.4251 -0.01436,-12.8502 0.05024,-19.27485c0.03896,-2.04404 0.00293,-4.11328 0.13169,-6.15249c0.03618,-0.57275 0.14678,-1.09541 0.30586,-1.64502z" fill-opacity="0.96471" fill="#000000" />
+                                            <path d="M116.30596,134.2686c0.28652,0.49087 0.36724,0.77915 0.36182,1.34473c-0.00527,0.56323 0.05054,1.12983 0.08818,1.69175l0.0353,-0.33618c0.18018,2.2311 0.25371,26.9896 0.08071,27.34556c-0.29458,-0.06152 -0.29458,-0.104 -0.58799,0.02344z" fill-opacity="0.95686" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </svg>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <small>Entrenadores</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.entrenadores %}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <svg class="d-inline pe-2"
+                                         id="svg"
+                                         version="1.1"
+                                         viewBox="0 0 300 300"
+                                         width="40"
+                                         height="40"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath><linearGradient x1="299.51514" y1="284.47412" x2="299.87842" y2="284.46387" gradientUnits="userSpaceOnUse" id="color-1"><stop offset="0" stop-color="#000000" stop-opacity="0.94902" /><stop offset="1" stop-color="#010000" stop-opacity="0.98824" /></linearGradient></defs>
+                                            <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                            <path d="M135.29473,33.98188c2.7123,0.36973 7.16953,-0.71748 10.11797,-0.79043c0.89473,-0.02212 1.80557,0.11206 2.70205,0.13652c2.01123,0.05493 4.03125,0.01494 6.04395,0.0375c0.59033,0.00659 1.42529,0.17798 1.98047,0.03691c0.25488,-0.06489 0.07324,-0.0999 0.32959,0.01523c0.60352,0.39639 4.08838,0.67603 4.92188,0.6334c0.13916,-0.16743 0.26367,-0.32959 0.38965,-0.5083l0.20361,-0.09009c10.7168,2.05986 19.45898,4.86401 28.81201,10.68647c1.59668,0.99448 3.64893,2.0127 4.70508,3.61055c0.83057,1.25859 1.16602,2.85732 0.79102,4.32876c-0.3457,1.36494 -1.021,2.42783 -2.26318,3.11016c-1.18652,0.65259 -2.3291,1.07051 -3.65039,0.64922c-2.45508,-0.78267 -4.67725,-2.56904 -6.89355,-3.86938c-2.19287,-1.28569 -4.64502,-2.53066 -6.97852,-3.53848c-13.72266,-5.93687 -29.05225,-7.04297 -43.48403,-3.1374c-3.97266,1.03447 -7.91704,2.34009 -11.60537,4.14902c-16.33359,8.01064 -28.90312,21.30513 -34.82227,38.64448c-1.80278,5.28135 -3.25898,10.98325 -3.76655,16.54995c-0.16245,1.78242 -0.12539,3.6082 -0.11558,5.39604c-0.01465,10.2416 2.32852,20.34902 6.848,29.53945c7.93843,16.11797 21.96489,28.41387 38.98345,34.17363c1.50996,0.50977 3.03618,0.99463 4.58364,1.37695c1.24585,0.30762 3.4519,0.56396 4.51274,1.08252c0.41675,0.66943 1.54907,0.87012 2.32339,1.0459c0.74634,0.16846 1.51787,0.31494 2.28325,0.35449c0.79058,0.03955 9.44927,-0.07324 9.94878,-0.22852l0.09814,-0.11865c12.64014,-0.1377 25.86182,-4.95264 36.14648,-12.17871c24.20215,-16.95264 34.49268,-47.72271 25.35645,-75.8231c-1.55273,-4.65586 -3.56689,-9.33955 -6.11719,-13.54263c-1.32861,-2.19097 -3.02197,-4.1874 -4.12939,-6.50962c-0.38525,-0.80933 -0.66504,-1.62085 -0.4834,-2.52085c0.2915,-1.43613 1.21875,-2.93071 2.44922,-3.74385c1.20996,-0.80098 2.69092,-0.923 4.07666,-0.577c2.92529,0.73008 4.979,4.67637 6.44971,7.09072c10.78711,17.77383 14.10791,39.09214 9.2373,59.30464c-4.97607,20.06631 -17.73926,37.32363 -35.46826,47.9584c-10.8999,6.58154 -20.90918,9.54199 -33.50977,10.60107c-2.34668,0.19629 -4.6084,0.54639 -6.97852,0.50977c-1.87646,-0.0293 -3.74238,-0.33545 -5.61343,-0.47754c-3.97456,-0.30029 -7.927,-0.73242 -11.80459,-1.69336c-20.37861,-4.99219 -37.90269,-17.9502 -48.64585,-35.97217c-4.42412,-7.34941 -7.83311,-15.76201 -9.37368,-24.22163c-0.53174,-2.92017 -0.76743,-5.83345 -1.0998,-8.77295c-0.43564,-3.85239 -0.96006,-8.24136 -0.01567,-12.04351c0.28667,-0.08145 0.25869,-0.08936 0.44414,-0.28916c0.38833,-2.16973 0.32813,-4.23179 0.16611,-6.41733c0.11206,-2.09194 0.704,-4.34355 1.19355,-6.37983c2.7397,-11.39531 8.30581,-21.63354 15.50713,-30.79819c0.98042,-1.24775 2.12915,-2.35605 3.20508,-3.52075c8.74365,-9.46523 18.59194,-15.6772 30.60088,-20.1583c3.58901,-1.33931 7.58745,-2.65649 11.40762,-3.10005z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M180.37939,74.03013c0.59326,-0.046 1.2627,-0.02153 1.8457,0.09551c1.66406,0.33384 2.62061,1.56548 3.52441,2.88267c0.16406,1.49312 0.09961,2.85352 -0.03076,4.3481c-0.23877,0.33574 -0.48193,0.66812 -0.72949,0.99683c-2.44922,3.22939 -6.22266,6.51782 -9.14209,9.4311l-16.76807,16.76748l-24.11777,24.11968c-2.32866,2.30493 -4.6459,4.62144 -6.95142,6.94966c-1.54658,1.56489 -3.0624,3.23745 -4.7209,4.68105c-1.21362,1.05645 -2.28838,1.76924 -3.9126,1.98999c-0.82588,0.00952 -1.57954,-0.07295 -2.39238,-0.20024c-0.15791,-0.13213 -0.32812,-0.2521 -0.49116,-0.37822c-1.39307,-1.0771 -2.51924,-2.28179 -2.70732,-4.11533c-0.17622,-1.71665 0.39302,-2.93218 1.4707,-4.20088c1.19238,-1.40391 2.59541,-2.677 3.89854,-3.97969l7.16953,-7.16836l22.50234,-22.49927l19.34326,-19.34443l6.04248,-6.05464c1.09424,-1.09658 2.1709,-2.30962 3.36621,-3.29048c0.84814,-0.69609 1.73438,-0.93662 2.80078,-1.03052z" fill-opacity="0.97255" fill="#000000" />
+                                            <path d="M173.58691,120.77358c7.83105,1.52329 13.2334,8.73325 12.49512,16.67651c-0.73828,7.94341 -7.37695,14.03525 -15.35303,14.08945c-7.97754,0.0542 -14.69824,-5.9458 -15.54492,-13.87837c-0.84668,-7.93242 4.45605,-15.21563 12.26514,-16.8457c1.03564,0.42642 4.01953,0.61553 5.06689,0.26763c0.06885,-0.02271 0.13184,-0.05933 0.19922,-0.08394c0.28271,-0.10518 0.57422,-0.18091 0.87158,-0.22559zM165.24316,136.00269c0.66357,1.78696 1.2832,3.72056 3.17871,4.54834c1.04004,0.45454 2.15625,0.4437 3.26807,0.43594c1.54248,-0.13096 2.77441,-1.8561 3.76172,-2.91929c0.05127,-1.45811 0.07031,-2.88999 -0.00439,-4.34883c-1.31836,-1.42808 -2.52393,-2.67642 -4.59814,-2.77485c-0.479,-0.02256 -0.96387,0.01172 -1.44141,0.0397c-2.65723,1.23735 -3.18018,2.44497 -4.16455,5.01899z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M114.38218,79.63462c1.6106,-4.21201 4.23809,-7.66816 8.44541,-9.54155c3.54302,-1.57764 8.07627,-1.83984 11.71143,-0.41997c4.03477,1.57588 7.1981,4.44624 8.93188,8.43369c1.51597,3.48662 1.58584,8.75581 0.14546,12.26572c-1.45737,3.55122 -4.82681,6.87905 -8.38462,8.31035c-0.94717,0.38101 -2.04243,0.68716 -3.05771,0.80098c-1.26108,-0.09375 -3.62109,-0.70913 -4.75444,-0.254l0.27686,0.22002c-0.11909,0.08569 -0.22427,0.17021 -0.35933,0.2291c-2.45522,-0.12378 -4.87983,-1.32847 -6.88594,-2.68535c-3.15645,-2.13516 -5.53828,-5.41729 -6.28506,-9.17739l0.34614,-0.23408c0.37119,-1.28086 0.08071,-6.50713 -0.13008,-7.94751zM124.5605,82.46191c-0.73579,1.85508 -0.31421,3.96914 1.0771,5.39971c1.39116,1.43071 3.49277,1.91133 5.36748,1.22754c2.63877,-0.96226 3.99097,-3.88784 3.01392,-6.52134c-0.9769,-2.63335 -3.90996,-3.96929 -6.53789,-2.97773c-1.33447,0.50347 -2.39473,1.54614 -2.92061,2.87183z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M26.45874,223.95264c1.7647,-4.74023 6.69404,-7.51172 11.66074,-6.55811c4.96685,0.95361 8.51851,5.354 8.4019,10.41064c-0.1166,5.05664 -3.86748,9.28857 -8.873,10.01221c-5.00537,0.7251 -9.80171,-2.27197 -11.34595,-7.08838l0.03984,-0.03223l0.20391,-0.03076c0.02417,-0.03369 0.05317,-0.06445 0.07222,-0.10107c0.34102,-0.65332 0.02212,-5.6792 -0.15967,-6.6123z" fill-opacity="0.98431" fill="#000000" />
+                                            <path d="M119.88486,229.84277c0.79395,-1.12646 1.99453,-1.95996 3.36167,-2.20166c1.38179,-0.24316 2.75698,0.14063 3.8688,0.98438c0.85444,0.64746 1.67153,1.68018 1.82461,2.7627c0.23013,1.63184 0.10986,3.42334 0.10928,5.07275l-0.00806,9.01611l0.01333,9.26221c0.00454,1.88965 0.12935,3.89941 -0.15381,5.77002c-0.07236,0.47607 -0.38262,0.98584 -0.68643,1.35352c-0.89458,1.08398 -2.39766,1.71387 -3.7752,1.82666c-1.26416,0.10254 -2.47397,-0.1875 -3.42612,-1.04004c-0.41997,-0.37061 -0.82192,-0.76172 -1.20469,-1.17041c0.31655,-2.84912 -0.00967,-6.59912 -0.01245,-9.54199c-0.00601,-6.37061 0.12495,-12.75879 -0.00205,-19.12793z" fill-opacity="0.98824" fill="#000000" />
+                                            <path d="M119.88486,229.84277l-0.09111,2.96631c-0.3876,0.75879 -0.12627,4.38428 -0.11982,5.5459l0.01304,14.55908c-0.00366,1.88672 -0.22134,3.94189 -0.07544,5.80371c0.00117,0.01611 0.01099,0.02783 0.01655,0.04248c-0.04819,-0.80859 0.02827,-3.58887 -0.48647,-4.12793c-0.09155,-4.87646 -0.0208,-9.76904 -0.02212,-14.64697c-0.00073,-2.80957 -0.23892,-5.84912 0.13169,-8.62646c0.0876,-0.65625 0.20171,-1.01367 0.63369,-1.51611z" fill-opacity="0.97647" fill="#000000" />
+                                            <path d="M135.29473,33.98188c2.30479,-0.55547 4.75723,-0.74971 7.11475,-0.96489c1.83252,-0.16714 3.68247,-0.43286 5.51924,-0.51401c4.2085,-0.18618 8.33057,0.21973 12.49951,0.7415c-1.30225,0.08628 -2.65869,0.27187 -3.95947,0.17314c-0.25635,-0.11514 -0.07471,-0.08013 -0.32959,-0.01523c-0.55518,0.14106 -1.39014,-0.03032 -1.98047,-0.03691c-2.0127,-0.02256 -4.03271,0.01743 -6.04395,-0.0375c-0.89648,-0.02446 -1.80732,-0.15864 -2.70205,-0.13652c-2.94844,0.07295 -7.40566,1.16016 -10.11797,0.79043z" fill-opacity="0.91765" fill="#000000" />
+                                            <path d="M119.1416,254.63232c0.51475,0.53906 0.43828,3.31934 0.48647,4.12793c-0.00557,-0.01465 -0.01538,-0.02637 -0.01655,-0.04248c-0.1459,-1.86182 0.07178,-3.91699 0.07544,-5.80371l-0.01304,-14.55908c-0.00645,-1.16162 -0.26777,-4.78711 0.11982,-5.5459c0.127,6.36914 -0.00396,12.75732 0.00205,19.12793c0.00278,2.94287 0.329,6.69287 0.01245,9.54199c-1.1332,-1.50439 -0.68394,-5.02734 -0.66665,-6.84668z" fill-opacity="0.96078" fill="#000000" />
+                                            <path d="M137.64038,176.20459c2.3877,0.33691 4.82842,0.87598 7.23267,0.99756c2.45801,0.12451 4.979,-0.16406 7.4209,0.05566l-0.09814,0.11865c-0.49951,0.15527 -9.1582,0.26807 -9.94878,0.22852c-0.76538,-0.03955 -1.53691,-0.18604 -2.28325,-0.35449c-0.77432,-0.17578 -1.90664,-0.37646 -2.32339,-1.0459z" fill-opacity="0.95686" fill="#000000" />
+                                            <path d="M114.16611,87.81621c-0.56367,-1.90591 -0.36943,-6.28989 0.21606,-8.18159c0.21079,1.44038 0.50127,6.66665 0.13008,7.94751z" fill-opacity="0.96863" fill="#000000" />
+                                            <path d="M26.30244,230.729c-0.70942,-2.21191 -0.65435,-4.59961 0.1563,-6.77637c0.18179,0.93311 0.50068,5.95898 0.15967,6.6123c-0.01904,0.03662 -0.04805,0.06738 -0.07222,0.10107l-0.20391,0.03076z" fill-opacity="0.97255" fill="#000000" />
+                                            <path d="M167.44922,120.81548c2.02295,-0.42231 4.10889,-0.43652 6.1377,-0.04189c-0.29736,0.04468 -0.58887,0.12041 -0.87158,0.22559c-0.06738,0.02461 -0.13037,0.06123 -0.19922,0.08394c-1.04736,0.3479 -4.03125,0.15879 -5.06689,-0.26763z" fill-opacity="0.93726" fill="#000000" />
+                                            <path d="M72.77021,104.64551c0.10283,-2.25103 0.13022,-4.49648 0.61025,-6.70649c0.16201,2.18555 0.22222,4.24761 -0.16611,6.41733c-0.18545,0.1998 -0.15747,0.20771 -0.44414,0.28916z" fill-opacity="0.96471" fill="#000000" />
+                                            <path d="M160.42822,33.24448c0.53174,0.04087 1.03418,0.09463 1.55566,0.20815l-0.20361,0.09009c-0.12598,0.17871 -0.25049,0.34087 -0.38965,0.5083c-0.8335,0.04263 -4.31836,-0.23701 -4.92187,-0.6334c1.30078,0.09873 2.65723,-0.08687 3.95947,-0.17314z" fill-opacity="0.94902" fill="#000000" />
+                                            <path d="M127.33711,99.67896c0.13506,-0.05889 0.24023,-0.14341 0.35933,-0.2291l-0.27686,-0.22002c1.13335,-0.45513 3.49336,0.16025 4.75444,0.254c-1.56987,0.33149 -3.26616,0.72231 -4.83691,0.19512z" fill-opacity="0.94902" fill="#000000" />
+                                            <path d="M146.96777,0.9639c1.10303,-0.01432 4.05762,-0.52776 4.86768,-0.24622c0.60498,0.21022 0.40576,0.66459 1.24805,0.39401c2.67041,1.32076 5.58838,3.92615 8.05518,5.70565l6.25928,4.55041c1.18213,0.85255 2.50342,1.63466 3.56836,2.62871c2.57959,-1.36805 7.92041,-1.92091 10.99805,-2.58508c3.42627,-0.73913 6.90381,-1.74249 10.37695,-2.19974c0.73096,-0.09615 1.35791,-0.0968 2.06982,0.106c0.73242,0.20843 1.64209,0.55071 2.18408,1.10808c1.76514,1.81616 5.10938,8.34891 6.62109,10.97654c1.5293,2.65693 3.19189,5.27256 4.62598,7.97944c0.20068,0.37778 0.38086,0.75352 0.5332,1.15239l14.98975,3.23628c2.521,0.55254 5.52686,0.90205 7.86914,1.94502c0.80859,0.35977 1.30518,0.79424 1.77686,1.54907c0.36768,0.59121 0.60205,1.17861 0.73682,1.86123c0.5332,2.6814 0.58301,5.42886 0.89209,8.13457l1.16748,11.21528c0.10107,0.96592 0.34717,1.90474 0.41016,2.87329c4.09717,2.92119 8.16504,5.8834 12.20068,8.88633c1.96143,1.43335 4.69775,2.8998 6.25781,4.76499c0.79834,0.95669 1.08545,2.31211 1.43115,3.48296c-0.81152,3.46729 -1.98193,6.73271 -3.01465,10.1272c-0.86279,2.83579 -2.64697,9.75674 -4.14258,12.04702c2.16357,3.34512 4.04443,6.94805 6.03076,10.40669c1.45166,2.52861 4.2832,6.77256 5.09766,9.40459c0.41162,1.32803 0.37061,2.63745 0.11572,3.99082c-0.09521,0.50698 -0.49512,1.01748 -0.80566,1.4228c-0.86719,1.13276 -1.91162,2.13574 -2.85205,3.20742c-2.44775,2.78862 -4.90283,5.60596 -7.41504,8.33496c-1.29346,1.40479 -3.49365,3.17769 -4.2583,4.93784c-0.1582,0.36577 -0.14209,0.34204 0.0249,0.68643c0.34131,0.70649 0.14941,2.93804 0.24756,3.86763l1.19092,11.24268c0.18457,1.80615 0.48193,3.56836 0.52441,5.39063c0.02783,1.14258 -0.03516,2.31445 -0.48633,3.38086c-0.35449,0.83789 -1.00049,1.37549 -1.74463,1.86328c-1.80176,1.1792 -4.00195,1.93359 -5.97217,2.79639c-3.64307,1.59521 -7.31689,3.16553 -10.91455,4.85889c-1.17773,0.55371 -2.9209,1.17041 -3.8042,2.14307c-0.72803,0.7998 -0.96973,2.98389 -1.28174,4.05908c-0.8833,3.05566 -1.98633,6.0791 -2.98975,9.09961c-0.83057,2.50195 -1.71826,6.24463 -3.0835,8.39941c-0.57275,0.90381 -1.47363,1.53516 -2.46094,1.91895c-0.6416,0.25049 -1.33154,0.36328 -2.01562,0.40869c-3.43359,0.22266 -7.00781,-0.01758 -10.46045,-0.01172c-3.37207,0.00439 -7.88672,0.30322 -11.13721,-0.09668c-0.54785,0.79834 -1.26709,1.4502 -1.9043,2.17529c-1.87061,2.12988 -3.76465,4.18652 -5.68359,6.26953c-2.46973,2.68066 -4.74756,5.80371 -7.51611,8.18115c-0.63721,0.54785 -1.1543,0.88916 -1.99512,1.03418c-1.16309,0.19189 -2.354,0.13037 -3.49219,-0.18311c-2.34961,-0.66211 -5.38184,-2.33057 -7.7124,-3.36621l-7.61426,-3.38818c-1.41211,-0.62988 -2.99854,-1.19678 -4.29492,-2.03613c-0.05127,0.01172 -0.10254,0.02344 -0.15381,0.03662c-1.56885,0.39844 -3.16113,1.28613 -4.63945,1.9541c-2.90845,1.31396 -5.84209,2.56201 -8.74263,3.89355c-2.14673,0.98438 -4.54673,2.34375 -6.81519,2.93701c-1.22417,0.31934 -3.27188,0.5083 -4.38955,-0.16699c-1.63301,-0.9873 -2.92397,-2.79346 -4.20996,-4.17773c-1.65791,-1.78564 -3.22236,-3.6416 -4.86958,-5.43018c-1.04355,-1.13232 -2.14731,-2.20605 -3.17505,-3.35303c-1.30825,-1.46191 -2.50459,-2.99414 -3.8918,-4.38574c-1.50586,0.2373 -3.13154,0.12158 -4.65557,0.12305l-7.46719,0.00146c-2.60493,0 -8.20283,0.30029 -10.54717,-0.13916c-0.82192,-0.15381 -1.65454,-0.65039 -2.32808,-1.13818c-0.78896,-0.57129 -1.26343,-1.46484 -1.66216,-2.33643c-1.23999,-2.7085 -2.04507,-5.77881 -2.98667,-8.61475c-1.17173,-3.52881 -2.93745,-7.7124 -3.44487,-11.33789c-0.02065,-0.14795 -0.0397,-0.29443 -0.05742,-0.44238c-4.71035,-2.69238 -9.96943,-4.69775 -14.93276,-6.89941c-1.92891,-0.85547 -4.09336,-1.58936 -5.83813,-2.77295c-1.03799,-0.70459 -1.96934,-1.52637 -2.29219,-2.78174c-0.39214,-1.5249 -0.41191,-5.37305 0.24697,-6.75293l0.40854,-0.25049c0.36899,-1.71826 0.43667,-3.25195 0.1834,-4.98779c-0.08115,-3.12744 0.52104,-6.47754 0.84082,-9.59985c0.05054,-0.49336 0.32739,-1.43877 0.25093,-1.89507c-0.18911,-1.12939 -10.9333,-12.5751 -12.55898,-14.45728c-0.97969,-1.13423 -2.22129,-2.19741 -2.82334,-3.59473c-0.70386,-1.63315 -0.36182,-4.33667 0.854,-5.66572c0.92227,-1.00825 2.31372,-1.45576 3.65098,-1.48242c1.70186,-0.03413 3.2127,0.73374 4.40259,1.9084c0.87422,0.86294 1.63784,1.88276 2.45024,2.8062c1.68384,1.91411 3.4147,3.80903 5.12124,5.70469l5.14746,5.70981c0.99199,1.1061 2.13311,2.1394 2.93818,3.39419c0.72671,1.13262 1.28276,2.48994 1.26709,3.84712c-0.03457,2.97891 -0.61743,6.08247 -0.91597,9.05464c-0.30132,2.99854 -0.42861,8.39502 -1.37212,11.09766c4.2876,2.34961 9.00762,4.16602 13.48945,6.1377c2.28823,1.00781 4.58818,1.89404 6.68438,3.27539l-0.38687,0.55225l0.13682,0.0835c0.12437,0.07617 0.421,0.22852 0.50742,0.33838c0.72026,0.92578 6.12261,17.98828 6.55693,19.88086c0.05698,0.24902 0.09712,0.75879 0.30088,0.9082c0.36123,0.26514 0.99258,0.36035 1.43247,0.45996c1.68369,0.38379 3.63032,0.23438 5.348,0.2373c3.10825,0.01318 6.21665,0.00293 9.3249,-0.03076c1.56694,-0.02051 3.18735,-0.16553 4.74917,-0.08936c1.32686,0.06445 2.15874,1.01074 3.58433,0.68408c1.54761,0.95801 2.72769,2.729 3.90601,4.09277c1.00371,1.16162 2.09824,2.23975 3.11572,3.38965c1.72163,1.94531 5.19932,6.38965 7.2624,7.6875c0.48838,0.01025 0.86543,-0.07471 1.32715,-0.23584c1.49561,-0.52148 2.95093,-1.36377 4.402,-2.02002c3.54844,-1.60693 7.11284,-3.25781 10.69966,-4.771c1.18843,-0.50098 2.90229,-1.33154 4.20601,-1.2832c2.91943,0.10547 17.08301,7.16602 20.67188,8.62646c1.19385,-1.5791 2.71582,-2.93408 4.06934,-4.37988c0.95801,-1.02393 1.78125,-2.16504 2.72021,-3.20508c0.89795,-0.99316 1.89404,-1.89551 2.80811,-2.86963c1.23193,-1.31396 2.1665,-2.85937 3.47314,-4.11621c1.10742,-1.06494 2.40381,-1.76221 3.90527,-2.09473c2.45801,-0.54785 5.3291,-0.27539 7.8457,-0.27246c4.41797,-0.00732 8.83594,0.01611 13.25244,0.07324c0.41602,-3.08203 2.09766,-7.10449 3.09961,-10.11914c1.03271,-3.1084 1.91016,-6.50537 3.27539,-9.47607c0.33545,-0.72949 0.74414,-1.55127 1.396,-2.03906c2.45361,-1.83545 7.56299,-3.68701 10.54102,-5.00684c3.16992,-1.40332 6.33105,-2.99561 9.58154,-4.18799c-0.08203,-0.2915 -0.15674,-0.58594 -0.22266,-0.88184c-0.74268,-3.28857 -0.84375,-6.84961 -1.18066,-10.20557c-0.30469,-3.03223 -0.8335,-6.19644 -0.854,-9.23979c-0.00586,-0.78926 0.05859,-1.77759 0.375,-2.50708c0.76172,-1.75693 5.85059,-7.23677 7.37549,-8.8002c1.34912,-1.38428 2.50195,-2.89175 3.7998,-4.31279c0.88477,-0.96929 2.14453,-1.93521 2.80078,-3.06138c0.21094,-0.36196 0.18311,-0.5291 0.03955,-0.90732c-0.52588,-1.38721 -1.4707,-2.75552 -2.21631,-4.04429c-2.3584,-4.07974 -7.05615,-11.13882 -8.30713,-15.38643c0.85547,-4.11562 2.23242,-8.20283 3.56543,-12.18691c1.01074,-3.01802 1.99365,-6.05068 3.13916,-9.02051c-4.9585,-3.71704 -10.26562,-7.07886 -15.0791,-10.97461c-0.99463,-0.80508 -2.36426,-1.86768 -2.98389,-3.01113c-1.18945,-2.19683 -1.52344,-10.89126 -1.8252,-13.75752l0.23877,-0.36855c0.12744,-1.36406 0.01611,-3.12627 -0.31494,-4.46118l-0.14795,0.02769l-0.21387,0.65947c-0.26221,-1.42661 -0.4585,-2.81074 -0.49805,-4.26284c-2.07568,-0.03267 -4.12646,-0.61113 -6.14355,-1.06172l-7.8999,-1.74243c-1.92187,-0.41045 -3.97559,-0.5792 -5.8418,-1.20103c-0.95947,-0.31992 -1.68018,-0.74985 -2.38623,-1.47554c-1.82959,-1.87646 -3.07178,-4.4376 -4.35937,-6.69858c-2.30127,-4.04106 -4.49414,-8.36733 -7.13965,-12.18882c-0.35889,0.23584 -0.7251,0.41104 -1.13818,0.52412c-2.21777,0.60527 -4.54248,0.94263 -6.79248,1.43013c-3.60791,0.7812 -7.25977,1.70098 -10.90576,2.25791c-0.84521,0.12905 -1.99072,0.29634 -2.82861,0.1377c-0.97266,-0.18384 -1.97461,-0.78486 -2.80957,-1.29888c-2.92383,-1.80264 -5.71289,-4.09116 -8.4917,-6.1248c-2.31299,-1.69321 -4.95703,-3.40625 -7.1792,-5.1123l-0.18018,0.08943c-4.3437,2.20342 -15.36372,11.99392 -18.65186,12.40876c-2.76138,0.34834 -5.91797,-0.74941 -8.62134,-1.28496c-2.65884,-0.52661 -5.29937,-1.10083 -7.94883,-1.67227c-1.33213,-0.28726 -2.74204,-0.46816 -4.03579,-0.89575c-0.38027,-0.12568 -0.74751,-0.27583 -1.11123,-0.44297l-5.56348,9.5436c-1.55098,2.71201 -3.71543,7.33081 -5.9083,9.46011c-0.86616,0.84111 -1.6686,1.13906 -2.80854,1.43379c-5.06558,1.3103 -10.3084,2.15449 -15.41909,3.30542c-1.25273,0.28213 -2.78921,0.38423 -3.95918,0.85942c-0.4062,1.30869 -0.4793,2.78877 -0.64102,4.14653c-0.37983,3.18838 -0.64937,6.38818 -0.96738,9.58213c-0.18428,1.84966 -0.33984,3.77314 -0.62095,5.60596c-0.14897,0.97134 -0.44897,1.90342 -0.59502,2.873c-3.25415,3.50508 -7.60005,6.14253 -11.45303,8.96396c-2.11392,1.54805 -4.41387,3.53467 -6.73301,4.73203c1.21846,2.19961 1.80703,5.07231 2.59233,7.47437l2.47119,7.68296c0.49497,1.57354 1.07153,3.17739 1.36479,4.80176c0.15952,0.8833 0.14561,1.75239 -0.09917,2.61885c-0.33032,1.16865 -0.96152,2.16123 -2.05225,2.74761c-1.48096,0.79614 -3.3375,0.65288 -4.94092,0.36943c-0.90952,-0.72363 -1.81699,-1.42969 -2.39004,-2.46826c-0.82603,-1.49663 -1.27676,-3.36343 -1.81948,-4.98428c-1.24116,-3.70708 -2.39839,-7.41724 -3.53965,-11.15449c-0.94292,-3.0876 -2.12051,-6.08716 -2.77983,-9.25693c0.32417,-1.05396 0.59941,-2.22173 1.2772,-3.1144c1.26313,-1.66392 3.42539,-2.91035 5.12036,-4.11548l6.95332,-5.03467c2.11509,-1.50176 4.60312,-3.02183 6.42246,-4.86797c0.64102,-2.67407 0.35713,-5.42124 1.06055,-8.02925c0.31304,-0.15029 0.16436,-0.05229 0.43989,-0.30352c0.30791,-1.58892 0.5124,-3.20757 0.10386,-4.79678c-0.04087,-0.66152 0.11382,-1.41167 0.15044,-2.08008c0.15205,-2.78101 0.19907,-7.13042 2.00654,-9.38364c0.53745,-0.67002 1.63096,-1.07021 2.4356,-1.33008c1.49517,-0.48281 3.11235,-0.72876 4.64722,-1.06816c3.07251,-0.69639 6.15205,-1.36069 9.23818,-1.99307c2.54048,-0.52134 5.16606,-1.33374 7.7417,-1.57808c1.23384,-2.78862 3.10005,-5.45713 4.62407,-8.11362c1.96699,-3.42861 4.27866,-7.98571 6.52251,-11.14491c0.48208,-0.67875 1.04385,-1.32284 1.80103,-1.69822c0.79805,-0.39573 1.73569,-0.6577 2.62998,-0.59909c2.88428,0.18901 6.74883,1.34993 9.70269,1.98715c4.05557,0.87489 8.40967,1.40854 12.31831,2.80789c1.06787,-0.93423 2.32734,-1.69305 3.47813,-2.52439c1.81963,-1.31457 3.61128,-2.66458 5.4394,-3.96844c3.02886,-2.16026 5.94214,-4.53038 9.12495,-6.46127z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M101.94814,300c-1.754,-0.99316 -3.15586,-2.37891 -3.68877,-4.37842c-0.42803,-1.604 -0.14106,-5.30713 -0.13843,-7.13672l0.01025,-15.36328l-0.00205,-31.13672l-0.00322,-9.85693c-0.00322,-1.67432 -0.09199,-3.37646 -0.01069,-5.04639c0.05244,-1.07959 0.3085,-2.10205 0.87832,-3.0293c0.70356,-1.14551 1.69146,-2.05957 3.02109,-2.37158c1.38398,-0.3252 2.96133,-0.11279 4.16953,0.65039c1.06904,0.67676 1.88218,1.81348 2.1687,3.04834c0.28315,1.22021 0.14663,2.80371 0.15322,4.05762l0.01289,7.57178c0.00073,5.20166 -0.29883,46.65088 0.29282,47.72314c1.90034,-0.63135 5.75962,-3.60205 7.59858,-4.83545l19.24043,-12.84375c2.54106,-1.69336 10.8438,-7.70947 13.30181,-8.34961c1.30811,-0.33984 2.29834,0.06006 3.4541,0.63867c2.66748,1.33154 5.20752,3.31348 7.69922,4.97168c2.79346,1.85889 6.65771,4.04004 9.01904,6.28271c0.6416,0.60791 0.97266,1.19092 1.26123,2.02148c0.48193,1.38721 0.14941,2.88867 -0.46875,4.18213c-0.54199,1.13525 -1.75781,1.96289 -2.93115,2.32324c-1.69336,0.52148 -3.15527,0.0249 -4.6377,-0.8042c-2.67041,-1.49561 -5.21191,-3.40283 -7.75635,-5.10791c-1.42822,-0.95508 -3.14941,-1.86328 -4.44873,-2.96484c-3.34717,1.64209 -6.69609,4.25391 -9.82061,6.33984l-22.69512,15.14063c-3.68906,2.4668 -8.54312,6.12451 -12.43242,8.01416c-0.14795,0.07178 -0.2625,0.15234 -0.38657,0.25928z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M191.29541,285.04688c-0.27832,-3.24756 -0.00146,-6.67969 0,-9.95068l0.00146,-20.70117l0.00439,-19.02832c0,-2.7334 -0.271,-5.69824 -0.01318,-8.40674c0.12744,-1.34033 0.50098,-2.68652 1.35938,-3.75c0.83203,-1.03271 2.00977,-1.54687 3.31494,-1.64795c1.42676,-0.1084 2.85498,0.28857 3.93164,1.25244c1.44141,1.28906 1.69922,2.70703 1.75488,4.53516c0.15088,4.99365 0.03809,10.02246 0.03955,15.01904v27.82178v16.94971c0,2.69971 0.20947,5.57813 -0.04102,8.25293c-0.08936,0.94922 -0.53027,1.99219 -1.16895,2.70264c-0.78076,0.87012 -1.71387,1.22754 -2.60156,1.9043h-2.78027c-3.55371,-1.93359 -11.31592,-6.82178 -13.67139,-9.83643c-0.18311,-1.57031 -0.23437,-2.97217 0.02051,-4.53662c1.13086,-1.32568 2.41992,-2.79639 4.29346,-2.90918c2.03027,-0.12158 3.91553,1.30371 5.55615,2.3291z" fill-opacity="0.96863" fill="#000000" />
+                                            <path d="M0,281.7085c0.03704,-0.06445 0.07509,-0.13037 0.11111,-0.19629c0.56896,-1.0415 0.67202,-2.40088 1.15566,-3.50244c1.61477,-3.67529 5.32859,-7.04004 9.14398,-8.27637c2.49234,-0.80859 7.09692,-0.82324 9.60854,-0.16846c0.89092,0.23291 1.74492,0.646 2.55835,1.07227c3.48589,1.8252 6.35024,5.06689 7.52285,8.84033c1.07842,3.47021 0.94424,8.89453 -0.79087,12.14941c-1.55303,2.91211 -4.48301,5.93115 -7.5917,7.17334c-1.04561,0.41895 -2.30186,0.56396 -3.22983,1.19971h-5.96096c-1.12135,-0.55518 -2.363,-0.87744 -3.50852,-1.39893c-3.34857,-1.5293 -6.05654,-4.18213 -7.65448,-7.49854c-0.51938,-1.08105 -0.68633,-2.3335 -1.2496,-3.39551c-0.0372,-0.07031 -0.07635,-0.13916 -0.11452,-0.20947zM15.46201,289.88818c2.14028,-0.92725 4.07871,-1.81787 4.95557,-4.18506c0.34644,-0.92725 0.30176,-1.95557 -0.12363,-2.84912c-0.39243,-0.82617 -0.89019,-1.69482 -1.59053,-2.29102c-0.02036,-0.01758 -0.03984,-0.03662 -0.05977,-0.0542l0.13901,-0.2373l0.34834,-0.01758l-0.08394,-0.24609c-0.39038,-0.36768 -0.74443,-0.75 -1.24014,-0.96973c-0.40898,0.1582 -0.7541,0.35596 -1.12573,0.5874c-0.94307,-0.50391 -1.58188,-0.36914 -2.57897,-0.03955c-1.31924,0.43506 -2.59251,1.62891 -3.17123,2.88281c-0.30164,0.65332 -0.55132,1.33301 -0.84082,1.99219c0.14577,0.45703 0.29697,0.91406 0.43513,1.37402c0.41594,1.38428 1.37279,2.44482 2.62538,3.13477c0.72658,0.3999 1.54418,0.60938 2.31132,0.91846z" fill-opacity="0.98039" fill="#000000" />
+                                            <path d="M16.6812,279.62549c0.37163,-0.23145 0.71675,-0.4292 1.12573,-0.5874c0.4957,0.21973 0.84976,0.60205 1.24014,0.96973l0.08394,0.24609l-0.34834,0.01758l-0.13901,0.2373c-0.64731,-0.31934 -1.28188,-0.63867 -1.96245,-0.8833z" fill-opacity="0.95294" fill="#000000" />
+                                            <path d="M269.66162,279.42188c1.34326,-3.48633 3.61084,-6.32666 6.79395,-8.31006c3.38379,-2.10791 8.3833,-2.52246 12.19922,-1.59375c3.27979,0.79688 6.31641,3.04834 8.25146,5.7832c0.6709,0.95068 1.16602,1.97607 1.76953,2.96484c-0.26807,3.33252 1.59082,4.80029 0.64453,8.85352c-0.29004,1.24219 -1.88086,5.18848 -1.89551,5.85205c-0.35449,1.47217 -3.28564,3.89063 -4.57324,4.66992c-1.5542,0.94043 -4.29492,1.55566 -5.39355,2.3584h-5.96484c-1.24072,-0.55518 -2.55322,-0.92139 -3.77197,-1.52637c-3.62988,-1.80176 -6.78516,-5.20898 -8.0874,-9.07031c0.50391,-1.57617 0.26367,-8.12695 0.02783,-9.98145zM279.04688,284.44336c0.65479,1.93213 1.29932,3.60059 3.26807,4.54541c0.646,0.31055 1.48242,0.73682 2.19434,0.81885c1.9541,-0.646 3.60498,-1.30371 4.58496,-3.27832c0.58447,-1.18066 0.60938,-2.36572 0.15674,-3.59326c-0.51562,-1.40186 -1.45752,-2.43604 -2.82129,-3.04248c-0.60937,-0.271 -1.37109,-0.65479 -2.0332,-0.7002c-2.0083,0.77637 -3.6167,1.27881 -4.56592,3.40576c-0.26807,0.6123 -0.52881,1.22607 -0.78369,1.84424z" fill-opacity="0.98431" fill="#000000" />
+                                            <path d="M277.86475,0h2.77588c1.45752,0.64662 2.67773,1.71772 3.27393,3.2275c0.87158,2.20929 0.3252,9.39716 0.52148,12.30042c2.67773,-0.02036 9.27539,-0.42144 11.56055,0.19995c0.91699,0.24888 1.75342,0.72993 2.43018,1.39658c0.75439,0.7374 1.16455,1.59199 1.57324,2.54194v1.95527c-0.54785,1.54131 -1.22607,2.87446 -2.79199,3.60483c-0.45117,0.21079 -0.94043,0.33955 -1.41943,0.47256c-2.58398,-0.60659 -6.88623,-0.68745 -9.48926,-0.37559l-0.11133,0.26118c0.55664,0.27964 6.24902,0.05859 7.35938,0.10693c-0.12891,0.22427 -0.1875,0.26221 -0.39551,0.40122c-2.82568,0.01479 -5.84326,0.25737 -8.64844,-0.01904c-0.37939,3.38232 -0.03955,6.76919 -0.17432,10.15664c-0.05859,1.47202 -0.34277,2.73633 -1.49414,3.75029c-1.18359,1.04634 -2.73926,1.56899 -4.31396,1.44873c-1.17187,-0.09536 -2.12988,-0.61216 -2.88867,-1.50762c-2.09326,-2.47046 -1.75928,-5.84824 -1.74902,-8.85586c0.00586,-1.64971 -0.03223,-3.31538 0.08203,-4.96157c-0.55078,0.02549 -1.10156,0.04043 -1.65234,0.04512c-3.57715,0.02109 -9.8584,0.69331 -12.49512,-2.02705c-0.92139,-0.95098 -1.30225,-2.1668 -1.25244,-3.47666c0.06299,-1.60049 0.68408,-2.93145 1.91162,-3.97339c0.60352,-0.51313 1.32861,-0.91802 2.10938,-1.07842c1.79297,-0.36841 9.18604,-0.17007 11.33643,-0.03882c-0.00146,-3.40326 -0.61963,-9.62309 0.71777,-12.56815c0.64746,-1.42521 1.77979,-2.43641 3.22412,-2.98702z" fill-opacity="0.97255" fill="#000000" />
+                                            <path d="M8.22447,0h4.16999c3.02801,0.94393 5.55604,2.71745 7.03465,5.57098c1.30942,2.4894 1.56006,5.40152 0.69521,8.07807c-0.81841,2.54231 -2.89146,4.8676 -5.26846,6.07288c-2.28226,1.15723 -4.96594,1.4603 -7.402,0.63369c-2.70712,-0.91846 -5.23699,-2.98359 -6.48941,-5.55718c-0.32152,-0.66078 -0.58331,-1.46259 -0.96444,-2.07792v-4.48002c0.37358,-0.6045 0.56035,-1.29233 0.7732,-1.96648c0.04752,-0.15051 0.09172,-0.30217 0.14436,-0.45098c0.7049,-1.99286 2.57267,-3.74684 4.44091,-4.62826c0.89572,-0.42259 1.84928,-0.69426 2.74039,-1.13173z" fill-opacity="0.98431" fill="#000000" />
+                                            <path d="M83.45376,170.2749c0.60513,0.56689 0.95493,1.18359 1.29067,1.93066c1.42119,3.16113 2.3376,6.75146 3.41938,10.04443c1.02729,3.12891 2.37129,6.42773 3.04512,9.64014l13.2126,-0.05127c2.37539,-0.00146 4.9166,-0.19336 7.25933,0.17725c1.23633,0.19629 2.29248,0.5625 3.32695,1.2832c-1.42559,0.32666 -2.25747,-0.61963 -3.58433,-0.68408c-1.56182,-0.07617 -3.18223,0.06885 -4.74917,0.08936c-3.10825,0.03369 -6.21665,0.04395 -9.3249,0.03076c-1.71768,-0.00293 -3.66431,0.14648 -5.348,-0.2373c-0.43989,-0.09961 -1.07124,-0.19482 -1.43247,-0.45996c-0.20376,-0.14941 -0.2439,-0.65918 -0.30088,-0.9082c-0.43433,-1.89258 -5.83667,-18.95508 -6.55693,-19.88086c-0.08643,-0.10986 -0.38306,-0.26221 -0.50742,-0.33838l-0.13682,-0.0835z" fill-opacity="0.91765" fill="#000000" />
+                                            <path d="M298.67578,278.26611c0.08057,0.29883 0.1582,0.59619 0.22705,0.89648c0.24023,1.06201 0.79834,2.11377 1.09717,3.1875v4.42822c-0.65479,2.09912 -1.16602,4.45459 -2.5752,6.19336c0.01465,-0.66357 1.60547,-4.60986 1.89551,-5.85205c0.94629,-4.05322 -0.9126,-5.521 -0.64453,-8.85352z" fill="url(#color-1)" />
+                                            <path d="M269.63379,289.40332c-0.73389,-2.67041 -0.78662,-7.33447 0.02783,-9.98145c0.23584,1.85449 0.47607,8.40527 -0.02783,9.98145z" fill-opacity="0.96863" fill="#000000" />
+                                            <path d="M293.15186,26.09282c0.20801,-0.13901 0.2666,-0.17695 0.39551,-0.40122c-1.11035,-0.04834 -6.80273,0.17271 -7.35937,-0.10693l0.11133,-0.26118c2.60303,-0.31187 6.90527,-0.23101 9.48926,0.37559c-0.89795,0.24814 -1.70068,0.36899 -2.63672,0.39375z" fill-opacity="0.93726" fill="#000000" />
+                                            <path d="M148.62598,0h2.68213c0.65771,0.30363 1.19678,0.68257 1.77539,1.11169c-0.84229,0.27058 -0.64307,-0.18379 -1.24805,-0.39401c-0.81006,-0.28154 -3.76465,0.2319 -4.86768,0.24622c0.51563,-0.38896 1.08838,-0.66607 1.6582,-0.9639z" fill-opacity="0.91373" fill="#000000" />
+                                            <path d="M54.02681,154.03418c0.25327,1.73584 0.1856,3.26953 -0.1834,4.98779l-0.40854,0.25049c0.09448,-1.74463 0.09463,-3.55518 0.59194,-5.23828z" fill-opacity="0.96863" fill="#000000" />
+                                            <path d="M65.10703,48.11191c0.40854,1.58921 0.20405,3.20786 -0.10386,4.79678c-0.27554,0.25122 -0.12686,0.15322 -0.43989,0.30352c0.098,-1.69248 0.09536,-3.45776 0.54375,-5.10029z" fill-opacity="0.96863" fill="#000000" />
+                                            <path d="M224.55469,48.65186l0.21387,-0.65947l0.14795,-0.02769c0.33105,1.33491 0.44238,3.09712 0.31494,4.46118l-0.23877,0.36855c-0.38525,-1.2772 -0.34131,-2.81367 -0.43799,-4.14258z" fill-opacity="0.9451" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </svg>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <small>Calidad/precio</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.calidad_precio %}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <svg class="d-inline pe-2"
+                                         id="svg"
+                                         version="1.1"
+                                         viewBox="0 0 300 300"
+                                         width="40"
+                                         height="40"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
+                                            <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                            <path d="M148.74902,7.64604c0.33252,-0.04314 0.6665,-0.06908 1.00195,-0.07774c1.60107,-0.04704 3.0835,0.52162 4.08105,1.80555c1.52197,1.95958 2.36426,5.384 3.40283,7.70842c3.64893,8.17354 8.21338,16.27397 14.75244,22.50103c17.60742,16.76689 39.53027,8.47529 56.52539,-4.03711c1.78711,-1.33535 3.51709,-2.74468 5.18555,-4.22417c1.17041,-1.02026 2.37744,-2.28281 3.70898,-3.06577c0.73389,-0.43198 1.60986,-0.64702 2.45947,-0.64775c1.38867,-0.00117 2.79932,0.51182 3.76318,1.53281c0.76611,0.8127 1.3374,2.23594 1.2832,3.36606c-0.12012,2.48921 -2.05811,5.52686 -2.91211,7.93594c-0.85107,2.39927 -1.46191,4.9541 -1.86768,7.46221c-0.95361,5.88267 -0.78809,12.25767 0.73389,18.03208c0.65479,2.48306 2.16797,5.3209 2.01123,7.90283c-0.07764,1.29492 -0.73682,2.43003 -1.71533,3.26265c-0.98584,0.83701 -2.31885,1.37446 -3.62402,1.24175c-1.37842,-0.13843 -2.63525,-0.84873 -3.46582,-1.95806c-0.93604,-1.27119 -1.43262,-3.02593 -1.91602,-4.51362c-2.57812,-7.95439 -3.33398,-16.90825 -1.93213,-25.16748c-4.41211,2.723 -8.78906,5.35122 -13.5542,7.42222c-11.7583,5.10864 -24.84375,7.02847 -37.05908,2.17749c-10.89111,-4.32466 -18.96387,-12.8833 -25.01367,-22.67783c-1.48975,-2.41172 -3.00146,-4.93887 -4.12793,-7.5416c-0.15234,-0.21387 -0.31348,-0.35098 -0.51709,-0.51372c-0.66064,0.6397 -3.82764,6.8083 -4.65513,8.15933c-6.9813,11.39868 -17.18877,21.19951 -30.53906,24.35317c-12.60806,2.97817 -25.69087,-0.66636 -36.88037,-6.56074c-2.79419,-1.47187 -5.45508,-3.15718 -8.13413,-4.82534c1.82505,8.2166 0.12993,20.02603 -2.87095,27.85093c-0.5981,1.55977 -1.48506,2.89248 -3.08203,3.56074c-1.19136,0.49849 -2.5437,0.45425 -3.73081,-0.03208c-1.44946,-0.5937 -2.93013,-1.99907 -3.04409,-3.64204c-0.1916,-2.76108 1.38164,-5.83389 2.05283,-8.49858c1.94839,-7.73613 1.84028,-16.25215 -0.59839,-23.87402c-0.78193,-2.4438 -1.8479,-4.68472 -2.81118,-7.05029c-0.61392,-1.50747 -0.83965,-3.01479 -0.15161,-4.53691c0.60967,-1.34897 1.41035,-2.11318 2.7936,-2.6042c1.23896,-0.43975 2.74761,-0.35757 3.91465,0.26016c2.29219,1.21333 4.4833,3.76348 6.53584,5.41685c4.75562,3.83101 10.03535,7.275 15.51079,9.9835c9.54375,4.72104 20.72373,7.47744 31.12485,3.89883c13.06187,-4.49414 21.05566,-17.01694 26.6625,-28.88467c1.22769,-2.59878 2.06543,-5.39638 3.3312,-7.96437c0.80303,-1.6291 1.65791,-2.35633 3.36738,-2.93641z" fill="#000000" />
+                                            <path d="M103.26592,237.53027c4.8561,-0.23291 9.71572,0.38232 14.36045,1.81787c15.88403,4.96875 25.00254,17.93848 32.36777,31.93359c0.88184,-1.54687 1.65674,-3.14941 2.51221,-4.71094c6.74268,-12.3252 16.62305,-23.42139 30.54053,-27.44385c14.0332,-4.05762 28.37402,0.02783 40.771,6.90381c4.04883,2.24707 19.8457,12.54785 20.90625,16.58496c0.31055,1.17773 0.17725,2.83887 -0.46143,3.89941c-0.68994,1.14697 -1.72412,2.01416 -3.03809,2.32617c-1.07812,0.25488 -2.28369,0.27393 -3.2915,-0.24316c-2.17383,-1.11475 -5.00244,-4.10596 -7.00049,-5.73193c-2.78027,-2.26318 -5.79492,-4.33154 -8.8418,-6.21826c-8.2998,-5.14307 -17.6543,-9.06592 -27.56104,-8.99414c-1.67871,0.01172 -3.54932,-0.00586 -5.18115,0.37793c-15.69287,2.84766 -24.76904,15.8877 -31.14551,29.354c-1.20117,2.53857 -2.85059,7.78711 -4.30371,9.76611c-0.78076,1.06201 -2.14893,1.83545 -3.4585,1.97168c-1.67285,0.17285 -3.38818,-0.67969 -4.40552,-1.98779c-1.40625,-1.80762 -2.29702,-5.39062 -3.29897,-7.59082c-4.26372,-9.36621 -9.55693,-18.76758 -17.83887,-25.1748c-17.37305,-13.43994 -38.61826,-4.55859 -54.0624,7.1001c-1.6415,1.24658 -3.24609,2.54297 -4.81157,3.88477c-1.07124,0.93311 -2.07349,2.04639 -3.26543,2.82568c-0.6709,0.43799 -1.44229,0.75586 -2.24341,0.84082c-1.3749,0.14063 -2.7457,-0.30176 -3.77915,-1.22021c-0.9936,-0.86133 -1.59536,-2.08887 -1.66787,-3.40283c-0.09756,-1.67432 0.60571,-2.95898 1.69937,-4.15723c2.34097,-2.56494 5.45054,-4.91748 8.23433,-6.99463c11.04126,-8.23975 24.25913,-15.04395 38.2645,-15.71631z" fill="#000000" />
+                                            <path d="M224.22949,98.75742c1.08838,-2.20708 2.46094,-4.0979 4.33594,-5.70659c2.90918,-2.49521 6.7207,-3.96548 10.57178,-3.66387c7.69336,0.6022 14.5752,6.99155 19.39453,12.60615c16.4707,19.18462 20.22949,46.36187 18.34863,70.77202c1.40625,1.77686 3.31055,3.37939 4.92334,4.98633l10.42383,10.39014c1.90723,1.90283 3.99902,3.76318 5.45801,6.04834c1.02832,1.6084 1.56299,3.26514 2.05078,5.09912c-0.45557,1.84277 -0.39844,4.15723 -0.16406,6.04102c-0.5332,1.92773 -1.26709,3.80859 -2.49463,5.4082c-1.50586,1.96582 -3.4541,3.70605 -5.20459,5.45654l-8.51953,8.521l-12.31641,12.31934c-2.51221,2.51074 -6.13037,6.70459 -9.11133,8.41992c-3.52881,2.03027 -7.42676,2.61328 -11.36426,1.52051c-1.63184,-0.45703 -3.16699,-1.19824 -4.53809,-2.19287c-1.93506,-1.396 -3.59033,-3.25049 -5.27344,-4.93945l-10.49414,-10.5293c-1.72998,-1.73584 -3.48047,-3.78223 -5.42578,-5.27344c-1.73437,-1.32861 -6.38232,-2.62354 -8.67773,-3.66504c-3.66504,-1.70361 -7.23047,-3.6123 -10.68164,-5.71582c-9.23584,-5.56348 -17.67627,-12.46289 -25.6626,-19.68018c-3.01465,-2.72461 -5.87109,-5.67041 -8.95752,-8.31006c-1.62305,-1.38867 -3.89062,-2.05078 -5.69092,-3.22412c-6.14209,-4.00342 -11.28369,-9.74268 -14.86523,-16.12061c-2.02441,2.91504 -3.89224,5.83154 -6.26001,8.49316c-2.70981,3.04688 -5.79478,5.79199 -9.29092,7.90576c-1.79971,1.08838 -3.80464,1.86328 -5.44526,3.19336c-3.13374,2.54443 -5.97407,5.625 -8.99355,8.3291c-8.14263,7.29053 -16.66641,14.22656 -26.06133,19.85449c-3.5584,2.13428 -7.24058,4.05469 -11.02705,5.75244c-2.26567,0.99316 -5.47764,1.69629 -7.40435,3.06006c-1.61602,1.14258 -3.02212,2.80811 -4.42192,4.21143l-9.97778,10.00635c-2.43193,2.4375 -4.87295,5.34229 -7.79341,7.17627c-2.07598,1.32422 -4.45811,2.09033 -6.91641,2.2251c-3.65977,0.18311 -7.62935,-1.17187 -10.34795,-3.6416c-2.34067,-2.12549 -4.53179,-4.45459 -6.76846,-6.68994l-12.07544,-12.07324l-8.55684,-8.56201c-2.23837,-2.24121 -4.70399,-4.42676 -6.44884,-7.08984c-1.24583,-1.90137 -1.82274,-4.41943 -1.92513,-6.6665c-0.1256,-2.7583 0.37684,-5.37891 1.71604,-7.80322c1.91988,-3.47607 5.3008,-6.2959 8.08696,-9.0791c4.37537,-4.36963 8.95066,-8.64551 13.13675,-13.19238c-0.19834,-3.36768 -0.42686,-6.72656 -0.45146,-10.10156c-0.09771,-13.35059 1.74287,-27.19907 6.5644,-39.70767c4.55596,-11.81924 14.03306,-26.82671 26.03657,-32.06953c4.98384,-2.17676 9.89048,-2.00288 14.48599,0.97998c1.30737,0.84858 2.69121,1.96128 3.67983,3.17388c0.66592,0.81665 1.79912,3.08848 2.69209,3.43887c0.98276,-0.41543 1.87749,-1.13672 2.76826,-1.72485c7.39761,-4.8832 17.02837,-6.47432 25.66421,-4.67856c14.43354,3.00132 30.03208,15.86982 38.70396,27.40356c1.50688,2.03628 2.90156,4.15312 4.17744,6.34131c0.79688,1.38135 1.51172,2.82407 2.39355,4.15312l0.10254,0.1519c1.03271,-2.27051 2.28809,-4.44185 3.62842,-6.54404c8.48291,-13.31074 25.43701,-28.03198 41.18848,-31.44243c7.8252,-1.69277 15.99463,-0.62769 23.12549,3.0145c2.08008,1.06084 3.99316,2.36851 5.9502,3.63457zM188.09766,179.55762c13.51318,-0.66504 26.2251,-6.60205 35.4082,-16.53516c6.57715,-7.18213 10.90283,-16.39307 10.38867,-26.28691c-0.52295,-10.0957 -6.6416,-21.83628 -14.21191,-28.65513c-5.35547,-4.823 -11.02734,-6.9832 -18.22266,-6.65669c-2.50049,0.32256 -4.91748,0.68335 -7.32715,1.46851c-10.8252,3.52837 -21.98437,13.02246 -28.82373,21.91055c-6.06445,7.88218 -10.875,17.80371 -9.5083,27.98335c1.10449,8.22217 6.51563,16.13232 13.08545,21.06738c5.54004,4.16016 12.35156,5.8418 19.21143,5.7041zM116.14497,179.43896c9.19102,-1.02832 15.95127,-4.56885 21.74897,-11.84033c4.99863,-6.26807 7.75869,-13.36377 6.86104,-21.46392c-1.48066,-13.3585 -12.01187,-25.93564 -22.19092,-34.00576c-7.78403,-6.17124 -17.31021,-11.34375 -27.51167,-10.69585c-8.78262,1.27881 -14.10557,5.3127 -19.34941,12.35859c-6.2584,8.40923 -10.36143,18.60278 -8.79829,29.23433c1.58672,10.79136 8.70806,20.11802 17.32046,26.45786c9.30996,6.854 20.35254,10.46631 31.91982,9.95508zM33.62432,172.29053l0.10576,0.12891c1.63521,1.94971 3.63398,3.72803 5.43633,5.52979l10.32275,10.31543c1.63989,1.63477 3.9041,3.40723 5.09956,5.36865c0.52822,0.86719 0.75747,1.92334 0.67061,2.93262c-0.12275,1.37549 -0.79687,2.64404 -1.86914,3.51709c-1.00928,0.80566 -2.29951,1.17334 -3.58184,1.01953c-0.825,-0.10107 -1.62305,-0.34863 -2.30024,-0.83936c-2.28677,-1.65674 -4.35044,-4.13818 -6.3498,-6.14355l-12.29751,-12.2915c-2.33672,2.02734 -4.47188,4.31689 -6.6334,6.52588c3.85415,3.79541 7.68838,7.61279 11.50254,11.44775c2.02925,2.02881 4.57793,4.14844 6.23452,6.48926c0.52192,0.73828 0.77036,1.62744 0.80361,2.52539c0.03926,1.32568 -0.45454,2.61182 -1.37109,3.57129c-0.95581,1.00928 -2.20151,1.58057 -3.59824,1.57764c-0.87422,0.00586 -1.73262,-0.23291 -2.4769,-0.69287c-1.70449,-1.0708 -3.15205,-2.79785 -4.57046,-4.22314l-8.93145,-8.97656c-1.51245,-1.51758 -3.06211,-3.31787 -4.77202,-4.60254c-1.80467,1.83984 -4.5825,3.84082 -4.49843,6.68994c0.02139,0.72363 0.20084,1.51758 0.59169,2.13574c1.28167,2.02881 3.59326,3.90234 5.29746,5.60156l10.23296,10.20996l11.05063,11.04932c1.79312,1.7915 3.62388,4.00049 5.69971,5.44922c0.78999,0.55225 1.53384,0.83203 2.50869,0.83643c0.95229,0.00586 1.83574,-0.2915 2.62134,-0.82324c1.84644,-1.25244 3.77109,-3.59326 5.36602,-5.19727c4.05908,-4.08398 8.07715,-8.24854 12.24683,-12.2168c-2.39414,-2.67627 -7.48242,-6.17432 -7.1937,-10.04004c0.09668,-1.29492 0.72729,-2.34521 1.72808,-3.1582c1.12515,-0.9126 2.36821,-1.36377 3.82368,-1.15576c3.35186,0.479 7.50366,6.33984 10.22666,8.54443c13.19839,-4.9834 26.80269,-14.21777 36.99858,-23.91504c-16.07227,-0.78223 -31.19209,-7.85449 -42.09434,-19.68896c-8.30537,-9.16992 -13.71079,-20.80957 -13.08838,-33.39448c0.43447,-8.78716 3.58799,-16.96201 8.27227,-24.323c1.22622,-1.92686 2.81045,-3.72759 3.93853,-5.68682c-1.06641,-2.33804 -2.34683,-5.64551 -4.93931,-6.64248c-0.57686,-0.22178 -1.15063,-0.24741 -1.76089,-0.22939c-4.89888,0.4147 -9.95376,5.90889 -12.9665,9.48003c-13.9437,16.52842 -17.40513,41.8938 -15.55122,62.75757c0.01611,0.18018 0.04058,0.35889 0.06606,0.5376zM188.71143,189.39844c8.58545,8.20459 18.35889,15.06885 28.99219,20.35986c2.68359,1.33301 5.41992,2.65137 8.24121,3.66943c1.39014,-1.71533 6.19775,-6.70605 7.96143,-7.82666c0.60645,-0.38965 1.29199,-0.63867 2.00684,-0.72656c1.35938,-0.16992 2.76855,0.27979 3.81152,1.16016c1.01221,0.85254 1.63623,2.07861 1.73291,3.39844c0.12891,1.69482 -0.50977,2.89453 -1.62012,4.13525c-1.12207,1.25537 -4.91602,4.37109 -5.23975,5.67773c0.40869,0.84082 14.69824,15.1333 16.45459,16.67871c0.59473,0.52295 1.22461,1.00195 1.9834,1.25537c1.06787,0.35596 2.34521,0.40576 3.35889,-0.14062c2.12402,-1.14551 5.06104,-4.5835 6.85986,-6.38672c3.55371,-3.56543 7.07373,-7.1792 10.68018,-10.69043l9.87451,-9.88037c1.69043,-1.68018 4.11914,-3.6665 5.41406,-5.64697c0.50098,-0.76611 0.75879,-1.66699 0.73828,-2.58252c-0.0498,-2.41113 -2.28955,-4.19971 -3.92578,-5.69092c-0.26514,-0.24023 -0.52734,-0.479 -0.80713,-0.70166c-3.47461,3.71045 -7.19531,7.23486 -10.78711,10.83691c-2.09766,2.10498 -4.75635,5.20898 -7.11035,6.86719c-0.73242,0.51563 -1.60254,0.76465 -2.49316,0.78955c-1.39307,0.03662 -2.74072,-0.49365 -3.73535,-1.46924c-0.90088,-0.90674 -1.40332,-2.13281 -1.39746,-3.41016c0.01465,-1.09277 0.36475,-2.15332 1.00049,-3.04102c1.67432,-2.36133 4.22754,-4.47656 6.27832,-6.52441c3.73975,-3.73242 7.43701,-7.52197 11.23828,-11.18994c-2.13574,-2.17822 -4.26416,-4.58643 -6.61084,-6.52588l-12.16406,12.18457c-2.04492,2.04932 -4.16016,4.60254 -6.52734,6.26074c-0.81152,0.56836 -1.62891,0.91992 -2.63525,0.93311c-1.38428,0.01758 -2.75244,-0.59473 -3.7251,-1.56592c-0.91553,-0.91553 -1.38135,-2.15332 -1.35645,-3.44238c0.01025,-0.96387 0.29736,-1.9043 0.82764,-2.7085c1.23486,-1.87354 3.27979,-3.53174 4.875,-5.11963l10.73877,-10.72412c1.68311,-1.68311 3.69434,-3.39258 5.14453,-5.27197c2.35254,-19.93213 -1.64209,-45.91641 -14.3877,-62.05884c-3,-3.80039 -8.52539,-10.08237 -13.49561,-10.71987c-0.51123,-0.06562 -1.02393,-0.0479 -1.53809,-0.02534c-1.56006,0.29941 -2.63525,1.4209 -3.50244,2.68887c-0.88477,1.29155 -1.51172,2.73794 -2.13721,4.16602c1.66553,2.34243 3.37061,4.62231 4.85889,7.08545c5.82422,9.64204 8.73047,20.63848 6.78662,31.8936c-2.31006,13.38662 -11.2998,25.26797 -22.28027,32.94668c-8.71289,6.09521 -21.61816,11.28223 -32.38184,11.08301z" fill="#000000" />
+                                            <path d="M95.79785,111.37485c2.97085,-0.21094 6.29531,0.25327 8.97715,1.59858c1.28965,0.64688 2.22979,1.54731 2.65166,2.96484c0.39536,1.32803 0.16904,3.09097 -0.51812,4.2895c-0.42217,0.73638 -1.04619,1.25405 -1.81011,1.6106c-3.35039,1.56416 -6.09434,-1.0875 -8.6937,-0.31538c-2.59395,0.77036 -5.37891,5.07935 -6.65977,7.29932l-0.08086,0.1251l-0.13696,0.20713l-0.13579,0.20991c-0.87144,1.3292 -2.06499,2.52158 -3.68892,2.821c-1.3292,0.24507 -2.89365,-0.24653 -3.97148,-1.02993c-1.03096,-0.74927 -1.61104,-1.82944 -1.77114,-3.08599c-0.36973,-2.90098 2.10322,-6.06475 3.75571,-8.29102c3.10942,-4.1896 6.78062,-7.60225 12.08232,-8.40366z" fill="#000000" />
+                                            <path d="M299.73633,199.28906l0.26367,0.55957v4.1748l-0.42773,1.30664c-0.23437,-1.88379 -0.2915,-4.19824 0.16406,-6.04102z" fill-opacity="0.98039" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </svg>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <small>Ambiente</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.ambiente %}</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex align-items-center">
+                                    <svg class="d-inline pe-2"
+                                         id="svg"
+                                         version="1.1"
+                                         viewBox="0 0 300 300"
+                                         width="40"
+                                         height="40"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
+                                            <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                            <path d="M0,111.95625c0.0145,-0.03765 0.02981,-0.075 0.0435,-0.11309c0.73309,-2.03496 0.72847,-5.025 1.05709,-7.21348c0.48471,-3.22808 1.29645,-6.47373 2.23946,-9.59883c6.18211,-20.48672 21.83549,-37.60708 40.93515,-46.94429c19.42383,-9.4771 41.81895,-10.84204 62.25,-3.79409c19.70713,6.79424 36.98276,21.64087 46.11445,40.44331c11.31006,23.28779 7.34619,46.30063 2.23828,70.54058c-2.74219,13.39453 -6.32373,26.60303 -10.72383,39.54785c-7.79238,22.40625 -20.64111,49.51611 -43.18257,60.43506c-11.55322,5.58545 -24.85781,6.32959 -36.96138,2.06543c-19.07417,-6.70898 -31.58086,-24.71045 -39.93384,-42.21533c-7.5501,-15.82324 -12.70513,-32.77002 -16.73263,-49.80176c-2.24225,-9.50977 -4.16874,-19.09072 -5.77629,-28.72778c-0.26565,-1.61089 -1.12138,-10.00781 -1.5674,-10.79678zM83.0644,249.84082c13.14756,-1.38721 22.9916,-8.5459 31.07871,-18.56396c5.92207,-7.33594 10.55361,-15.69873 14.38901,-24.28711c8.46313,-18.94922 13.7376,-39.35889 17.74146,-59.67187c1.37388,-6.96782 2.79771,-14.03247 3.37485,-21.11748c0.43945,-5.39912 0.41309,-10.69233 -0.17432,-16.07871c-1.96143,-18.00703 -11.08389,-33.4415 -25.13481,-44.70894c-13.07783,-10.48726 -30.53745,-16.44331 -47.34521,-15.40005c-3.50757,0.24961 -6.94175,0.55576 -10.40112,1.20615c-15.96958,3.01597 -30.42275,11.41465 -40.95,23.79595c-11.86327,13.69189 -16.73845,31.54688 -15.44892,49.45737c0.67683,9.40063 2.62923,18.80288 4.56,28.01807c5.90654,28.18799 16.8936,67.96582 39.12041,87.19775c8.44658,7.30664 17.99751,10.77832 29.18994,10.15283z" fill="#000000" />
+                                            <path d="M80.01768,59.97993c1.49297,0.023 2.98652,0.0457 4.47554,0.16377c16.44434,1.23398 31.71138,8.99604 42.39771,21.55562c10.60518,12.42876 14.09121,27.64116 12.79526,43.69233c-0.64805,8.02588 -2.61006,17.31592 -4.29097,25.25435c-5.39634,25.48242 -15.75,64.5 -36.02432,81.64453c-5.85381,4.95117 -13.43672,8.38184 -21.23994,7.69775c-9.79658,-0.8584 -17.79961,-6.79248 -23.91475,-14.15479c-5.08711,-6.12451 -9.19058,-13.15283 -12.53467,-20.36133c-9.10635,-19.63037 -14.63613,-41.15186 -18.59604,-62.37041c-1.91147,-10.24233 -3.80024,-20.31548 -2.79185,-30.78867c1.06333,-11.04287 5.13999,-21.50449 12.26631,-30.06094c1.39585,-1.67593 2.82627,-3.39023 4.51685,-4.77612c0.70957,-0.41763 1.33359,-0.71543 2.16592,-0.82485c1.37754,-0.1812 2.77104,0.1604 3.87598,1.01294c1.02246,0.77959 1.67256,1.95117 1.79297,3.2313c0.34146,3.30293 -2.35854,5.04741 -4.23735,7.3021c-8.89175,10.67109 -11.58252,23.58574 -10.33169,37.11826c0.67998,7.35571 2.30112,14.78818 3.80669,22.01968c4.71855,22.66406 14.70073,62.42432 32.9269,77.42578c4.16382,3.42627 9.1894,5.6792 14.67407,5.10205c7.22109,-0.75879 12.99565,-6.18164 17.35942,-11.58105c5.54312,-6.8584 9.55664,-15.16992 12.88887,-23.28223c6.44663,-15.69141 10.60444,-32.25586 14.06807,-48.82705c1.46265,-6.99756 3.01201,-14.23682 3.61963,-21.3646c0.35728,-4.19224 0.38862,-8.33232 -0.07866,-12.51826c-1.38662,-12.41895 -7.67212,-23.21646 -17.42314,-30.92783c-10.56387,-8.35415 -23.64009,-12.08159 -37.04326,-11.02939c-3.09888,0.24331 -6.06738,1.20103 -9.12671,1.53691c-1.55171,0.17036 -3.20229,-0.19028 -4.40933,-1.22329c-1.0021,-0.85767 -1.37769,-2.06792 -1.41826,-3.35537c-0.04424,-1.40786 0.33706,-2.78174 1.34531,-3.80098c2.76431,-2.79448 14.50693,-3.41675 18.48545,-3.51021z" fill="#000000" />
+                                            <path d="M78.01772,110.071c16.55552,-1.0897 30.84976,11.47002 31.89902,28.02817c1.04927,16.55757 -11.54531,30.82222 -28.10596,31.83003c-16.50352,1.00635 -30.70737,-11.53564 -31.75298,-28.03696c-1.04561,-16.50103 11.46152,-30.73535 27.95991,-31.82124zM81.95947,159.86572c10.9752,-1.09131 18.98569,-10.87646 17.88853,-21.85107c-1.09717,-10.97476 -10.88599,-18.98027 -21.86016,-17.87769c-10.96641,1.10186 -18.96504,10.88232 -17.86875,21.84932c1.09644,10.96685 10.87295,18.97075 21.84038,17.87944z" fill="#000000" />
+                                            <path d="M251.68799,207.56104c-5.62646,11.30127 -11.91504,22.04297 -19.26562,32.32178c-2.03906,2.85205 -4.05469,5.77734 -6.31934,8.45508c-6.01465,7.0957 -14.62646,11.47705 -23.90332,12.1626c-3.01758,0.24316 -6.01758,-0.06445 -8.97949,-0.65479c-4.71826,-0.93896 -9.4043,-2.71289 -14.00391,-4.12939c-3.88623,-1.19531 -8.0083,-2.1416 -11.76416,-3.69727c-1.37988,-0.57129 -2.69824,-1.29492 -3.83057,-2.27783c-2.49756,-2.16504 -3.76172,-5.14014 -4.26416,-8.35254c-2.10498,-13.45166 7.65088,-25.00781 13.02246,-36.43066c3.2417,-6.87158 5.729,-14.07422 7.41943,-21.48193c4.78564,-21.43945 2.31445,-43.78652 -2.78467,-64.92905c-1.12207,-4.65205 -2.47852,-9.24565 -3.60352,-13.89565c-1.90869,-7.88877 -3.38965,-16.14448 -3.9917,-24.25005c-0.48633,-6.5666 -0.18311,-16.44712 2.22803,-22.5769c0.75586,-1.91997 1.9248,-3.75205 3.27393,-5.3083c1.46924,-1.69395 3.26367,-3.07485 5.27783,-4.06011c2.84766,-1.39321 6.16113,-2.07935 9.19336,-3.02109c6.09814,-1.89434 13.90869,-4.99233 20.19434,-5.40762c9.16992,-0.67559 18.22705,2.36294 25.13525,8.43252c5.44629,4.81816 7.78564,10.05044 11.07275,16.28555c11.58691,21.97559 18.94629,45.24463 20.45947,70.10391c7.35059,0.6 15.42773,-1.17261 22.30518,2.09165c4.40625,2.09165 8.22217,5.95166 9.9668,10.54248c0.57715,1.51904 0.81006,3.14063 1.37109,4.65088l0.10254,0.26807v39.59326c-0.44678,1.0708 -0.69727,2.25586 -1.1001,3.35303c-1.10449,2.99854 -3.1582,5.55615 -5.84766,7.28174c-2.36426,1.53516 -5.16504,2.3335 -7.86475,3.06299c-9.22266,2.52832 -18.82764,3.36475 -28.34766,2.46973c-1.70801,-0.15674 -3.47461,-0.2417 -5.15186,-0.60205zM187.60547,120.03472c1.72998,0.42656 3.46729,0.82969 5.13281,1.47451c5.25293,2.0335 9.54492,6.06768 12.44385,10.84277c4.54834,7.49238 6.07178,17.72417 3.9668,26.25688c-1.7417,7.06055 -6.49658,13.979 -12.78516,17.75391c-1.18066,0.70898 -4.38867,2.00098 -5.13281,2.86963c-0.34863,0.40576 -0.5376,1.03857 -0.66504,1.5498c-0.54053,2.15625 -0.85107,4.37988 -1.3667,6.54785c-1.21143,4.93066 -2.73193,9.7793 -4.55127,14.51807c-1.58496,4.11621 -3.40137,8.13867 -5.44189,12.0498c-3.92285,7.5293 -9.52734,14.58838 -10.021,23.39355c-0.07324,1.28613 -0.07324,3.10547 0.59326,4.23486c0.30762,0.52295 0.76318,0.87451 1.35352,1.01514c1.29785,0.31201 3.25635,-0.33691 4.40918,-0.96533c12.16846,-5.56641 28.88379,-30.4043 35.40674,-42.19336c3.28564,-5.99268 6.14209,-12.21094 8.54736,-18.60791c1.43408,-3.854 2.80811,-7.7915 3.83057,-11.77588c6.8584,-26.73296 2.33789,-53.00039 -9.01611,-77.77778c-2.00537,-4.37563 -4.26562,-8.602 -6.51562,-12.85444c-3.41602,-6.45381 -8.93701,-18.36416 -16.03857,-21.0605c-1.11182,-0.42173 -2.22363,-0.60161 -3.41309,-0.54756c-2.28369,0.04775 -4.11768,0.53335 -5.75537,2.25103c-3.40869,3.57495 -3.49658,14.06572 -3.2915,18.94775c0.10547,2.5043 0.46143,4.98062 0.78223,7.46426c0.71924,5.81953 1.77832,11.59189 3.17285,17.28706c1.43848,5.77881 3.1333,11.49331 4.35498,17.32588zM201.93896,52.02935c4.3374,4.62861 8.19141,9.46069 11.29688,15.00908c1.60107,2.85894 2.95898,5.8563 4.48828,8.75479c11.91943,22.56987 19.58936,45.13667 18.75879,70.94019c-0.90088,28.05762 -11.88428,52.17041 -27.80273,74.79492c-5.18262,7.3667 -10.46777,14.38037 -17.07129,20.55176c-1.89551,1.771 -3.89062,3.5332 -6.00439,5.03906c3.73828,1.42676 7.79443,2.73047 11.76709,3.25049c6.94189,0.48047 13.20703,-1.26562 18.51416,-5.88867c3.95654,-3.44678 7.64502,-9.28564 10.70215,-13.66406c16.24365,-23.2749 27.8291,-50.27197 29.64697,-78.83789c1.77539,-27.88315 -5.12988,-54.61626 -17.68799,-79.43862c-2.19287,-4.33477 -5.11816,-10.74639 -8.24561,-14.28911c-4.11768,-4.66567 -10.08105,-7.73042 -16.32129,-8.08301c-1.04883,-0.05933 -2.08887,-0.0709 -3.1377,-0.00967c-3.14795,0.24419 -5.89746,0.93267 -8.90332,1.87075zM189.93311,131.33247c1.05908,7.17861 2.06104,14.3499 2.29834,21.61187c0.09082,2.98096 0.11572,5.96484 0.07471,8.94873c-0.0249,1.87646 -0.14795,3.79541 -0.06445,5.66748c1.18506,-1.25391 2.42871,-2.47705 3.44971,-3.87012c0.04395,-0.06152 0.09082,-0.12012 0.13623,-0.18164l0.0791,-0.1084c3.66943,-5.12256 4.84131,-11.74219 3.81885,-17.92061c-0.8584,-5.18657 -3.76904,-10.04385 -8.06543,-13.10669c-0.5332,-0.37998 -1.11035,-0.81606 -1.72705,-1.04063zM290.03467,175.83984c-0.03076,-4.58057 -0.03662,-9.16113 -0.01465,-13.7417c0.00293,-3.104 0.32666,-6.54785 -0.41016,-9.57275c-0.43066,-1.7915 -1.35498,-3.42627 -2.66895,-4.71826c-2.94873,-2.8894 -6.51855,-2.69517 -10.3667,-2.67466l-6.19775,0.03647c-1.22461,0.00688 -2.54004,0.10708 -3.73828,-0.17666l-0.03369,0.2644c-0.36035,2.91372 -0.28711,5.90493 -0.49658,8.83608c-0.47314,6.25342 -1.34766,12.47021 -2.62061,18.61084c-0.38525,1.85303 -0.72363,3.81885 -1.32422,5.61475c4.71094,0.0249 9.25342,-0.29297 13.8457,-1.38281c2.45654,-0.58154 4.88525,-1.59521 7.40186,-1.84131c2.21191,-0.20654 4.51611,0.00879 6.62402,0.74561zM259.42236,188.16211c-1.14844,3.28564 -2.24268,6.65039 -3.62549,9.84375c2.05518,0.14063 4.12354,0.32666 6.18457,0.33398c2.47119,0.02637 4.93799,0.00439 7.40186,-0.19043c4.31543,-0.33984 16.3667,-1.88672 19.24512,-4.80908c0.8833,-0.89795 1.38867,-2.07275 1.36523,-3.33691c-0.03076,-1.3916 -0.64307,-2.70703 -1.68896,-3.62549c-1.26416,-1.13525 -2.63965,-1.31982 -4.2583,-1.20117c-0.04395,0.00439 -0.08789,0.00879 -0.1333,0.01318c-6.52441,1.83252 -12.69141,3.10693 -19.50293,3.17871c-1.64209,0.01611 -3.36914,0.06445 -4.98779,-0.20654z" fill="#000000" />
+                                            </g>
+                                        </svg>
+                                    </svg>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <small>Variedad clases</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <p class="mt-4">Este club aún no tiene reseñas.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% include 'partials/_share_profile_modal.html' %}
+    {% include 'partials/_register_modal.html' %}
+    <script src="{% static 'js/review-filter.js' %}"></script>
+    <script src="{% static 'js/slides.js' %}"></script>
+    <script src="{% static 'js/rating.js' %}"></script>
+    <script src="{% static 'js/share-like.js' %}"></script>
+    <script src="{% static 'js/share-modal.js' %}"></script>
+    <script src="{% static 'js/gallery-slideshow.js' %}"></script>
+{% endblock %}

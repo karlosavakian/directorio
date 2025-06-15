@@ -1,0 +1,26 @@
+ 
+      <form method="get" id="review-filter-form" action="{% url 'ajax_reviews' club.slug %}" class="d-flex align-items-center" style="gap: 10px;">
+        <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
+
+    <div class="custom-dropdown small" id="sort-dropdown">
+        <div class="selected">
+            <span class="selected-text">
+             
+               {% if request.GET.orden == 'recientes' %}Más recientes
+                  {% elif request.GET.orden == 'relevantes' %}Más relevantes
+              {% elif request.GET.orden == 'antiguos' %}Más antiguos
+              {% elif request.GET.orden == 'puntuacion_baja' %}Puntuación más baja
+              {% elif request.GET.orden == 'puntuacion_alta' %}Puntuación más alta 
+               {% else %}Ordenar por{% endif %}
+            </span>
+            <span class="select-arrow"></span>
+        </div>
+        <div class="dropdown-menu" id="sort-menu">
+          <div class="dropdown-item" data-value="relevantes">Más relevantes</div>
+           <div class="dropdown-item" data-value="recientes">Más recientes</div>
+            <div class="dropdown-item" data-value="antiguos">Más antiguos</div>
+            <div class="dropdown-item" data-value="puntuacion_alta">Puntuación más alta</div>
+            <div class="dropdown-item" data-value="puntuacion_baja">Puntuación más baja</div>
+        </div>
+    </div>
+        </form>

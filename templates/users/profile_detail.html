@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" class="rounded-circle me-3" style="width:100px;height:100px;object-fit:cover;">
+        {% endif %}
+        <h1 class="h3 mb-0">
+            {{ user_obj.username }}
+            {% if user.is_authenticated and user != user_obj %}
+            <form action="{% url 'toggle_follow' 'user' user_obj.id %}" method="post" class="d-inline ms-2">
+                {% csrf_token %}
+                {% if is_following %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
+                {% else %}
+                <button type="submit" class="btn btn-sm btn-primary">Seguir</button>
+                {% endif %}
+            </form>
+            {% endif %}
+            <button id="profile-share" aria-label="Compartir" class="btn btn-link p-0 ms-2">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+                </svg>
+            </button>
+        </h1>
+    </div>
+    {% if profile.bio %}
+        <p>{{ profile.bio }}</p>
+    {% endif %}
+    {% if profile.location %}
+        <p><strong>Ubicación:</strong> {{ profile.location }}</p>
+    {% endif %}
+</div>
+{% include 'partials/_share_profile_modal.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/share-modal.js' %}"></script>
+{% endblock %}

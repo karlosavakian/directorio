@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex mt-5 container-fluid col-12">
+    <div class="profile-tabs">
+        <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
+        <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+        <div class="profile-tab" data-target="tab-favorites">Favoritos</div>
+        <div class="profile-tab" data-target="tab-reviews">Reseñas</div>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="profile-tab text-start w-100">Cerrar sesión</button>
+        </form>
+    </div>
+    <div class="profile-content  ">
+        <div id="tab-account" class="profile-section active col-6">
+            <h1 class="mb-4">Mi Cuenta</h1>
+            {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
+            {% endif %}
+            <form method="post" enctype="multipart/form-data" class="profile-form mb-5">
+                {% csrf_token %}
+                <div class="form-field">
+                    {{ form.avatar.as_widget }}
+                    <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
+                    {% if form.avatar.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.avatar.errors.as_text|striptags }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="form-field">
+                    {{ form.username }}
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                </div>
+                <div class="form-field">
+                    {{ form.email }}
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                </div>
+                <div class="form-field">
+                    {{ form.new_password1 }}
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
+                </div>
+                <div class="form-field">
+                    {{ form.new_password2 }}
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
+                </div>
+                <div class="form-field checkbox-field">
+                    {{ form.notifications }}
+                    <label for="{{ form.notifications.id_for_label }}">{{ form.notifications.label }}</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </form>
+            <a href="{% url 'delete_account' %}" class="btn btn-danger mt-3">Eliminar cuenta</a>
+        </div>
+        <div id="tab-bookings" class="profile-section">
+            <h2 class="h5">Mis Reservas</h2>
+            {% if bookings %}
+            <ul class="list-group">
+                {% for b in bookings %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        {% if b.clase %}
+                            Clase: {{ b.clase.nombre }} ({{ b.clase.hora_inicio|time:"H:i" }})
+                        {% elif b.evento %}
+                            Evento: {{ b.evento.titulo }}
+                        {% endif %}
+                    </span>
+                    {% if b.status != 'cancelled' %}
+                    <form action="{% url 'cancel_booking' b.id %}" method="post" class="ms-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                    </form>
+                    {% else %}
+                    <span class="badge bg-secondary">Cancelada</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="list-group-item">No tienes reservas.</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No tienes reservas.</p>
+            {% endif %}
+        </div>
+        <div id="tab-favorites" class="profile-section">
+            <h2 class="h5 mb-3">Favoritos</h2>
+            {% if favoritos %}
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                {% for club in favoritos %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <a href="{% url 'club_profile' club.slug %}" class="text-decoration-none text-dark">
+                            {% if club.logo %}
+                                <img src="{{ club.logo.url }}" class="card-img-top object-fit-cover" style="height:200px" alt="{{ club.name }}">
+                            {% else %}
+                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:200px;">
+                                    <span class="text-muted">Sin logo</span>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold mb-1">{{ club.name }}</h5>
+                                <div class="d-flex align-items-center gap-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" viewBox="0 0 24 24" stroke="gold">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    {% if club.average_rating %}
+                                    <span class="small">{{ club.average_rating }} ({{ club.reviews_count }})</span>
+                                    {% else %}
+                                    <span class="text-muted small">Sin reseñas</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>No sigues a ningún club todavía.</p>
+            {% endif %}
+        </div>
+        <div id="tab-reviews" class="profile-section">
+            <h2 class="h5 mb-3">Mis Reseñas</h2>
+            {% if reviews %}
+            <ul class="reseña-list">
+                {% for r in reviews %}
+                <li class="reseña-item mb-3">
+                    <h4><a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a></h4>
+                    <p>⭐ {{ r.promedio }} | "{{ r.comentario }}"</p>
+                    <small>{{ r.creado|date:"d/m/Y H:i" }}</small>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No has escrito ninguna reseña todavía.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile-tabs.js' %}"></script>
+<script src="{% static 'js/clear-input.js' %}"></script>
+{% endblock %}

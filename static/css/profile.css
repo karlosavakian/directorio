@@ -1,0 +1,108 @@
+.profile-wrapper {
+  display: flex;
+  gap: 2rem;
+}
+.profile-tabs {
+  min-width: 200px;
+}
+.profile-tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.3s;
+}
+.profile-tab.active {
+  border-left-color: #000;
+  font-weight: 600;
+}
+.profile-content {
+  flex: 1;
+}
+.profile-section {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.profile-section.active {
+  display: block;
+  opacity: 1;
+}
+/* Form styles inspired by Zellwk CodePen */
+.profile-form .form-field {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.profile-form .form-field input[type="text"],
+.profile-form .form-field input[type="email"],
+.profile-form .form-field input[type="password"],
+.profile-form .form-field input[type="file"],
+.profile-form .form-field textarea {
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-form .form-field input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.profile-form .form-field input:focus,
+.profile-form .form-field textarea:focus {
+  outline: none;
+  border-color: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+}
+
+.profile-form .form-field label {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  padding: 0 0.25rem;
+  color: #666;
+  pointer-events: none;
+  transition: transform 0.2s, font-size 0.2s, color 0.2s;
+}
+
+.profile-form .checkbox-field label {
+  position: static;
+  transform: none;
+  padding: 0;
+}
+
+.profile-form .checkbox-field {
+  display: flex;
+  align-items: center;
+}
+
+.profile-form .form-field input:not(:placeholder-shown) ~ label,
+.profile-form .form-field input:focus ~ label,
+.profile-form .form-field textarea:not(:placeholder-shown) ~ label,
+.profile-form .form-field textarea:focus ~ label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  color: #000;
+}
+
+.profile-form .clear-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  display: none;
+}
+
+.profile-form input:not(:placeholder-shown) + .clear-btn {
+  display: block;
+}
