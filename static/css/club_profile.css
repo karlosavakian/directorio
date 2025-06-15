@@ -1,7 +1,8 @@
  
  body.club-profile-page {
+ 
        background-color: #fdfdfd;
-
+ 
 }
 
 /* Layout refinements */
@@ -94,7 +95,7 @@
   gap: 6px;
   margin-top: 0.5rem;
   z-index: 5;
-}
+} 
 .gallery-dot {
     width: 10px;
     height: 10px;
@@ -109,6 +110,7 @@
     height: 10px;
     background: #ffffff;
 }
+ 
 /* Forms */
 textarea.form-control {
     font-size: 0.9rem;
