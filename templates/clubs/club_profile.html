@@ -87,8 +87,7 @@
             <div class="col-lg-8">
                 <div class="mb-4   rounded">
                     {% if club.photos.all %}
- 
-                        <div class="mb-4 gallery-slideshow position-relative">
+  <div class="mb-4 gallery-slideshow position-relative">
     <div class="gallery-actions">
         <!-- Heart and Share buttons -->
         <button id="club-heart"
@@ -120,19 +119,20 @@
                  alt="Foto"
                  class="img-fluid rounded shadow-sm"
                  style="width:100%;
-                        max-height:450px;
-                        object-fit:contain;
+                        max-height:500px;
+                        object-fit:cover;
+                        background-position: 0 0;
                         background:rgb(85, 85, 85)">
         </div>
     {% endfor %}
 
-    <button id="galleryPrev" class="slide-arrow left">
+    <button id="galleryPrev" class="slide-arrow left ms-3">
         <svg viewBox="0 0 48 48">
             <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
             <path d="M0-.5h48v48h-48z" fill="none" />
         </svg>
     </button>
-    <button id="galleryNext" class="slide-arrow right">
+    <button id="galleryNext" class="slide-arrow right  me-3">
         <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
             <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
             <path d="M0-.5h48v48h-48z" fill="none" />
