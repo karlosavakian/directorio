@@ -141,9 +141,8 @@ textarea.form-control {
   max-width: 700px;
   margin: auto;
   padding: 2rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background: #000000;
+  border-radius: 10px;  
   min-height: 200px;
   display: flex;
   flex-direction: column;
@@ -235,7 +234,7 @@ textarea.form-control {
 }
 
 .review-arrow svg {
-  fill: #444;
+  fill: #ffffff;
   pointer-events: auto; /* permite clickar en el svg */
 }
 

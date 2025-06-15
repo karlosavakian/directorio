@@ -121,8 +121,10 @@
                  style="width:100%;
                         max-height:500px;
                         object-fit:cover;
-                        background-position: 0 0;
+                        background-position:0 0;
+                         user-select: none;  
                         background:rgb(85, 85, 85)">
+                 
         </div>
     {% endfor %}
 
@@ -440,16 +442,16 @@
                              onmouseleave="startAutoplay()">
                             {% for reseña in reseñas %}
                                 <div class="review-slide{% if forloop.first %} active{% endif %}">
-                                    <p class="review-text">“{{ reseña.comentario }}”</p>
+                                    <p class="review-text text-white">“{{ reseña.comentario }}”</p>
                                     <div class="review-user-container d-flex align-items-center">
                                         {% if reseña.usuario.profile.avatar %}
                                             <img src="{{ reseña.usuario.profile.avatar.url }}"
                                                  alt="{{ reseña.usuario.username }}"
                                                  class="review-avatar-img rounded-circle">
                                         {% else %}
-                                            <div class="review-avatar">{{ reseña.usuario.username|first|upper }}</div>
+                                            <div class="review-avatar bg-white text-black">{{ reseña.usuario.username|first|upper }}</div>
                                         {% endif %}
-                                        <div class="fw-medium ms-2">{{ reseña.usuario.username }}</div>
+                                        <div class="fw-medium ms-2 text-white">{{ reseña.usuario.username }}</div>
                                     </div>
                                 </div>
                             {% endfor %}
