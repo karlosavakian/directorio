@@ -17,6 +17,6 @@ def render_stars(rating):
     empty = 5 - filled
     def star(color):
         return f'<svg width="20" height="20" viewBox="0 0 24 24" fill="{color}" stroke="#666"><path d="{STAR_PATH}"/></svg>'
-    stars_html = ''.join(star('#ffc107') for _ in range(filled))
-    stars_html += ''.join(star('#e0e0e0') for _ in range(empty))
+    stars_html = ''.join(star('#000') for _ in range(filled))
+    stars_html += ''.join(star('transparent') for _ in range(empty))
     return mark_safe(stars_html)
