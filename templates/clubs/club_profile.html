@@ -459,7 +459,7 @@
             <div class="col-lg-2">
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
-                    <div class="club-reviews">
+                    <div class="club-reviews"> 
                         <div class="review-carousel"
                              id="review-carousel"
                              onmouseenter="pauseAutoplay()"
@@ -495,19 +495,20 @@
                                     <path d="M0-.5h48v48h-48z" fill="none" />
                                 </svg>
                             </button>
-                        </div>
-                        <ul class="list-group mb-3 my-5">
-                            <p class="fw-bold">
-                                Nota media: {{ club.average_rating }} / 5 <span class="small" style="font-weight:300;">({{ club.reviews_count }})</span>
-                            </p>
+                        </div> 
+                        <ul class="list-group mt-4 mb-3 "> 
+                           <div class="p-1 badge mb-3 d-flex flex-column align-items-center justify-content-center col-6" style="background-color:transparent !important; border:1px solid black; color:black;">   
+                                <span class="fs-5 fw-bold">{{ club.average_rating }} / 5</span>
+                                <span  class="mt-1 fw-light" >({{ club.reviews_count }} reseñas)  </span>
+                            </div>
                             <li class="list-group-item">
                                 <div class="d-flex align-items-center">
                                     <svg class="d-inline pe-2"
                                          id="svg"
                                          version="1.1"
                                          viewBox="0 0 300 300"
-                                         width="55"
-                                         height="55"
+                                         width="40"
+                                         height="40"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <svg xmlns="http://www.w3.org/2000/svg">
                                             <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
@@ -526,8 +527,8 @@
                                         </svg>
                                     </svg>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span>Instalaciones</span>
-                                        <span class="d-flex">{% render_stars detallado.instalaciones %}</span>
+                                        <small>Instalaciones</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.instalaciones %}</span>
                                     </div>
                                 </div>
                             </li>
@@ -537,8 +538,8 @@
                                          id="svg"
                                          version="1.1"
                                          viewBox="0 0 300 300"
-                                         width="55"
-                                         height="55"
+                                         width="40"
+                                         height="40"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <svg xmlns="http://www.w3.org/2000/svg">
                                             <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath><linearGradient x1="153.56982" y1="237.28564" x2="146.07173" y2="246.55518" gradientUnits="userSpaceOnUse" id="color-1"><stop offset="0" stop-color="#000000" stop-opacity="0.94902" /><stop offset="1" stop-color="#000000" stop-opacity="0.98824" /></linearGradient></defs>
@@ -554,8 +555,8 @@
                                         </svg>
                                     </svg>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span>Entrenadores</span>
-                                        <span class="d-flex">{% render_stars detallado.entrenadores %}</span>
+                                        <small>Entrenadores</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.entrenadores %}</span>
                                     </div>
                                 </div>
                             </li>
@@ -565,8 +566,8 @@
                                          id="svg"
                                          version="1.1"
                                          viewBox="0 0 300 300"
-                                         width="55"
-                                         height="55"
+                                         width="40"
+                                         height="40"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <svg xmlns="http://www.w3.org/2000/svg">
                                             <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath><linearGradient x1="299.51514" y1="284.47412" x2="299.87842" y2="284.46387" gradientUnits="userSpaceOnUse" id="color-1"><stop offset="0" stop-color="#000000" stop-opacity="0.94902" /><stop offset="1" stop-color="#010000" stop-opacity="0.98824" /></linearGradient></defs>
@@ -607,8 +608,8 @@
                                         </svg>
                                     </svg>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span>Calidad/precio</span>
-                                        <span class="d-flex">{% render_stars detallado.calidad_precio %}</span>
+                                        <small>Calidad/precio</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.calidad_precio %}</span>
                                     </div>
                                 </div>
                             </li>
@@ -618,8 +619,8 @@
                                          id="svg"
                                          version="1.1"
                                          viewBox="0 0 300 300"
-                                         width="55"
-                                         height="55"
+                                         width="40"
+                                         height="40"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <svg xmlns="http://www.w3.org/2000/svg">
                                             <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
@@ -633,8 +634,8 @@
                                         </svg>
                                     </svg>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span>Ambiente</span>
-                                        <span class="d-flex">{% render_stars detallado.ambiente %}</span>
+                                        <small>Ambiente</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.ambiente %}</span>
                                     </div>
                                 </div>
                             </li>
@@ -644,8 +645,8 @@
                                          id="svg"
                                          version="1.1"
                                          viewBox="0 0 300 300"
-                                         width="55"
-                                         height="55"
+                                         width="40"
+                                         height="40"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <svg xmlns="http://www.w3.org/2000/svg">
                                             <defs><clipPath id="clip-1"><rect x="0" y="0" transform="scale(0.14648,0.14648)" width="2048" height="2048" fill="none" /></clipPath></defs>
@@ -658,8 +659,8 @@
                                         </svg>
                                     </svg>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <span>Variedad clases</span>
-                                        <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                        <small>Variedad clases</small>
+                                        <span style="height:15px;" class="d-flex">{% render_stars detallado.variedad_clases %}</span>
                                     </div>
                                 </div>
                             </li>
