@@ -66,22 +66,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="d-flex flex-wrap gap-4 justify-content-start">
-                    {% for feature in club.features.all %}
-                        <div class="d-flex flex-column align-items-center text-center"
-                             style="width:4rem">
-                            {% if feature.icon %}
-                                <img src="{{ feature.icon.url }}"
-                                     alt="{{ feature.name }}"
-                                     style="width:30px;
-                                            height:30px">
-                            {% endif %}
-                            <div class="fw-medium d-flex align-items-center justify-content-center text-wrap mt-2"
-                                 style="height: 2.5rem;
-                                        font-size:12px">{{ feature.name }}</div>
-                        </div>
-                    {% endfor %}
-                </div>
+                
             </div>
             <!-- Columna Central: Galería y Features -->
             <div class="col-lg-8">
@@ -206,46 +191,58 @@
                 <div class="tab-content" id="clubTabsContent">
                     <!-- About -->
                     <div class="tab-pane fade show active" id="about" role="tabpanel">
-                        <div class="row p-3">
-                            <div class="col-lg-7">
-                                <div class="col-12">
-                                    <p>{{ club.about|linebreaks }}</p>
-                                </div>
-                                {% if club.entrenadores.all %}
-                                    <h5 class="mt-4 mb-4">Entrenadores</h5>
-                                    <div class="row">
-                                        {% for e in club.entrenadores.all %}
-                                            <div class="col-6 d-flex align-items-center mb-3">
-                                                {% if e.avatar %}
-                                                    <img src="{{ e.avatar.url }}"
-                                                         alt="{{ e.nombre }}"
-                                                         class="rounded-circle me-2"
-                                                         style="width:60px;
-                                                                height:60px;
-                                                                object-fit:cover">
-                                                {% else %}
-                                                    <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-2"
-                                                         style="width:60px;
-                                                                height:50px">{{ e.nombre|first|upper }}</div>
-                                                {% endif %}
-                                                <div>{{ e.nombre }} {{ e.apellidos }}</div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <div class="col-lg-5 p-2">
-                                <a href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
-                                   target="_blank">
-                                    <iframe src="https://maps.google.com/maps?q={{ club.address|urlencode }}&output=embed"
-                                            width="100%"
-                                            height="250"
-                                            style="border:0"
-                                            loading="lazy"
-                                            allowfullscreen></iframe>
-                                </a>
-                            </div>
-                        </div>
+           <div class="row p-3">
+  <!-- Columna izquierda -->
+  <div class="col-lg-7">
+    
+    <!-- Sección: El club -->
+    <div class="mb-5">
+      <h5 class="mb-3">El club</h5>
+      <p>{{ club.about|linebreaks }}</p>
+    </div>
+
+    <!-- Sección: Instalaciones y equipamiento -->
+    <div>
+      <h5 class="mb-3">Instalaciones y equipamiento</h5>
+      <div class="d-flex flex-wrap gap-4">
+        {% for feature in club.features.all %}
+          <div class="d-flex flex-column align-items-center text-center" style="width: 4rem;">
+            {% if feature.icon %}
+              <img src="{{ feature.icon.url }}" alt="{{ feature.name }}" style="width:30px; height:30px;">
+            {% endif %}
+            <div class="fw-medium mt-2 text-wrap" style="font-size: 12px; height: 2.5rem;">{{ feature.name }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="col-lg-5 p-2">
+    {% if club.entrenadores.all %}
+      <h5 class="mb-4">Entrenadores</h5>
+      <div class="row">
+        {% for e in club.entrenadores.all %}
+          <div class="col-12 d-flex align-items-center mb-3">
+            {% if e.avatar %}
+              <img src="{{ e.avatar.url }}"
+                   alt="{{ e.nombre }}"
+                   class="rounded-circle me-3"
+                   style="width: 60px; height: 60px; object-fit: cover;">
+            {% else %}
+              <div class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center me-3"
+                   style="width: 60px; height: 60px;">
+                {{ e.nombre|first|upper }}
+              </div>
+            {% endif %}
+            <div>{{ e.nombre }} {{ e.apellidos }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
                     </div>
                     <!-- Horarios -->
                     <div class="tab-pane fade" id="schedule" role="tabpanel">
