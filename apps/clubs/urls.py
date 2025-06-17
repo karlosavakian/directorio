@@ -11,10 +11,17 @@ from .views import (
     book_clase,
     cancel_booking,
 )
+from .views import dashboard as dash_views
 
 urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
+
+    path('<slug:slug>/dashboard/', dash_views.dashboard, name='club_dashboard'),
+    path('<slug:slug>/editar/', dash_views.club_edit, name='club_edit'),
+    path('<slug:slug>/clase/nueva/', dash_views.clase_create, name='clase_create'),
+    path('clase/<int:pk>/editar/', dash_views.clase_update, name='clase_update'),
+    path('clase/<int:pk>/eliminar/', dash_views.clase_delete, name='clase_delete'),
 
     path('<slug:slug>/posts/nuevo/', post_create, name='clubpost_create'),
     path('posts/<int:pk>/editar/', post_update, name='clubpost_update'),
