@@ -16,6 +16,12 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
+   Si ejecutas el servidor desde un dominio distinto (por ejemplo, en
+   servicios en la nube o IDEs remotos), asegúrate de incluir esa URL en la
+   variable de entorno `CSRF_TRUSTED_ORIGINS`:
+```bash
+export CSRF_TRUSTED_ORIGINS="https://tu-dominio.example.com"
+```
 4. Configura los proveedores sociales (Google o Facebook) en el panel de
    administración dentro de "Social applications". Guarda las credenciales
    correspondientes y ejecuta `python manage.py migrate` para aplicar las
