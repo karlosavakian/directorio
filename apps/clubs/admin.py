@@ -31,10 +31,10 @@ class HorarioInline(admin.TabularInline):
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
-    list_display = ('name', 'verified', 'city', 'phone', 'email')
+    list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
-    fields = ('logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
+    fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):

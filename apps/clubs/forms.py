@@ -99,6 +99,22 @@ class BookingForm(forms.ModelForm):
         fields = []
 
 
+class ClubForm(forms.ModelForm):
+    class Meta:
+        model = models.Club
+        exclude = ('slug', 'created_at', 'updated_at', 'verified')
+
+
+class ClaseForm(forms.ModelForm):
+    class Meta:
+        model = models.Clase
+        fields = ['nombre', 'hora_inicio', 'hora_fin']
+        widgets = {
+            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+        }
+
+
 class CancelBookingForm(forms.Form):
     """Simple form used to confirm cancellation."""
     pass
