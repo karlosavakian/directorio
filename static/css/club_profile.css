@@ -88,7 +88,7 @@
 .slide-arrow.left { left: 10px; }
 .slide-arrow.right { right: 10px; }
 .slide-arrow:hover { opacity: 1; }
-.slide-arrow svg { width: 10px; height: 10px; fill: #000; }
+.slide-arrow svg { width: 20px; height: 20px; fill: #000; }
 .gallery-dots {
   display: flex;
   justify-content: center;
@@ -139,10 +139,8 @@ textarea.form-control {
 .review-carousel {
   position: relative;
   max-width: 700px;
-  margin: auto;
-  padding: 2rem;
-  background: #000000;
-  border-radius: 10px;  
+  margin: auto; 
+  background: #ffffff; 
   min-height: 200px;
   display: flex;
   flex-direction: column;
@@ -234,7 +232,7 @@ textarea.form-control {
 }
 
 .review-arrow svg {
-  fill: #ffffff;
+  fill: #000000;
   pointer-events: auto; /* permite clickar en el svg */
 }
 
@@ -258,10 +256,10 @@ textarea.form-control {
 }
 
 
- /* Contenedor del menú con línea inferior gris continua */
-.custom-tab-menu {
-  border-bottom: 1px solid #ccc;
-}
+ .feature-review-icon{
+  width:45px;
+  height: 45px;
+ }
 
 /* Estilo de los tabs */
 .custom-tab-menu .nav-link {
@@ -269,8 +267,7 @@ textarea.form-control {
   padding: 0.75rem 1rem;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid transparent;
-  font-weight: 500;
+  border-bottom: 1px solid transparent; 
   margin-right: 1rem;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -283,7 +280,7 @@ textarea.form-control {
 
 /* Activo: borde inferior negro bien alineado */
 .custom-tab-menu .nav-link.active {
-  border-bottom: 1px solid #000;
+  border-bottom: 3px solid #000;
   font-weight: 600;
 }
 /* Acciones en la galería */
