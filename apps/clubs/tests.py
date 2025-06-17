@@ -3,9 +3,10 @@ import tempfile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth.models import User, Group
 from PIL import Image
 
-from .models import Club, ClubPhoto
+from .models import Club, ClubPhoto, ClubPost
 
 
 class SearchResultsTests(TestCase):
@@ -80,4 +81,32 @@ class ClubPhotoResizeTests(TestCase):
                 photo = ClubPhoto.objects.create(club=club, image=upload)
                 width, height = Image.open(photo.image.path).size
                 self.assertLessEqual(width, 800)
-                self.assertLessEqual(height, 800)
+        self.assertLessEqual(height, 800)
+
+
+class DashboardPermissionTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner', password='pass')
+        self.other = User.objects.create_user(username='other', password='pass')
+        self.club = Club.objects.create(
+            name='Owner Club',
+            city='C',
+            address='A',
+            phone='1',
+            email='e@example.com',
+            owner=self.owner,
+        )
+        Group.objects.get_or_create(name='ClubOwner')
+
+    def test_non_owner_cannot_edit_club(self):
+        self.client.login(username='other', password='pass')
+        url = reverse('club_edit', args=[self.club.slug])
+        response = self.client.post(url, {'name': 'X'})
+        self.assertEqual(response.status_code, 403)
+
+    def test_non_owner_cannot_edit_post(self):
+        post = ClubPost.objects.create(club=self.club, titulo='t', contenido='c')
+        self.client.login(username='other', password='pass')
+        url = reverse('clubpost_update', args=[post.pk])
+        response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
+        self.assertEqual(response.status_code, 403)

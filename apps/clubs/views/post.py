@@ -1,13 +1,17 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 from ..models import Club, ClubPost
 from ..forms import ClubPostForm
+from ..permissions import has_club_permission
 
 
 @login_required
 def post_create(request, slug):
     club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
     if request.method == 'POST':
         form = ClubPostForm(request.POST)
         if form.is_valid():
@@ -23,6 +27,8 @@ def post_create(request, slug):
 @login_required
 def post_update(request, pk):
     post = get_object_or_404(ClubPost, pk=pk)
+    if not has_club_permission(request.user, post.club):
+        return HttpResponseForbidden()
     if request.method == 'POST':
         form = ClubPostForm(request.POST, instance=post)
         if form.is_valid():
@@ -36,6 +42,8 @@ def post_update(request, pk):
 @login_required
 def post_delete(request, pk):
     post = get_object_or_404(ClubPost, pk=pk)
+    if not has_club_permission(request.user, post.club):
+        return HttpResponseForbidden()
     if request.method == 'POST':
         slug = post.club.slug
         post.delete()
