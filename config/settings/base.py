@@ -49,6 +49,12 @@ if _hosts:
 else:
     ALLOWED_HOSTS = []
 
+_origins = os.environ.get("CSRF_TRUSTED_ORIGINS")
+if _origins:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in _origins.split(",") if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = []
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
