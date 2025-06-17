@@ -2,7 +2,6 @@
 
 from django.urls import path
 from .views import (
-    dashboard,
     search,
     public,
     post_create,
@@ -11,7 +10,7 @@ from .views import (
     book_clase,
     cancel_booking,
 )
-from .views import dashboard as dash_views
+import apps.clubs.views.dashboard as dash_views
 
 urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
