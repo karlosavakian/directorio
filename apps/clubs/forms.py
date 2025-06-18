@@ -158,3 +158,9 @@ class CompetidorForm(forms.ModelForm):
         model = models.Competidor
         fields = ['nombre', 'victorias', 'derrotas', 'empates', 'titulos']
 
+
+class EntrenadorForm(forms.ModelForm):
+    class Meta:
+        model = models.Entrenador
+        exclude = ['slug', 'club']
+

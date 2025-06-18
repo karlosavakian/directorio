@@ -233,7 +233,11 @@
                                         {{ e.nombre|first|upper }}
                                         </div>
                                     {% endif %}
-                                    <span>{{ e.nombre }} {{ e.apellidos }}</span>
+                                    {% if e.slug %}
+                                        <a href="{% url 'coach_profile' e.slug %}" class="text-decoration-none text-reset">{{ e.nombre }} {{ e.apellidos }}</a>
+                                    {% else %}
+                                        <span>{{ e.nombre }} {{ e.apellidos }}</span>
+                                    {% endif %}
                                     </div>
                                 {% endfor %}
                                 </div>
