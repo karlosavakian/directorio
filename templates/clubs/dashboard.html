@@ -1,99 +1,122 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container py-4">
-  <h1 class="h3">Administrar {{ club.name }}</h1>
-  <p>
-    <a href="{% url 'club_edit' club.slug %}" class="btn btn-primary btn-sm">Editar club</a>
-    <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir clase</a>
-    <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm">Nueva publicación</a>
-    <a href="{% url 'clubphoto_upload' club.slug %}" class="btn btn-secondary btn-sm">Añadir foto</a>
-    <a href="{% url 'horario_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir horario</a>
-    <a href="{% url 'competidor_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir competidor</a>
-  </p>
-  <h2 class="h5 mt-4">Clases</h2>
-  <ul>
-    {% for c in classes %}
-    <li>
-      {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }})
-      <a href="{% url 'clase_update' c.id %}">Editar</a>
-      <form method="post" action="{% url 'clase_delete' c.id %}" style="display:inline">
+<div class="d-flex mt-5 container-fluid col-12">
+  <div class="profile-tabs">
+    <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
+    <div class="profile-tab" data-target="tab-gallery">Galería</div>
+    <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+    <div class="profile-tab" data-target="tab-competitors">Competidores</div>
+    <div class="profile-tab" data-target="tab-posts">Publicaciones</div>
+    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+  </div>
+  <div class="profile-content">
+    <div id="tab-profile" class="profile-section active">
+      <h1 class="h3 mb-4">Administrar {{ club.name }}</h1>
+      <form method="post" action="{% url 'club_edit' club.slug %}" enctype="multipart/form-data" class="profile-form">
         {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar</button>
       </form>
-    </li>
-    {% empty %}
-    <li>No hay clases.</li>
-    {% endfor %}
-  </ul>
-  <h2 class="h5 mt-4">Posts</h2>
-  <ul>
-    {% for p in posts %}
-    <li>
-      {{ p.titulo }}
-      <a href="{% url 'clubpost_update' p.id %}">Editar</a>
-      <form method="post" action="{% url 'clubpost_delete' p.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay posts.</li>
-    {% endfor %}
-  </ul>
-
-  <h2 class="h5 mt-4">Galería</h2>
-  <ul>
-    {% for photo in club.photos.all %}
-    <li>
-      <img src="{{ photo.image.url }}" style="width: 100px; height: 80px; object-fit: cover;">
-      <form method="post" action="{% url 'clubphoto_delete' photo.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay fotos.</li>
-    {% endfor %}
-  </ul>
-
-  <h2 class="h5 mt-4">Horarios</h2>
-  <ul>
-    {% for h in club.horarios.all %}
-    <li>
-      {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
-      <a href="{% url 'horario_update' h.id %}">Editar</a>
-      <form method="post" action="{% url 'horario_delete' h.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay horarios.</li>
-    {% endfor %}
-  </ul>
-
-  <h2 class="h5 mt-4">Competidores</h2>
-  <ul>
-    {% for comp in club.competidores.all %}
-    <li>
-      {{ comp.nombre }} ({{ comp.victorias }}-{{ comp.derrotas }}-{{ comp.empates }})
-      <a href="{% url 'competidor_update' comp.id %}">Editar</a>
-      <form method="post" action="{% url 'competidor_delete' comp.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay competidores.</li>
-    {% endfor %}
-  </ul>
-  <h2 class="h5 mt-4">Reservas</h2>
-  <ul>
-    {% for b in bookings %}
-    <li>{{ b.user.username }} - {% if b.clase %}{{ b.clase.nombre }}{% else %}{{ b.evento.titulo }}{% endif %} ({{ b.status }})</li>
-    {% empty %}
-    <li>No hay reservas.</li>
-    {% endfor %}
-  </ul>
+    </div>
+    <div id="tab-gallery" class="profile-section">
+      <a href="{% url 'clubphoto_upload' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir foto</a>
+      <ul>
+        {% for photo in club.photos.all %}
+        <li class="mb-2">
+          <img src="{{ photo.image.url }}" style="width: 100px; height: 80px; object-fit: cover;">
+          <form method="post" action="{% url 'clubphoto_delete' photo.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay fotos.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="tab-schedule" class="profile-section">
+      <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm me-2 mb-3">Añadir clase</a>
+      <a href="{% url 'horario_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir horario</a>
+      <h2 class="h5 mt-4">Clases</h2>
+      <ul>
+        {% for c in classes %}
+        <li>
+          {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }})
+          <a href="{% url 'clase_update' c.id %}">Editar</a>
+          <form method="post" action="{% url 'clase_delete' c.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay clases.</li>
+        {% endfor %}
+      </ul>
+      <h2 class="h5 mt-4">Horarios</h2>
+      <ul>
+        {% for h in club.horarios.all %}
+        <li>
+          {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
+          <a href="{% url 'horario_update' h.id %}">Editar</a>
+          <form method="post" action="{% url 'horario_delete' h.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay horarios.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="tab-competitors" class="profile-section">
+      <a href="{% url 'competidor_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir competidor</a>
+      <ul>
+        {% for comp in club.competidores.all %}
+        <li>
+          {{ comp.nombre }} ({{ comp.victorias }}-{{ comp.derrotas }}-{{ comp.empates }})
+          <a href="{% url 'competidor_update' comp.id %}">Editar</a>
+          <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay competidores.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="tab-posts" class="profile-section">
+      <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Nueva publicación</a>
+      <ul>
+        {% for p in posts %}
+        <li>
+          {{ p.titulo }}
+          <a href="{% url 'clubpost_update' p.id %}">Editar</a>
+          <form method="post" action="{% url 'clubpost_delete' p.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay posts.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="tab-bookings" class="profile-section">
+      <ul>
+        {% for b in bookings %}
+        <li>{{ b.user.username }} - {% if b.clase %}{{ b.clase.nombre }}{% else %}{{ b.evento.titulo }}{% endif %} ({{ b.status }})</li>
+        {% empty %}
+        <li>No hay reservas.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile-tabs.js' %}"></script>
 {% endblock %}

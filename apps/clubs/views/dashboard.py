@@ -34,12 +34,20 @@ def dashboard(request, slug):
     bookings = Booking.objects.filter(
         Q(clase__club=club) | Q(evento__club=club)
     ).select_related('user', 'clase', 'evento')
-    return render(request, 'clubs/dashboard.html', {
-        'club': club,
-        'classes': classes,
-        'posts': posts,
-        'bookings': bookings,
-    })
+
+    form = ClubForm(instance=club)
+
+    return render(
+        request,
+        'clubs/dashboard.html',
+        {
+            'club': club,
+            'classes': classes,
+            'posts': posts,
+            'bookings': bookings,
+            'form': form,
+        },
+    )
 
 
 @login_required
