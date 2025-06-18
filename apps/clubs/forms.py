@@ -104,6 +104,17 @@ class ClubForm(forms.ModelForm):
         model = models.Club
         exclude = ('slug', 'created_at', 'updated_at', 'verified')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (forms.TextInput, forms.EmailInput,
+                                        forms.URLInput, forms.NumberInput,
+                                        forms.PasswordInput, forms.Textarea,
+                                        forms.DateInput, forms.TimeInput)):
+                field.widget.attrs.setdefault('placeholder', ' ')
+
 
 class ClaseForm(forms.ModelForm):
     class Meta:
