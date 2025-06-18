@@ -112,5 +112,5 @@
 }
 .feature-option.selected {
   background-color: #d1e7dd;
-  border-color: #badbcc;
+  border: 2px solid #198754 !important;
 }
