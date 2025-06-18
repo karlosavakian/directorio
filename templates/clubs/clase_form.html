@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 <div class="container py-4">
-  <h1 class="h5">{% if clase %}Editar{% else %}Nueva{% endif %} clase</h1>
-  <form method="post">
+  <h1 class="h5 mb-4">{% if clase %}Editar{% else %}Nueva{% endif %} clase</h1>
+  <form method="post" class="profile-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+    <div class="form-field">
+      {{ field.as_widget }}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% if field.errors %}
+      <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/clear-input.js' %}"></script>
 {% endblock %}

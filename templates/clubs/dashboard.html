@@ -1,49 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-<div class="container py-4">
-  <h1 class="h3">Administrar {{ club.name }}</h1>
-  <p>
-    <a href="{% url 'club_edit' club.slug %}" class="btn btn-primary btn-sm">Editar club</a>
-    <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir clase</a>
-    <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm">Nueva publicación</a>
-  </p>
-  <h2 class="h5 mt-4">Clases</h2>
-  <ul>
-    {% for c in classes %}
-    <li>
-      {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }})
-      <a href="{% url 'clase_update' c.id %}">Editar</a>
-      <form method="post" action="{% url 'clase_delete' c.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay clases.</li>
-    {% endfor %}
-  </ul>
-  <h2 class="h5 mt-4">Posts</h2>
-  <ul>
-    {% for p in posts %}
-    <li>
-      {{ p.titulo }}
-      <a href="{% url 'clubpost_update' p.id %}">Editar</a>
-      <form method="post" action="{% url 'clubpost_delete' p.id %}" style="display:inline">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-link p-0">Eliminar</button>
-      </form>
-    </li>
-    {% empty %}
-    <li>No hay posts.</li>
-    {% endfor %}
-  </ul>
-  <h2 class="h5 mt-4">Reservas</h2>
-  <ul>
-    {% for b in bookings %}
-    <li>{{ b.user.username }} - {% if b.clase %}{{ b.clase.nombre }}{% else %}{{ b.evento.titulo }}{% endif %} ({{ b.status }})</li>
-    {% empty %}
-    <li>No hay reservas.</li>
-    {% endfor %}
-  </ul>
+<div class="d-flex mt-5 container-fluid col-12">
+  <div class="profile-tabs">
+    <div class="profile-tab active" data-target="tab-info">Información</div>
+    <div class="profile-tab" data-target="tab-clases">Clases</div>
+    <div class="profile-tab" data-target="tab-posts">Posts</div>
+    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+  </div>
+  <div class="profile-content">
+    <div id="tab-info" class="profile-section active">
+      <h1 class="mb-4">Administrar {{ club.name }}</h1>
+      <a href="{% url 'club_edit' club.slug %}" class="btn btn-primary btn-sm me-2">Editar club</a>
+      <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm me-2">Añadir clase</a>
+      <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm">Nueva publicación</a>
+    </div>
+
+    <div id="tab-clases" class="profile-section">
+      <h2 class="h5 mb-3">Clases</h2>
+      {% if classes %}
+      <ul class="list-group">
+        {% for c in classes %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }})</span>
+          <span>
+            <a href="{% url 'clase_update' c.id %}" class="btn btn-sm btn-outline-primary me-2">Editar</a>
+            <form method="post" action="{% url 'clase_delete' c.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No hay clases.</p>
+      {% endif %}
+    </div>
+
+    <div id="tab-posts" class="profile-section">
+      <h2 class="h5 mb-3">Posts</h2>
+      {% if posts %}
+      <ul class="list-group">
+        {% for p in posts %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>{{ p.titulo }}</span>
+          <span>
+            <a href="{% url 'clubpost_update' p.id %}" class="btn btn-sm btn-outline-primary me-2">Editar</a>
+            <form method="post" action="{% url 'clubpost_delete' p.id %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+            </form>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No hay posts.</p>
+      {% endif %}
+    </div>
+
+    <div id="tab-bookings" class="profile-section">
+      <h2 class="h5 mb-3">Reservas</h2>
+      {% if bookings %}
+      <ul class="list-group">
+        {% for b in bookings %}
+        <li class="list-group-item">
+          {{ b.user.username }} - {% if b.clase %}{{ b.clase.nombre }}{% else %}{{ b.evento.titulo }}{% endif %} ({{ b.status }})
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No hay reservas.</p>
+      {% endif %}
+    </div>
+  </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/profile-tabs.js' %}"></script>
 {% endblock %}
