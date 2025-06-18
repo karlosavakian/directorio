@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 
 from ..models import Club, ClubPost
@@ -18,6 +19,7 @@ def post_create(request, slug):
             post = form.save(commit=False)
             post.club = club
             post.save()
+            messages.success(request, 'Publicación creada correctamente.')
             return redirect('club_profile', slug=slug)
     else:
         form = ClubPostForm()
@@ -33,6 +35,7 @@ def post_update(request, pk):
         form = ClubPostForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Publicación actualizada correctamente.')
             return redirect('club_profile', slug=post.club.slug)
     else:
         form = ClubPostForm(instance=post)
@@ -47,5 +50,6 @@ def post_delete(request, pk):
     if request.method == 'POST':
         slug = post.club.slug
         post.delete()
+        messages.success(request, 'Publicación eliminada correctamente.')
         return redirect('club_profile', slug=slug)
     return render(request, 'clubs/post_confirm_delete.html', {'post': post})

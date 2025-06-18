@@ -1,10 +1,26 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.db.models import Q
 
-from ..models import Club, Clase, ClubPost, Booking
-from ..forms import ClubForm, ClaseForm, ClubPostForm
+from ..models import (
+    Club,
+    Clase,
+    ClubPost,
+    Booking,
+    ClubPhoto,
+    Horario,
+    Competidor,
+)
+from ..forms import (
+    ClubForm,
+    ClaseForm,
+    ClubPostForm,
+    ClubPhotoForm,
+    HorarioForm,
+    CompetidorForm,
+)
 from ..permissions import has_club_permission
 
 
@@ -35,6 +51,7 @@ def club_edit(request, slug):
         form = ClubForm(request.POST, request.FILES, instance=club)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Club actualizado correctamente.')
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = ClubForm(instance=club)
@@ -52,6 +69,7 @@ def clase_create(request, slug):
             clase = form.save(commit=False)
             clase.club = club
             clase.save()
+            messages.success(request, 'Clase creada correctamente.')
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = ClaseForm()
@@ -67,6 +85,7 @@ def clase_update(request, pk):
         form = ClaseForm(request.POST, instance=clase)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Clase actualizada correctamente.')
             return redirect('club_dashboard', slug=clase.club.slug)
     else:
         form = ClaseForm(instance=clase)
@@ -81,5 +100,141 @@ def clase_delete(request, pk):
     if request.method == 'POST':
         slug = clase.club.slug
         clase.delete()
+        messages.success(request, 'Clase eliminada correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/clase_confirm_delete.html', {'clase': clase})
+
+
+@login_required
+def photo_upload(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = ClubPhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.club = club
+            photo.save()
+            messages.success(request, 'Foto añadida correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = ClubPhotoForm()
+    return render(request, 'clubs/photo_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def photo_delete(request, pk):
+    photo = get_object_or_404(ClubPhoto, pk=pk)
+    if not has_club_permission(request.user, photo.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = photo.club.slug
+        photo.delete()
+        messages.success(request, 'Foto eliminada correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/photo_confirm_delete.html', {'photo': photo})
+
+
+@login_required
+def horario_create(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = HorarioForm(request.POST)
+        if form.is_valid():
+            horario = form.save(commit=False)
+            horario.club = club
+            horario.save()
+            messages.success(request, 'Horario añadido correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = HorarioForm()
+    return render(request, 'clubs/horario_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def horario_update(request, pk):
+    horario = get_object_or_404(Horario, pk=pk)
+    if not has_club_permission(request.user, horario.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = HorarioForm(request.POST, instance=horario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Horario actualizado correctamente.')
+            return redirect('club_dashboard', slug=horario.club.slug)
+    else:
+        form = HorarioForm(instance=horario)
+    return render(request, 'clubs/horario_form.html', {
+        'form': form,
+        'club': horario.club,
+        'horario': horario,
+    })
+
+
+@login_required
+def horario_delete(request, pk):
+    horario = get_object_or_404(Horario, pk=pk)
+    if not has_club_permission(request.user, horario.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = horario.club.slug
+        horario.delete()
+        messages.success(request, 'Horario eliminado correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/horario_confirm_delete.html', {'horario': horario})
+
+
+@login_required
+def competidor_create(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = CompetidorForm(request.POST)
+        if form.is_valid():
+            competidor = form.save(commit=False)
+            competidor.club = club
+            competidor.save()
+            messages.success(request, 'Competidor añadido correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = CompetidorForm()
+    return render(request, 'clubs/competidor_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def competidor_update(request, pk):
+    competidor = get_object_or_404(Competidor, pk=pk)
+    if not has_club_permission(request.user, competidor.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = CompetidorForm(request.POST, instance=competidor)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Competidor actualizado correctamente.')
+            return redirect('club_dashboard', slug=competidor.club.slug)
+    else:
+        form = CompetidorForm(instance=competidor)
+    return render(request, 'clubs/competidor_form.html', {
+        'form': form,
+        'club': competidor.club,
+        'competidor': competidor,
+    })
+
+
+@login_required
+def competidor_delete(request, pk):
+    competidor = get_object_or_404(Competidor, pk=pk)
+    if not has_club_permission(request.user, competidor.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = competidor.club.slug
+        competidor.delete()
+        messages.success(request, 'Competidor eliminado correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/competidor_confirm_delete.html', {
+        'competidor': competidor,
+    })
