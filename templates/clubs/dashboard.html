@@ -7,6 +7,7 @@
     <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+    <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
     <div class="profile-tab" data-target="tab-posts">Publicaciones</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
@@ -189,6 +190,23 @@
         </li>
         {% empty %}
         <li>No hay horarios.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="tab-coaches" class="profile-section">
+      <a href="{% url 'entrenador_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir entrenador</a>
+      <ul>
+        {% for coach in club.entrenadores.all %}
+        <li>
+          {{ coach.nombre }} {{ coach.apellidos }}
+          <a href="{% url 'entrenador_update' coach.id %}">Editar</a>
+          <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No hay entrenadores.</li>
         {% endfor %}
       </ul>
     </div>

@@ -24,6 +24,9 @@ from apps.clubs.views.dashboard import (
     competidor_create,
     competidor_update,
     competidor_delete,
+    entrenador_create,
+    entrenador_update,
+    entrenador_delete,
 )
 
 urlpatterns = [
@@ -45,6 +48,10 @@ urlpatterns = [
     path('<slug:slug>/competidor/nuevo/', competidor_create, name='competidor_create'),
     path('competidor/<int:pk>/editar/', competidor_update, name='competidor_update'),
     path('competidor/<int:pk>/eliminar/', competidor_delete, name='competidor_delete'),
+
+    path('<slug:slug>/entrenador/nuevo/', entrenador_create, name='entrenador_create'),
+    path('entrenador/<int:pk>/editar/', entrenador_update, name='entrenador_update'),
+    path('entrenador/<int:pk>/eliminar/', entrenador_delete, name='entrenador_delete'),
 
     path('<slug:slug>/posts/nuevo/', post_create, name='clubpost_create'),
     path('posts/<int:pk>/editar/', post_update, name='clubpost_update'),

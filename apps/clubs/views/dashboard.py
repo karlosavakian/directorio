@@ -12,6 +12,7 @@ from ..models import (
     ClubPhoto,
     Horario,
     Competidor,
+    Entrenador,
 )
 from ..forms import (
     ClubForm,
@@ -20,6 +21,7 @@ from ..forms import (
     ClubPhotoForm,
     HorarioForm,
     CompetidorForm,
+    EntrenadorForm,
 )
 from ..permissions import has_club_permission
 
@@ -30,6 +32,7 @@ def dashboard(request, slug):
     if club.owner != request.user:
         return redirect('home')
     classes = club.clases.all()
+    coaches = club.entrenadores.all()
     posts = club.posts.all()
     bookings = Booking.objects.filter(
         Q(clase__club=club) | Q(evento__club=club)
@@ -46,6 +49,7 @@ def dashboard(request, slug):
             'posts': posts,
             'bookings': bookings,
             'form': form,
+            'coaches': coaches,
         },
     )
 
@@ -245,4 +249,58 @@ def competidor_delete(request, pk):
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/competidor_confirm_delete.html', {
         'competidor': competidor,
+    })
+
+
+@login_required
+def entrenador_create(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = EntrenadorForm(request.POST, request.FILES)
+        if form.is_valid():
+            entrenador = form.save(commit=False)
+            entrenador.club = club
+            entrenador.save()
+            form.save_m2m()
+            messages.success(request, 'Entrenador añadido correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = EntrenadorForm()
+    return render(request, 'clubs/entrenador_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def entrenador_update(request, pk):
+    entrenador = get_object_or_404(Entrenador, pk=pk)
+    if not has_club_permission(request.user, entrenador.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = EntrenadorForm(request.POST, request.FILES, instance=entrenador)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Entrenador actualizado correctamente.')
+            return redirect('club_dashboard', slug=entrenador.club.slug)
+    else:
+        form = EntrenadorForm(instance=entrenador)
+    return render(request, 'clubs/entrenador_form.html', {
+        'form': form,
+        'club': entrenador.club,
+        'entrenador': entrenador,
+    })
+
+
+@login_required
+def entrenador_delete(request, pk):
+    entrenador = get_object_or_404(Entrenador, pk=pk)
+    if not has_club_permission(request.user, entrenador.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = entrenador.club.slug
+        entrenador.delete()
+        messages.success(request, 'Entrenador eliminado correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/entrenador_confirm_delete.html', {
+        'entrenador': entrenador,
     })
