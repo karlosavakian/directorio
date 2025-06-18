@@ -5,6 +5,27 @@ from .models import Reseña
 from . import models
 from django.contrib.auth.forms import AuthenticationForm
 
+
+def add_form_control(field):
+    """Utility to append form-control class and blank placeholder."""
+    css = field.widget.attrs.get('class', '')
+    field.widget.attrs['class'] = (css + ' form-control').strip()
+    if isinstance(
+        field.widget,
+        (
+            forms.TextInput,
+            forms.EmailInput,
+            forms.URLInput,
+            forms.NumberInput,
+            forms.PasswordInput,
+            forms.Textarea,
+            forms.DateInput,
+            forms.TimeInput,
+            forms.FileInput,
+        ),
+    ):
+        field.widget.attrs.setdefault('placeholder', ' ')
+
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
         label="Usuario",
@@ -55,6 +76,7 @@ class ReseñaForm(forms.ModelForm):
         required_msg = 'Debes puntuar esta categoría.'
         for field in ['instalaciones', 'entrenadores', 'ambiente', 'calidad_precio', 'variedad_clases']:
             self.fields[field].error_messages['required'] = required_msg
+        add_form_control(self.fields['comentario'])
 
     class Meta:
         model = Reseña
@@ -92,6 +114,11 @@ class ClubPostForm(forms.ModelForm):
             'evento_fecha': forms.DateInput(attrs={'type': 'date'})
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            add_form_control(field)
+
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -106,14 +133,8 @@ class ClubForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for name, field in self.fields.items():
-            css = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = (css + ' form-control').strip()
-            if isinstance(field.widget, (forms.TextInput, forms.EmailInput,
-                                        forms.URLInput, forms.NumberInput,
-                                        forms.PasswordInput, forms.Textarea,
-                                        forms.DateInput, forms.TimeInput)):
-                field.widget.attrs.setdefault('placeholder', ' ')
+        for field in self.fields.values():
+            add_form_control(field)
 
                   # hide logo input to use dropzone preview
         logo_widget = self.fields.get('logo')
@@ -131,6 +152,11 @@ class ClaseForm(forms.ModelForm):
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            add_form_control(field)
+
 
 class CancelBookingForm(forms.Form):
     """Simple form used to confirm cancellation."""
@@ -142,6 +168,11 @@ class ClubPhotoForm(forms.ModelForm):
         model = models.ClubPhoto
         fields = ['image']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            add_form_control(field)
+
 
 class HorarioForm(forms.ModelForm):
     class Meta:
@@ -152,9 +183,19 @@ class HorarioForm(forms.ModelForm):
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            add_form_control(field)
+
 
 class CompetidorForm(forms.ModelForm):
     class Meta:
         model = models.Competidor
         fields = ['nombre', 'victorias', 'derrotas', 'empates', 'titulos']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            add_form_control(field)
 

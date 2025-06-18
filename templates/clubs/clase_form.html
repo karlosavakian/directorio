@@ -2,9 +2,20 @@
 {% block content %}
 <div class="container py-4">
   <h1 class="h5">{% if clase %}Editar{% else %}Nueva{% endif %} clase</h1>
-  <form method="post">
+  <form method="post" class="profile-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form.visible_fields %}
+    <div class="form-field{% if field.field.widget.input_type == 'checkbox' %} checkbox-field{% endif %}">
+      {{ field }}
+      {% if field.field.widget.input_type not in ('checkbox', 'file') %}
+      <button type="button" class="clear-btn">×</button>
+      {% endif %}
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% if field.errors %}
+      <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>
 </div>
