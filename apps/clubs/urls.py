@@ -16,6 +16,14 @@ from apps.clubs.views.dashboard import (
     clase_create,
     clase_update,
     clase_delete,
+    photo_upload,
+    photo_delete,
+    horario_create,
+    horario_update,
+    horario_delete,
+    competidor_create,
+    competidor_update,
+    competidor_delete,
 )
 
 urlpatterns = [
@@ -27,6 +35,17 @@ urlpatterns = [
     path('<slug:slug>/clase/nueva/', clase_create, name='clase_create'),
     path('clase/<int:pk>/editar/', clase_update, name='clase_update'),
     path('clase/<int:pk>/eliminar/', clase_delete, name='clase_delete'),
+
+    path('<slug:slug>/foto/nueva/', photo_upload, name='clubphoto_upload'),
+    path('foto/<int:pk>/eliminar/', photo_delete, name='clubphoto_delete'),
+
+    path('<slug:slug>/horario/nuevo/', horario_create, name='horario_create'),
+    path('horario/<int:pk>/editar/', horario_update, name='horario_update'),
+    path('horario/<int:pk>/eliminar/', horario_delete, name='horario_delete'),
+
+    path('<slug:slug>/competidor/nuevo/', competidor_create, name='competidor_create'),
+    path('competidor/<int:pk>/editar/', competidor_update, name='competidor_update'),
+    path('competidor/<int:pk>/eliminar/', competidor_delete, name='competidor_delete'),
 
     path('<slug:slug>/posts/nuevo/', post_create, name='clubpost_create'),
     path('posts/<int:pk>/editar/', post_update, name='clubpost_update'),

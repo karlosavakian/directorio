@@ -6,6 +6,9 @@
     <a href="{% url 'club_edit' club.slug %}" class="btn btn-primary btn-sm">Editar club</a>
     <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir clase</a>
     <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm">Nueva publicación</a>
+    <a href="{% url 'clubphoto_upload' club.slug %}" class="btn btn-secondary btn-sm">Añadir foto</a>
+    <a href="{% url 'horario_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir horario</a>
+    <a href="{% url 'competidor_create' club.slug %}" class="btn btn-secondary btn-sm">Añadir competidor</a>
   </p>
   <h2 class="h5 mt-4">Clases</h2>
   <ul>
@@ -35,6 +38,53 @@
     </li>
     {% empty %}
     <li>No hay posts.</li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="h5 mt-4">Galería</h2>
+  <ul>
+    {% for photo in club.photos.all %}
+    <li>
+      <img src="{{ photo.image.url }}" style="width: 100px; height: 80px; object-fit: cover;">
+      <form method="post" action="{% url 'clubphoto_delete' photo.id %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link p-0">Eliminar</button>
+      </form>
+    </li>
+    {% empty %}
+    <li>No hay fotos.</li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="h5 mt-4">Horarios</h2>
+  <ul>
+    {% for h in club.horarios.all %}
+    <li>
+      {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
+      <a href="{% url 'horario_update' h.id %}">Editar</a>
+      <form method="post" action="{% url 'horario_delete' h.id %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link p-0">Eliminar</button>
+      </form>
+    </li>
+    {% empty %}
+    <li>No hay horarios.</li>
+    {% endfor %}
+  </ul>
+
+  <h2 class="h5 mt-4">Competidores</h2>
+  <ul>
+    {% for comp in club.competidores.all %}
+    <li>
+      {{ comp.nombre }} ({{ comp.victorias }}-{{ comp.derrotas }}-{{ comp.empates }})
+      <a href="{% url 'competidor_update' comp.id %}">Editar</a>
+      <form method="post" action="{% url 'competidor_delete' comp.id %}" style="display:inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-link p-0">Eliminar</button>
+      </form>
+    </li>
+    {% empty %}
+    <li>No hay competidores.</li>
     {% endfor %}
   </ul>
   <h2 class="h5 mt-4">Reservas</h2>
