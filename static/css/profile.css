@@ -106,3 +106,11 @@
 .profile-form input:not(:placeholder-shown) + .clear-btn {
   display: block;
 }
+
+.feature-option {
+  cursor: pointer;
+}
+.feature-option.selected {
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+}
