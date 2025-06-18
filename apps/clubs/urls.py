@@ -30,7 +30,6 @@ urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
 
-    path('<slug:slug>/dashboard/', dashboard, name='club_dashboard'),
     path('<slug:slug>/editar/', club_edit, name='club_edit'),
     path('<slug:slug>/clase/nueva/', clase_create, name='clase_create'),
     path('clase/<int:pk>/editar/', clase_update, name='clase_update'),

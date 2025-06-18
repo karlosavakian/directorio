@@ -27,8 +27,8 @@ from ..permissions import has_club_permission
 @login_required
 def dashboard(request, slug):
     club = get_object_or_404(Club, slug=slug)
-    if not has_club_permission(request.user, club):
-        return HttpResponseForbidden()
+    if club.owner != request.user:
+        return redirect('home')
     classes = club.clases.all()
     posts = club.posts.all()
     bookings = Booking.objects.filter(
