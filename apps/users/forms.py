@@ -83,6 +83,9 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar', 'bio', 'location']
+        widgets = {
+            'avatar': forms.ClearableFileInput(attrs={'class': 'd-none'}),
+        }
 
     def clean_avatar(self):
         avatar = self.cleaned_data.get('avatar')
@@ -120,6 +123,9 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar', 'notifications']
+        widgets = {
+            'avatar': forms.ClearableFileInput(attrs={'class': 'd-none'}),
+        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)

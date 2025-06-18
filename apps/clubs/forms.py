@@ -103,6 +103,9 @@ class ClubForm(forms.ModelForm):
     class Meta:
         model = models.Club
         exclude = ('slug', 'created_at', 'updated_at', 'verified')
+        widgets = {
+            'logo': forms.ClearableFileInput(attrs={'class': 'd-none'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
