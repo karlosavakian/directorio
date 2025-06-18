@@ -215,7 +215,7 @@
       <ul>
         {% for comp in club.competidores.all %}
         <li>
-          {{ comp.nombre }} ({{ comp.victorias }}-{{ comp.derrotas }}-{{ comp.empates }})
+          {{ comp.nombre }} - {{ comp.record }} - {{ comp.categoria }}
           <a href="{% url 'competidor_update' comp.id %}">Editar</a>
           <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-inline">
             {% csrf_token %}
