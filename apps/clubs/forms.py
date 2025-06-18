@@ -115,6 +115,12 @@ class ClubForm(forms.ModelForm):
                                         forms.DateInput, forms.TimeInput)):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+                  # hide logo input to use dropzone preview
+        logo_widget = self.fields.get('logo')
+        if logo_widget:
+            css = logo_widget.widget.attrs.get('class', '')
+            logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
 
 class ClaseForm(forms.ModelForm):
     class Meta:
