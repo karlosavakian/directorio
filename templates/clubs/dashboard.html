@@ -104,8 +104,23 @@
           {% endif %}
         </div>
         <div class="form-field">
-          {{ form.features }}
-          <label for="{{ form.features.id_for_label }}">{{ form.features.label }}</label>
+          <label class="d-block mb-2">{{ form.features.label }}</label>
+          <div class="d-flex flex-wrap gap-3" id="features-container">
+            {% for feature in form.features.field.queryset %}
+            <div class="feature-option border rounded p-3 d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}">
+              <input type="checkbox" name="features" value="{{ feature.id }}" class="d-none"{% if feature in club.features.all %} checked{% endif %}>
+              {% if feature.icon %}
+              <img src="{{ feature.icon.url }}"
+                   alt="{{ feature.name }}"
+                   style="width: 45px; height: 45px; object-fit: contain; user-select:none;"
+                   class="me-2">
+              {% endif %}
+              <div class="text-wrap" style="font-size: 14px; user-select:none;">
+                {{ feature.name }}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
           {% if form.features.errors %}
           <div class="invalid-feedback d-block">
             {{ form.features.errors.as_text|striptags }}
@@ -223,4 +238,5 @@
 
 {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
+<script src="{% static 'js/feature-select.js' %}"></script>
 {% endblock %}
