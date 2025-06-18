@@ -17,7 +17,10 @@
       <form method="post" action="{% url 'club_edit' club.slug %}" enctype="multipart/form-data" class="profile-form">
         {% csrf_token %}
         <div class="form-field">
-          {{ form.logo }}
+          <div class="avatar-dropzone">
+            {{ form.logo.as_widget(attrs={'class':'d-none'}) }}
+            <div class="avatar-preview{% if club.logo %} has-image{% endif %}"{% if club.logo %} style="background-image:url('{{ club.logo.url }}')"{% endif %}>{% if not club.logo %}+{% endif %}</div>
+          </div>
           <label for="{{ form.logo.id_for_label }}">{{ form.logo.label }}</label>
           {% if form.logo.errors %}
           <div class="invalid-feedback d-block">
@@ -239,4 +242,5 @@
 {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
+<script src="{% static 'js/avatar-dropzone.js' %}"></script>
 {% endblock %}
