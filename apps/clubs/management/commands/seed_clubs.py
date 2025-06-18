@@ -72,13 +72,17 @@ class Command(BaseCommand):
                 )
 
             for _ in range(random.randint(1, 3)):
+                wins = random.randint(0, 10)
+                losses = random.randint(0, 5)
+                draws = random.randint(0, 3)
                 Competidor.objects.create(
                     club=club,
                     nombre=fake.name(),
-                    victorias=random.randint(0, 10),
-                    derrotas=random.randint(0, 5),
-                    empates=random.randint(0, 3),
-                    titulos=fake.text(max_nb_chars=50),
+                    record=f"{wins}-{losses}-{draws}",
+                    modalidad=random.choice([c[0] for c in Competidor.MODALIDAD_CHOICES]),
+                    peso=random.choice([c[0] for c in Competidor.PESO_CHOICES]),
+                    sexo=random.choice([c[0] for c in Competidor.SEXO_CHOICES]),
+                    palmares=fake.text(max_nb_chars=50),
                 )
 
             for _ in range(random.randint(1, 3)):

@@ -76,7 +76,7 @@ class ClaseAdmin(admin.ModelAdmin):
 
 @admin.register(Competidor)
 class CompetidorAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'club', 'victorias', 'derrotas', 'empates')
+    list_display = ('nombre', 'club', 'record', 'modalidad', 'peso', 'sexo')
 
 @admin.register(Reseña)
 class ReseñaAdmin(admin.ModelAdmin):

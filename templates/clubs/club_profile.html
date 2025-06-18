@@ -356,21 +356,25 @@
                                 <table class="table table-sm table-striped table-bordered text-center">
                                     <thead class="table-dark">
                                         <tr>
+                                            <th>Avatar</th>
                                             <th>Nombre</th>
-                                            <th>Victorias</th>
-                                            <th>Derrotas</th>
-                                            <th>Empates</th>
-                                            <th>Títulos</th>
+                                            <th>Record</th>
+                                            <th>Categoria</th>
+                                            <th>Palmarés</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
+                                                <td>
+                                                    {% if competidor.avatar %}
+                                                        <img src="{{ competidor.avatar.url }}" class="img-fluid" style="max-height:40px;">
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{ competidor.nombre }}</td>
-                                                <td style="color:#008800;">{{ competidor.victorias }}</td>
-                                                <td style="color:#c60300;">{{ competidor.derrotas }}</td>
-                                                <td style="color:#7faefc;">{{ competidor.empates }}</td>
-                                                <td>{{ competidor.titulos|default:"—" }}</td>
+                                                <td>{{ competidor.record }}</td>
+                                                <td>{{ competidor.categoria }}</td>
+                                                <td>{{ competidor.palmares|default:"—" }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

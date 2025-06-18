@@ -156,7 +156,15 @@ class HorarioForm(forms.ModelForm):
 class CompetidorForm(forms.ModelForm):
     class Meta:
         model = models.Competidor
-        fields = ['nombre', 'victorias', 'derrotas', 'empates', 'titulos']
+        fields = [
+            'avatar',
+            'nombre',
+            'record',
+            'modalidad',
+            'peso',
+            'sexo',
+            'palmares',
+        ]
 
 
 class EntrenadorForm(forms.ModelForm):
