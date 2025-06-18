@@ -320,3 +320,24 @@ textarea.form-control {
 #club-heart path {
   stroke: #fff !important;
 }
+
+/* Avatar para competidores en tablas */
+.competitor-avatar {
+  width: 30px;
+  height: 30px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+.competitor-avatar-img {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}

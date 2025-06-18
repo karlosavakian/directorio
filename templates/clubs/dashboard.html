@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static utils_filters %}
 
 {% block content %}
 <div class="d-flex mt-5 container-fluid col-12">
@@ -215,7 +215,9 @@
       <ul>
         {% for comp in club.competidores.all %}
         <li>
-          {{ comp.nombre }} - {{ comp.record }} - {{ comp.categoria }}
+          {% with rec=comp.record_tuple %}
+          {{ comp.nombre }} - <span class="text-success">{{ rec.0 }}</span>-<span class="text-danger">{{ rec.1 }}</span>-<span class="text-primary">{{ rec.2 }}</span> - {{ comp.categoria }}
+          {% endwith %}
           <a href="{% url 'competidor_update' comp.id %}">Editar</a>
           <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-inline">
             {% csrf_token %}
