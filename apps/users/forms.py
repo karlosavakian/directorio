@@ -132,6 +132,11 @@ class AccountForm(forms.ModelForm):
         for f in placeholder_fields:
             self.fields[f].widget.attrs.setdefault('placeholder', ' ')
 
+        # hide avatar input (preview handled via JS)
+        avatar_widget = self.fields['avatar'].widget
+        css = avatar_widget.attrs.get('class', '')
+        avatar_widget.attrs['class'] = (css + ' d-none').strip()
+
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('new_password1')

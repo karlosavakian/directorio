@@ -20,7 +20,7 @@
                 {% csrf_token %}
                 <div class="form-field">
                     <div class="avatar-dropzone">
-                        {{ form.avatar.as_widget(attrs={'class':'d-none'}) }}
+                        {{ form.avatar }}
                         <div class="avatar-preview{% if profile.avatar %} has-image{% endif %}"{% if profile.avatar %} style="background-image:url('{{ profile.avatar.url }}')"{% endif %}>{% if not profile.avatar %}+{% endif %}</div>
                     </div>
                     <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
