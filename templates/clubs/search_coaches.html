@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body_class %}search-result-page{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-3 my-5 col-10">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+    {% include 'partials/_back-btn.html' %}
+     {% include 'partials/_filter-options.html' %}
+    </div>
+
+    {% if coaches %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for coach in coaches %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm">
+                <a href="{% url 'coach_profile' coach.slug %}" class="text-decoration-none text-dark">
+                    {% if coach.avatar %}
+                        <img src="{{ coach.avatar.url }}" class="card-img-top object-fit-cover" style="height: 200px;" alt="{{ coach.nombre }}">
+                    {% else %}
+                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
+                            <span class="text-muted">Sin foto</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-1">{{ coach.nombre }} {{ coach.apellidos }}</h5>
+                        {% if coach.ciudad %}<p class="small mb-2">{{ coach.ciudad }}</p>{% endif %}
+                        <span class="badge bg-secondary">Entrenador</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="mt-4" aria-label="Resultados de búsqueda">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                    &laquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% else %}
+            <li class="page-item"><a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                    &raquo;
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% else %}
+    <p>No se encontraron resultados para "{{ search_query }}"</p>
+    {% endif %}
+
+</div>
+
+<script src="{% static 'js/sort.js' %}"></script>
+{% endblock %}

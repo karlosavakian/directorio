@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q, F, FloatField, Avg, Count, ExpressionWrapper
 from django.db.models.functions import Round
 from django.core.paginator import Paginator
-from apps.clubs.models import Club
+from apps.clubs.models import Club, Entrenador
 
 
 def search_results(request):
@@ -14,6 +14,27 @@ def search_results(request):
     # Rechazar búsquedas vacías o demasiado cortas
     if not search_query or len(search_query) < 3:
         return redirect('home')
+
+    if selected_category == 'entrenador':
+        coaches = Entrenador.objects.select_related('club').filter(
+            Q(nombre__icontains=search_query) |
+            Q(apellidos__icontains=search_query) |
+            Q(ciudad__icontains=search_query) |
+            Q(club__name__icontains=search_query)
+        )
+
+        paginator = Paginator(coaches, 12)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        return render(request, 'clubs/search_coaches.html', {
+            'coaches': page_obj,
+            'page_obj': page_obj,
+            'search_query': search_query,
+            'selected_category': selected_category,
+            'sort_option': sort_option,
+            'back_url': request.META.get('HTTP_REFERER', '/'),
+        })
 
     # Base queryset solo clubes
     clubs = Club.objects.all()
