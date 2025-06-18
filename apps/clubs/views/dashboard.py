@@ -205,7 +205,7 @@ def competidor_create(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = CompetidorForm(request.POST)
+        form = CompetidorForm(request.POST, request.FILES)
         if form.is_valid():
             competidor = form.save(commit=False)
             competidor.club = club
@@ -223,7 +223,7 @@ def competidor_update(request, pk):
     if not has_club_permission(request.user, competidor.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = CompetidorForm(request.POST, instance=competidor)
+        form = CompetidorForm(request.POST, request.FILES, instance=competidor)
         if form.is_valid():
             form.save()
             messages.success(request, 'Competidor actualizado correctamente.')

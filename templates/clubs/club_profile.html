@@ -356,21 +356,32 @@
                                 <table class="table table-sm table-striped table-bordered text-center">
                                     <thead class="table-dark">
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Victorias</th>
-                                            <th>Derrotas</th>
-                                            <th>Empates</th>
-                                            <th>Títulos</th>
+                                            <th>Boxeador</th>
+                                            <th>Record</th>
+                                            <th>Categoria</th>
+                                            <th>Palmarés</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
-                                                <td>{{ competidor.nombre }}</td>
-                                                <td style="color:#008800;">{{ competidor.victorias }}</td>
-                                                <td style="color:#c60300;">{{ competidor.derrotas }}</td>
-                                                <td style="color:#7faefc;">{{ competidor.empates }}</td>
-                                                <td>{{ competidor.titulos|default:"—" }}</td>
+                                                <td class="text-start">
+                                                    <div class="d-flex align-items-center">
+                                                        {% if competidor.avatar %}
+                                                            <img src="{{ competidor.avatar.url }}" class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+                                                        {% else %}
+                                                            <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-2" style="width:30px;height:30px;font-size:0.75rem;">
+                                                                {{ competidor.initials }}
+                                                            </div>
+                                                        {% endif %}
+                                                        <span>{{ competidor.nombre }}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="text-success">{{ competidor.victorias }}</span>-<span class="text-danger">{{ competidor.derrotas }}</span>-<span class="text-primary">{{ competidor.empates }}</span>
+                                                </td>
+                                                <td>{{ competidor.categoria }}</td>
+                                                <td>{{ competidor.palmares|default:"—" }}</td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

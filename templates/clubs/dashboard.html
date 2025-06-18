@@ -212,11 +212,18 @@
     </div>
     <div id="tab-competitors" class="profile-section">
       <a href="{% url 'competidor_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir competidor</a>
-      <ul>
+      <ul class="list-unstyled">
         {% for comp in club.competidores.all %}
-        <li>
-          {{ comp.nombre }} ({{ comp.victorias }}-{{ comp.derrotas }}-{{ comp.empates }})
-          <a href="{% url 'competidor_update' comp.id %}">Editar</a>
+        <li class="mb-2 d-flex align-items-center">
+          {% if comp.avatar %}
+            <img src="{{ comp.avatar.url }}" class="rounded-circle me-2" style="width:30px;height:30px;object-fit:cover;">
+          {% else %}
+            <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-2" style="width:30px;height:30px;font-size:0.75rem;">{{ comp.initials }}</div>
+          {% endif %}
+          <span class="me-2">{{ comp.nombre }}</span>
+          <span class="me-2"><span class="text-success">{{ comp.victorias }}</span>-<span class="text-danger">{{ comp.derrotas }}</span>-<span class="text-primary">{{ comp.empates }}</span></span>
+          <span class="me-2">{{ comp.categoria }}</span>
+          <a href="{% url 'competidor_update' comp.id %}" class="me-2">Editar</a>
           <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-link p-0">Eliminar</button>
