@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block body_class %}club-profile-page{% endblock %}
-{% load static star_rating %}
+{% load static star_rating utils_filters %}
 {% block content %}
     <div class="container-fluid col-12 px-3 my-3" id="profile-container">
         <!-- Flecha volver arriba -->
@@ -356,8 +356,7 @@
                                 <table class="table table-sm table-striped table-bordered text-center">
                                     <thead class="table-dark">
                                         <tr>
-                                            <th>Avatar</th>
-                                            <th>Nombre</th>
+                                            <th>Boxeador</th>
                                             <th>Record</th>
                                             <th>Categoria</th>
                                             <th>Palmarés</th>
@@ -366,13 +365,21 @@
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
-                                                <td>
-                                                    {% if competidor.avatar %}
-                                                        <img src="{{ competidor.avatar.url }}" class="img-fluid" style="max-height:40px;">
-                                                    {% endif %}
+                                                <td class="text-start">
+                                                    <div class="d-flex align-items-center">
+                                                        {% if competidor.avatar %}
+                                                            <img src="{{ competidor.avatar.url }}" alt="{{ competidor.nombre }}" class="competitor-avatar-img me-2">
+                                                        {% else %}
+                                                            <div class="competitor-avatar me-2">{{ competidor.nombre|initials }}</div>
+                                                        {% endif %}
+                                                        <span>{{ competidor.nombre }}</span>
+                                                    </div>
                                                 </td>
-                                                <td>{{ competidor.nombre }}</td>
-                                                <td>{{ competidor.record }}</td>
+                                                <td>
+                                                    {% with rec=competidor.record_tuple %}
+                                                        <span class="text-success">{{ rec.0 }}</span>-<span class="text-danger">{{ rec.1 }}</span>-<span class="text-primary">{{ rec.2 }}</span>
+                                                    {% endwith %}
+                                                </td>
                                                 <td>{{ competidor.categoria }}</td>
                                                 <td>{{ competidor.palmares|default:"—" }}</td>
                                             </tr>

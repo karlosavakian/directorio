@@ -59,3 +59,12 @@ class Competidor(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    @property
+    def record_tuple(self):
+        """Return wins, losses and draws as integers."""
+        try:
+            wins, losses, draws = [int(p) for p in self.record.split("-")]
+            return wins, losses, draws
+        except Exception:
+            return 0, 0, 0
