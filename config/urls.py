@@ -20,6 +20,7 @@ urlpatterns = [
     # Perfil público de clubs
     path('@<slug:slug>/admin/', dashboard, name='club_dashboard'),
     path('@<slug:slug>/', club_public.club_profile, name='club_profile'),
+    path('coach/@<slug:slug>/', club_public.coach_profile, name='coach_profile'),
 
     # Perfil público de usuarios
     path('profile/<str:username>/', user_profile.profile_detail, name='user_profile'),

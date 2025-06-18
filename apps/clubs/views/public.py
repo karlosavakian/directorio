@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect 
-from ..models import Club
+from ..models import Club, Entrenador
 from django.contrib import messages
 from apps.clubs.forms import ReseñaForm
 from apps.users.forms import RegistroUsuarioForm
@@ -65,6 +65,14 @@ def club_profile(request, slug):
         'club_followed': club_followed,
         'register_form': register_form,
 
+    })
+
+
+def coach_profile(request, slug):
+    """Vista pública del perfil del entrenador."""
+    coach = get_object_or_404(Entrenador, slug=slug)
+    return render(request, 'clubs/coach_profile.html', {
+        'coach': coach,
     })
 
 
