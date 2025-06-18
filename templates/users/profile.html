@@ -16,13 +16,13 @@
     <div class="profile-content  ">
         <div id="tab-account" class="profile-section active col-6">
             <h1 class="mb-4">Mi Cuenta</h1>
-            {% if profile.avatar %}
-                <img src="{{ profile.avatar.url }}" class="rounded-circle mb-3" style="width:100px;height:100px;object-fit:cover;">
-            {% endif %}
             <form method="post" enctype="multipart/form-data" class="profile-form mb-5">
                 {% csrf_token %}
                 <div class="form-field">
-                    {{ form.avatar.as_widget }}
+                    <div class="avatar-dropzone">
+                        {{ form.avatar.as_widget(attrs={'class':'d-none'}) }}
+                        <div class="avatar-preview{% if profile.avatar %} has-image{% endif %}"{% if profile.avatar %} style="background-image:url('{{ profile.avatar.url }}')"{% endif %}>{% if not profile.avatar %}+{% endif %}</div>
+                    </div>
                     <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
                     {% if form.avatar.errors %}
                     <div class="invalid-feedback d-block">
@@ -148,4 +148,5 @@
 {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/clear-input.js' %}"></script>
+<script src="{% static 'js/avatar-dropzone.js' %}"></script>
 {% endblock %}
