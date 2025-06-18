@@ -6,6 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.clubs.views import public as club_public
+from apps.clubs.views.dashboard import dashboard
 from apps.users.views import profile as user_profile
   
 from apps.users.forms import LoginForm   
@@ -17,6 +18,7 @@ urlpatterns = [
     path('', include('apps.core.urls')),
 
     # Perfil público de clubs
+    path('@<slug:slug>/admin/', dashboard, name='club_dashboard'),
     path('@<slug:slug>/', club_public.club_profile, name='club_profile'),
 
     # Perfil público de usuarios
