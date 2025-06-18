@@ -1,5 +1,17 @@
 from django.contrib import admin
-from .models import Club, Feature, ClubPhoto, Clase, Competidor, Reseña, Horario, ClubPost, Entrenador
+from .models import (
+    Club,
+    Feature,
+    ClubPhoto,
+    Clase,
+    Competidor,
+    Reseña,
+    Horario,
+    ClubPost,
+    Entrenador,
+    EntrenadorPhoto,
+    TrainingLevel,
+)
 from django import forms 
 
 class ClubPhotoInline(admin.TabularInline):
@@ -16,6 +28,10 @@ class CompetidorInline(admin.TabularInline):
 
 class EntrenadorInline(admin.TabularInline):
     model = Entrenador
+    extra = 1
+
+class EntrenadorPhotoInline(admin.TabularInline):
+    model = EntrenadorPhoto
     extra = 1
 
 class ReseñaInline(admin.TabularInline):
@@ -75,5 +91,25 @@ class ClubPostAdmin(admin.ModelAdmin):
 
 @admin.register(Entrenador)
 class EntrenadorAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'apellidos', 'club')
+    list_display = ('nombre', 'apellidos', 'club', 'verificado')
+    prepopulated_fields = {'slug': ('nombre', 'apellidos')}
+    inlines = [EntrenadorPhotoInline]
+    fields = (
+        'club',
+        'avatar',
+        'nombre',
+        'apellidos',
+        'slug',
+        'verificado',
+        'ciudad',
+        'telefono',
+        'whatsapp',
+        'email',
+        'precio_hora',
+        'promociones',
+        'clase_prueba',
+        'experiencia_anos',
+        'bio',
+        'niveles',
+    )
 
