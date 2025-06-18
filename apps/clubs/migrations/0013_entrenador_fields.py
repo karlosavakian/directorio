@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='entrenador',
             name='slug',
-            field=models.SlugField(blank=True, unique=True),
+            field=models.SlugField(blank=True, unique=True, null=True),
         ),
         migrations.AddField(
             model_name='entrenador',

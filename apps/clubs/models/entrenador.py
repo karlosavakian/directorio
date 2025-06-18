@@ -29,7 +29,7 @@ class Entrenador(models.Model):
     avatar = models.ImageField(upload_to='entrenadores/', blank=True, null=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     ciudad = models.CharField(max_length=50, choices=CITY_CHOICES, blank=True)
     telefono = models.CharField(max_length=20, blank=True)
     whatsapp = models.CharField(max_length=20, blank=True)
