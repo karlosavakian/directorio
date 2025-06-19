@@ -10,6 +10,11 @@ class ClubPost(models.Model):
     contenido = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     evento_fecha = models.DateField(blank=True, null=True)
+    likes = models.ManyToManyField(
+        User,
+        related_name="liked_clubposts",
+        blank=True,
+    )
 
     class Meta:
         ordering = ['-created_at']

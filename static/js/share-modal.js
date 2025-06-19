@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalEl = document.getElementById('shareProfileModal');
   if (!modalEl) return;
 
-  const triggers = document.querySelectorAll('#profile-share, #club-share');
+  const triggers = document.querySelectorAll('#profile-share, #club-share, .post-share');
   const copyBtn = modalEl.querySelector('.share-copy');
   const embedBtn = modalEl.querySelector('.share-embed');
 

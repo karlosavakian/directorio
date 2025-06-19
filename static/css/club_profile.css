@@ -361,3 +361,34 @@ textarea.form-control {
 .competitors-table {
   border-collapse: collapse;
 }
+
+/* Post avatars */
+.post-avatar {
+  width: 32px;
+  height: 32px;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.post-avatar-img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.post-like.liked svg path {
+  fill: #e63946;
+  stroke: #e63946;
+}
+
+.post-like svg path,
+.post-share svg path {
+  stroke: #000;
+}
+
