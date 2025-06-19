@@ -26,7 +26,7 @@ urlpatterns = [
     path('profile/<str:username>/', user_profile.profile_detail, name='user_profile'),
 
     # Clubs: Gestión de Clubs y búsqueda
-    path('clubs/', include('apps.clubs.urls')),
+    path('clubs/', include(('apps.clubs.urls', 'clubs'), namespace='clubs')),
 
 
     # Rutas de autenticación sin el prefijo "accounts/"
