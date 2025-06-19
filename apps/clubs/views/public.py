@@ -12,7 +12,7 @@ def club_profile(request, slug):
     reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
-    posts = club.posts.all()
+    posts = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
     orden = request.GET.get('orden', 'relevantes')
     club_followed = False
     if request.user.is_authenticated:

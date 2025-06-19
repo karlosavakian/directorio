@@ -92,6 +92,11 @@ class ClubPostForm(forms.ModelForm):
             'evento_fecha': forms.DateInput(attrs={'type': 'date'})
         }
 
+class ClubPostReplyForm(forms.ModelForm):
+    class Meta:
+        model = models.ClubPost
+        fields = ['contenido']
+
 
 class BookingForm(forms.ModelForm):
     class Meta:
