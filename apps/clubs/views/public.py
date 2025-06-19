@@ -29,6 +29,16 @@ def club_profile(request, slug):
     if request.user.is_authenticated:
         reseña_existente = club.reseñas.filter(usuario=request.user).first()
 
+    # Prepare horario data for easy access in templates
+    horarios = club.horarios.all()
+    schedule_data = {}
+    for day, _ in club.horarios.model.DiasSemana.choices:
+        intervals = [
+            f"{h.hora_inicio.strftime('%H:%M')}-{h.hora_fin.strftime('%H:%M')}"
+            for h in horarios.filter(dia=day)
+        ]
+        schedule_data[day] = "|".join(intervals)
+
     form = ReseñaForm()
     register_form = RegistroUsuarioForm()
     if request.method == 'POST' and not reseña_existente:
@@ -64,6 +74,7 @@ def club_profile(request, slug):
         'competidores': competidores,
         'club_followed': club_followed,
         'register_form': register_form,
+        'schedule_data': schedule_data,
 
     })
 
