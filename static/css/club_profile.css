@@ -54,16 +54,7 @@
     fill: #111;
 }
 
-/* Features */
-.text-center img {
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
-}
-
-.text-center img:hover {
-    filter: grayscale(0%);
-}
-
+ 
 /* Gallery Slideshow */
 .gallery-slideshow { position: relative; }
 .gallery-slide { display: none; }
@@ -334,8 +325,8 @@ textarea.form-control {
 }
 /* Avatar para competidores en tablas */
 .competitor-avatar {
-  width: 30px;
-  height: 30px;
+  width:40px;
+  height:40px;
   background-color: #000;
   color: #fff;
   border-radius: 50%;
@@ -345,10 +336,10 @@ textarea.form-control {
   font-weight: bold;
   font-size: 0.75rem;
 }
-
+ 
 .competitor-avatar-img {
-  width: 30px;
-  height: 30px;
+  width:40px;
+  height:40px;
   object-fit: cover;
   border-radius: 50%;
 }

@@ -350,18 +350,11 @@
                         {% endif %}
                     </div>
                     <!-- Competidores -->
-                    <div class="p-3 tab-pane fade" id="competitors">
+                    <div class="p-1 tab-pane fade" id="competitors">
                         {% if competidores %}
-                            <div class="table-responsive mt-3">
+                            <div class="table-responsive ">
                                 <table class="table table-sm text-center competitors-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Boxeador</th>
-                                            <th>Record</th>
-                                            <th>Categoria</th>
-                                            <th>Palmarés</th>
-                                        </tr>
-                                    </thead>
+                                   
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
@@ -377,7 +370,7 @@
                                                 </td>
                                                 <td>
                                                     {% with rec=competidor.record_tuple %}
-                                                        <span class="text-success">{{ rec.0 }}</span>-<span class="text-danger">{{ rec.1 }}</span>-<span class="text-primary">{{ rec.2 }}</span>
+                                                        <span class="text-success fw-bold">{{ rec.0 }}</span>-<span class="text-danger fw-bold">{{ rec.1 }}</span>-<span class="text-primary fw-bold">{{ rec.2 }}</span>
                                                     {% endwith %}
                                                 </td>
                                                 <td>{{ competidor.categoria }}</td>
