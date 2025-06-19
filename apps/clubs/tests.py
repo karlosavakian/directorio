@@ -105,7 +105,7 @@ class DashboardPermissionTests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_non_owner_cannot_edit_post(self):
-        post = ClubPost.objects.create(club=self.club, titulo='t', contenido='c')
+        post = ClubPost.objects.create(club=self.club, user=self.owner, titulo='t', contenido='c')
         self.client.login(username='other', password='pass')
         url = reverse('clubpost_update', args=[post.pk])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden
 
 from ..models import Club, ClubPost
-from ..forms import ClubPostForm
+from ..forms import ClubPostForm, ClubPostReplyForm
 from ..permissions import has_club_permission
 
 
@@ -18,6 +18,7 @@ def post_create(request, slug):
         if form.is_valid():
             post = form.save(commit=False)
             post.club = club
+            post.user = request.user
             post.save()
             messages.success(request, 'Publicación creada correctamente.')
             return redirect('club_profile', slug=slug)
@@ -29,7 +30,7 @@ def post_create(request, slug):
 @login_required
 def post_update(request, pk):
     post = get_object_or_404(ClubPost, pk=pk)
-    if not has_club_permission(request.user, post.club):
+    if not (has_club_permission(request.user, post.club) or request.user == post.user):
         return HttpResponseForbidden()
     if request.method == 'POST':
         form = ClubPostForm(request.POST, instance=post)
@@ -45,7 +46,7 @@ def post_update(request, pk):
 @login_required
 def post_delete(request, pk):
     post = get_object_or_404(ClubPost, pk=pk)
-    if not has_club_permission(request.user, post.club):
+    if not (has_club_permission(request.user, post.club) or request.user == post.user):
         return HttpResponseForbidden()
     if request.method == 'POST':
         slug = post.club.slug
@@ -53,3 +54,25 @@ def post_delete(request, pk):
         messages.success(request, 'Publicación eliminada correctamente.')
         return redirect('club_profile', slug=slug)
     return render(request, 'clubs/post_confirm_delete.html', {'post': post})
+
+
+@login_required
+def post_reply(request, pk):
+    parent = get_object_or_404(ClubPost, pk=pk)
+    if request.method == 'POST':
+        form = ClubPostReplyForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.club = parent.club
+            reply.parent = parent
+            reply.user = request.user
+            reply.save()
+            messages.success(request, 'Respuesta publicada correctamente.')
+            return redirect('club_profile', slug=parent.club.slug)
+    else:
+        form = ClubPostReplyForm()
+    return render(request, 'clubs/post_reply_form.html', {
+        'form': form,
+        'post': parent,
+        'club': parent.club,
+    })

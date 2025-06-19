@@ -19,10 +19,10 @@
                 <small class="text-muted">{{ post.creado }}</small>
             {% else %}
                 <p class="mb-1"><a href="{% url 'club_profile' slug=post.club.slug %}">{{ post.club.name }}</a></p>
-                <h5 class="mb-1">{{ post.titulo }}</h5>
+                {% if post.titulo %}<h5 class="mb-1">{{ post.titulo }}</h5>{% endif %}
                 <p class="mb-0">{{ post.contenido }}</p>
                 {% if post.evento_fecha %}<p class="mb-0">Evento: {{ post.evento_fecha }}</p>{% endif %}
-                <small class="text-muted">{{ post.created_at }}</small>
+                <small class="text-muted">{{ post.user.username }} · {{ post.created_at }}</small>
             {% endif %}
         </div>
     {% empty %}
