@@ -8,28 +8,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let openNow = false;
 
   if (cell) {
-    const data = cell.dataset.intervals;
-    if (data) {
-      const intervals = data.split('|').filter(Boolean);
-      for (const interval of intervals) {
-        const [start, end] = interval.split('-');
+    const items = cell.querySelectorAll('.schedule-item');
+    items.forEach((item) => {
+      const start = item.dataset.start;
+      const end = item.dataset.end;
+      if (start && end) {
         const [sh, sm] = start.split(':').map(Number);
         const [eh, em] = end.split(':').map(Number);
         const startMin = sh * 60 + sm;
         const endMin = eh * 60 + em;
         if (currentMinutes >= startMin && currentMinutes <= endMin) {
           openNow = true;
-          break;
+          item.classList.add('bg-success-subtle', 'fw-bold');
+          item.classList.remove('text-muted');
         }
       }
-    }
+    });
   }
 
   if (statusEl) {
     if (openNow) {
       statusEl.textContent = 'Abierto ahora';
       statusEl.classList.add('text-success');
-      if (cell) cell.classList.add('table-success');
     } else {
       statusEl.textContent = 'Cerrado ahora';
       statusEl.classList.add('text-danger');

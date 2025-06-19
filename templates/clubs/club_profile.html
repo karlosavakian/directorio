@@ -279,13 +279,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                     <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
-                                            <td class="schedule-day" data-day="{{ dia }}" data-intervals="{{ schedule_data|get_item:dia }}">
+                                            <td class="schedule-day" data-day="{{ dia }}">
                                                 {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
                                                     {% for h in horarios_dia %}
                                                         {% if h.dia == dia %}
-                                                            <div class="border-bottom py-1 small text-muted">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
+                                                            <div class="border-bottom py-1 small text-muted schedule-item" data-start="{{ h.hora_inicio|time:'H:i' }}" data-end="{{ h.hora_fin|time:'H:i' }}">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
                                                         {% endif %}
                                                     {% empty %}
                                                         <span class="text-muted">—</span>
