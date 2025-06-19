@@ -53,8 +53,10 @@ def feed(request):
                 .filter(club_id=f.followed_object_id)
             )
             posts.extend(
-                ClubPost.objects.select_related("club", "user").filter(
-                    club_id=f.followed_object_id
+                ClubPost.objects.select_related("club", "user").filter( 
+                    club_id=f.followed_object_id,
+                    parent__isnull=True, 
+                    club_id=f.followed_object_id 
                 )
             )
         elif f.followed_content_type == ct_user:
@@ -64,8 +66,10 @@ def feed(request):
                 .filter(usuario_id=f.followed_object_id)
             )
             posts.extend(
-                ClubPost.objects.select_related("club", "user").filter(
-                    user_id=f.followed_object_id
+                ClubPost.objects.select_related("club", "user").filter( 
+                    user_id=f.followed_object_id,
+                    parent__isnull=True, 
+                    user_id=f.followed_object_id 
                 )
             )
     posts = sorted(posts, key=lambda r: getattr(r, 'creado', r.created_at), reverse=True)[:20]
