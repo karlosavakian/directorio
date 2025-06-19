@@ -361,6 +361,12 @@ textarea.form-control {
   background-color: transparent !important;
 }
 
+.competitors-table th,
+.competitors-table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
 .competitors-table {
   border-collapse: collapse;
 }
