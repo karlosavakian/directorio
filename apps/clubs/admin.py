@@ -86,7 +86,7 @@ class ReseñaAdmin(admin.ModelAdmin):
 
 @admin.register(ClubPost)
 class ClubPostAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'club', 'created_at', 'evento_fecha')
+    list_display = ('titulo', 'club', 'user', 'created_at', 'evento_fecha')
 
 
 @admin.register(Entrenador)

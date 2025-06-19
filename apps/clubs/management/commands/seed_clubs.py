@@ -88,6 +88,7 @@ class Command(BaseCommand):
             for _ in range(random.randint(1, 3)):
                 ClubPost.objects.create(
                     club=club,
+                    user=club.owner,
                     titulo=fake.sentence(),
                     contenido=fake.paragraph(),
                     evento_fecha=fake.date_this_year(),
