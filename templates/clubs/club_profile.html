@@ -353,8 +353,8 @@
                     <div class="p-3 tab-pane fade" id="competitors">
                         {% if competidores %}
                             <div class="table-responsive mt-3">
-                                <table class="table table-sm table-striped table-bordered text-center">
-                                    <thead class="table-dark">
+                                <table class="table table-sm text-center competitors-table">
+                                    <thead>
                                         <tr>
                                             <th>Boxeador</th>
                                             <th>Record</th>
@@ -365,8 +365,8 @@
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
-                                                <td class="text-start">
-                                                    <div class="d-flex align-items-center">
+                                                <td>
+                                                    <div class="d-flex align-items-center justify-content-center">
                                                         {% if competidor.avatar %}
                                                             <img src="{{ competidor.avatar.url }}" alt="{{ competidor.nombre }}" class="competitor-avatar-img me-2">
                                                         {% else %}
