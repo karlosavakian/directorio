@@ -1,6 +1,8 @@
 # apps/clubs/urls.py
 
 from django.urls import path
+
+app_name = "clubs"
 from .views import (
     search,
     public,

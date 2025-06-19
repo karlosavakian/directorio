@@ -227,13 +227,13 @@
       </ul>
     </div>
     <div id="tab-posts" class="profile-section">
-      <a href="{% url 'clubpost_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Nueva publicación</a>
+      <a href="{% url 'clubs:clubpost_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Nueva publicación</a>
       <ul>
         {% for p in posts %}
         <li>
           {{ p.titulo }}
-          <a href="{% url 'clubpost_update' p.id %}">Editar</a>
-          <form method="post" action="{% url 'clubpost_delete' p.id %}" class="d-inline">
+          <a href="{% url 'clubs:clubpost_update' p.id %}">Editar</a>
+          <form method="post" action="{% url 'clubs:clubpost_delete' p.id %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-link p-0">Eliminar</button>
           </form>
