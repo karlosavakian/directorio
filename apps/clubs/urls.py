@@ -8,6 +8,7 @@ from .views import (
     post_update,
     post_delete,
     post_reply,
+    post_toggle_like,
     book_clase,
     cancel_booking,
 )
@@ -58,6 +59,7 @@ urlpatterns = [
     path('posts/<int:pk>/editar/', post_update, name='clubpost_update'),
     path('posts/<int:pk>/eliminar/', post_delete, name='clubpost_delete'),
     path('posts/<int:pk>/responder/', post_reply, name='clubpost_reply'),
+    path('posts/<int:pk>/like/', post_toggle_like, name='clubpost_like'),
 
     path('clase/<int:clase_id>/reservar/', book_clase, name='book_clase'),
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),

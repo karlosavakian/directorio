@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+from django.http import JsonResponse
 
 from ..models import Club, ClubPost
 from ..forms import ClubPostForm, ClubPostReplyForm
@@ -76,3 +77,19 @@ def post_reply(request, pk):
         'post': parent,
         'club': parent.club,
     })
+
+
+@login_required
+def post_toggle_like(request, pk):
+    post = get_object_or_404(ClubPost, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'liked': liked, 'count': post.likes.count()})
+
+    return redirect('club_profile', slug=post.club.slug)
