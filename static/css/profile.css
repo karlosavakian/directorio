@@ -110,9 +110,15 @@
 .feature-option {
   cursor: pointer;
 }
-.feature-option.selected {
-  background-color: #d1e7dd;
-  border: 2px solid #198754 !important;
+
+.feature-option:hover {
+   border: 1px solid rgb(50, 163, 35, 1); 
+   transition: .2s ease-in-out;
+}
+ 
+.feature-option.selected { 
+   background-color:rgb(50, 163, 35, .2);  
+
 }
 /* Avatar dropzone styles */
 .avatar-dropzone {

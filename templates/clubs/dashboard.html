@@ -108,16 +108,13 @@
           {% endif %}
         </div>
         <div class="form-field">
-          <label class="d-block mb-2">{{ form.features.label }}</label>
+          <h5 class="d-block mb-2">{{ form.features.label }}</h5>
           <div class="d-flex flex-wrap gap-3" id="features-container">
             {% for feature in form.features.field.queryset %}
-            <div class="feature-option border rounded p-3 d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}">
+            <div class="feature-option border rounded  d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"  style="padding:8px 16px">
               <input type="checkbox" name="features" value="{{ feature.id }}" class="d-none"{% if feature in club.features.all %} checked{% endif %}>
               {% if feature.icon %}
-              <img src="{{ feature.icon.url }}"
-                   alt="{{ feature.name }}"
-                   style="width: 45px; height: 45px; object-fit: contain; user-select:none;"
-                   class="me-2">
+              <img src="{{ feature.icon.url }}"    alt="{{ feature.name }}"   style="width: 50px; height: 50px; object-fit: contain; user-select:none;"  class="me-2">
               {% endif %}
               <div class="text-wrap" style="font-size: 14px; user-select:none;">
                 {{ feature.name }}

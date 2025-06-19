@@ -93,7 +93,7 @@
                                         aria-label="Seguir"
                                         data-url="{% url 'toggle_follow' 'club' club.id %}"
                                         class="{% if club_followed %}liked{% endif %}">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                    <svg 
                                          aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg"
                                          width="24"
@@ -104,7 +104,7 @@
                                     </svg>
                                 </button>
                                 <button id="club-share" aria-label="Compartir">
-                                    <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                    <svg 
                                          aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg"
                                          width="24"
@@ -249,11 +249,11 @@
                             <h5 class="mb-3">Instalaciones y equipamiento</h5>
                             <div class="d-flex flex-wrap gap-3">
                                 {% for feature in club.features.all %}
-                                <div class="border rounded p-3 d-flex align-items-center "  >
+                                <div class="border rounded  d-flex align-items-center "  style="padding:8px 16px">
                                     {% if feature.icon %}
                                     <img src="{{ feature.icon.url }}"
                                         alt="{{ feature.name }}"
-                                        style="width: 45px; height: 45px; object-fit: contain; user-select:none;"
+                                        style="width: 50px; height: 50px; object-fit: contain; user-select:none;"
                                         class="me-2">
                                     {% endif %}
                                     <div class="text-wrap" style="font-size: 14px; user-select:none;">

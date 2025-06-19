@@ -318,9 +318,20 @@ textarea.form-control {
 
 #club-share path,
 #club-heart path {
-  stroke: #fff !important;
+  stroke: #fff !important; 
+}
+#club-share ,
+#club-heart  {
+  background-color:transparent;
+  padding:10px;
+  border-radius: 50px;
 }
 
+
+#club-share:hover ,
+#club-heart:hover  {
+  background-color:rgb(0, 0, 0, .5);  
+}
 /* Avatar para competidores en tablas */
 .competitor-avatar {
   width: 30px;
