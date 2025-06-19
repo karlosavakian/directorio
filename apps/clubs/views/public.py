@@ -29,6 +29,7 @@ def club_profile(request, slug):
     if request.user.is_authenticated:
         reseña_existente = club.reseñas.filter(usuario=request.user).first()
 
+
     form = ReseñaForm()
     register_form = RegistroUsuarioForm()
     if request.method == 'POST' and not reseña_existente:
