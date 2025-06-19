@@ -12,3 +12,11 @@ def initials(value):
         return ""
     initials = "".join(p[0] for p in parts[:2])
     return initials.upper()
+
+
+@register.filter
+def get_item(dictionary, key):
+    """Return dictionary value for the given key."""
+    if isinstance(dictionary, dict):
+        return dictionary.get(key, '')
+    return ''

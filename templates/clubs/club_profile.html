@@ -269,6 +269,7 @@
                    
                     <!-- Horarios -->
                     <div class=" p-3 tab-pane fade" id="schedule" role="tabpanel">
+                        <p id="open-status" class="fw-bold"></p>
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered text-center align-middle mb-0"
                                    style="min-width: 700px">
@@ -280,7 +281,7 @@
                                 <tbody>
                                     <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
-                                            <td>
+                                            <td class="schedule-day" data-day="{{ dia }}" data-intervals="{{ schedule_data|get_item:dia }}">
                                                 {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
                                                     {% for h in horarios_dia %}
                                                         {% if h.dia == dia %}
@@ -537,4 +538,5 @@
     <script src="{% static 'js/share-like.js' %}"></script>
     <script src="{% static 'js/share-modal.js' %}"></script>
     <script src="{% static 'js/gallery-slideshow.js' %}"></script>
+    <script src="{% static 'js/schedule-status.js' %}"></script>
 {% endblock %}
