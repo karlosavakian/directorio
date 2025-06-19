@@ -352,3 +352,15 @@ textarea.form-control {
   object-fit: cover;
   border-radius: 50%;
 }
+
+/* Estilos para la tabla de competidores */
+.competitors-table,
+.competitors-table th,
+.competitors-table td {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+.competitors-table {
+  border-collapse: collapse;
+}
