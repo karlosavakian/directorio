@@ -1,7 +1,7 @@
 # apps/clubs/urls.py
 
 from django.urls import path
-from .views import (
+from apps.clubs.views import (
     search,
     public,
     post_create,
