@@ -96,7 +96,17 @@ class ClubPostForm(forms.ModelForm):
         model = models.ClubPost
         fields = ['titulo', 'contenido', 'image', 'evento_fecha']
         widgets = {
-            'evento_fecha': forms.DateInput(attrs={'type': 'date'})
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Título (opcional)'
+            }),
+            'contenido': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': '¿Qué está pasando?'
+            }),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'evento_fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
         }
 
 class ClubPostReplyForm(forms.ModelForm):

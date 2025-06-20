@@ -1,0 +1,16 @@
+<form method="post" action="{% url 'clubpost_create' club.slug %}" enctype="multipart/form-data" class="border rounded p-3 mb-3">
+    {% csrf_token %}
+    <div class="mb-2">
+        {{ post_form.titulo }}
+    </div>
+    <div class="mb-2">
+        {{ post_form.contenido }}
+    </div>
+    <div class="mb-2 d-flex gap-2">
+        {{ post_form.image }}
+        {{ post_form.evento_fecha }}
+    </div>
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary btn-sm">Publicar</button>
+    </div>
+</form>
