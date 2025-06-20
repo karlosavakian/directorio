@@ -6,7 +6,7 @@ VALORACION_CHOICES = [(i, str(i)) for i in range(1, 6)]
 class Reseña(models.Model):
     club = models.ForeignKey('Club', on_delete=models.CASCADE, related_name='reseñas')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-
+    titulo = models.CharField(max_length=100)
     instalaciones = models.PositiveIntegerField(choices=VALORACION_CHOICES)
     entrenadores = models.PositiveIntegerField(choices=VALORACION_CHOICES)
     ambiente = models.PositiveIntegerField(choices=VALORACION_CHOICES)
@@ -23,4 +23,4 @@ class Reseña(models.Model):
         ) / 5, 1)
 
     def __str__(self):
-        return f"{self.usuario.username} - {self.club.name} ({self.promedio()}⭐)"
+        return f"{self.titulo} - {self.usuario.username} ({self.promedio()}⭐)"

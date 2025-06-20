@@ -40,6 +40,11 @@ class RegistroUsuarioForm(UserCreationForm):
  
 
 class ReseñaForm(forms.ModelForm):
+    titulo = forms.CharField(
+        label='Título',
+        max_length=100,
+        error_messages={'required': 'Este campo es obligatorio.'}
+    )
     comentario = forms.CharField(
         widget=forms.Textarea(attrs={'rows': 4, 'minlength': 200}),
         min_length=200,
@@ -61,6 +66,7 @@ class ReseñaForm(forms.ModelForm):
         exclude = ('usuario', 'club', 'creado')
 
         fields = [
+            'titulo',
             'instalaciones',
             'entrenadores',
             'ambiente',
@@ -69,6 +75,7 @@ class ReseñaForm(forms.ModelForm):
             'comentario'
         ]
         labels = {
+            'titulo': 'Título de la reseña',
             'instalaciones': 'Instalaciones (limpieza, equipamiento, vestuarios)',
             'entrenadores': 'Entrenadores (trato, conocimientos, motivación)',
             'ambiente': 'Ambiente (compañerismo, nivel de exigencia)',

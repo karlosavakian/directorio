@@ -103,6 +103,7 @@ class Command(BaseCommand):
                 Reseña.objects.create(
                     club=club,
                     usuario=user,
+                    titulo=fake.sentence(),
                     instalaciones=random.randint(1, 5),
                     entrenadores=random.randint(1, 5),
                     ambiente=random.randint(1, 5),

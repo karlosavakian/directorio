@@ -1,39 +1,57 @@
 {% load star_rating %}
 {% for reseña in reseñas %}
-  <div class="mb-3 rounded p-4 position-relative" >
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <div class="d-flex align-items-center">
+  <div class="mb-3 rounded position-relative">
+    <div class="row justify-content-between"> 
+      <!-- Columna izquierda (3 col): avatar -->
+      <div class="col-1 d-flex flex-column align-items-start justify-content-start  ">
         {% if reseña.usuario.profile.avatar %}
           <img style="height:50px; width:50px;" src="{{ reseña.usuario.profile.avatar.url }}" alt="{{ reseña.usuario.username }}" class="review-avatar-img rounded-circle">
         {% else %}
-          <div style="height:50px; width:50px;" class="review-avatar">{{ reseña.usuario.username|first|upper }}</div>
+          <div style="height:50px; width:50px;" class="review-avatar d-flex align-items-center justify-content-center rounded-circle">
+            {{ reseña.usuario.username|first|upper }}
+          </div>
         {% endif %}
-        <div class="fw-medium ms-2">{{ reseña.usuario.username }}</div>
+        <div class="fw-medium mt-2 small text-center">{{ reseña.usuario.username }}</div>
       </div>
-      <div class="d-flex flex-column align-items-end fw-bold">
-        <span>{{ reseña.promedio }} <small style="font-size:12px;">/ 5</small></span>
-        <span class="fs-1 d-flex">{% render_stars reseña.promedio %}</span>
+
+      <!-- Columna derecha (7 col): contenido -->
+      <div class="col-11">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <!-- Título y fecha -->
+          <div>
+            <h5 class="mt-0 mb-1">{{ reseña.titulo }}</h5>
+            <div class="text-muted small">{{ reseña.creado|date:"SHORT_DATE_FORMAT" }}</div>
+          </div>
+
+          <!-- Promedio y estrellas -->
+          <div class="d-flex flex-column align-items-end fw-bold">
+            <span>{{ reseña.promedio }} <small style="font-size:12px;">/ 5</small></span>
+            <span class="fs-1 d-flex">{% render_stars reseña.promedio %}</span>
+          </div>
+        </div>
+
+        <!-- Comentario -->
+        <div>
+          <p class="mt-3 mb-3" style="text-align: justify;">{{ reseña.comentario }}</p>
+        </div>
+
+        <!-- Botones de edición -->
+        {% if user.is_authenticated and user == reseña.usuario %}
+          <div class="mt-2 d-flex justify-content-end align-items-end">
+            <a href="{% url 'editar_reseña' reseña.id %}" class="btn btn-sm btn-link">
+                           <svg  style="height:15px;" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M495.6 49.23l-32.82-32.82C451.8 5.471 437.5 0 423.1 0c-14.33 0-28.66 5.469-39.6 16.41L167.5 232.5C159.1 240 154.8 249.5 152.4 259.8L128.3 367.2C126.5 376.1 133.4 384 141.1 384c.916 0 1.852-.0918 2.797-.2813c0 0 74.03-15.71 107.4-23.56c10.1-2.377 19.13-7.459 26.46-14.79l217-217C517.5 106.5 517.4 71.1 495.6 49.23zM461.7 94.4L244.7 311.4C243.6 312.5 242.5 313.1 241.2 313.4c-13.7 3.227-34.65 7.857-54.3 12.14l12.41-55.2C199.6 268.9 200.3 267.5 201.4 266.5l216.1-216.1C419.4 48.41 421.6 48 423.1 48s3.715 .4062 5.65 2.342l32.82 32.83C464.8 86.34 464.8 91.27 461.7 94.4zM424 288c-13.25 0-24 10.75-24 24v128c0 13.23-10.78 24-24 24h-304c-13.22 0-24-10.77-24-24v-304c0-13.23 10.78-24 24-24h144c13.25 0 24-10.75 24-24S229.3 64 216 64L71.1 63.99C32.31 63.99 0 96.29 0 135.1v304C0 479.7 32.31 512 71.1 512h303.1c39.69 0 71.1-32.3 71.1-72L448 312C448 298.8 437.3 288 424 288z"/></svg>  
+            </a>
+            <form action="{% url 'eliminar_reseña' reseña.id %}" method="post" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-link text-danger">
+              <svg style="height:15px;"viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z"/></svg>
+              </button>
+            </form>
+          </div>
+        {% endif %}
       </div>
+
     </div>
-
-    <!-- Comentario alineado a la derecha y limitado a col-6 -->
-    <div class=" col-8 ms-auto"> 
-        <div class=" text-muted small"  >   {{ reseña.creado|date:"SHORT_DATE_FORMAT" }}  </div>
-      <p class="mt-3 mb-3 ">{{ reseña.comentario }}</p>
-
-
-   {% if user.is_authenticated and user == reseña.usuario %}
-      <div class="mt-2 d-flex justify-content-end align-items-end "> 
-        <a href="{% url 'editar_reseña' reseña.id %}" class="btn btn-sm btn-link">
-          <svg  style="height:15px;" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M495.6 49.23l-32.82-32.82C451.8 5.471 437.5 0 423.1 0c-14.33 0-28.66 5.469-39.6 16.41L167.5 232.5C159.1 240 154.8 249.5 152.4 259.8L128.3 367.2C126.5 376.1 133.4 384 141.1 384c.916 0 1.852-.0918 2.797-.2813c0 0 74.03-15.71 107.4-23.56c10.1-2.377 19.13-7.459 26.46-14.79l217-217C517.5 106.5 517.4 71.1 495.6 49.23zM461.7 94.4L244.7 311.4C243.6 312.5 242.5 313.1 241.2 313.4c-13.7 3.227-34.65 7.857-54.3 12.14l12.41-55.2C199.6 268.9 200.3 267.5 201.4 266.5l216.1-216.1C419.4 48.41 421.6 48 423.1 48s3.715 .4062 5.65 2.342l32.82 32.83C464.8 86.34 464.8 91.27 461.7 94.4zM424 288c-13.25 0-24 10.75-24 24v128c0 13.23-10.78 24-24 24h-304c-13.22 0-24-10.77-24-24v-304c0-13.23 10.78-24 24-24h144c13.25 0 24-10.75 24-24S229.3 64 216 64L71.1 63.99C32.31 63.99 0 96.29 0 135.1v304C0 479.7 32.31 512 71.1 512h303.1c39.69 0 71.1-32.3 71.1-72L448 312C448 298.8 437.3 288 424 288z"/></svg>          </a>
-         <form action="{% url 'eliminar_reseña' reseña.id %}" method="post" class="d-inline">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-sm btn-link text-danger">
-          <svg style="height:15px;"viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z"/></svg>           </button>
-        </form>
-      </div>
-    {% endif %}
-    </div> 
   </div>
 {% empty %}
   <p class="text-muted">Este club todavía no tiene comentarios escritos.</p>

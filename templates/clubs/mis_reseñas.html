@@ -10,7 +10,7 @@
             {% for r in reseñas %}
                 <li class="reseña-item">
                     <h4>
-                        <a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a>
+                        <a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a> - {{ r.titulo }}
                     </h4>
                     <p>⭐ Promedio: {{ r.promedio }} | "{{ r.comentario }}"</p>
                     <small>{{ r.creado|date:"d/m/Y H:i" }}</small>
