@@ -49,7 +49,7 @@ if _hosts:
     ]
 else:
     ALLOWED_HOSTS = [
-        "249fa261-f688-4bc8-b884-f8ccfbc40ba1-00-2jcaipeu2p4f2.picard.replit.dev"
+        
     ]
 
 _origins = os.environ.get("CSRF_TRUSTED_ORIGINS")
@@ -59,7 +59,7 @@ if _origins:
     ]
 else:
     CSRF_TRUSTED_ORIGINS = [
-        'https://249fa261-f688-4bc8-b884-f8ccfbc40ba1-00-2jcaipeu2p4f2.picard.replit.dev'
+      
     ]
 
 INSTALLED_APPS = [
