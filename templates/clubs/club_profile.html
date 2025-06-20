@@ -365,22 +365,44 @@
                                     </button>
                                 </div>
                                 <div class="mt-2">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#replyModal-{{ post.pk }}">Responder</button>
                                     {% if user.is_authenticated %}
                                         <a href="{% url 'clubpost_update' post.pk %}" class="btn btn-sm btn-outline-secondary">Editar</a>
                                         <a href="{% url 'clubpost_delete' post.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                     {% endif %}
                                 </div>
-                                {% if post.replies.all %}
-                                    <div class="collapse mt-3 ms-3" id="replies-{{ post.pk }}">
-                                        {% for reply in post.replies.all %}
-                                            <div class="border-top pt-2">
+                                <div class="collapse mt-3 ms-3" id="replies-{{ post.pk }}">
+                                    {% for reply in post.replies.all %}
+                                        <div class="d-flex border-top pt-2">
+                                            {% if reply.user.profile.avatar %}
+                                                <img src="{{ reply.user.profile.avatar.url }}" alt="{{ reply.user.username }}" class="review-avatar-img rounded-circle me-2">
+                                            {% else %}
+                                                <div class="review-avatar me-2">{{ reply.user.username|first|upper }}</div>
+                                            {% endif %}
+                                            <div>
                                                 <small class="text-muted">{{ reply.user.username }} · {{ reply.created_at|time_since_short }}</small>
                                                 <p class="mb-1">{{ reply.contenido }}</p>
                                             </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                        </div>
+                                    {% empty %}
+                                        <p class="text-muted">No hay respuestas.</p>
+                                    {% endfor %}
+                                    {% if user.is_authenticated %}
+                                        <div class="d-flex mt-3">
+                                            {% if user.profile.avatar %}
+                                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="review-avatar-img rounded-circle me-2">
+                                            {% else %}
+                                                <div class="review-avatar me-2">{{ user.username|first|upper }}</div>
+                                            {% endif %}
+                                            <form method="post" action="{% url 'clubpost_reply' post.pk %}" class="d-flex flex-grow-1 gap-2">
+                                                {% csrf_token %}
+                                                {{ reply_form.contenido }}
+                                                <button type="submit" class="btn btn-primary btn-sm">Responder</button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted mt-2">Inicia sesión para responder.</p>
+                                    {% endif %}
+                                </div>
                             </div>
                         {% empty %}
                             <p>No hay publicaciones.</p>
@@ -528,9 +550,6 @@
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
     {% include 'clubs/_post_modal.html' %}
-    {% for post in posts %}
-        {% include 'clubs/_reply_modal.html' with post=post %}
-    {% endfor %}
     <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
