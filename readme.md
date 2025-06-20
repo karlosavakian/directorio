@@ -37,11 +37,13 @@ Para cargar los clubes listados en [feboxeo.es](https://feboxeo.es/donde-boxeo/)
 ```bash
 python manage.py scrape_feboxeo
 ```
-
+ 
 Esto creará o actualizará registros de clubes con su logo, dirección y correo electrónico. Si el sitio
 rechaza la solicitud con un error *403 Forbidden*, el comando ya incluye un encabezado "User-Agent"
 que simula un navegador para evitar dicho bloqueo.
-
+ 
+Esto creará o actualizará registros de clubes con su logo, dirección y correo electrónico.
+ 
 
 ## Instalación de dependencias
 
