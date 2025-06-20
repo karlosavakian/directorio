@@ -12,8 +12,15 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         url = 'https://feboxeo.es/donde-boxeo/'
+        headers = {
+            'User-Agent': (
+                'Mozilla/5.0 (X11; Linux x86_64) '
+                'AppleWebKit/537.36 (KHTML, like Gecko) '
+                'Chrome/122.0 Safari/537.36'
+            )
+        }
         try:
-            response = requests.get(url)
+            response = requests.get(url, headers=headers, timeout=10)
             response.raise_for_status()
         except requests.RequestException as exc:
             self.stderr.write(f'Error fetching {url}: {exc}')
@@ -49,7 +56,7 @@ class Command(BaseCommand):
 
             if logo_url:
                 try:
-                    img_resp = requests.get(logo_url)
+                    img_resp = requests.get(logo_url, headers=headers, timeout=10)
                     img_resp.raise_for_status()
                     club.logo.save(
                         os.path.basename(logo_url),
