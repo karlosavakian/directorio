@@ -16,7 +16,7 @@ def post_create(request, slug):
     if request.user != club.owner:
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = ClubPostForm(request.POST)
+        form = ClubPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.club = club
@@ -35,7 +35,7 @@ def post_update(request, pk):
     if not (has_club_permission(request.user, post.club) or request.user == post.user):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = ClubPostForm(request.POST, instance=post)
+        form = ClubPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
             messages.success(request, 'Publicación actualizada correctamente.')

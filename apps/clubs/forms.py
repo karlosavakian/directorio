@@ -94,9 +94,14 @@ class ReseñaForm(forms.ModelForm):
 class ClubPostForm(forms.ModelForm):
     class Meta:
         model = models.ClubPost
-        fields = ['titulo', 'contenido', 'image', 'evento_fecha']
+        fields = ['contenido', 'image']
         widgets = {
-            'evento_fecha': forms.DateInput(attrs={'type': 'date'})
+            'contenido': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': '¿Qué está pasando?'
+            }),
+            'image': forms.ClearableFileInput(attrs={'class': 'd-none', 'id': 'id_image'})
         }
 
 class ClubPostReplyForm(forms.ModelForm):

@@ -1,0 +1,22 @@
+<form method="post" action="{% url 'clubpost_create' club.slug %}" enctype="multipart/form-data" class="border rounded p-3 mb-3">
+    {% csrf_token %}
+    <div class="d-flex">
+        {% if user.profile.avatar %}
+            <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="review-avatar-img rounded-circle me-2">
+        {% else %}
+            <div class="review-avatar me-2">{{ user.username|first|upper }}</div>
+        {% endif %}
+        <div class="flex-grow-1">
+            {{ post_form.contenido }}
+            {{ post_form.image }}
+            <div class="d-flex justify-content-between mt-2">
+                <label for="{{ post_form.image.id_for_label }}" class="btn btn-link p-0">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21.44 11.05 12.1 20.38a5.25 5.25 0 0 1-7.42-7.42l8.84-8.84a3.25 3.25 0 1 1 4.6 4.6l-8.48 8.48a1.75 1.75 0 0 1-2.48-2.48l7.78-7.78"/>
+                    </svg>
+                </label>
+                <button type="submit" class="btn btn-primary btn-sm">Publicar</button>
+            </div>
+        </div>
+    </div>
+</form>
