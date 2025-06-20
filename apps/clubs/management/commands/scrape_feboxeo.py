@@ -11,9 +11,18 @@ class Command(BaseCommand):
     help = 'Scrape club data from feboxeo.es and store it in the database.'
 
     def handle(self, *args, **options):
-        url = 'https://feboxeo.es/donde-boxeo/'
+        url = 'https://feboxeo.es/donde-boxeo/' 
+        headers = {
+            'User-Agent': (
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                'AppleWebKit/537.36 (KHTML, like Gecko) '
+                'Chrome/119.0.0.0 Safari/537.36'
+            )
+        }
         try:
-            response = requests.get(url)
+            response = requests.get(url, headers=headers) 
+        try:
+            response = requests.get(url) 
             response.raise_for_status()
         except requests.RequestException as exc:
             self.stderr.write(f'Error fetching {url}: {exc}')
@@ -48,8 +57,10 @@ class Command(BaseCommand):
                 club.save(update_fields=['address', 'email'])
 
             if logo_url:
-                try:
-                    img_resp = requests.get(logo_url)
+                try: 
+                    img_resp = requests.get(logo_url, headers=headers)
+                     img_resp = requests.get(logo_url)
+ 
                     img_resp.raise_for_status()
                     club.logo.save(
                         os.path.basename(logo_url),
