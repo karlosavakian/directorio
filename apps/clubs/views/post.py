@@ -12,7 +12,8 @@ from ..permissions import has_club_permission
 @login_required
 def post_create(request, slug):
     club = get_object_or_404(Club, slug=slug)
-    if not has_club_permission(request.user, club):
+    # Only the owner of the club is allowed to create new posts
+    if request.user != club.owner:
         return HttpResponseForbidden()
     if request.method == 'POST':
         form = ClubPostForm(request.POST)

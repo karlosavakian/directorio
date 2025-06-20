@@ -110,3 +110,9 @@ class DashboardPermissionTests(TestCase):
         url = reverse('clubpost_update', args=[post.pk])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
         self.assertEqual(response.status_code, 403)
+
+    def test_non_owner_cannot_create_post(self):
+        self.client.login(username='other', password='pass')
+        url = reverse('clubpost_create', args=[self.club.slug])
+        response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
+        self.assertEqual(response.status_code, 403)
