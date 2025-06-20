@@ -4,4 +4,6 @@ django-allauth
 cryptography
 PyJWT
 Faker
+requests
+beautifulsoup4
 
