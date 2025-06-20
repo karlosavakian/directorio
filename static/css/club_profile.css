@@ -42,6 +42,7 @@
 /* Stars */
 .star-rating {
     display: inline-flex;
+    height:20px;
 }
 .star-rating svg {
     fill: #ccc;
