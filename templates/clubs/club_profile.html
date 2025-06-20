@@ -370,7 +370,7 @@
                                         <a href="{% url 'clubpost_delete' post.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
                                     {% endif %}
                                 </div>
-                                <div class="collapse mt-3 ms-3" id="replies-{{ post.pk }}">
+                                <div class="collapse mt-3 reply-thread" id="replies-{{ post.pk }}">
                                     {% for reply in post.replies.all %}
                                         <div class="d-flex border-top pt-2">
                                             {% if reply.user.profile.avatar %}

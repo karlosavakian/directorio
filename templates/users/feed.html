@@ -55,7 +55,7 @@
                         </svg>
                     </button>
                 </div>
-                <div class="collapse ms-3 mt-2" id="feed-replies-{{ post.pk }}">
+                <div class="collapse mt-2 reply-thread" id="feed-replies-{{ post.pk }}">
                     {% for reply in post.replies.all %}
                         <div class="d-flex border-top pt-2">
                             {% if reply.user.profile.avatar %}

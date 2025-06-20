@@ -19,6 +19,13 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
+} 
+
+/* Reply thread styling */
+.reply-thread {
+    border-left: 2px solid #dee2e6;
+    margin-left: 1rem;
+    padding-left: 1rem;
 }
 
 /* 2. Modernizing HTML5 elements */
