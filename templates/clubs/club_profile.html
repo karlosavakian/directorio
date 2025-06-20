@@ -550,9 +550,6 @@
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
     {% include 'clubs/_post_modal.html' %}
-    {% for post in posts %}
-        {% include 'clubs/_reply_modal.html' with post=post %}
-    {% endfor %}
     <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
