@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from apps.clubs.models import Club, Reseña, ClubPost
+from apps.clubs.forms import ClubPostReplyForm
 from ..models import Follow
 
 
@@ -53,10 +54,9 @@ def feed(request):
                 .filter(club_id=f.followed_object_id)
             )
             posts.extend(
-                ClubPost.objects.select_related("club", "user").filter(
-                    club_id=f.followed_object_id,
-                    parent__isnull=True,
-                )
+                ClubPost.objects.select_related("club", "user")
+                .prefetch_related("replies__user__profile")
+                .filter(club_id=f.followed_object_id, parent__isnull=True)
             )
         elif f.followed_content_type == ct_user:
             posts.extend(
@@ -65,10 +65,10 @@ def feed(request):
                 .filter(usuario_id=f.followed_object_id)
             )
             posts.extend(
-                ClubPost.objects.select_related("club", "user").filter(
-                    user_id=f.followed_object_id,
-                    parent__isnull=True,
-                )
+                ClubPost.objects.select_related("club", "user")
+                .prefetch_related("replies__user__profile")
+                .filter(user_id=f.followed_object_id, parent__isnull=True)
             )
     posts = sorted(posts, key=lambda r: getattr(r, 'creado', r.created_at), reverse=True)[:20]
-    return render(request, 'users/feed.html', {'posts': posts})
+    reply_form = ClubPostReplyForm()
+    return render(request, 'users/feed.html', {'posts': posts, 'reply_form': reply_form})

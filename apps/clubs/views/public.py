@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect 
 from ..models import Club, Entrenador
 from django.contrib import messages
-from apps.clubs.forms import ReseñaForm
+from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
@@ -12,7 +12,11 @@ def club_profile(request, slug):
     reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
-    posts = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
+    posts = (
+        club.posts.filter(parent__isnull=True)
+        .select_related('user')
+        .prefetch_related('replies__user__profile')
+    )
     orden = request.GET.get('orden', 'relevantes')
     club_followed = False
     if request.user.is_authenticated:
@@ -40,6 +44,8 @@ def club_profile(request, slug):
         schedule_data[day] = "|".join(intervals)
 
     form = ReseñaForm()
+    post_form = ClubPostForm()
+    reply_form = ClubPostReplyForm()
     register_form = RegistroUsuarioForm()
     if request.method == 'POST' and not reseña_existente:
         form = ReseñaForm(request.POST)
@@ -69,6 +75,8 @@ def club_profile(request, slug):
         'reseñas': reseñas,
         'posts': posts,
         'form': form,
+        'post_form': post_form,
+        'reply_form': reply_form,
         'reseña_existente': reseña_existente,
         'detallado': detallado,
         'competidores': competidores,
