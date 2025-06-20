@@ -1,0 +1,17 @@
+<div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Nueva publicación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{% url 'clubpost_create' club.slug %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ post_form.as_p }}
+          <button type="submit" class="btn btn-primary">Publicar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
