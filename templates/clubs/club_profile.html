@@ -502,7 +502,7 @@
                             {% for reseña in reseñas %}
                                 <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
                                     <p class="review-text">“{{ reseña.comentario }}”</p>
-                                    <div class="review-user-container d-flex align-items-center">
+                                    <div class="review-user-container d-flex align-items-center position-fixed bottom-0  mb-4 ">
                                         {% if reseña.usuario.profile.avatar %}
                                             <img src="{{ reseña.usuario.profile.avatar.url }}"
                                                  alt="{{ reseña.usuario.username }}"
@@ -510,7 +510,7 @@
                                         {% else %}
                                             <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
                                         {% endif %}
-                                        <div class="fw-medium ms-2  ">{{ reseña.usuario.username }}</div>
+                                        <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
                                     </div>
                                 </div>
                             {% endfor %}

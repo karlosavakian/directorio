@@ -142,15 +142,10 @@ textarea.form-control {
  
  
 .review-slide {
-  position: absolute;
-  width: 100%;
-  opacity: 0;
-  transform: translateX(40px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; 
+  height:200px; 
+  position: absolute; 
+  opacity: 0; 
+  transition: opacity 0.5s ease, transform 0.5s ease; 
 }
 
 .review-slide.active {
@@ -160,8 +155,8 @@ textarea.form-control {
   position: relative;
 }
 
-.review-text {
-  font-size: 1rem;
+.review-text { 
+  font-size:14px;
   font-style: italic;
   color: #333;
   word-break: break-word;
@@ -169,8 +164,7 @@ textarea.form-control {
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-  margin-bottom: 2rem;
+  -webkit-box-orient: vertical; 
 }
 
 .review-user {
@@ -198,6 +192,10 @@ textarea.form-control {
   object-fit: cover;
 }
 
+.review-username{
+  
+  font-size:14px;
+}
 .review-user .fw-medium {
   font-size: 0.8rem;
   color: #555;
