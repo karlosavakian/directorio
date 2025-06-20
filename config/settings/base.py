@@ -18,7 +18,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -45,16 +44,23 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 _hosts = os.environ.get("ALLOWED_HOSTS")
 if _hosts:
-    ALLOWED_HOSTS = [host.strip() for host in _hosts.split(",") if host.strip()]
+    ALLOWED_HOSTS = [
+        host.strip() for host in _hosts.split(",") if host.strip()
+    ]
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [
+        "249fa261-f688-4bc8-b884-f8ccfbc40ba1-00-2jcaipeu2p4f2.picard.replit.dev"
+    ]
 
 _origins = os.environ.get("CSRF_TRUSTED_ORIGINS")
 if _origins:
-    CSRF_TRUSTED_ORIGINS = [o.strip() for o in _origins.split(",") if o.strip()]
+    CSRF_TRUSTED_ORIGINS = [
+        o.strip() for o in _origins.split(",") if o.strip()
+    ]
 else:
-    CSRF_TRUSTED_ORIGINS = []
-
+    CSRF_TRUSTED_ORIGINS = [
+        'https://249fa261-f688-4bc8-b884-f8ccfbc40ba1-00-2jcaipeu2p4f2.picard.replit.dev'
+    ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,7 +70,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-  # Local apps
+    # Local apps
     'apps.core',
     'apps.clubs',
     'apps.users',
@@ -112,8 +118,6 @@ TEMPLATES = [
     },
 ]
 
-
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -124,25 +128,27 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -156,13 +162,10 @@ USE_I18N = True
 USE_TZ = True
 TIME_INPUT_FORMATS = ['%H:%M']
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'home'
@@ -173,7 +176,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
- 
 
 # Required signup fields for django-allauth
 ACCOUNT_SIGNUP_FIELDS = [

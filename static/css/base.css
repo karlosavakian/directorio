@@ -1,5 +1,3 @@
-
-
 /* ========================================
     1. Imports
    ======================================== */
@@ -30,7 +28,7 @@ html {
     line-height: 1.5;
     background-color: #ffffff;
     color: #000000;
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 
 
@@ -67,7 +65,7 @@ a {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
-    color:#000000 !important;
+    color: #000000 !important;
 }
 
 
@@ -90,24 +88,43 @@ ol {
 
 
 /* 4. Responsive Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     line-height: 1.2;
     margin-bottom: 0.5rem;
-    color: #000000 ;
+    color: #000000;
 }
 
-h1 { font-size: 3.5rem;
-font-weight:900;
+h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
 }
-h2 { font-size: 3rem;
-font-weight:900;
+
+h2 {
+    font-size: 3rem;
+    font-weight: 900;
 }
-h3 { font-size: 2rem;
+
+h3 {
+    font-size: 2rem;
     font-weight: 700;
 }
-h4 { font-size: 1.6rem; }
-h5 { font-size: 1.3rem; }
-h6 { font-size: 1.1rem; }
+
+h4 {
+    font-size: 1.6rem;
+}
+
+h5 {
+    font-size: 1.3rem;
+}
+
+h6 {
+    font-size: 1.1rem;
+}
 
 p {
     margin-bottom: 1rem;
@@ -120,30 +137,32 @@ p {
    ======================================== */
 
 /* Hover en enlaces principales: gris */
-    .text-dark:hover {
-        color: #6c757d !important;
-        text-decoration: none !important;
-    }
-    /* Hover en enlaces del aux footer: subrayado */
-    .hover-underline:hover {
-        text-decoration: underline !important;
-    }
+.text-dark:hover {
+    color: #6c757d !important;
+    text-decoration: none !important;
+}
+
+/* Hover en enlaces del aux footer: subrayado */
+.hover-underline:hover {
+    text-decoration: underline !important;
+}
 
 
 
 .back-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* espacio entre icono y texto */
-  text-decoration: none;
-  font-weight: 600;
-  color: inherit;
-}
-.back-button svg {
-  width: 25px;
-  height: 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* espacio entre icono y texto */
+    text-decoration: none;
+    font-weight: 600;
+    color: inherit;
 }
 
+.back-button svg {
+    width: 25px;
+    height: 25px;
+}
 
 
 .container-fluid {
@@ -160,6 +179,7 @@ p {
     align-items: center;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
 #loader.hidden {
     opacity: 0;
     visibility: hidden;
@@ -169,15 +189,29 @@ p {
 
 /* Animación de shake y borde rojo */
 .form-error {
-  animation: shake 0.3s;
-  border: 2px solid rgb(0, 0, 0) !important;
-  border-radius: 5px;
+    animation: shake 0.3s;
+    border: 2px solid rgb(0, 0, 0) !important;
+    border-radius: 5px;
 }
 
 @keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }
