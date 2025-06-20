@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 from apps.clubs.models import Club, Reseña, ClubPost
+from apps.clubs.forms import ClubPostReplyForm
 from ..models import Follow
 
 
@@ -71,4 +72,5 @@ def feed(request):
                 )
             )
     posts = sorted(posts, key=lambda r: getattr(r, 'creado', r.created_at), reverse=True)[:20]
-    return render(request, 'users/feed.html', {'posts': posts})
+    reply_form = ClubPostReplyForm()
+    return render(request, 'users/feed.html', {'posts': posts, 'reply_form': reply_form})

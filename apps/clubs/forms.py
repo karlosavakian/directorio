@@ -94,7 +94,7 @@ class ReseñaForm(forms.ModelForm):
 class ClubPostForm(forms.ModelForm):
     class Meta:
         model = models.ClubPost
-        fields = ['titulo', 'contenido', 'evento_fecha']
+        fields = ['titulo', 'contenido', 'image', 'evento_fecha']
         widgets = {
             'evento_fecha': forms.DateInput(attrs={'type': 'date'})
         }
