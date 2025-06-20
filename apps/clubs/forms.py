@@ -103,6 +103,13 @@ class ClubPostReplyForm(forms.ModelForm):
     class Meta:
         model = models.ClubPost
         fields = ['contenido']
+        widgets = {
+            'contenido': forms.TextInput(attrs={
+                'placeholder': 'Escribe una respuesta...',
+                'class': 'form-control form-control-sm',
+                'autocomplete': 'off'
+            })
+        }
 
 
 class BookingForm(forms.ModelForm):

@@ -55,28 +55,45 @@
                         </svg>
                     </button>
                 </div>
-                <div class="mt-1">
-                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#replyModal-{{ post.pk }}">Responder</button>
-                </div>
-                {% if post.replies.all %}
-                    <div class="collapse ms-3 mt-2" id="feed-replies-{{ post.pk }}">
-                        {% for reply in post.replies.all %}
-                            <div class="border-top pt-2">
+                <div class="collapse ms-3 mt-2" id="feed-replies-{{ post.pk }}">
+                    {% for reply in post.replies.all %}
+                        <div class="d-flex border-top pt-2">
+                            {% if reply.user.profile.avatar %}
+                                <img src="{{ reply.user.profile.avatar.url }}" alt="{{ reply.user.username }}" class="review-avatar-img rounded-circle me-2">
+                            {% else %}
+                                <div class="review-avatar me-2">{{ reply.user.username|first|upper }}</div>
+                            {% endif %}
+                            <div>
                                 <small class="text-muted">{{ reply.user.username }} · {{ reply.created_at|time_since_short }}</small>
                                 <p class="mb-1">{{ reply.contenido }}</p>
                             </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No hay respuestas aún.</p>
+                    {% endfor %}
+                    {% if user.is_authenticated %}
+                        <div class="d-flex mt-3">
+                            {% if user.profile.avatar %}
+                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="review-avatar-img rounded-circle me-2">
+                            {% else %}
+                                <div class="review-avatar me-2">{{ user.username|first|upper }}</div>
+                            {% endif %}
+                            <form method="post" action="{% url 'clubpost_reply' post.pk %}" class="d-flex flex-grow-1 gap-2">
+                                {% csrf_token %}
+                                {{ reply_form.contenido }}
+                                <button type="submit" class="btn btn-primary btn-sm">Responder</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mt-2">Inicia sesión para responder.</p>
+                    {% endif %}
+                </div>
             {% endif %}
         </div>
     {% empty %}
         <p>No hay publicaciones aún.</p>
 {% endfor %}
 </div>
-{% for post in posts %}
-    {% include 'clubs/_reply_modal.html' with post=post %}
-{% endfor %}
 {% include 'partials/_share_profile_modal.html' %}
 {% endblock %}
 
