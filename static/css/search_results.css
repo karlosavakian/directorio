@@ -8,15 +8,4 @@
   object-fit: cover;
 }
 
-/* Card limpia sin subrayado al hacer hover */
-.card a:hover {
-  text-decoration: none; 
-}
-.back-button {
-    font-weight: bold;
-    text-decoration: none;
-    color: #000;
-}
-.back-button:hover {
-    text-decoration: underline;
-}
+ 

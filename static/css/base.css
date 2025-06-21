@@ -73,12 +73,7 @@ button,
 a {
     transition: all 0.2s ease-in-out;
 }
-
-button:hover,
-a:hover {
-    opacity: 0.85;
-}
-
+ 
 
 
 ul,
@@ -137,11 +132,7 @@ p {
    ======================================== */
 
 /* Hover en enlaces principales: gris */
-.text-dark:hover {
-    color: #6c757d !important;
-    text-decoration: none !important;
-}
-
+ 
 /* Hover en enlaces del aux footer: subrayado */
 .hover-underline:hover {
     text-decoration: underline !important;
