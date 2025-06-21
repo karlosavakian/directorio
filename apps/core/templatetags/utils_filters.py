@@ -59,7 +59,11 @@ def youtube_embed(text):
     from django.utils.html import escape
     from django.utils.safestring import mark_safe
 
-    pattern = r"(https?://(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]+))"
+    pattern = (
+        r"(https?://(?:www\.)?"
+        r"(?:youtube\.com/(?:watch\?v=|shorts/)|youtu\.be/)([\w-]+))"
+        r"(?:\S*)"
+    )
     match = re.search(pattern, text)
     if not match:
         return escape(text)
