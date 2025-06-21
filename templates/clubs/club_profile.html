@@ -15,8 +15,12 @@
                         <div class="d-flex align-items-center mb-3">
                             <span class="badge ">{{ club.get_category_display }}</span>
                             {% if club.verified %}
-                                <span class="ms-2" title="Verificado"> 
-                                    <svg fill="none"  height="24" viewBox="0 0 24 24" width="20"  xmlns="http://www.w3.org/2000/svg">
+                                <span class="ms-2" title="Verificado">
+                                    <svg fill="none"
+                                         height="24"
+                                         viewBox="0 0 24 24"
+                                         width="20"
+                                         xmlns="http://www.w3.org/2000/svg">
                                         <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
                                     </svg>
                                 </span>
@@ -93,8 +97,7 @@
                                         aria-label="Seguir"
                                         data-url="{% url 'toggle_follow' 'club' club.id %}"
                                         class="{% if club_followed %}liked{% endif %}">
-                                    <svg 
-                                         aria-hidden="true"
+                                    <svg aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg"
                                          width="24"
                                          height="24"
@@ -104,8 +107,7 @@
                                     </svg>
                                 </button>
                                 <button id="club-share" aria-label="Compartir">
-                                    <svg 
-                                         aria-hidden="true"
+                                    <svg aria-hidden="true"
                                          xmlns="http://www.w3.org/2000/svg"
                                          width="24"
                                          height="24"
@@ -117,7 +119,9 @@
                             </div>
                             {% for photo in club.photos.all %}
                                 <div class="gallery-slide{% if forloop.first %} active{% endif %}">
-                                    <img src="{{ photo.image.url }}"  alt="Foto" class="img-fluid rounded shadow-sm"
+                                    <img src="{{ photo.image.url }}"
+                                         alt="Foto"
+                                         class="img-fluid rounded shadow-sm"
                                          style="width:100%;
                                                 max-height:500px;
                                                 min-height:500px;
@@ -205,68 +209,68 @@
                 <!-- Contenido de pestañas -->
                 <div class="tab-content" id="clubTabsContent">
                     <!-- About -->
-                     <div class="tab-pane fade show active" id="about" role="tabpanel">
+                    <div class="tab-pane fade show active" id="about" role="tabpanel">
                         <div class="row p-3">
                             <!-- Columna izquierda: El club -->
                             <div class="col-lg-7">
-                            <div class="mb-5">
-                                <h5 class="mb-3">El Club</h5>
-                                <p>{{ club.about|linebreaks }}</p>
+                                <div class="mb-5">
+                                    <h5 class="mb-3">El Club</h5>
+                                    <p>{{ club.about|linebreaks }}</p>
+                                </div>
                             </div>
-                            </div>
-
                             <!-- Columna derecha: Entrenadores -->
                             <div class="col-lg-5 p-2">
-                            {% if club.entrenadores.all %}
-                                <h5 class="mb-4">Entrenadores</h5>
-                                <div class="row">
-                                {% for e in club.entrenadores.all %}
-                                    <div class="col-6 d-flex align-items-center mb-3 user-select: none;">
-                                    {% if e.avatar %}
-                                        <img src="{{ e.avatar.url }}"
-                                            alt="{{ e.nombre }}"
-                                            class="rounded-circle me-3"
-                                            style="width: 60px; height: 60px; object-fit: cover; ">
-                                    {% else %}
-                                        <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-3"
-                                            style="width: 60px; height: 60px;">
-                                        {{ e.nombre|first|upper }}
-                                        </div>
-                                    {% endif %}
-                                    {% if e.slug %}
-                                        <a href="{% url 'coach_profile' e.slug %}" class="text-decoration-none text-reset">{{ e.nombre }} {{ e.apellidos }}</a>
-                                    {% else %}
-                                        <span>{{ e.nombre }} {{ e.apellidos }}</span>
-                                    {% endif %}
+                                {% if club.entrenadores.all %}
+                                    <h5 class="mb-4">Entrenadores</h5>
+                                    <div class="row">
+                                        {% for e in club.entrenadores.all %}
+                                            <div class="col-6 d-flex align-items-center mb-3 user-select: none;">
+                                                {% if e.avatar %}
+                                                    <img src="{{ e.avatar.url }}"
+                                                         alt="{{ e.nombre }}"
+                                                         class="rounded-circle me-3"
+                                                         style="width: 60px;
+                                                                height: 60px;
+                                                                object-fit: cover">
+                                                {% else %}
+                                                    <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-3"
+                                                         style="width: 60px;
+                                                                height: 60px">{{ e.nombre|first|upper }}</div>
+                                                {% endif %}
+                                                {% if e.slug %}
+                                                    <a href="{% url 'coach_profile' e.slug %}"
+                                                       class="text-decoration-none text-reset">{{ e.nombre }} {{ e.apellidos }}</a>
+                                                {% else %}
+                                                    <span>{{ e.nombre }} {{ e.apellidos }}</span>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                {% endfor %}
-                                </div>
-                            {% endif %}
+                                {% endif %}
                             </div>
-
                             <!-- Fila completa: Instalaciones y equipamiento -->
                             <div class="col-12 mt-4">
-                            <h5 class="mb-3">Instalaciones y equipamiento</h5>
-                            <div class="d-flex flex-wrap gap-3">
-                                {% for feature in club.features.all %}
-                                <div class="border rounded  d-flex align-items-center "  style="padding:8px 16px">
-                                    {% if feature.icon %}
-                                    <img src="{{ feature.icon.url }}"
-                                        alt="{{ feature.name }}"
-                                        style="width: 50px; height: 50px; object-fit: contain; user-select:none;"
-                                        class="me-2">
-                                    {% endif %}
-                                    <div class="text-wrap" style="font-size: 14px; user-select:none;">
-                                    {{ feature.name }}
-                                    </div>
+                                <h5 class="mb-3">Instalaciones y equipamiento</h5>
+                                <div class="d-flex flex-wrap gap-3">
+                                    {% for feature in club.features.all %}
+                                        <div class="border rounded  d-flex align-items-center "
+                                             style="padding:8px 16px">
+                                            {% if feature.icon %}
+                                                <img src="{{ feature.icon.url }}"
+                                                     alt="{{ feature.name }}"
+                                                     style="width: 50px;
+                                                            height: 50px;
+                                                            object-fit: contain;
+                                                            user-select:none"
+                                                     class="me-2">
+                                            {% endif %}
+                                            <div class="text-wrap" style="font-size: 14px; user-select:none;">{{ feature.name }}</div>
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
-                            </div>
                             </div>
                         </div>
-                        </div>
-
-                   
+                    </div>
                     <!-- Horarios -->
                     <div class=" p-3 tab-pane fade" id="schedule" role="tabpanel">
                         <p id="open-status" class="fw-bold"></p>
@@ -279,13 +283,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                     <tr>
+                                    <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
                                             <td class="schedule-day" data-day="{{ dia }}">
                                                 {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
                                                     {% for h in horarios_dia %}
                                                         {% if h.dia == dia %}
-                                                            <div class="border-bottom py-1 small text-muted schedule-item" data-start="{{ h.hora_inicio|time:'H:i' }}" data-end="{{ h.hora_fin|time:'H:i' }}">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
+                                                            <div class="border-bottom py-1 small text-muted schedule-item"
+                                                                 data-start="{{ h.hora_inicio|time:'H:i' }}"
+                                                                 data-end="{{ h.hora_fin|time:'H:i' }}">
+                                                                {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
+                                                            </div>
                                                         {% endif %}
                                                     {% empty %}
                                                         <span class="text-muted">—</span>
@@ -323,68 +331,136 @@
                     </div>
                     <!-- Posts -->
                     <div class="p-3 tab-pane fade" id="posts" role="tabpanel">
-                        {% if user.is_authenticated and user == club.owner %}
-                            {% include 'clubs/_post_form.html' %}
-                        {% endif %}
+
+                            <div class="col-lg-12 justify-content-center  d-flex flex-column align-items-center">
+                                {% if user.is_authenticated and user == club.owner %}
+                                    {% include 'clubs/_post_form.html' %}
+
+
+                                {% endif %}
+                            </div> 
                         {% for post in posts %}
-                            <div class="mb-3 border rounded p-3">
-                                <div class="d-flex mb-2">
+                            <div class="col-12 mt-3 mb-3  border rounded p-3">
+                                <div class="d-flex mb-2   ">
                                     {% if post.user.profile.avatar %}
-                                        <img src="{{ post.user.profile.avatar.url }}" alt="{{ post.user.username }}" class="review-avatar-img rounded-circle me-2">
+                                        <img src="{{ post.user.profile.avatar.url }}"
+                                             alt="{{ post.user.username }}"
+                                             class="review-avatar-img rounded-circle me-2">
                                     {% else %}
                                         <div class="review-avatar me-2">{{ post.user.username|first|upper }}</div>
                                     {% endif %}
-                                    <div class="flex-grow-1">
-                                        <p class="mb-1">{{ post.contenido }}</p>
-                                        {% if post.image %}
-                                            <img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen">
-                                        {% endif %}
-                                        <small class="text-muted">{{ post.user.username }} · {{ post.created_at|time_since_short }}</small>
+                                    <div class="flex-grow-1 ">
+                                        <span class="fw-bold me-1">{{ post.user.username }}</span>
+                                        <small class="text-muted ">{{ post.created_at|time_since_short }}</small>
+                                        <div class="mt-4 mb-4">
+                                                 {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen">{% endif %}
+ 
+                                            {{ post.contenido }}</div>
+                                        <div class="d-flex ">
+                                            <span class="d-flex btn p-0 post-like {% if user.is_authenticated and user in post.likes.all %}liked{% endif %}"
+                                                    data-url="{% url 'clubpost_like' post.pk %}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 512 512"><path fill="black" d="m225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8v-3.3c0-70.4 50-130.8 119.2-144c39.4-7.6 79.7 1.5 111.8 24.1c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c32.1-22.6 72.4-31.7 111.8-24.2C462 58.6 512 119.1 512 189.5v3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20l-.1-.1c-23.1-25.9-58-37.7-92-31.2c-46.6 8.9-80.2 49.5-80.2 96.9v3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7L431.2 268a102.7 102.7 0 0 0 32.8-75.2v-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2l-.1.1l-.1.1l-17.8 20c-.3.4-.7.7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z"/></svg>
+                                                <span class="text-black like-count ms-1">{{ post.likes.count }}</span>
+                                            </span>
+                                            <a class="ms-2 d-flex text-decoration-none text-reset"
+                                               data-bs-toggle="collapse"
+                                               href="#replies-{{ post.pk }}"
+                                               role="button"
+                                               aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     width="20"
+                                                     height="20"
+                                                     viewBox="0 0 24 24">
+                                                    <g fill="none">
+                                                    <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z" />
+                                                    <path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10H4a2 2 0 0 1-2-2v-8C2 6.477 6.477 2 12 2Zm0 2a8 8 0 0 0-8 8v8h8a8 8 0 1 0 0-16Zm0 10a1 1 0 0 1 .117 1.993L12 16H9a1 1 0 0 1-.117-1.993L9 14h3Zm3-4a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h6Z" />
+                                                    </g>
+                                                </svg>
+                                                <span class="ms-1">{{ post.replies.count }}</span>
+                                            </a>
+                                            <button type="button" class="ms-2  p-0 post-share">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                     width="20"
+                                                     height="20"
+                                                     viewBox="0 0 24 24">
+                                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                    <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                                                    <path d="m8.59 13.51l6.83 3.98m-.01-10.98l-6.82 3.98" />
+                                                    </g>
+                                                </svg>
+                                            </button>
+                                            <div class="ms-auto d-flex align-items-center gap-1">
+                                                {% if user.is_authenticated and user == post.user %}
+                                                    <a href="{% url 'clubpost_update' post.pk %}"
+                                                       class="btn btn-sm btn-link p-0">
+                                                        <!-- Edit SVG -->
+                                                        <svg style="height:15px"
+                                                             viewBox="0 0 512 512"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M495.6 49.23..." />
+                                                        </svg>
+                                                    </a>
+                                                    <form action="{% url 'clubpost_delete' post.pk %}"
+                                                          method="post"
+                                                          class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-sm btn-link text-danger p-0">
+                                                            <!-- Delete SVG -->
+                                                            <svg style="height:15px"
+                                                                 viewBox="0 0 448 512"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M432 80h-82.38..." />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                            <div class="ms-auto d-flex align-items-center gap-3">
+                                                {% if user.is_authenticated and user == post.user %}
+                                                    <a href="{% url 'clubpost_update' post.pk %}"
+                                                       class="btn btn-sm btn-link p-0">
+                                                        <!-- Edit SVG -->
+                                                        <svg style="height:15px"
+                                                             viewBox="0 0 512 512"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M495.6 49.23l-32.82-32.82C451.8 5.471 437.5 0 423.1 0c-14.33 0-28.66 5.469-39.6 16.41L167.5 232.5C159.1 240 154.8 249.5 152.4 259.8L128.3 367.2C126.5 376.1 133.4 384 141.1 384c.916 0 1.852-.0918 2.797-.2813c0 0 74.03-15.71 107.4-23.56c10.1-2.377 19.13-7.459 26.46-14.79l217-217C517.5 106.5 517.4 71.1 495.6 49.23zM461.7 94.4L244.7 311.4C243.6 312.5 242.5 313.1 241.2 313.4c-13.7 3.227-34.65 7.857-54.3 12.14l12.41-55.2C199.6 268.9 200.3 267.5 201.4 266.5l216.1-216.1C419.4 48.41 421.6 48 423.1 48s3.715 .4062 5.65 2.342l32.82 32.83C464.8 86.34 464.8 91.27 461.7 94.4zM424 288c-13.25 0-24 10.75-24 24v128c0 13.23-10.78 24-24 24h-304c-13.22 0-24-10.77-24-24v-304c0-13.23 10.78-24 24-24h144c13.25 0 24-10.75 24-24S229.3 64 216 64L71.1 63.99C32.31 63.99 0 96.29 0 135.1v304C0 479.7 32.31 512 71.1 512h303.1c39.69 0 71.1-32.3 71.1-72L448 312C448 298.8 437.3 288 424 288z" />
+                                                        </svg>
+                                                    </a>
+                                                    <form action="{% url 'clubpost_delete' post.pk %}"
+                                                          method="post"
+                                                          class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-sm btn-link text-danger p-0">
+                                                            <!-- Delete SVG -->
+                                                            <svg style="height:15px"
+                                                                 viewBox="0 0 448 512"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z" />
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center gap-3 mt-2">
-                                    <button class="btn p-0 post-like {% if user.is_authenticated and user in post.likes.all %}liked{% endif %}" data-url="{% url 'clubpost_like' post.pk %}">
-                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                        </svg>
-                                        <span class="like-count ms-1">{{ post.likes.count }}</span>
-                                    </button>
-                                    <a class="text-decoration-none text-reset" data-bs-toggle="collapse" href="#replies-{{ post.pk }}" role="button" aria-expanded="false">
-                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                                        </svg>
-                                        <span class="ms-1">{{ post.replies.count }}</span>
-                                    </a>
-                                    <button type="button" class="btn p-0 post-share">
-                                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="mt-2">
-                                    {% if user.is_authenticated and user == post.user %}
-                                        <a href="{% url 'clubpost_update' post.pk %}" class="btn btn-sm btn-link">
-                                            <svg  style="height:15px;" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="M495.6 49.23l-32.82-32.82C451.8 5.471 437.5 0 423.1 0c-14.33 0-28.66 5.469-39.6 16.41L167.5 232.5C159.1 240 154.8 249.5 152.4 259.8L128.3 367.2C126.5 376.1 133.4 384 141.1 384c.916 0 1.852-.0918 2.797-.2813c0 0 74.03-15.71 107.4-23.56c10.1-2.377 19.13-7.459 26.46-14.79l217-217C517.5 106.5 517.4 71.1 495.6 49.23zM461.7 94.4L244.7 311.4C243.6 312.5 242.5 313.1 241.2 313.4c-13.7 3.227-34.65 7.857-54.3 12.14l12.41-55.2C199.6 268.9 200.3 267.5 201.4 266.5l216.1-216.1C419.4 48.41 421.6 48 423.1 48s3.715 .4062 5.65 2.342l32.82 32.83C464.8 86.34 464.8 91.27 461.7 94.4zM424 288c-13.25 0-24 10.75-24 24v128c0 13.23-10.78 24-24 24h-304c-13.22 0-24-10.77-24-24v-304c0-13.23 10.78-24 24-24h144c13.25 0 24-10.75 24-24S229.3 64 216 64L71.1 63.99C32.31 63.99 0 96.29 0 135.1v304C0 479.7 32.31 512 71.1 512h303.1c39.69 0 71.1-32.3 71.1-72L448 312C448 298.8 437.3 288 424 288z"/></svg>
-                                        </a>
-                                        <form action="{% url 'clubpost_delete' post.pk %}" method="post" class="d-inline">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-sm btn-link text-danger">
-                                                <svg style="height:15px;"viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M432 80h-82.38l-34-56.75C306.1 8.827 291.4 0 274.6 0H173.4C156.6 0 141 8.827 132.4 23.25L98.38 80H16C7.125 80 0 87.13 0 96v16C0 120.9 7.125 128 16 128H32v320c0 35.35 28.65 64 64 64h256c35.35 0 64-28.65 64-64V128h16C440.9 128 448 120.9 448 112V96C448 87.13 440.9 80 432 80zM171.9 50.88C172.9 49.13 174.9 48 177 48h94c2.125 0 4.125 1.125 5.125 2.875L293.6 80H154.4L171.9 50.88zM352 464H96c-8.837 0-16-7.163-16-16V128h288v320C368 456.8 360.8 464 352 464zM224 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S208 183.2 208 192v208C208 408.8 215.2 416 224 416zM144 416C152.8 416 160 408.8 160 400V192c0-8.844-7.156-16-16-16S128 183.2 128 192v208C128 408.8 135.2 416 144 416zM304 416c8.844 0 16-7.156 16-16V192c0-8.844-7.156-16-16-16S288 183.2 288 192v208C288 408.8 295.2 416 304 416z"/></svg>
-                                            </button>
-                                        </form>
-                                    {% endif %}
-                                </div>
-                                <div class="collapse mt-3 ms-3" id="replies-{{ post.pk }}">
+                                <!-- replies -->
+                                <div class="collapse mt-3 ms-5 me-5" id="replies-{{ post.pk }}">
                                     {% for reply in post.replies.all %}
-                                        <div class="d-flex border-top pt-2">
+                                        <div class="d-flex border-top pt-4 pb-4 ">
                                             {% if reply.user.profile.avatar %}
-                                                <img src="{{ reply.user.profile.avatar.url }}" alt="{{ reply.user.username }}" class="review-avatar-img rounded-circle me-2">
+                                                <img src="{{ reply.user.profile.avatar.url }}"
+                                                     alt="{{ reply.user.username }}"
+                                                     class="review-avatar-img rounded-circle me-2">
                                             {% else %}
                                                 <div class="review-avatar me-2">{{ reply.user.username|first|upper }}</div>
                                             {% endif %}
                                             <div>
-                                                <small class="text-muted">{{ reply.user.username }} · {{ reply.created_at|time_since_short }}</small>
-                                                <p class="mb-1">{{ reply.contenido }}</p>
+                                                 <span class="fw-bold me-1">{{ post.user.username }}</span>
+                                                  <small class="text-muted ">{{ post.created_at|time_since_short }}</small>  
+                                                  <div class="mt-2 mb-2">
+                                                    {{ reply.contenido }}
+                                                 </div>
                                             </div>
                                         </div>
                                     {% empty %}
@@ -393,11 +469,13 @@
                                     {% if user.is_authenticated %}
                                         <div class="d-flex mt-3">
                                             {% if user.profile.avatar %}
-                                                <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="review-avatar-img rounded-circle me-2">
+                                                <img src="{{ user.profile.avatar.url }}"    alt="{{ user.username }}"  class="review-avatar-img rounded-circle me-2">
                                             {% else %}
                                                 <div class="review-avatar me-2">{{ user.username|first|upper }}</div>
                                             {% endif %}
-                                            <form method="post" action="{% url 'clubpost_reply' post.pk %}" class="d-flex flex-grow-1 gap-2">
+                                            <form method="post"
+                                                  action="{% url 'clubpost_reply' post.pk %}"
+                                                  class="d-flex flex-grow-1 gap-2">
                                                 {% csrf_token %}
                                                 {{ reply_form.contenido }}
                                                 <button type="submit" class="btn btn-primary btn-sm">Responder</button>
@@ -409,7 +487,11 @@
                                 </div>
                             </div>
                         {% empty %}
-                            <p>No hay publicaciones.</p>
+                        
+                            <p  class="m-3 justify-content-center d-flex flex-column align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m198.24 62.63l15.68-17.25a8 8 0 0 0-11.84-10.76L186.4 51.86A95.95 95.95 0 0 0 57.76 193.37l-15.68 17.25a8 8 0 1 0 11.84 10.76l15.68-17.24A95.95 95.95 0 0 0 198.24 62.63M48 128a80 80 0 0 1 127.6-64.25l-107 117.73A79.63 79.63 0 0 1 48 128m80 80a79.55 79.55 0 0 1-47.6-15.75l107-117.73A79.95 79.95 0 0 1 128 208"/></svg>
+                                
+                                No hay publicaciones.</p>
                         {% endfor %}
                     </div>
                     <!-- Competidores -->
@@ -417,14 +499,15 @@
                         {% if competidores %}
                             <div class="table-responsive ">
                                 <table class="table table-sm text-center competitors-table">
-                                   
                                     <tbody>
                                         {% for competidor in competidores %}
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center justify-content-center">
                                                         {% if competidor.avatar %}
-                                                            <img src="{{ competidor.avatar.url }}" alt="{{ competidor.nombre }}" class="competitor-avatar-img me-2">
+                                                            <img src="{{ competidor.avatar.url }}"
+                                                                 alt="{{ competidor.nombre }}"
+                                                                 class="competitor-avatar-img me-2">
                                                         {% else %}
                                                             <div class="competitor-avatar me-2">{{ competidor.nombre|initials }}</div>
                                                         {% endif %}
@@ -449,27 +532,28 @@
                     </div>
                     <!-- Comentarios -->
                     <div class="p-3 tab-pane fade" id="comments">
-                        <div class="row">  
-                     <div class="col-lg-12 "> 
-                        <div class=" d-flex justify-content-between align-items-center  flex-wrap mb-4 ">
-                             
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <div class=" d-flex justify-content-between align-items-center  flex-wrap mb-4 ">
                                     <div class="">
-                                    {% if not reseña_existente %}
-                                        {% if user.is_authenticated %}
-                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reviewModal">Dejar reseña</button>
-                                        {% else %}
-                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#loginModal">Dejar reseña</button>
+                                        {% if not reseña_existente %}
+                                            {% if user.is_authenticated %}
+                                                <button type="button"
+                                                        class="btn btn-dark"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#reviewModal">Dejar reseña</button>
+                                            {% else %}
+                                                <button type="button"
+                                                        class="btn btn-dark"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#loginModal">Dejar reseña</button>
+                                            {% endif %}
                                         {% endif %}
-                                    {% endif %}
-                                    </div> 
-                                    <div class="col-auto">
-                                    {% include 'partials/_review-filter.html' with orden=orden club=club %}
                                     </div>
+                                    <div class="col-auto">{% include 'partials/_review-filter.html' with orden=orden club=club %}</div>
                                 </div>
-
                                 <div class="mt-2 " id="review-list">{% include 'clubs/reviews_list.html' %}</div>
-                        </div>
-
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -479,7 +563,10 @@
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">
-                        <div class="review-carousel border rounded"  id="review-carousel"   onmouseenter="pauseAutoplay()"   onmouseleave="startAutoplay()">
+                        <div class="review-carousel border rounded"
+                             id="review-carousel"
+                             onmouseenter="pauseAutoplay()"
+                             onmouseleave="startAutoplay()">
                             {% for reseña in reseñas %}
                                 <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
                                     <p class="review-text">“{{ reseña.comentario }}”</p>
@@ -514,32 +601,25 @@
                         </div>
                         <ul class="list-group  ">
                             <div class="d-flex flex-wrap   rounded   p-4 col-12">
-                                        <!-- Rating promedio a la izquierda -->
-                                        <div class="d-flex flex-column align-items-start col-6"   >
-                                            <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font-size:12px">/ 5</small></span>
-                                            <span class="  fw-light" style="font-size:12px">({{ club.reviews_count }} reseñas)</span>
-                                        </div>
-
-                                        <!-- Valoraciones detalladas a la derecha -->
-                                        <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-6">
-                                            <span>Instalaciones</span>
-                                            <span class="d-flex mb-2">{% render_stars detallado.instalaciones %}</span>
-                                            
-                                            <span>Entrenadores</span>
-                                            <span class="d-flex mb-2">{% render_stars detallado.entrenadores %}</span>
-                                            
-                                            <span>Calidad/precio</span>
-                                            <span class="d-flex mb-2">{% render_stars detallado.calidad_precio %}</span>
-                                            
-                                            <span>Ambiente</span>
-                                            <span class="d-flex mb-2">{% render_stars detallado.ambiente %}</span>
-                                            
-                                            <span>Variedad clases</span>
-                                            <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
-                                        </div>
-                                    </div>
-
-                         
+                                <!-- Rating promedio a la izquierda -->
+                                <div class="d-flex flex-column align-items-start col-6">
+                                    <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font-size:12px">/ 5</small></span>
+                                    <span class="  fw-light" style="font-size:12px">({{ club.reviews_count }} reseñas)</span>
+                                </div>
+                                <!-- Valoraciones detalladas a la derecha -->
+                                <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-6">
+                                    <span>Instalaciones</span>
+                                    <span class="d-flex mb-2">{% render_stars detallado.instalaciones %}</span>
+                                    <span>Entrenadores</span>
+                                    <span class="d-flex mb-2">{% render_stars detallado.entrenadores %}</span>
+                                    <span>Calidad/precio</span>
+                                    <span class="d-flex mb-2">{% render_stars detallado.calidad_precio %}</span>
+                                    <span>Ambiente</span>
+                                    <span class="d-flex mb-2">{% render_stars detallado.ambiente %}</span>
+                                    <span>Variedad clases</span>
+                                    <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                </div>
+                            </div>
                         </ul>
                     </div>
                 {% else %}
@@ -555,66 +635,65 @@
             <div class="modal-content p-3">
                 <div class="modal-header">
                     <h5 class="modal-title">Dejar reseña</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="col-lg-6 mb-4">
                         {% if user.is_authenticated %}
                             {% if not reseña_existente %}
-                                    <form method="POST" id="reseña-form">
-                                            {% csrf_token %}
-                                            {% if form.errors %}
-                                                <div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>
-                                            {% endif %}
-
-                                            <div class="mb-3">
-                                                <input type="text" name="titulo" class="form-control" placeholder="Título de la reseña" required>
-                                            </div>
-
-
-                                            <div class="mb-3">
-                                                <label class="form-label d-block mb-1">Instalaciones:</label>
-                                                <div class="star-rating mb-2" data-name="instalaciones"></div>
-                                                <input type="hidden" name="instalaciones" required id="input-instalaciones">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label d-block mb-1">Entrenadores:</label>
-                                                <div class="star-rating mb-2" data-name="entrenadores"></div>
-                                                <input type="hidden" name="entrenadores" required id="input-entrenadores">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label d-block mb-1">Ambiente:</label>
-                                                <div class="star-rating mb-2" data-name="ambiente"></div>
-                                                <input type="hidden" name="ambiente" required id="input-ambiente">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label d-block mb-1">Calidad-precio:</label>
-                                                <div class="star-rating mb-2" data-name="calidad_precio"></div>
-                                                <input type="hidden"
-                                                       name="calidad_precio"
-                                                       required id="input-calidad_precio">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                <label class="form-label d-block mb-1">Variedad de clases:</label>
-                                                <div class="star-rating mb-2" data-name="variedad_clases"></div>
-                                                <input type="hidden" name="variedad_clases" required id="input-variedad_clases">
-                                            </div>
-
-                                            <div class="mb-3">
-                                                 <textarea name="comentario"
-                                                        class="form-control"
-                                                        rows="4"
-                                                        minlength="200"
-                                                        placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-dark">Enviar Reseña</button>
-                                    </form>
-
+                                <form method="POST" id="reseña-form">
+                                    {% csrf_token %}
+                                    {% if form.errors %}<div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>{% endif %}
+                                    <div class="mb-3">
+                                        <input type="text"
+                                               name="titulo"
+                                               class="form-control"
+                                               placeholder="Título de la reseña"
+                                               required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-1">Instalaciones:</label>
+                                        <div class="star-rating mb-2" data-name="instalaciones"></div>
+                                        <input type="hidden" name="instalaciones" required id="input-instalaciones">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-1">Entrenadores:</label>
+                                        <div class="star-rating mb-2" data-name="entrenadores"></div>
+                                        <input type="hidden" name="entrenadores" required id="input-entrenadores">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-1">Ambiente:</label>
+                                        <div class="star-rating mb-2" data-name="ambiente"></div>
+                                        <input type="hidden" name="ambiente" required id="input-ambiente">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-1">Calidad-precio:</label>
+                                        <div class="star-rating mb-2" data-name="calidad_precio"></div>
+                                        <input type="hidden"
+                                               name="calidad_precio"
+                                               required
+                                               id="input-calidad_precio">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label d-block mb-1">Variedad de clases:</label>
+                                        <div class="star-rating mb-2" data-name="variedad_clases"></div>
+                                        <input type="hidden"
+                                               name="variedad_clases"
+                                               required
+                                               id="input-variedad_clases">
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea name="comentario"
+                                                  class="form-control"
+                                                  rows="4"
+                                                  minlength="200"
+                                                  placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark">Enviar Reseña</button>
+                                </form>
                                 <div id="mensaje-gracias"
                                      class="alert alert-success mt-3"
                                      style="display:none">
