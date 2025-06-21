@@ -48,3 +48,30 @@ def time_since_short(value):
     if weeks == 1:
         return "hace 1 semana"
     return f"hace {weeks} semanas"
+
+
+@register.filter(is_safe=True)
+def youtube_embed(text):
+    """Replace YouTube links in ``text`` with embed iframe."""
+    if not text:
+        return ""
+    import re
+    from django.utils.html import escape
+    from django.utils.safestring import mark_safe
+
+    pattern = r"(https?://(?:www\.)?(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]+))"
+    match = re.search(pattern, text)
+    if not match:
+        return escape(text)
+
+    video_id = match.group(2)
+    cleaned = re.sub(pattern, "", text).strip()
+    embed = (
+        f'<iframe width="560" height="315" '
+        f'src="https://www.youtube.com/embed/{video_id}" '
+        f'frameborder="0" allowfullscreen></iframe>'
+    )
+    safe_text = escape(cleaned)
+    html = f"<p>{safe_text}</p>" if cleaned else ""
+    html += embed
+    return mark_safe(html)
