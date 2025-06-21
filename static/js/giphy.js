@@ -1,7 +1,8 @@
-(document => {
+document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('giphyBtn');
   const modalEl = document.getElementById('giphyModal');
   if (!btn || !modalEl) return;
+
   const modal = new bootstrap.Modal(modalEl);
   const form = modalEl.querySelector('form');
   const results = modalEl.querySelector('.giphy-results');
@@ -40,4 +41,4 @@
       modal.hide();
     }
   });
-})(document);
+});
