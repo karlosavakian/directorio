@@ -176,8 +176,10 @@ textarea.form-control {
 }
 
 .review-avatar {
-  width: 32px;
-  height: 32px;
+  min-width: 35px;
+   min-height: 35px;
+   width: 35px;
+  height: 35px;
   background-color: #000000;
   border-radius: 50%;
   font-weight: bold;
@@ -188,8 +190,10 @@ textarea.form-control {
 }
 
 .review-avatar-img {
-  width: 32px;
-  height: 32px;
+  min-width: 35px;
+   min-height: 35px;
+    width: 35px;
+  height: 35px;
   object-fit: cover;
 }
 
