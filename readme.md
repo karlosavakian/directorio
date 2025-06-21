@@ -30,6 +30,18 @@ export CSRF_TRUSTED_ORIGINS="https://tu-dominio.example.com"
 
 El sitio quedará disponible en http://127.0.0.1:8000/.
 
+### Importar clubes desde feboxeo.es
+
+Para cargar los clubes listados en [feboxeo.es](https://feboxeo.es/donde-boxeo/) ejecuta el siguiente comando:
+
+```bash
+python manage.py scrape_feboxeo
+```
+
+Esto creará o actualizará registros de clubes con su logo, dirección y correo electrónico. Si el sitio
+rechaza la solicitud con un error *403 Forbidden*, el comando ya incluye un encabezado "User-Agent"
+que simula un navegador para evitar dicho bloqueo.
+
 
 ## Instalación de dependencias
 
