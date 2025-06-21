@@ -92,21 +92,22 @@ class ReseñaForm(forms.ModelForm):
             'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
         }
 class ClubPostForm(forms.ModelForm):
+    """Formulario para crear publicaciones de club."""
+
     class Meta:
         model = models.ClubPost
-        fields = ['titulo', 'contenido', 'image', 'evento_fecha']
+        # Eliminamos los campos de título y fecha del formulario público
+        fields = ['contenido', 'image']
         widgets = {
-            'titulo': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Título (opcional)'
-            }),
-            'contenido': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': '¿Qué está pasando?'
-            }),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'evento_fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+            'contenido': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 3,
+                    'placeholder': '¿Qué está pasando?'
+                }
+            ),
+            # Ocultamos el input real y se activará desde un icono
+            'image': forms.ClearableFileInput(attrs={'class': 'd-none'})
         }
 
 class ClubPostReplyForm(forms.ModelForm):

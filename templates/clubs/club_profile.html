@@ -335,15 +335,9 @@
                                         <div class="review-avatar me-2">{{ post.user.username|first|upper }}</div>
                                     {% endif %}
                                     <div class="flex-grow-1">
-                                        {% if post.titulo %}
-                                            <h5 class="mb-1">{{ post.titulo }}</h5>
-                                        {% endif %}
                                         <p class="mb-1">{{ post.contenido }}</p>
                                         {% if post.image %}
                                             <img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen">
-                                        {% endif %}
-                                        {% if post.evento_fecha %}
-                                            <p class="mb-1"><strong>Evento:</strong> {{ post.evento_fecha }}</p>
                                         {% endif %}
                                         <small class="text-muted">{{ post.user.username }} · {{ post.created_at|time_since_short }}</small>
                                     </div>
