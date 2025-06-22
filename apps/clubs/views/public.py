@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404, redirect 
+from django.shortcuts import render, get_object_or_404, redirect
 from ..models import Club, Entrenador
 from django.contrib import messages
 from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator
 
 
 def club_profile(request, slug):
@@ -12,7 +13,7 @@ def club_profile(request, slug):
     reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
-    posts = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
+    posts_qs = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
     orden = request.GET.get('orden', 'relevantes')
     club_followed = False
     if request.user.is_authenticated:
@@ -66,10 +67,17 @@ def club_profile(request, slug):
     else:  # relevantes (por defecto)
         reseñas = reseñas.order_by('-creado')  # puedes mejorar esto más adelante
 
+    posts_paginator = Paginator(posts_qs, 5)
+    posts = posts_paginator.get_page(request.GET.get('post_page'))
+
+    reseñas_paginator = Paginator(reseñas, 5)
+    reseñas = reseñas_paginator.get_page(request.GET.get('review_page'))
+
     return render(request, 'clubs/club_profile.html', {
         'club': club,
         'reseñas': reseñas,
         'posts': posts,
+        'orden': orden,
         'form': form,
         'post_form': post_form,
         'reply_form': reply_form,
@@ -108,4 +116,25 @@ def ajax_reviews(request, slug):
     else:
         reseñas = reseñas.order_by('-creado')
 
-    return render(request, 'clubs/reviews_list.html', {'reseñas': reseñas})
+    paginator = Paginator(reseñas, 5)
+    reseñas_page = paginator.get_page(request.GET.get('review_page'))
+    return render(request, 'clubs/reviews_list.html', {
+        'reseñas': reseñas_page,
+        'orden': orden,
+        'club': club,
+    })
+
+
+def ajax_posts(request, slug):
+    """Devolver lista paginada de publicaciones."""
+    club = get_object_or_404(Club, slug=slug)
+    posts_qs = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
+    paginator = Paginator(posts_qs, 5)
+    posts_page = paginator.get_page(request.GET.get('post_page'))
+    reply_form = ClubPostReplyForm()
+    return render(request, 'clubs/posts_list.html', {
+        'posts': posts_page,
+        'reply_form': reply_form,
+        'request': request,
+        'club': club,
+    })
