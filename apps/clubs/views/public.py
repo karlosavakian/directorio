@@ -1,4 +1,5 @@
-from django.shortcuts import render, get_object_or_404, redirect 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 from ..models import Club, Entrenador
 from django.contrib import messages
 from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
@@ -66,10 +67,17 @@ def club_profile(request, slug):
     else:  # relevantes (por defecto)
         reseñas = reseñas.order_by('-creado')  # puedes mejorar esto más adelante
 
+    posts_paginator = Paginator(posts, 5)
+    reviews_paginator = Paginator(reseñas, 5)
+    posts_page_number = request.GET.get('posts_page')
+    reviews_page_number = request.GET.get('reviews_page')
+    posts_page = posts_paginator.get_page(posts_page_number)
+    reseñas_page = reviews_paginator.get_page(reviews_page_number)
+
     return render(request, 'clubs/club_profile.html', {
         'club': club,
-        'reseñas': reseñas,
-        'posts': posts,
+        'reseñas_page': reseñas_page,
+        'posts_page': posts_page,
         'form': form,
         'post_form': post_form,
         'reply_form': reply_form,
@@ -79,6 +87,7 @@ def club_profile(request, slug):
         'club_followed': club_followed,
         'register_form': register_form,
         'schedule_data': schedule_data,
+        'orden': orden,
 
     })
 
@@ -108,4 +117,11 @@ def ajax_reviews(request, slug):
     else:
         reseñas = reseñas.order_by('-creado')
 
-    return render(request, 'clubs/reviews_list.html', {'reseñas': reseñas})
+    paginator = Paginator(reseñas, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'clubs/reviews_list.html', {
+        'page_obj': page_obj,
+        'orden': orden,
+    })

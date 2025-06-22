@@ -1,6 +1,7 @@
  
       <form method="get" id="review-filter-form" action="{% url 'ajax_reviews' club.slug %}" class="d-flex align-items-center" style="gap: 10px;">
         <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
+        <input type="hidden" name="page" id="page-input" value="{{ request.GET.reviews_page|default:1 }}">
 
     <div class="custom-dropdown small" id="sort-dropdown">
         <div class="selected">

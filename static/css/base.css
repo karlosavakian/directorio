@@ -206,3 +206,6 @@ p {
         transform: translateX(0);
     }
 }
+.fade-section{opacity:0;transition:opacity 0.3s ease;}
+.fade-section.show{opacity:1;}
+
