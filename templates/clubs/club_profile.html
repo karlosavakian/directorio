@@ -436,35 +436,33 @@
                         >
                             <thead class="table-dark">
                                 <tr>
-                                    {% for dia, nombre in
-                                    club.horarios.model.DiasSemana.choices %}
+                                    {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
                                     <th scope="col">{{ nombre }}</th>
                                     {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    {% for dia, nombre in
-                                    club.horarios.model.DiasSemana.choices %}
+                                    {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
                                     <td
                                         class="schedule-day"
                                         data-day="{{ dia }}"
                                     >
-                                        {% with
-                                        horarios_dia=club.horarios.all|dictsort:"hora_inicio"
-                                        %} {% for h in horarios_dia %} {% if
-                                        h.dia == dia %}
+                                        {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
+                                        {% for h in horarios_dia %}
+                                            {% if h.dia == dia %}
                                         <div
                                             class="border-bottom py-1 small text-muted schedule-item"
                                             data-start="{{ h.hora_inicio|time:'H:i' }}"
                                             data-end="{{ h.hora_fin|time:'H:i' }}"
                                         >
-                                            {{ h.hora_inicio|time:"H:i" }} - {{
-                                            h.hora_fin|time:"H:i" }}
+                                            {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
                                         </div>
-                                        {% endif %} {% empty %}
-                                        <span class="text-muted">—</span>
-                                        {% endfor %} {% endwith %}
+                                            {% endif %}
+                                        {% empty %}
+                                            <span class="text-muted">—</span>
+                                        {% endfor %}
+                                        {% endwith %}
                                     </td>
                                     {% endfor %}
                                 </tr>
@@ -587,26 +585,27 @@
                                 class="d-flex justify-content-between align-items-center flex-wrap mb-4"
                             >
                                 <div class="">
-                                    {% if not reseña_existente %} {% if
-                                    user.is_authenticated %}
-                                    <button
-                                        type="button"
-                                        class="btn btn-dark"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#reviewModal"
-                                    >
-                                        Dejar reseña
-                                    </button>
-                                    {% else %}
-                                    <button
-                                        type="button"
-                                        class="btn btn-dark"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#loginModal"
-                                    >
-                                        Dejar reseña
-                                    </button>
-                                    {% endif %} {% endif %}
+                                    {% if not reseña_existente %}
+                                        {% if user.is_authenticated %}
+                                            <button
+                                                type="button"
+                                                class="btn btn-dark"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#reviewModal"
+                                            >
+                                                Dejar reseña
+                                            </button>
+                                        {% else %}
+                                            <button
+                                                type="button"
+                                                class="btn btn-dark"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#loginModal"
+                                            >
+                                                Dejar reseña
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
                                 </div>
                                 <div class="col-auto">
                                     {% include 'partials/_review-filter.html'
@@ -753,13 +752,14 @@
             </div>
             <div class="modal-body">
                 <div class="col-lg-6 mb-4">
-                    {% if user.is_authenticated %} {% if not reseña_existente %}
-                    <form method="POST" id="reseña-form">
-                        {% csrf_token %} {% if form.errors %}
-                        <div class="alert alert-danger">
-                            Por favor completa todos los campos obligatorios.
-                        </div>
-                        {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if not reseña_existente %}
+                        <form method="POST" id="reseña-form">
+                            {% csrf_token %} {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Por favor completa todos los campos obligatorios.
+                            </div>
+                            {% endif %}
                         <div class="mb-3">
                             <input
                                 type="text"
@@ -853,22 +853,23 @@
                                 placeholder="¿Qué te ha gustado o qué mejorarías del club?"
                             ></textarea>
                         </div>
-                        <button type="submit" class="btn btn-dark">
-                            Enviar Reseña
-                        </button>
-                    </form>
-                    <div
-                        id="mensaje-gracias"
-                        class="alert alert-success mt-3"
-                        style="display: none"
-                    >
-                        Gracias por valorar el club. Tu reseña será publicada en
-                        breve.
-                    </div>
+                            <button type="submit" class="btn btn-dark">
+                                Enviar Reseña
+                            </button>
+                        </form>
+                        <div
+                            id="mensaje-gracias"
+                            class="alert alert-success mt-3"
+                            style="display: none"
+                        >
+                            Gracias por valorar el club. Tu reseña será publicada en
+                            breve.
+                        </div>
+                        {% else %}
+                        <!-- <p>Ya has dejado una reseña para este club.</p> -->
+                        {% endif %}
                     {% else %}
-                    <!-- <p>Ya has dejado una reseña para este club.</p> -->
-                    {% endif %} {% else %}
-                    <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
+                        <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
                     {% endif %}
                 </div>
             </div>
