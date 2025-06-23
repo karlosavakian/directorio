@@ -66,11 +66,13 @@ def feed(request):
             models.Q(club_id__in=club_ids) | models.Q(user_id__in=user_ids),
             parent__isnull=True,
         )
-    )
+    ) 
     posts = sorted(
         posts,
         key=lambda r: getattr(r, "creado", getattr(r, "created_at", None)),
         reverse=True,
-    )[:20]
+    )[:20] 
+    posts = sorted(posts, key=lambda r: getattr(r, 'creado', r.created_at), reverse=True)[:20]
+    main
     reply_form = ClubPostReplyForm()
     return render(request, 'users/feed.html', {'posts': posts, 'reply_form': reply_form})
