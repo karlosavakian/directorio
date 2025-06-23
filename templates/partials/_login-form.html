@@ -1,6 +1,6 @@
 {% load socialaccount %}
    
-               <form method="post">
+               <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
 
                 <div class="mb-3">
