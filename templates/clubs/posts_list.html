@@ -71,11 +71,17 @@
                     <p class="mb-0">{{ reply.contenido }}</p>
                 </div>
             {% endfor %}
-            <form method="post" action="{% url 'clubpost_reply' post.pk %}">
-                {% csrf_token %}
-                {{ reply_form.contenido }}
-                <button type="submit" class="btn btn-sm btn-dark mt-2">Responder</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'clubpost_reply' post.pk %}">
+                    {% csrf_token %}
+                    {{ reply_form.contenido }}
+                    <button type="submit" class="btn btn-sm btn-dark mt-2">Responder</button>
+                </form>
+            {% else %}
+                <button type="button" class="btn btn-sm btn-dark mt-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    Inicia sesión para responder
+                </button>
+            {% endif %}
         </div>
       </div>
     </div>
