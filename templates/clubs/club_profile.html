@@ -1,570 +1,889 @@
-{% extends 'base.html' %}
-{% block body_class %}club-profile-page{% endblock %}
-{% load static star_rating utils_filters %}
-{% block content %}
-    <div class="container-fluid col-12 px-3 my-3" id="profile-container">
-        <!-- Flecha volver arriba -->
-        {% include 'partials/_back-btn.html' %}
-        <div class="row">
-            <!-- Columna Izquierda: Info del Club -->
-            <div class="col-lg-2  ">
-                {% if club.logo %}<img src="{{ club.logo.url }}" alt="{{ club.name }}">{% endif %}
-                <div class="d-flex align-items-start mt-4 mb-4 gap-3 ">
-                    <div>
-                        <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge ">{{ club.get_category_display }}</span>
-                            {% if club.verified %}
-                                <span class="ms-2" title="Verificado">
-                                    <svg fill="none"
-                                         height="24"
-                                         viewBox="0 0 24 24"
-                                         width="20"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
-                                    </svg>
-                                </span>
-                            {% endif %}
-                        </div>
-                        <p class="mb-2  d-flex ">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white me-2 "
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 width="30"
-                                 height="30"
-                                 fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
+{% extends 'base.html' %} {% block body_class %}club-profile-page{% endblock %}
+{% load static star_rating utils_filters %} {% block content %}
+<div class="container-fluid col-12 px-3 my-3" id="profile-container">
+    <!-- Flecha volver arriba -->
+    {% include 'partials/_back-btn.html' %}
+    <div class="row">
+        <!-- Columna Izquierda: Info del Club -->
+        <div class="col-lg-2">
+            {% if club.logo %}<img
+                src="{{ club.logo.url }}"
+                alt="{{ club.name }}"
+            />{% endif %}
+            <div class="d-flex align-items-start mt-4 mb-4 gap-3">
+                <div>
+                    <h1 class="h3 mb-2" style="font-weight: 900">
+                        {{ club.name }}
+                    </h1>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="badge"
+                            >{{ club.get_category_display }}</span
+                        >
+                        {% if club.verified %}
+                        <span class="ms-2" title="Verificado">
+                            <svg
+                                style="width: 20px"
+                                data-name="Layer 1"
+                                id="Layer_1"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <title />
+                                <path
+                                    d="M22.41,10.59,20.36,8.54V5.63a2,2,0,0,0-2-2H15.46l-2.05-2a2,2,0,0,0-2.82,0L8.54,3.64H5.63a2,2,0,0,0-2,2V8.54l-2,2.05A2,2,0,0,0,1,12a2,2,0,0,0,.58,1.41l2.06,2.05v2.91a2,2,0,0,0,2,2H8.54l2.05,2.05A2,2,0,0,0,12,23a2,2,0,0,0,1.41-.58l2.05-2.06h2.91a2,2,0,0,0,2-2V15.46l2.05-2.05a2,2,0,0,0,0-2.82Zm-4.05,4.05v3.72H14.64L12,21,9.36,18.36H5.64V14.64L3,12,5.64,9.36V5.64H9.36L12,3l2.64,2.64h3.72V9.36L21,12Z"
+                                />
+                                <polygon
+                                    points="11 12.73 8.71 10.44 7.29 11.85 11 15.56 16.71 9.85 15.29 8.44 11 12.73"
+                                />
                             </svg>
-                            <a href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
-                               target="_blank"
-                               class="text-decoration-none text-reset">{{ club.city }} - {{ club.address }}</a>
-                        </p>
-                        <p class="mb-2  d-flex align-items-center">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white me-2"
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 width="24"
-                                 height="24"
-                                 fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
-                            </svg>
-                            <a href="tel:{{ club.phone }}" class="text-decoration-none text-reset">{{ club.phone }}</a>
-                        </p>
-                        <p class="mb-2  d-flex align-items-center">
-                            {% if club.whatsapp_link %}
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white me-2"
-                                     aria-hidden="true"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     width="20"
-                                     height="20"
-                                     fill="none"
-                                     viewBox="0 0 24 24">
-                                    <path fill="currentColor" fill-rule="evenodd" d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.359 2.32-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z" clip-rule="evenodd" />
-                                    <path fill="currentColor" d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0 0 0-.112.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.16 0 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.43-.308Z" />
-                                </svg>
-                                <a href="{{ club.whatsapp_link }}"
-                                   target="_blank"
-                                   class="text-decoration-none text-reset">WhatsApp</a>
-                            {% endif %}
-                        </p>
-                        <p class="mb-2  d-flex align-items-center">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white me-2"
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 width="20"
-                                 height="20"
-                                 fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-8.029-4.46a2 2 0 0 0-1.942 0L3 8m18 0-9 6.5L3 8" />
-                            </svg>
-                            <a href="mailto:{{ club.email }}"
-                               class="text-decoration-none text-reset">{{ club.email }}</a>
-                        </p>
+                        </span>
+                        {% endif %}
                     </div>
+                    <p class="mb-2 d-flex">
+                        <svg
+                            class="w-6 h-6 text-gray-800 dark:text-white me-2"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            />
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"
+                            />
+                        </svg>
+                        <a
+                            href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
+                            target="_blank"
+                            class="text-decoration-none text-reset"
+                            >{{ club.city }} - {{ club.address }}</a
+                        >
+                    </p>
+                    <p class="mb-2 d-flex align-items-center">
+                        <svg
+                            class="w-6 h-6 text-gray-800 dark:text-white me-2"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z"
+                            />
+                        </svg>
+                        <a
+                            href="tel:{{ club.phone }}"
+                            class="text-decoration-none text-reset"
+                            >{{ club.phone }}</a
+                        >
+                    </p>
+                    <p class="mb-2 d-flex align-items-center">
+                        {% if club.whatsapp_link %}
+                        <svg
+                            class="w-6 h-6 text-gray-800 dark:text-white me-2"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                fill="currentColor"
+                                fill-rule="evenodd"
+                                d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.359 2.32-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z"
+                                clip-rule="evenodd"
+                            />
+                            <path
+                                fill="currentColor"
+                                d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0 0 0-.112.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.16 0 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.43-.308Z"
+                            />
+                        </svg>
+                        <a
+                            href="{{ club.whatsapp_link }}"
+                            target="_blank"
+                            class="text-decoration-none text-reset"
+                            >WhatsApp</a
+                        >
+                        {% endif %}
+                    </p>
+                    <p class="mb-2 d-flex align-items-center">
+                        <svg
+                            class="w-6 h-6 text-gray-800 dark:text-white me-2"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-8.029-4.46a2 2 0 0 0-1.942 0L3 8m18 0-9 6.5L3 8"
+                            />
+                        </svg>
+                        <a
+                            href="mailto:{{ club.email }}"
+                            class="text-decoration-none text-reset"
+                            >{{ club.email }}</a
+                        >
+                    </p>
                 </div>
             </div>
-            <!-- Columna Central: Galería y Features -->
-            <div class="col-lg-8">
-                <div class="mb-4   rounded">
-                    {% if club.photos.all %}
-                        <div class="mb-4 gallery-slideshow position-relative">
-                            <div class="gallery-actions">
-                                <!-- Heart and Share buttons -->
-                                <button id="club-heart"
-                                        aria-label="Seguir"
-                                        data-url="{% url 'toggle_follow' 'club' club.id %}"
-                                        class="{% if club_followed %}liked{% endif %}">
-                                    <svg aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         width="24"
-                                         height="24"
-                                         fill="none"
-                                         viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                    </svg>
-                                </button>
-                                <button id="club-share" aria-label="Compartir">
-                                    <svg aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         width="24"
-                                         height="24"
-                                         fill="none"
-                                         viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                    </svg>
-                                </button>
-                            </div>
+        </div>
+        <!-- Columna Central: Galería y Features -->
+        <div class="col-lg-8">
+            <div class="mb-4 rounded">
+                {% if club.photos.all %}
+                <div class="mb-4 gallery-slideshow position-relative">
+                    <div class="gallery-actions">
+                        <!-- Heart and Share buttons -->
+                        <button
+                            id="club-heart"
+                            aria-label="Seguir"
+                            data-url="{% url 'toggle_follow' 'club' club.id %}"
+                            class="{% if club_followed %}liked{% endif %}"
+                        >
+                            <svg
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"
+                                />
+                            </svg>
+                        </button>
+                        <button id="club-share" aria-label="Compartir">
+                            <svg
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-linecap="round"
+                                    stroke-width="2"
+                                    d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    {% for photo in club.photos.all %}
+                    <div
+                        class="gallery-slide{% if forloop.first %} active{% endif %}"
+                    >
+                        <img
+                            src="{{ photo.image.url }}"
+                            alt="Foto"
+                            class="img-fluid rounded shadow-sm"
+                            style="
+                                width: 100%;
+                                max-height: 500px;
+                                min-height: 500px;
+                                object-fit: cover;
+                                background-position: 0 0;
+                                user-select: none;
+                                background: rgb(85, 85, 85);
+                            "
+                        />
+                    </div>
+                    {% endfor %}
+                    <button id="galleryPrev" class="slide-arrow left ms-3">
+                        <svg viewBox="0 0 48 48">
+                            <path
+                                d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"
+                            />
+                            <path d="M0-.5h48v48h-48z" fill="none" />
+                        </svg>
+                    </button>
+                    <button id="galleryNext" class="slide-arrow right me-3">
+                        <svg
+                            viewBox="0 0 48 48"
+                            style="transform: rotate(180deg)"
+                        >
+                            <path
+                                d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"
+                            />
+                            <path d="M0-.5h48v48h-48z" fill="none" />
+                        </svg>
+                    </button>
+                    <!-- Bottom-centered Dots -->
+                    <div
+                        class="gallery-dots-container"
+                        style="
+                            position: absolute;
+                            bottom: 15px;
+                            width: 100%;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div class="gallery-dots d-flex gap-1">
                             {% for photo in club.photos.all %}
-                                <div class="gallery-slide{% if forloop.first %} active{% endif %}">
-                                    <img src="{{ photo.image.url }}"
-                                         alt="Foto"
-                                         class="img-fluid rounded shadow-sm"
-                                         style="width:100%;
-                                                max-height:500px;
-                                                min-height:500px;
-                                                object-fit:cover;
-                                                background-position:0 0;
-                                                user-select: none;
-                                                background:rgb(85, 85, 85)">
-                                </div>
+                            <span
+                                class="gallery-dot{% if forloop.first %} active{% endif %}"
+                            ></span>
                             {% endfor %}
-                            <button id="galleryPrev" class="slide-arrow left ms-3">
-                                <svg viewBox="0 0 48 48">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                            <button id="galleryNext" class="slide-arrow right  me-3">
-                                <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                            <!-- Bottom-centered Dots -->
-                            <div class="gallery-dots-container"
-                                 style="position: absolute;
-                                        bottom: 15px;
-                                        width: 100%;
-                                        display: flex;
-                                        justify-content: center">
-                                <div class="gallery-dots d-flex gap-1">
-                                    {% for photo in club.photos.all %}
-                                        <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <p>No hay fotos todavía.</p>
-                    {% endif %}
-                </div>
-                <!-- Menú de pestañas -->
-                <ul class="border-bottom nav custom-tab-menu mb-3  justify-content-center"
-                    id="clubTabs"
-                    role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active"
-                                id="about-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#about"
-                                type="button"
-                                role="tab">Sobre el club</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="schedule-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#schedule"
-                                type="button"
-                                role="tab">Horarios</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="posts-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#posts"
-                                type="button"
-                                role="tab">Publicaciones</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="competitors-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#competitors"
-                                type="button"
-                                role="tab">Competidores</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="comments-tab"
-                                data-bs-toggle="tab"
-                                data-bs-target="#comments"
-                                type="button"
-                                role="tab">Valoraciones</button>
-                    </li>
-                </ul>
-                <!-- Contenido de pestañas -->
-                <div class="tab-content" id="clubTabsContent">
-                    <!-- About -->
-                    <div class="tab-pane fade show active" id="about" role="tabpanel">
-                        <div class="row p-3">
-                            <!-- Columna izquierda: El club -->
-                            <div class="col-lg-7">
-                                <div class="mb-5">
-                                    <h5 class="mb-3">El Club</h5>
-                                    <p>{{ club.about|linebreaks }}</p>
-                                </div>
-                            </div>
-                            <!-- Columna derecha: Entrenadores -->
-                            <div class="col-lg-5 p-2">
-                                {% if club.entrenadores.all %}
-                                    <h5 class="mb-4">Entrenadores</h5>
-                                    <div class="row">
-                                        {% for e in club.entrenadores.all %}
-                                            <div class="col-6 d-flex align-items-center mb-3 user-select: none;">
-                                                {% if e.avatar %}
-                                                    <img src="{{ e.avatar.url }}"
-                                                         alt="{{ e.nombre }}"
-                                                         class="rounded-circle me-3"
-                                                         style="width: 60px;
-                                                                height: 60px;
-                                                                object-fit: cover">
-                                                {% else %}
-                                                    <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-3"
-                                                         style="width: 60px;
-                                                                height: 60px">{{ e.nombre|first|upper }}</div>
-                                                {% endif %}
-                                                {% if e.slug %}
-                                                    <a href="{% url 'coach_profile' e.slug %}"
-                                                       class="text-decoration-none text-reset">{{ e.nombre }} {{ e.apellidos }}</a>
-                                                {% else %}
-                                                    <span>{{ e.nombre }} {{ e.apellidos }}</span>
-                                                {% endif %}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                            <!-- Fila completa: Instalaciones y equipamiento -->
-                            <div class="col-12 mt-4">
-                                <h5 class="mb-3">Instalaciones y equipamiento</h5>
-                                <div class="d-flex flex-wrap gap-3">
-                                    {% for feature in club.features.all %}
-                                        <div class="border rounded  d-flex align-items-center "
-                                             style="padding:8px 16px">
-                                            {% if feature.icon %}
-                                                <img src="{{ feature.icon.url }}"
-                                                     alt="{{ feature.name }}"
-                                                     style="width: 50px;
-                                                            height: 50px;
-                                                            object-fit: contain;
-                                                            user-select:none"
-                                                     class="me-2">
-                                            {% endif %}
-                                            <div class="text-wrap" style="font-size: 14px; user-select:none;">{{ feature.name }}</div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Horarios -->
-                    <div class=" p-3 tab-pane fade" id="schedule" role="tabpanel">
-                        <p id="open-status" class="fw-bold"></p>
-                        <div class="table-responsive mt-3">
-                            <table class="table table-bordered text-center align-middle mb-0"
-                                   style="min-width: 700px">
-                                <thead class="table-dark">
-                                    <tr>
-                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
-                                            <td class="schedule-day" data-day="{{ dia }}">
-                                                {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
-                                                    {% for h in horarios_dia %}
-                                                        {% if h.dia == dia %}
-                                                            <div class="border-bottom py-1 small text-muted schedule-item"
-                                                                 data-start="{{ h.hora_inicio|time:'H:i' }}"
-                                                                 data-end="{{ h.hora_fin|time:'H:i' }}">
-                                                                {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
-                                                            </div>
-                                                        {% endif %}
-                                                    {% empty %}
-                                                        <span class="text-muted">—</span>
-                                                    {% endfor %}
-                                                {% endwith %}
-                                            </td>
-                                        {% endfor %}
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        {% if club.clases.all %}
-                            <div class="mt-4">
-                                <h5>Clases</h5>
-                                <ul class="list-group">
-                                    {% for c in club.clases.all %}
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <span>{{ c.nombre }} ({{ c.hora_inicio|time:"H:i" }} - {{ c.hora_fin|time:"H:i" }})</span>
-                                            {% if user.is_authenticated %}
-                                                <form action="{% url 'book_clase' c.id %}" method="post" class="ms-2">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="btn btn-sm btn-primary">Reservar</button>
-                                                </form>
-                                            {% else %}
-                                                <button type="button"
-                                                        class="btn btn-sm btn-primary ms-2"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#signupModal">Reservar</button>
-                                            {% endif %}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <!-- Posts -->
-                    <div class="p-3 tab-pane fade" id="posts" role="tabpanel">
-                        <div class="justify-content-center d-flex flex-column align-items-center">
-                            {% if user.is_authenticated and user == club.owner %}
-                                {% include 'clubs/_post_form.html' %}
-                            {% endif %}
-                        </div>
-                        <div id="posts-list" class="fade-container mt-2">
-                            {% include 'clubs/posts_list.html' %}
-                        </div>
-                    </div>
-                    <!-- Competidores -->
-                    <div class="p-1 tab-pane fade" id="competitors">
-                        {% if competidores %}
-                            <div class="table-responsive ">
-                                <table class="table table-sm text-center competitors-table">
-                                    <tbody>
-                                        {% for competidor in competidores %}
-                                            <tr>
-                                                <td>
-                                                    <div class="d-flex align-items-center justify-content-center">
-                                                        {% if competidor.avatar %}
-                                                            <img src="{{ competidor.avatar.url }}"
-                                                                 alt="{{ competidor.nombre }}"
-                                                                 class="competitor-avatar-img me-2">
-                                                        {% else %}
-                                                            <div class="competitor-avatar me-2">{{ competidor.nombre|initials }}</div>
-                                                        {% endif %}
-                                                        <span>{{ competidor.nombre }}</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    {% with rec=competidor.record_tuple %}
-                                                        <span class="text-success fw-bold">{{ rec.0 }}</span>-<span class="text-danger fw-bold">{{ rec.1 }}</span>-<span class="text-primary fw-bold">{{ rec.2 }}</span>
-                                                    {% endwith %}
-                                                </td>
-                                                <td>{{ competidor.categoria }}</td>
-                                                <td>{{ competidor.palmares|default:"—" }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        {% else %}
-                            <p class="mt-3 text-muted">Este club aún no tiene competidores registrados.</p>
-                        {% endif %}
-                    </div>
-                    <!-- Comentarios -->
-                    <div class="p-3 tab-pane fade" id="comments">
-                        <div class="row">
-                            <div class="col-lg-12 ">
-                                <div class=" d-flex justify-content-between align-items-center  flex-wrap mb-4 ">
-                                    <div class="">
-                                        {% if not reseña_existente %}
-                                            {% if user.is_authenticated %}
-                                                <button type="button"
-                                                        class="btn btn-dark"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#reviewModal">Dejar reseña</button>
-                                            {% else %}
-                                                <button type="button"
-                                                        class="btn btn-dark"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#loginModal">Dejar reseña</button>
-                                            {% endif %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-auto">{% include 'partials/_review-filter.html' with orden=orden club=club %}</div>
-                                </div>
-                                <div id="review-list" class="fade-container mt-2">{% include 'clubs/reviews_list.html' %}</div>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Columna Derecha: Valoraciones y Reseñas -->
-            <div class="col-lg-2">
-                <!-- Carrusel de reseñas -->
-                {% if reseñas %}
-                    <div class="club-reviews">
-                        <div class="review-carousel border rounded"
-                             id="review-carousel"
-                             onmouseenter="pauseAutoplay()"
-                             onmouseleave="startAutoplay()">
-                            {% for reseña in reseñas %}
-                                <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
-                                    <p class="review-text">“{{ reseña.comentario }}”</p>
-                                    <div class="review-user-container d-flex align-items-center position-fixed bottom-0  mb-4 ">
-                                        {% if reseña.usuario.profile.avatar %}
-                                            <img src="{{ reseña.usuario.profile.avatar.url }}"
-                                                 alt="{{ reseña.usuario.username }}"
-                                                 class="review-avatar-img rounded-circle">
-                                        {% else %}
-                                            <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
-                                        {% endif %}
-                                        <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                            <!-- Arrows -->
-                            <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
-                                <svg viewBox="0 0 48 48" width="20" height="20">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                            <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
-                                <svg viewBox="0 0 48 48"
-                                     width="20"
-                                     height="20"
-                                     style="transform: rotate(180deg)">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                        </div>
-                        <ul class="list-group  ">
-                            <div class="d-flex flex-wrap   rounded   p-4 col-12">
-                                <!-- Rating promedio a la izquierda -->
-                                <div class="d-flex flex-column align-items-start col-6">
-                                    <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font-size:12px">/ 5</small></span>
-                                    <span class="  fw-light" style="font-size:12px">({{ club.reviews_count }} reseñas)</span>
-                                </div>
-                                <!-- Valoraciones detalladas a la derecha -->
-                                <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-6">
-                                    <span>Instalaciones</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.instalaciones %}</span>
-                                    <span>Entrenadores</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.entrenadores %}</span>
-                                    <span>Calidad/precio</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.calidad_precio %}</span>
-                                    <span>Ambiente</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.ambiente %}</span>
-                                    <span>Variedad clases</span>
-                                    <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
                 {% else %}
-                    <p class="mt-4">Este club aún no tiene reseñas.</p>
+                <p>No hay fotos todavía.</p>
                 {% endif %}
             </div>
-        </div>
-    </div>
-    {% include 'partials/_share_profile_modal.html' %}
-    {% include 'partials/_register_modal.html' %}
-    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title">Dejar reseña</h5>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-lg-6 mb-4">
-                        {% if user.is_authenticated %}
-                            {% if not reseña_existente %}
-                                <form method="POST" id="reseña-form">
-                                    {% csrf_token %}
-                                    {% if form.errors %}<div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>{% endif %}
-                                    <div class="mb-3">
-                                        <input type="text"
-                                               name="titulo"
-                                               class="form-control"
-                                               placeholder="Título de la reseña"
-                                               required>
+            <!-- Menú de pestañas -->
+            <ul
+                class="border-bottom nav custom-tab-menu mb-3 justify-content-center"
+                id="clubTabs"
+                role="tablist"
+            >
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link active"
+                        id="about-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#about"
+                        type="button"
+                        role="tab"
+                    >
+                        Sobre el club
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link"
+                        id="schedule-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#schedule"
+                        type="button"
+                        role="tab"
+                    >
+                        Horarios
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link"
+                        id="posts-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#posts"
+                        type="button"
+                        role="tab"
+                    >
+                        Publicaciones
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link"
+                        id="competitors-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#competitors"
+                        type="button"
+                        role="tab"
+                    >
+                        Competidores
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link"
+                        id="comments-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#comments"
+                        type="button"
+                        role="tab"
+                    >
+                        Valoraciones
+                    </button>
+                </li>
+            </ul>
+            <!-- Contenido de pestañas -->
+            <div class="tab-content" id="clubTabsContent">
+                <!-- About -->
+                <div
+                    class="tab-pane fade show active"
+                    id="about"
+                    role="tabpanel"
+                >
+                    <div class="row p-3">
+                        <!-- Columna izquierda: El club -->
+                        <div class="col-lg-7">
+                            <div class="mb-5">
+                                <h5 class="mb-3">El Club</h5>
+                                <p>{{ club.about|linebreaks }}</p>
+                            </div>
+                        </div>
+                        <!-- Columna derecha: Entrenadores -->
+                        <div class="col-lg-5 p-2">
+                            {% if club.entrenadores.all %}
+                            <h5 class="mb-4">Entrenadores</h5>
+                            <div class="row">
+                                {% for e in club.entrenadores.all %}
+                                <div
+                                    class="col-6 d-flex align-items-center mb-3 user-select: none;"
+                                >
+                                    {% if e.avatar %}
+                                    <img
+                                        src="{{ e.avatar.url }}"
+                                        alt="{{ e.nombre }}"
+                                        class="rounded-circle me-3"
+                                        style="
+                                            width: 60px;
+                                            height: 60px;
+                                            object-fit: cover;
+                                        "
+                                    />
+                                    {% else %}
+                                    <div
+                                        class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-3"
+                                        style="width: 60px; height: 60px"
+                                    >
+                                        {{ e.nombre|first|upper }}
                                     </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Instalaciones:</label>
-                                        <div class="star-rating mb-2" data-name="instalaciones"></div>
-                                        <input type="hidden" name="instalaciones" required id="input-instalaciones">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Entrenadores:</label>
-                                        <div class="star-rating mb-2" data-name="entrenadores"></div>
-                                        <input type="hidden" name="entrenadores" required id="input-entrenadores">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Ambiente:</label>
-                                        <div class="star-rating mb-2" data-name="ambiente"></div>
-                                        <input type="hidden" name="ambiente" required id="input-ambiente">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Calidad-precio:</label>
-                                        <div class="star-rating mb-2" data-name="calidad_precio"></div>
-                                        <input type="hidden"
-                                               name="calidad_precio"
-                                               required
-                                               id="input-calidad_precio">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Variedad de clases:</label>
-                                        <div class="star-rating mb-2" data-name="variedad_clases"></div>
-                                        <input type="hidden"
-                                               name="variedad_clases"
-                                               required
-                                               id="input-variedad_clases">
-                                    </div>
-                                    <div class="mb-3">
-                                        <textarea name="comentario"
-                                                  class="form-control"
-                                                  rows="4"
-                                                  minlength="200"
-                                                  placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-dark">Enviar Reseña</button>
-                                </form>
-                                <div id="mensaje-gracias"
-                                     class="alert alert-success mt-3"
-                                     style="display:none">
-                                    Gracias por valorar el club. Tu reseña será publicada en breve.
+                                    {% endif %} {% if e.slug %}
+                                    <a
+                                        href="{% url 'coach_profile' e.slug %}"
+                                        class="text-decoration-none text-reset"
+                                        >{{ e.nombre }} {{ e.apellidos }}</a
+                                    >
+                                    {% else %}
+                                    <span
+                                        >{{ e.nombre }} {{ e.apellidos }}</span
+                                    >
+                                    {% endif %}
                                 </div>
-                            {% else %}
-                                <!-- <p>Ya has dejado una reseña para este club.</p> -->
+                                {% endfor %}
+                            </div>
                             {% endif %}
-                        {% else %}
-                            <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
-                        {% endif %}
+                        </div>
+                        <!-- Fila completa: Instalaciones y equipamiento -->
+                        <div class="col-12 mt-4">
+                            <h5 class="mb-3">Instalaciones y equipamiento</h5>
+                            <div class="d-flex flex-wrap gap-3">
+                                {% for feature in club.features.all %}
+                                <div
+                                    class="border rounded d-flex align-items-center"
+                                    style="padding: 8px 16px"
+                                >
+                                    {% if feature.icon %}
+                                    <img
+                                        src="{{ feature.icon.url }}"
+                                        alt="{{ feature.name }}"
+                                        style="
+                                            width: 50px;
+                                            height: 50px;
+                                            object-fit: contain;
+                                            user-select: none;
+                                        "
+                                        class="me-2"
+                                    />
+                                    {% endif %}
+                                    <div
+                                        class="text-wrap"
+                                        style="
+                                            font-size: 14px;
+                                            user-select: none;
+                                        "
+                                    >
+                                        {{ feature.name }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Horarios -->
+                <div class="p-3 tab-pane fade" id="schedule" role="tabpanel">
+                    <p id="open-status" class="fw-bold"></p>
+                    <div class="table-responsive mt-3">
+                        <table
+                            class="table table-bordered text-center align-middle mb-0"
+                            style="min-width: 700px"
+                        >
+                            <thead class="table-dark">
+                                <tr>
+                                    {% for dia, nombre in
+                                    club.horarios.model.DiasSemana.choices %}
+                                    <th scope="col">{{ nombre }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% for dia, nombre in
+                                    club.horarios.model.DiasSemana.choices %}
+                                    <td
+                                        class="schedule-day"
+                                        data-day="{{ dia }}"
+                                    >
+                                        {% with
+                                        horarios_dia=club.horarios.all|dictsort:"hora_inicio"
+                                        %} {% for h in horarios_dia %} {% if
+                                        h.dia == dia %}
+                                        <div
+                                            class="border-bottom py-1 small text-muted schedule-item"
+                                            data-start="{{ h.hora_inicio|time:'H:i' }}"
+                                            data-end="{{ h.hora_fin|time:'H:i' }}"
+                                        >
+                                            {{ h.hora_inicio|time:"H:i" }} - {{
+                                            h.hora_fin|time:"H:i" }}
+                                        </div>
+                                        {% endif %} {% empty %}
+                                        <span class="text-muted">—</span>
+                                        {% endfor %} {% endwith %}
+                                    </td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% if club.clases.all %}
+                    <div class="mt-4">
+                        <h5>Clases</h5>
+                        <ul class="list-group">
+                            {% for c in club.clases.all %}
+                            <li
+                                class="list-group-item d-flex justify-content-between align-items-center"
+                            >
+                                <span
+                                    >{{ c.nombre }} ({{ c.hora_inicio|time:"H:i"
+                                    }} - {{ c.hora_fin|time:"H:i" }})</span
+                                >
+                                {% if user.is_authenticated %}
+                                <form
+                                    action="{% url 'book_clase' c.id %}"
+                                    method="post"
+                                    class="ms-2"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm btn-primary"
+                                    >
+                                        Reservar
+                                    </button>
+                                </form>
+                                {% else %}
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-primary ms-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#signupModal"
+                                >
+                                    Reservar
+                                </button>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- Posts -->
+                <div class="p-3 tab-pane fade" id="posts" role="tabpanel">
+                    <div
+                        class="justify-content-center d-flex flex-column align-items-center"
+                    >
+                        {% if user.is_authenticated and user == club.owner %} {%
+                        include 'clubs/_post_form.html' %} {% endif %}
+                    </div>
+                    <div id="posts-list" class="fade-container mt-2">
+                        {% include 'clubs/posts_list.html' %}
+                    </div>
+                </div>
+                <!-- Competidores -->
+                <div class="p-1 tab-pane fade" id="competitors">
+                    {% if competidores %}
+                    <div class="table-responsive">
+                        <table
+                            class="table table-sm text-center competitors-table"
+                        >
+                            <tbody>
+                                {% for competidor in competidores %}
+                                <tr>
+                                    <td>
+                                        <div
+                                            class="d-flex align-items-center justify-content-center"
+                                        >
+                                            {% if competidor.avatar %}
+                                            <img
+                                                src="{{ competidor.avatar.url }}"
+                                                alt="{{ competidor.nombre }}"
+                                                class="competitor-avatar-img me-2"
+                                            />
+                                            {% else %}
+                                            <div class="competitor-avatar me-2">
+                                                {{ competidor.nombre|initials }}
+                                            </div>
+                                            {% endif %}
+                                            <span>{{ competidor.nombre }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% with rec=competidor.record_tuple %}
+                                        <span class="text-success fw-bold"
+                                            >{{ rec.0 }}</span
+                                        >-<span class="text-danger fw-bold"
+                                            >{{ rec.1 }}</span
+                                        >-<span class="text-primary fw-bold"
+                                            >{{ rec.2 }}</span
+                                        >
+                                        {% endwith %}
+                                    </td>
+                                    <td>{{ competidor.categoria }}</td>
+                                    <td>
+                                        {{ competidor.palmares|default:"—" }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="mt-3 text-muted">
+                        Este club aún no tiene competidores registrados.
+                    </p>
+                    {% endif %}
+                </div>
+                <!-- Comentarios -->
+                <div class="p-3 tab-pane fade" id="comments">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div
+                                class="d-flex justify-content-between align-items-center flex-wrap mb-4"
+                            >
+                                <div class="">
+                                    {% if not reseña_existente %} {% if
+                                    user.is_authenticated %}
+                                    <button
+                                        type="button"
+                                        class="btn btn-dark"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#reviewModal"
+                                    >
+                                        Dejar reseña
+                                    </button>
+                                    {% else %}
+                                    <button
+                                        type="button"
+                                        class="btn btn-dark"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#loginModal"
+                                    >
+                                        Dejar reseña
+                                    </button>
+                                    {% endif %} {% endif %}
+                                </div>
+                                <div class="col-auto">
+                                    {% include 'partials/_review-filter.html'
+                                    with orden=orden club=club %}
+                                </div>
+                            </div>
+                            <div id="review-list" class="fade-container mt-2">
+                                {% include 'clubs/reviews_list.html' %}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Columna Derecha: Valoraciones y Reseñas -->
+        <div class="col-lg-2">
+            <!-- Carrusel de reseñas -->
+            {% if reseñas %}
+            <div class="club-reviews">
+                <div
+                    class="review-carousel border rounded"
+                    id="review-carousel"
+                    onmouseenter="pauseAutoplay()"
+                    onmouseleave="startAutoplay()"
+                >
+                    {% for reseña in reseñas %}
+                    <div
+                        class="p-4 review-slide{% if forloop.first %} active{% endif %}"
+                    >
+                        <p class="review-text">“{{ reseña.comentario }}”</p>
+                        <div
+                            class="review-user-container d-flex align-items-center position-fixed bottom-0 mb-4"
+                        >
+                            {% if reseña.usuario.profile.avatar %}
+                            <img
+                                src="{{ reseña.usuario.profile.avatar.url }}"
+                                alt="{{ reseña.usuario.username }}"
+                                class="review-avatar-img rounded-circle"
+                            />
+                            {% else %}
+                            <div class="review-avatar bg-black text-white">
+                                {{ reseña.usuario.username|first|upper }}
+                            </div>
+                            {% endif %}
+                            <div class="fw-medium ms-2 review-username">
+                                {{ reseña.usuario.username }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <!-- Arrows -->
+                    <button
+                        id="prevBtn"
+                        class="review-arrow left"
+                        onclick="changeSlide(-1)"
+                    >
+                        <svg viewBox="0 0 48 48" width="20" height="20">
+                            <path
+                                d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"
+                            />
+                            <path d="M0-.5h48v48h-48z" fill="none" />
+                        </svg>
+                    </button>
+                    <button
+                        id="nextBtn"
+                        class="review-arrow right"
+                        onclick="changeSlide(1)"
+                    >
+                        <svg
+                            viewBox="0 0 48 48"
+                            width="20"
+                            height="20"
+                            style="transform: rotate(180deg)"
+                        >
+                            <path
+                                d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z"
+                            />
+                            <path d="M0-.5h48v48h-48z" fill="none" />
+                        </svg>
+                    </button>
+                </div>
+                <ul class="list-group">
+                    <div class="d-flex flex-wrap rounded p-4 col-12">
+                        <!-- Rating promedio a la izquierda -->
+                        <div class="d-flex flex-column align-items-start col-6">
+                            <span class="fs-4 fw-bold"
+                                >{{ club.average_rating }}
+                                <small style="font-size: 12px">/ 5</small></span
+                            >
+                            <span class="fw-light" style="font-size: 12px"
+                                >({{ club.reviews_count }} reseñas)</span
+                            >
+                        </div>
+                        <!-- Valoraciones detalladas a la derecha -->
+                        <div
+                            class="d-flex flex-column align-items-start small rounded flex-grow-1 col-6"
+                        >
+                            <span>Instalaciones</span>
+                            <span class="d-flex mb-2"
+                                >{% render_stars detallado.instalaciones
+                                %}</span
+                            >
+                            <span>Entrenadores</span>
+                            <span class="d-flex mb-2"
+                                >{% render_stars detallado.entrenadores %}</span
+                            >
+                            <span>Calidad/precio</span>
+                            <span class="d-flex mb-2"
+                                >{% render_stars detallado.calidad_precio
+                                %}</span
+                            >
+                            <span>Ambiente</span>
+                            <span class="d-flex mb-2"
+                                >{% render_stars detallado.ambiente %}</span
+                            >
+                            <span>Variedad clases</span>
+                            <span class="d-flex"
+                                >{% render_stars detallado.variedad_clases
+                                %}</span
+                            >
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            {% else %}
+            <p class="mt-4">Este club aún no tiene reseñas.</p>
+            {% endif %}
+        </div>
     </div>
-    <script src="{% static 'js/review-filter.js' %}"></script>
-    <script src="{% static 'js/slides.js' %}"></script>
-    <script src="{% static 'js/rating.js' %}"></script>
-    <script src="{% static 'js/share-like.js' %}"></script>
-    <script src="{% static 'js/share-modal.js' %}"></script>
-    <script src="{% static 'js/post-like.js' %}"></script>
-    <script src="{% static 'js/gallery-slideshow.js' %}"></script>
-    <script src="{% static 'js/schedule-status.js' %}"></script>
-    <script src="{% static 'js/club-tabs.js' %}"></script>
-    <script src="{% static 'js/post-media-preview.js' %}"></script>
-    <script src="{% static 'js/pagination.js' %}"></script>
+</div>
+{% include 'partials/_share_profile_modal.html' %} {% include
+'partials/_register_modal.html' %}
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5 class="modal-title">Dejar reseña</h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-6 mb-4">
+                    {% if user.is_authenticated %} {% if not reseña_existente %}
+                    <form method="POST" id="reseña-form">
+                        {% csrf_token %} {% if form.errors %}
+                        <div class="alert alert-danger">
+                            Por favor completa todos los campos obligatorios.
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <input
+                                type="text"
+                                name="titulo"
+                                class="form-control"
+                                placeholder="Título de la reseña"
+                                required
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block mb-1"
+                                >Instalaciones:</label
+                            >
+                            <div
+                                class="star-rating mb-2"
+                                data-name="instalaciones"
+                            ></div>
+                            <input
+                                type="hidden"
+                                name="instalaciones"
+                                required
+                                id="input-instalaciones"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block mb-1"
+                                >Entrenadores:</label
+                            >
+                            <div
+                                class="star-rating mb-2"
+                                data-name="entrenadores"
+                            ></div>
+                            <input
+                                type="hidden"
+                                name="entrenadores"
+                                required
+                                id="input-entrenadores"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block mb-1"
+                                >Ambiente:</label
+                            >
+                            <div
+                                class="star-rating mb-2"
+                                data-name="ambiente"
+                            ></div>
+                            <input
+                                type="hidden"
+                                name="ambiente"
+                                required
+                                id="input-ambiente"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block mb-1"
+                                >Calidad-precio:</label
+                            >
+                            <div
+                                class="star-rating mb-2"
+                                data-name="calidad_precio"
+                            ></div>
+                            <input
+                                type="hidden"
+                                name="calidad_precio"
+                                required
+                                id="input-calidad_precio"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block mb-1"
+                                >Variedad de clases:</label
+                            >
+                            <div
+                                class="star-rating mb-2"
+                                data-name="variedad_clases"
+                            ></div>
+                            <input
+                                type="hidden"
+                                name="variedad_clases"
+                                required
+                                id="input-variedad_clases"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <textarea
+                                name="comentario"
+                                class="form-control"
+                                rows="4"
+                                minlength="200"
+                                placeholder="¿Qué te ha gustado o qué mejorarías del club?"
+                            ></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark">
+                            Enviar Reseña
+                        </button>
+                    </form>
+                    <div
+                        id="mensaje-gracias"
+                        class="alert alert-success mt-3"
+                        style="display: none"
+                    >
+                        Gracias por valorar el club. Tu reseña será publicada en
+                        breve.
+                    </div>
+                    {% else %}
+                    <!-- <p>Ya has dejado una reseña para este club.</p> -->
+                    {% endif %} {% else %}
+                    <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'js/review-filter.js' %}"></script>
+<script src="{% static 'js/slides.js' %}"></script>
+<script src="{% static 'js/rating.js' %}"></script>
+<script src="{% static 'js/share-like.js' %}"></script>
+<script src="{% static 'js/share-modal.js' %}"></script>
+<script src="{% static 'js/post-like.js' %}"></script>
+<script src="{% static 'js/gallery-slideshow.js' %}"></script>
+<script src="{% static 'js/schedule-status.js' %}"></script>
+<script src="{% static 'js/club-tabs.js' %}"></script>
+<script src="{% static 'js/post-media-preview.js' %}"></script>
+<script src="{% static 'js/pagination.js' %}"></script>
 {% endblock %}

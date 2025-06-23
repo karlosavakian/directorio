@@ -49,7 +49,7 @@ if _hosts:
     ]
 else:
     ALLOWED_HOSTS = [
-        
+        '93d1e89e-0595-48f9-8e32-a1b7a9ee5f99-00-16y8egbzl7d6p.janeway.replit.dev'
     ]
 
 _origins = os.environ.get("CSRF_TRUSTED_ORIGINS")
@@ -59,7 +59,7 @@ if _origins:
     ]
 else:
     CSRF_TRUSTED_ORIGINS = [
-      
+        'https://93d1e89e-0595-48f9-8e32-a1b7a9ee5f99-00-16y8egbzl7d6p.janeway.replit.dev'
     ]
 
 INSTALLED_APPS = [
