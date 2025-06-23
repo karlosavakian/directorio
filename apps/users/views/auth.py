@@ -39,6 +39,11 @@ class LoginView(DjangoLoginView):
     authentication_form = LoginForm
     template_name = 'users/login.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['login_form'] = context.get('form')
+        return context
+
     def form_valid(self, form):
         response = super().form_valid(form)
         remember = form.cleaned_data.get('remember_me')
