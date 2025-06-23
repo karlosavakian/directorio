@@ -138,3 +138,18 @@ def ajax_posts(request, slug):
         'request': request,
         'club': club,
     })
+
+def club_feed(request, slug):
+    """Mostrar todas las publicaciones de un club."""
+    club = get_object_or_404(Club, slug=slug)
+    posts_qs = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
+    paginator = Paginator(posts_qs, 5)
+    posts = paginator.get_page(request.GET.get('post_page'))
+    post_form = ClubPostForm()
+    reply_form = ClubPostReplyForm()
+    return render(request, 'clubs/club_feed.html', {
+        'club': club,
+        'posts': posts,
+        'post_form': post_form,
+        'reply_form': reply_form,
+    })

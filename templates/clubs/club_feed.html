@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load utils_filters %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="h3 mb-4">{{ club.name }} - Publicaciones</h1>
+    <div class="justify-content-center d-flex flex-column align-items-center">
+        {% if user.is_authenticated and user == club.owner %}
+            {% include 'clubs/_post_form.html' %}
+        {% endif %}
+    </div>
+    <div id="posts-list" class="fade-container mt-2">
+        {% include 'clubs/posts_list.html' %}
+    </div>
+</div>
+{% include 'partials/_share_profile_modal.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/post-like.js' %}"></script>
+<script src="{% static 'js/share-modal.js' %}"></script>
+{% endblock %}
