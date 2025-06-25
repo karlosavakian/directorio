@@ -37,7 +37,8 @@ class ReseñaInline(admin.TabularInline):
 
 class HorarioInline(admin.TabularInline):
     model = Horario
-    extra = 1
+    extra = 0
+    fields = ('dia', 'estado', 'hora_inicio', 'hora_fin')
 
 
 @admin.register(Club)
