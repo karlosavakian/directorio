@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cell = document.querySelector(`td[data-day="${currentDay}"]`);
   let openNow = false;
 
-  if (cell) {
+  if (cell && !cell.dataset.closed) {
     const items = cell.querySelectorAll('.schedule-item');
     items.forEach((item) => {
       const start = item.dataset.start;

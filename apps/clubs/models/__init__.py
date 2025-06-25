@@ -2,7 +2,7 @@
 
 from .club import Club, ClubPhoto
 from .feature import Feature
-from .horario import Horario
+from .horario import Horario, HorarioClase
 from .resena import Reseña
 from .clase import Clase
 from .competidor import Competidor

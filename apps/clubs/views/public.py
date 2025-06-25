@@ -30,14 +30,18 @@ def club_profile(request, slug):
         reseña_existente = club.reseñas.filter(usuario=request.user).first()
 
     # Prepare horario data for easy access in templates
-    horarios = club.horarios.all()
+    horarios = club.horarios.prefetch_related('clases').all()
     schedule_data = {}
     for day, _ in club.horarios.model.DiasSemana.choices:
-        intervals = [
-            f"{h.hora_inicio.strftime('%H:%M')}-{h.hora_fin.strftime('%H:%M')}"
-            for h in horarios.filter(dia=day)
-        ]
-        schedule_data[day] = "|".join(intervals)
+        horario = horarios.filter(dia=day).first()
+        if horario and horario.abierto:
+            intervals = [
+                f"{c.hora_inicio.strftime('%H:%M')}-{c.hora_fin.strftime('%H:%M')}"
+                for c in horario.clases.all()
+            ]
+            schedule_data[day] = "|".join(intervals)
+        else:
+            schedule_data[day] = "cerrado"
 
     form = ReseñaForm()
     post_form = ClubPostForm()
