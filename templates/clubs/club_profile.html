@@ -289,11 +289,17 @@
                                                 {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
                                                     {% for h in horarios_dia %}
                                                         {% if h.dia == dia %}
-                                                            <div class="border-bottom py-1 small text-muted schedule-item"
-                                                                 data-start="{{ h.hora_inicio|time:'H:i' }}"
-                                                                 data-end="{{ h.hora_fin|time:'H:i' }}">
-                                                                {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
-                                                            </div>
+                                                            {% if h.estado == h.Estado.CERRADO %}
+                                                                <div class="border-bottom py-1 small text-muted schedule-item">
+                                                                    Cerrado{% if h.comentario %}: {{ h.comentario }}{% endif %}
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="border-bottom py-1 small text-muted schedule-item"
+                                                                     data-start="{{ h.hora_inicio|time:'H:i' }}"
+                                                                     data-end="{{ h.hora_fin|time:'H:i' }}">
+                                                                    {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}{% if h.comentario %} - {{ h.comentario }}{% endif %}
+                                                                </div>
+                                                            {% endif %}
                                                         {% endif %}
                                                     {% empty %}
                                                         <span class="text-muted">—</span>
