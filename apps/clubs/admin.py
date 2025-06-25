@@ -40,8 +40,19 @@ class ReseñaInline(admin.TabularInline):
     readonly_fields = ('creado',)
 
 
+class HorarioAdminForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = '__all__'
+        widgets = {
+            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+        }
+
+
 class HorarioInline(admin.TabularInline):
     model = Horario
+    form = HorarioAdminForm
     extra = 1
 
 
