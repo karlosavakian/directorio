@@ -40,9 +40,19 @@ class ReseñaInline(admin.TabularInline):
     readonly_fields = ('creado',)
 
 
+class HorarioAdminForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = '__all__'
+        widgets = {
+            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'step': 60}),
+            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'step': 60}),
+        }
+
 class HorarioInline(admin.TabularInline):
     model = Horario
     extra = 1
+    form = HorarioAdminForm
 
 
 @admin.register(Club)

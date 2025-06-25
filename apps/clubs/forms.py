@@ -175,11 +175,21 @@ class ClubPhotoForm(forms.ModelForm):
 class HorarioForm(forms.ModelForm):
     class Meta:
         model = models.Horario
-        fields = ['dia', 'hora_inicio', 'hora_fin']
+        fields = ['dia', 'estado', 'hora_inicio', 'hora_fin', 'nota']
         widgets = {
-            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
-            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'step': 60}),
+            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time', 'step': 60}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        estado = cleaned_data.get('estado')
+        if estado == models.Horario.Estado.ABIERTO:
+            if not cleaned_data.get('hora_inicio'):
+                self.add_error('hora_inicio', 'Este campo es obligatorio cuando el horario está abierto.')
+            if not cleaned_data.get('hora_fin'):
+                self.add_error('hora_fin', 'Este campo es obligatorio cuando el horario está abierto.')
+        return cleaned_data
 
 
 class CompetidorForm(forms.ModelForm):
