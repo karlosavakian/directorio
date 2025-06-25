@@ -6,6 +6,7 @@ from .models import (
     Competidor,
     Reseña,
     Horario,
+    Clase,
     ClubPost,
     Entrenador,
     EntrenadorPhoto,
@@ -39,6 +40,17 @@ class HorarioInline(admin.TabularInline):
     model = Horario
     extra = 0
     fields = ('dia', 'estado', 'hora_inicio', 'hora_fin')
+
+class ClaseInline(admin.TabularInline):
+    model = Clase
+    extra = 1
+    fields = ('hora_inicio', 'hora_fin', 'texto')
+
+
+@admin.register(Horario)
+class HorarioAdmin(admin.ModelAdmin):
+    list_display = ('club', 'dia', 'estado', 'hora_inicio', 'hora_fin')
+    inlines = [ClaseInline]
 
 
 @admin.register(Club)
