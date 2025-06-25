@@ -3,6 +3,7 @@
 from .club import Club, ClubPhoto
 from .feature import Feature
 from .horario import Horario
+from .clase import Clase
 from .resena import Reseña
 from .competidor import Competidor
 from .entrenador import Entrenador, EntrenadorPhoto, TrainingLevel
