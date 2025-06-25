@@ -158,6 +158,34 @@
     </div>
     <div id="tab-schedule" class="profile-section">
       <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm me-2 mb-3">Añadir clase</a>
+      <div class="table-responsive mt-3">
+        <table class="table table-bordered text-center align-middle mb-3" style="min-width:700px">
+          <thead class="table-dark">
+            <tr>
+              {% for d,n in days %}<th scope="col">{{ n }}</th>{% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {% for d,n in days %}
+                <td>
+                  {% with slots=schedule|get_item:d %}
+                    {% if slots %}
+                      {% for c in slots %}
+                        <div class="border-bottom py-1 small text-muted">
+                          {{ c.nombre }} {{ c.hora_inicio|time:"H:i" }} - {{ c.hora_fin|time:"H:i" }}
+                        </div>
+                      {% endfor %}
+                    {% else %}
+                      <span class="text-muted">—</span>
+                    {% endif %}
+                  {% endwith %}
+                </td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <h2 class="h5 mt-4">Clases</h2>
       <ul>
         {% for c in classes %}

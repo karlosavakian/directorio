@@ -23,6 +23,16 @@ from ..forms import (
 )
 from ..permissions import has_club_permission
 
+DAYS_OF_WEEK = [
+    ("lunes", "Lunes"),
+    ("martes", "Martes"),
+    ("miercoles", "Miércoles"),
+    ("jueves", "Jueves"),
+    ("viernes", "Viernes"),
+    ("sabado", "Sábado"),
+    ("domingo", "Domingo"),
+]
+
 
 @login_required
 def dashboard(request, slug):
@@ -37,6 +47,7 @@ def dashboard(request, slug):
     ).select_related('user', 'clase', 'evento')
 
     form = ClubForm(instance=club)
+    schedule = {day: list(classes) for day, _ in DAYS_OF_WEEK}
 
     return render(
         request,
@@ -48,6 +59,8 @@ def dashboard(request, slug):
             'bookings': bookings,
             'form': form,
             'coaches': coaches,
+            'schedule': schedule,
+            'days': DAYS_OF_WEEK,
         },
     )
 

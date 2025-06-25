@@ -4,6 +4,16 @@ from django.contrib import messages
 from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
+
+DAYS_OF_WEEK = [
+    ("lunes", "Lunes"),
+    ("martes", "Martes"),
+    ("miercoles", "Miércoles"),
+    ("jueves", "Jueves"),
+    ("viernes", "Viernes"),
+    ("sabado", "Sábado"),
+    ("domingo", "Domingo"),
+]
 from django.contrib.contenttypes.models import ContentType
 
 
@@ -34,6 +44,8 @@ def club_profile(request, slug):
     post_form = ClubPostForm()
     reply_form = ClubPostReplyForm()
     register_form = RegistroUsuarioForm()
+    classes = club.clases.all()
+    schedule = {day: list(classes) for day, _ in DAYS_OF_WEEK}
     if request.method == 'POST' and not reseña_existente:
         form = ReseñaForm(request.POST)
         if form.is_valid():
@@ -69,6 +81,8 @@ def club_profile(request, slug):
         'competidores': competidores,
         'club_followed': club_followed,
         'register_form': register_form,
+        'schedule': schedule,
+        'days': DAYS_OF_WEEK,
 
     })
 
