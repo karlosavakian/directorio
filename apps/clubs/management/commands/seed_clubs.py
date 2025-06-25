@@ -7,8 +7,16 @@ import random
 import os
 
 from apps.clubs.models import (
-    Club, ClubPhoto, Entrenador, Horario, Clase,
-    Competidor, ClubPost, Reseña, Feature
+    Club,
+    ClubPhoto,
+    Entrenador,
+    Clase,
+    Competidor,
+    ClubPost,
+    Reseña,
+    Feature,
+    DaySchedule,
+    ClassSlot,
 )
 
 
@@ -54,14 +62,18 @@ class Command(BaseCommand):
                     apellidos=fake.last_name(),
                 )
 
-            dias = [choice[0] for choice in Horario.DiasSemana.choices]
-            for _ in range(random.randint(3, 5)):
-                Horario.objects.create(
-                    club=club,
-                    dia=random.choice(dias),
-                    hora_inicio=fake.time(),
-                    hora_fin=fake.time(),
-                )
+            dias = [choice[0] for choice in DaySchedule.WeekDay.choices]
+            open_days = random.sample(dias, random.randint(3, 5))
+            for day in open_days:
+                ds = club.day_schedules.get(day=day)
+                ds.is_open = True
+                ds.save()
+                for _ in range(random.randint(1, 2)):
+                    ClassSlot.objects.create(
+                        day_schedule=ds,
+                        hora_inicio=fake.time(),
+                        hora_fin=fake.time(),
+                    )
 
             for _ in range(random.randint(1, 4)):
                 Clase.objects.create(
@@ -113,4 +125,3 @@ class Command(BaseCommand):
                 )
 
         self.stdout.write(self.style.SUCCESS('Clubs generados correctamente'))
-
