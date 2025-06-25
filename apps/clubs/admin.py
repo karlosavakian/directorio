@@ -3,7 +3,6 @@ from .models import (
     Club,
     Feature,
     ClubPhoto,
-    Clase,
     Competidor,
     Reseña,
     Horario,
@@ -16,10 +15,6 @@ from django import forms
 
 class ClubPhotoInline(admin.TabularInline):
     model = ClubPhoto
-    extra = 1
-
-class ClaseInline(admin.TabularInline):
-    model = Clase
     extra = 1
 
 class CompetidorInline(admin.TabularInline):
@@ -60,19 +55,6 @@ class FeatureAdmin(admin.ModelAdmin):
 class ClubPhotoAdmin(admin.ModelAdmin):
     list_display = ('club', 'uploaded_at')  
 
-
-class ClaseAdminForm(forms.ModelForm):
-    class Meta:
-        model = Clase
-        fields = '__all__'
-        widgets = {
-            'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
-            'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
-        }   
-@admin.register(Clase)
-class ClaseAdmin(admin.ModelAdmin):
-    form = ClaseAdminForm
-    list_display = ('nombre', 'club', 'hora_inicio', 'hora_fin')
 
 @admin.register(Competidor)
 class CompetidorAdmin(admin.ModelAdmin):
