@@ -6,7 +6,6 @@ from .models import (
     Clase,
     Competidor,
     Reseña,
-    Horario,
     ClubPost,
     Entrenador,
     EntrenadorPhoto,
@@ -40,16 +39,11 @@ class ReseñaInline(admin.TabularInline):
     readonly_fields = ('creado',)
 
 
-class HorarioInline(admin.TabularInline):
-    model = Horario
-    extra = 1
-
-
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
+    inlines = [ClubPhotoInline, EntrenadorInline]
     fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
 
 @admin.register(Feature)
