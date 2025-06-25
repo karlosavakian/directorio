@@ -40,12 +40,34 @@ class HorarioInline(admin.TabularInline):
     extra = 1
 
 
+class ClubAdminForm(forms.ModelForm):
+    class Meta:
+        model = Club
+        fields = '__all__'
+        widgets = {
+            'lunes_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'martes_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'miercoles_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'jueves_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'viernes_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'sabado_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+            'domingo_abierto': forms.Select(choices=[(True, 'Abierto'), (False, 'Cerrado')]),
+        }
+
+
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
+    form = ClubAdminForm
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
-    fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
+    fields = (
+        'owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone',
+        'whatsapp_link', 'email',
+        'lunes_abierto', 'martes_abierto', 'miercoles_abierto',
+        'jueves_abierto', 'viernes_abierto', 'sabado_abierto', 'domingo_abierto',
+        'about', 'features'
+    )
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):

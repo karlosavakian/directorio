@@ -50,6 +50,12 @@ def time_since_short(value):
     return f"hace {weeks} semanas"
 
 
+@register.filter
+def attr(obj, name):
+    """Return attribute of an object by name."""
+    return getattr(obj, name, None)
+
+
 @register.filter(is_safe=True)
 def youtube_embed(text):
     """Replace YouTube links in ``text`` with embed iframe."""

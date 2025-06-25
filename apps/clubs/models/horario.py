@@ -17,6 +17,7 @@ class Horario(models.Model):
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
+    descripcion = models.CharField(max_length=20, blank=True)
 
     class Meta:
         ordering = ['dia', 'hora_inicio']
