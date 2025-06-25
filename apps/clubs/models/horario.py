@@ -19,11 +19,15 @@ class Horario(models.Model):
         CERRADO = 'cerrado', _('Cerrado')
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='horarios')
-    dia = models.CharField(max_length=10, choices=DiasSemana.choices)
+    dia = models.CharField(max_length=10, choices=DiasSemana.choices) 
     hora_inicio = models.TimeField(null=True, blank=True)
     hora_fin = models.TimeField(null=True, blank=True)
     estado = models.CharField(
-        max_length=8, choices=Estado.choices, blank=True
+        max_length=8, choices=Estado.choices, blank=True 
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    estado = models.CharField(
+        max_length=8, choices=Estado.choices, default=Estado.ABIERTO 
     )
     comentario = models.CharField(max_length=200, blank=True)
 
@@ -39,11 +43,13 @@ class Horario(models.Model):
 
     def __str__(self):
         if self.estado == self.Estado.CERRADO:
-            status = _('Cerrado')
+            status = _('Cerrado') 
         elif self.hora_inicio and self.hora_fin:
             status = f"{self.hora_inicio} - {self.hora_fin}"
         elif self.comentario:
             status = self.comentario
         else:
-            status = _('Sin información')
+            status = _('Sin información') 
+        else:
+            status = f"{self.hora_inicio} - {self.hora_fin}" 
         return f"{self.club.name} - {self.get_dia_display()} {status}"

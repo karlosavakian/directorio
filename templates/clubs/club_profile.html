@@ -292,17 +292,18 @@
                                                             {% if h.estado == h.Estado.CERRADO %}
                                                                 <div class="border-bottom py-1 small text-muted schedule-item">
                                                                     Cerrado{% if h.comentario %}: {{ h.comentario }}{% endif %}
-                                                                </div>
-                                                            {% elif h.hora_inicio and h.hora_fin %}
+                                                                </div> 
+                                                            {% elif h.hora_inicio and h.hora_fin %} 
+                                                            {% else %} 
                                                                 <div class="border-bottom py-1 small text-muted schedule-item"
                                                                      data-start="{{ h.hora_inicio|time:'H:i' }}"
                                                                      data-end="{{ h.hora_fin|time:'H:i' }}">
                                                                     {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}{% if h.comentario %} - {{ h.comentario }}{% endif %}
-                                                                </div>
+                                                                </div> 
                                                             {% elif h.comentario %}
                                                                 <div class="border-bottom py-1 small text-muted schedule-item">
                                                                     {{ h.comentario }}
-                                                                </div>
+                                                                </div> 
                                                             {% endif %}
                                                         {% endif %}
                                                     {% empty %}
