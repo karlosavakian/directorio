@@ -5,8 +5,9 @@ from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User, Group
 from PIL import Image
+from django.core.exceptions import ValidationError
 
-from .models import Club, ClubPhoto, ClubPost
+from .models import Club, ClubPhoto, ClubPost, Horario
 
 
 class SearchResultsTests(TestCase):
@@ -116,3 +117,23 @@ class DashboardPermissionTests(TestCase):
         url = reverse('clubpost_create', args=[self.club.slug])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
         self.assertEqual(response.status_code, 403)
+
+
+class HorarioValidationTests(TestCase):
+    def setUp(self):
+        self.club = Club.objects.create(
+            name='Horario Club',
+            city='C',
+            address='A',
+            phone='1',
+            email='c@example.com',
+        )
+
+    def test_at_least_one_field_required(self):
+        horario = Horario(club=self.club, dia=Horario.DiasSemana.LUNES)
+        with self.assertRaises(ValidationError):
+            horario.full_clean()
+
+        horario.hora_inicio = '09:00'
+        horario.hora_fin = '10:00'
+        horario.full_clean()
