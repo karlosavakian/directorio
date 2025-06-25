@@ -279,7 +279,9 @@
                                    style="min-width: 700px">
                                 <thead class="table-dark">
                                     <tr>
-                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
+                                        {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
+                                            <th scope="col">{{ nombre }}</th>
+                                        {% endfor %}
                                     </tr>
                                 </thead>
                                 <tbody>
