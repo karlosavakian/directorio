@@ -59,7 +59,6 @@ directorio_boxeo/
 │   │   │   ├── __init__.py          -> Importación centralizada de modelos.
 │   │   │   ├── club.py              -> Modelo para Club y ClubPhoto.
 │   │   │   ├── reseña.py            -> Modelo para las reseñas de los clubes.
-│   │   │   ├── horario.py           -> Modelo para horarios de clases en un club.
 │   │   │   ├── competidor.py        -> Modelo para gestionar competidores.
 │   │   │   └── clase.py             -> Modelo para gestionar clases dentro de un club.
 │   │   │
