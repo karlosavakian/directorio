@@ -286,23 +286,23 @@
                                     <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
                                             <td class="schedule-day" data-day="{{ dia }}">
-                                                {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
-                                                    {% for h in horarios_dia %}
-                                                        {% if h.dia == dia %}
-                                                            {% if h.estado == 'cerrado' %}
-                                                                <div class="border-bottom py-1 small text-muted">Cerrado</div>
-                                                            {% else %}
+                                                {% for h in club.horarios.all %}
+                                                    {% if h.dia == dia %}
+                                                        {% if h.estado != 'abierto' %}
+                                                            <div class="border-bottom py-1 small text-muted">{{ h.get_estado_display }}</div>
+                                                        {% else %}
+                                                            {% for c in h.clases.all %}
                                                                 <div class="border-bottom py-1 small text-muted schedule-item"
-                                                                     data-start="{{ h.hora_inicio|time:'H:i' }}"
-                                                                     data-end="{{ h.hora_fin|time:'H:i' }}">
-                                                                    {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
+                                                                     data-start="{{ c.hora_inicio|time:'H:i' }}"
+                                                                     data-end="{{ c.hora_fin|time:'H:i' }}">
+                                                                    {{ c.hora_inicio|time:"H:i" }} - {{ c.hora_fin|time:"H:i" }}{% if c.descripcion %} {{ c.descripcion }}{% endif %}
                                                                 </div>
-                                                            {% endif %}
+                                                            {% empty %}
+                                                                <span class="text-muted">—</span>
+                                                            {% endfor %}
                                                         {% endif %}
-                                                    {% empty %}
-                                                        <span class="text-muted">—</span>
-                                                    {% endfor %}
-                                                {% endwith %}
+                                                    {% endif %}
+                                                {% endfor %}
                                             </td>
                                         {% endfor %}
                                     </tr>

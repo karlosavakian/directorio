@@ -16,18 +16,19 @@ class Horario(models.Model):
     class Estado(models.TextChoices):
         ABIERTO = 'abierto', _('Abierto')
         CERRADO = 'cerrado', _('Cerrado')
+        VACACIONES = 'vacaciones', _('Vacaciones')
+        COMPETICION = 'competicion', _('Competición')
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='horarios')
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
-    estado = models.CharField(max_length=10, choices=Estado.choices, default=Estado.ABIERTO)
-    hora_inicio = models.TimeField(blank=True, null=True)
-    hora_fin = models.TimeField(blank=True, null=True)
+    estado = models.CharField(max_length=12, choices=Estado.choices, default=Estado.ABIERTO)
 
     class Meta:
-        ordering = ['dia', 'hora_inicio']
+        ordering = ['dia']
+        constraints = [
+            models.UniqueConstraint(fields=['club', 'dia'], name='unique_club_day')
+        ]
 
     def __str__(self):
         estado = self.get_estado_display()
-        if self.estado == self.Estado.CERRADO:
-            return f"{self.club.name} - {self.get_dia_display()} ({estado})"
-        return f"{self.club.name} - {self.get_dia_display()} {self.hora_inicio} - {self.hora_fin} ({estado})"
+        return f"{self.club.name} - {self.get_dia_display()} ({estado})"
