@@ -10,7 +10,6 @@ from ..models import (
     ClubPost,
     Booking,
     ClubPhoto,
-    Horario,
     Competidor,
     Entrenador,
 )
@@ -19,7 +18,6 @@ from ..forms import (
     ClaseForm,
     ClubPostForm,
     ClubPhotoForm,
-    HorarioForm,
     CompetidorForm,
     EntrenadorForm,
 )
@@ -146,57 +144,6 @@ def photo_delete(request, pk):
         messages.success(request, 'Foto eliminada correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/photo_confirm_delete.html', {'photo': photo})
-
-
-@login_required
-def horario_create(request, slug):
-    club = get_object_or_404(Club, slug=slug)
-    if not has_club_permission(request.user, club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        form = HorarioForm(request.POST)
-        if form.is_valid():
-            horario = form.save(commit=False)
-            horario.club = club
-            horario.save()
-            messages.success(request, 'Horario añadido correctamente.')
-            return redirect('club_dashboard', slug=club.slug)
-    else:
-        form = HorarioForm()
-    return render(request, 'clubs/horario_form.html', {'form': form, 'club': club})
-
-
-@login_required
-def horario_update(request, pk):
-    horario = get_object_or_404(Horario, pk=pk)
-    if not has_club_permission(request.user, horario.club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        form = HorarioForm(request.POST, instance=horario)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Horario actualizado correctamente.')
-            return redirect('club_dashboard', slug=horario.club.slug)
-    else:
-        form = HorarioForm(instance=horario)
-    return render(request, 'clubs/horario_form.html', {
-        'form': form,
-        'club': horario.club,
-        'horario': horario,
-    })
-
-
-@login_required
-def horario_delete(request, pk):
-    horario = get_object_or_404(Horario, pk=pk)
-    if not has_club_permission(request.user, horario.club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        slug = horario.club.slug
-        horario.delete()
-        messages.success(request, 'Horario eliminado correctamente.')
-        return redirect('club_dashboard', slug=slug)
-    return render(request, 'clubs/horario_confirm_delete.html', {'horario': horario})
 
 
 @login_required
