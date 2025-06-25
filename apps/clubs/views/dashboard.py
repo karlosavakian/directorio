@@ -6,7 +6,6 @@ from django.db.models import Q
 
 from ..models import (
     Club,
-    Clase,
     ClubPost,
     Booking,
     ClubPhoto,
@@ -16,7 +15,6 @@ from ..models import (
 )
 from ..forms import (
     ClubForm,
-    ClaseForm,
     ClubPostForm,
     ClubPhotoForm,
     HorarioForm,
@@ -31,12 +29,11 @@ def dashboard(request, slug):
     club = get_object_or_404(Club, slug=slug)
     if club.owner != request.user:
         return redirect('home')
-    classes = club.clases.all()
     coaches = club.entrenadores.all()
     posts = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
     bookings = Booking.objects.filter(
-        Q(clase__club=club) | Q(evento__club=club)
-    ).select_related('user', 'clase', 'evento')
+        Q(evento__club=club)
+    ).select_related('user', 'evento')
 
     form = ClubForm(instance=club)
 
@@ -45,7 +42,6 @@ def dashboard(request, slug):
         'clubs/dashboard.html',
         {
             'club': club,
-            'classes': classes,
             'posts': posts,
             'bookings': bookings,
             'form': form,
@@ -69,52 +65,6 @@ def club_edit(request, slug):
         form = ClubForm(instance=club)
     return render(request, 'clubs/club_form.html', {'form': form, 'club': club})
 
-
-@login_required
-def clase_create(request, slug):
-    club = get_object_or_404(Club, slug=slug)
-    if not has_club_permission(request.user, club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        form = ClaseForm(request.POST)
-        if form.is_valid():
-            clase = form.save(commit=False)
-            clase.club = club
-            clase.save()
-            messages.success(request, 'Clase creada correctamente.')
-            return redirect('club_dashboard', slug=club.slug)
-    else:
-        form = ClaseForm()
-    return render(request, 'clubs/clase_form.html', {'form': form, 'club': club})
-
-
-@login_required
-def clase_update(request, pk):
-    clase = get_object_or_404(Clase, pk=pk)
-    if not has_club_permission(request.user, clase.club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        form = ClaseForm(request.POST, instance=clase)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Clase actualizada correctamente.')
-            return redirect('club_dashboard', slug=clase.club.slug)
-    else:
-        form = ClaseForm(instance=clase)
-    return render(request, 'clubs/clase_form.html', {'form': form, 'club': clase.club, 'clase': clase})
-
-
-@login_required
-def clase_delete(request, pk):
-    clase = get_object_or_404(Clase, pk=pk)
-    if not has_club_permission(request.user, clase.club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        slug = clase.club.slug
-        clase.delete()
-        messages.success(request, 'Clase eliminada correctamente.')
-        return redirect('club_dashboard', slug=slug)
-    return render(request, 'clubs/clase_confirm_delete.html', {'clase': clase})
 
 
 @login_required
