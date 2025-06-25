@@ -178,12 +178,29 @@
       <ul>
         {% for h in club.horarios.all %}
         <li>
-          {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
+          {{ h.get_dia_display }} - {% if h.abierto %}Abierto{% else %}Cerrado{% endif %}
           <a href="{% url 'horario_update' h.id %}">Editar</a>
           <form method="post" action="{% url 'horario_delete' h.id %}" class="d-inline">
             {% csrf_token %}
             <button type="submit" class="btn btn-link p-0">Eliminar</button>
           </form>
+          {% if h.abierto %}
+            <a href="{% url 'horario_clase_create' h.id %}" class="ms-1">Añadir clase</a>
+            <ul class="mt-1">
+              {% for c in h.clases.all %}
+              <li>
+                {{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }}{% if c.texto %} {{ c.texto }}{% endif %}
+                <a href="{% url 'horario_clase_update' c.id %}">Editar</a>
+                <form method="post" action="{% url 'horario_clase_delete' c.id %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-link p-0">Eliminar</button>
+                </form>
+              </li>
+              {% empty %}
+              <li>No hay clases.</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </li>
         {% empty %}
         <li>No hay horarios.</li>

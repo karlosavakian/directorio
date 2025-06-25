@@ -11,6 +11,7 @@ from ..models import (
     Booking,
     ClubPhoto,
     Horario,
+    HorarioClase,
     Competidor,
     Entrenador,
 )
@@ -20,6 +21,7 @@ from ..forms import (
     ClubPostForm,
     ClubPhotoForm,
     HorarioForm,
+    HorarioClaseForm,
     CompetidorForm,
     EntrenadorForm,
 )
@@ -197,6 +199,65 @@ def horario_delete(request, pk):
         messages.success(request, 'Horario eliminado correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/horario_confirm_delete.html', {'horario': horario})
+
+
+@login_required
+def horario_clase_create(request, horario_id):
+    horario = get_object_or_404(Horario, pk=horario_id)
+    if not has_club_permission(request.user, horario.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = HorarioClaseForm(request.POST)
+        if form.is_valid():
+            clase = form.save(commit=False)
+            clase.horario = horario
+            clase.save()
+            messages.success(request, 'Clase añadida correctamente.')
+            return redirect('club_dashboard', slug=horario.club.slug)
+    else:
+        form = HorarioClaseForm()
+    return render(request, 'clubs/horario_clase_form.html', {
+        'form': form,
+        'horario': horario,
+        'club': horario.club,
+    })
+
+
+@login_required
+def horario_clase_update(request, pk):
+    clase = get_object_or_404(HorarioClase, pk=pk)
+    if not has_club_permission(request.user, clase.horario.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = HorarioClaseForm(request.POST, instance=clase)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Clase actualizada correctamente.')
+            return redirect('club_dashboard', slug=clase.horario.club.slug)
+    else:
+        form = HorarioClaseForm(instance=clase)
+    return render(request, 'clubs/horario_clase_form.html', {
+        'form': form,
+        'horario': clase.horario,
+        'clase': clase,
+        'club': clase.horario.club,
+    })
+
+
+@login_required
+def horario_clase_delete(request, pk):
+    clase = get_object_or_404(HorarioClase, pk=pk)
+    if not has_club_permission(request.user, clase.horario.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = clase.horario.club.slug
+        clase.delete()
+        messages.success(request, 'Clase eliminada correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/horario_clase_confirm_delete.html', {
+        'clase': clase,
+        'club': clase.horario.club,
+    })
 
 
 @login_required
