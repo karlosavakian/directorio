@@ -7,7 +7,7 @@ import random
 import os
 
 from apps.clubs.models import (
-    Club, ClubPhoto, Entrenador, Horario, Clase,
+    Club, ClubPhoto, Entrenador, Horario, HorarioClase, Clase,
     Competidor, ClubPost, Reseña, Feature
 )
 
@@ -55,13 +55,22 @@ class Command(BaseCommand):
                 )
 
             dias = [choice[0] for choice in Horario.DiasSemana.choices]
-            for _ in range(random.randint(3, 5)):
-                Horario.objects.create(
+            for dia in dias:
+                horario = Horario.objects.create(
                     club=club,
-                    dia=random.choice(dias),
-                    hora_inicio=fake.time(),
-                    hora_fin=fake.time(),
+                    dia=dia,
+                    abierto=random.choice([True, False]),
                 )
+                if horario.abierto:
+                    for _ in range(random.randint(1, 3)):
+                        start_time = fake.time()
+                        end_time = fake.time()
+                        HorarioClase.objects.create(
+                            horario=horario,
+                            hora_inicio=start_time,
+                            hora_fin=end_time,
+                            texto=fake.word()[:30],
+                        )
 
             for _ in range(random.randint(1, 4)):
                 Clase.objects.create(
