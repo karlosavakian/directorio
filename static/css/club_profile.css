@@ -395,3 +395,7 @@ textarea.form-control {
   stroke: #000;
 }
 
+
+.fade-container { opacity: 1; transition: opacity 0.3s ease; }
+.fade-container.fade-out { opacity: 0; }
+

@@ -30,6 +30,7 @@ from apps.clubs.views.dashboard import (
 urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
+    path('posts/<slug:slug>/', public.ajax_posts, name='ajax_posts'),
 
     path('<slug:slug>/editar/', club_edit, name='club_edit'),
 
