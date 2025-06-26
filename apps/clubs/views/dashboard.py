@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+from django.forms import modelformset_factory
 
 from ..models import (
     Club,
@@ -197,6 +198,34 @@ def horario_delete(request, pk):
         messages.success(request, 'Horario eliminado correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/horario_confirm_delete.html', {'horario': horario})
+
+
+@login_required
+def horario_manage(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+
+    HorarioFormSet = modelformset_factory(Horario, form=HorarioForm, extra=0)
+    queryset = club.horarios.all().order_by('dia')
+
+    if request.method == 'POST':
+        formset = HorarioFormSet(request.POST, queryset=queryset)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, 'Horarios actualizados correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        formset = HorarioFormSet(queryset=queryset)
+
+    return render(
+        request,
+        'clubs/horario_manage.html',
+        {
+            'formset': formset,
+            'club': club,
+        },
+    )
 
 
 @login_required

@@ -181,6 +181,11 @@ class HorarioForm(forms.ModelForm):
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['dia'].widget = forms.HiddenInput()
+
 
 class CompetidorForm(forms.ModelForm):
     class Meta:
