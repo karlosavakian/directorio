@@ -59,8 +59,10 @@ class Command(BaseCommand):
                 Horario.objects.create(
                     club=club,
                     dia=random.choice(dias),
+                    estado=random.choice(['abierto', 'cerrado']),
                     hora_inicio=fake.time(),
                     hora_fin=fake.time(),
+                    nota=fake.word()[:20],
                 )
 
             for _ in range(random.randint(1, 4)):
