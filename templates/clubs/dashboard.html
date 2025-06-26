@@ -179,6 +179,8 @@
         {% for h in club.horarios.all %}
         <li>
           {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
+          {% if h.descripcion %} ({{ h.descripcion }}){% endif %}
+          - {{ h.get_estado_display }}
           <a href="{% url 'horario_update' h.id %}">Editar</a>
           <form method="post" action="{% url 'horario_delete' h.id %}" class="d-inline">
             {% csrf_token %}
