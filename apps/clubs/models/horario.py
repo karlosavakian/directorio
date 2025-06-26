@@ -15,11 +15,27 @@ class Horario(models.Model):
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='horarios')
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
-    hora_inicio = models.TimeField()
-    hora_fin = models.TimeField()
+    abierto = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['dia', 'hora_inicio']
+        unique_together = ('club', 'dia')
+        ordering = ['dia']
 
     def __str__(self):
-        return f"{self.club.name} - {self.get_dia_display()} {self.hora_inicio} - {self.hora_fin}"
+        estado = 'abierto' if self.abierto else 'cerrado'
+        return f"{self.club.name} - {self.get_dia_display()} ({estado})"
+
+
+class HorarioClase(models.Model):
+    horario = models.ForeignKey(Horario, on_delete=models.CASCADE, related_name='clases')
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    texto = models.CharField(max_length=30, blank=True)
+
+    class Meta:
+        ordering = ['hora_inicio']
+
+    def __str__(self):
+        if self.texto:
+            return f"{self.horario.get_dia_display()} {self.hora_inicio}-{self.hora_fin} {self.texto}"
+        return f"{self.horario.get_dia_display()} {self.hora_inicio}-{self.hora_fin}"
