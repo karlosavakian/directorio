@@ -36,24 +36,14 @@ def dashboard(request, slug):
     dias_semana = club.horarios.model.DiasSemana.choices
     all_horarios = list(club.horarios.all())
 
-    # Conjunto de franjas únicas (hora inicio y fin)
-    slots = sorted({(h.hora_inicio, h.hora_fin) for h in all_horarios})
-
-    # Diccionario auxiliar para localizar horarios por franja y día
+    # Agrupa los horarios por día y ordénalos por hora de inicio
     horarios_por_dia = defaultdict(list)
- 
+
     for h in all_horarios:
         horarios_por_dia[h.dia].append(h)
 
-
-    horarios_por_hora = []
-    for inicio, fin in slots:
-        fila = {
-            'hora_inicio': inicio,
-            'hora_fin': fin,
-            'dias': {dia: hdict.get((inicio, fin), {}).get(dia) for dia, _ in dias_semana},
-        }
-        horarios_por_hora.append(fila)
+    for dia in horarios_por_dia:
+        horarios_por_dia[dia].sort(key=lambda h: h.hora_inicio)
     if club.owner != request.user:
         return redirect('home')
     classes = club.clases.all()
@@ -71,8 +61,7 @@ def dashboard(request, slug):
         {
             'club': club,
             'dias_semana': dias_semana,
-            'horarios_por_hora': horarios_por_hora,
-            'horarios_por_dia': horarios_por_dia,     
+            'horarios_por_dia': horarios_por_dia,
             'classes': classes,
             'posts': posts,
             'bookings': bookings,
