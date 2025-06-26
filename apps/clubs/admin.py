@@ -42,14 +42,38 @@ class ReseñaInline(admin.TabularInline):
 
 class HorarioInline(admin.TabularInline):
     model = Horario
-    extra = 1
+    max_num = 7
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj:
+            return max(0, 7 - obj.horarios.count())
+        return 7
+
+    def get_formset(self, request, obj=None, **kwargs):
+        initial = []
+        if obj:
+            existing = set(obj.horarios.values_list('dia', flat=True))
+        else:
+            existing = set()
+        for dia, _ in Horario.DiasSemana.choices:
+            if dia not in existing:
+                initial.append({'dia': dia})
+        kwargs['extra'] = len(initial)
+        FormSet = super().get_formset(request, obj, **kwargs)
+
+        class InitialFormSet(FormSet):
+            def __init__(self, *args, **kw):
+                kw.setdefault('initial', initial)
+                super().__init__(*args, **kw)
+
+        return InitialFormSet
 
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
+    inlines = [ClubPhotoInline, HorarioInline, ClaseInline, EntrenadorInline]
     fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
 
 @admin.register(Feature)
