@@ -40,9 +40,11 @@ def dashboard(request, slug):
     slots = sorted({(h.hora_inicio, h.hora_fin) for h in all_horarios})
 
     # Diccionario auxiliar para localizar horarios por franja y día
-    hdict = defaultdict(dict)
+    horarios_por_dia = defaultdict(list)
+ 
     for h in all_horarios:
-        hdict[(h.hora_inicio, h.hora_fin)][h.dia] = h
+        horarios_por_dia[h.dia].append(h)
+
 
     horarios_por_hora = []
     for inicio, fin in slots:
@@ -70,6 +72,7 @@ def dashboard(request, slug):
             'club': club,
             'dias_semana': dias_semana,
             'horarios_por_hora': horarios_por_hora,
+            'horarios_por_dia': horarios_por_dia,     
             'classes': classes,
             'posts': posts,
             'bookings': bookings,
