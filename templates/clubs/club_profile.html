@@ -286,18 +286,22 @@
                                     <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}
                                             <td class="schedule-day" data-day="{{ dia }}">
-                                                {% with horarios_dia=club.horarios.all|dictsort:"hora_inicio" %}
-                                                    {% for h in horarios_dia %}
-                                                        {% if h.dia == dia %}
-                                                            <div class="border-bottom py-1 small text-muted schedule-item"
-                                                                 data-start="{{ h.hora_inicio|time:'H:i' }}"
-                                                                 data-end="{{ h.hora_fin|time:'H:i' }}">
-                                                                {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
-                                                            </div>
-                                                        {% endif %}
-                                                    {% empty %}
+                                                {% with horarios_dia=club.horarios.filter(dia=dia)|dictsort:"hora_inicio" %}
+                                                    {% if horarios_dia %}
+                                                        {% for h in horarios_dia %}
+                                                            {% if h.estado == 'cerrado' %}
+                                                                <div class="border-bottom py-1 small text-muted">Cerrado{% if h.nota %} ({{ h.nota }}){% endif %}</div>
+                                                            {% else %}
+                                                                <div class="border-bottom py-1 small text-muted schedule-item"
+                                                                     data-start="{{ h.hora_inicio|time:'H:i' }}"
+                                                                     data-end="{{ h.hora_fin|time:'H:i' }}">
+                                                                    {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}{% if h.nota %} ({{ h.nota }}){% endif %}
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
                                                         <span class="text-muted">—</span>
-                                                    {% endfor %}
+                                                    {% endif %}
                                                 {% endwith %}
                                             </td>
                                         {% endfor %}
