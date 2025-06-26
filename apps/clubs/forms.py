@@ -154,7 +154,7 @@ class ClubForm(forms.ModelForm):
 class ClaseForm(forms.ModelForm):
     class Meta:
         model = models.Clase
-        fields = ['nombre', 'hora_inicio', 'hora_fin']
+        fields = ['nombre', 'dia', 'hora_inicio', 'hora_fin', 'nota']
         widgets = {
             'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),

@@ -69,8 +69,10 @@ class Command(BaseCommand):
                 Clase.objects.create(
                     club=club,
                     nombre=fake.word(),
+                    dia=random.choice(dias),
                     hora_inicio=fake.time(),
                     hora_fin=fake.time(),
+                    nota=fake.word()[:20],
                 )
 
             for _ in range(random.randint(1, 3)):

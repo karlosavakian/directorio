@@ -92,11 +92,11 @@ class ClaseAdminForm(forms.ModelForm):
         widgets = {
             'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
-        }   
+        }
 @admin.register(Clase)
 class ClaseAdmin(admin.ModelAdmin):
     form = ClaseAdminForm
-    list_display = ('nombre', 'club', 'hora_inicio', 'hora_fin')
+    list_display = ('nombre', 'club', 'dia', 'hora_inicio', 'hora_fin', 'nota')
 
 @admin.register(Competidor)
 class CompetidorAdmin(admin.ModelAdmin):

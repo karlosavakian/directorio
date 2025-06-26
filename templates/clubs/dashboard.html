@@ -163,7 +163,7 @@
       <ul>
         {% for c in classes %}
         <li>
-          {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }})
+          {{ c.get_dia_display }} - {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{ c.hora_fin|time:'H:i' }}){% if c.nota %} ({{ c.nota }}){% endif %}
           <a href="{% url 'clase_update' c.id %}">Editar</a>
           <form method="post" action="{% url 'clase_delete' c.id %}" class="d-inline">
             {% csrf_token %}
