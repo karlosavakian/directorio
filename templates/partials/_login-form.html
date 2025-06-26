@@ -1,31 +1,31 @@
 {% load socialaccount %}
-   
-               <form method="post">
+
+               <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
 
                 <div class="mb-3">
-                    <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
+                    <label for="{{ login_form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
              
                     <input type="text"
-                           name="{{ form.username.name }}"
-                           value="{{ form.username.value|default_if_none:'' }}"
+                           name="{{ login_form.username.name }}"
+                           value="{{ login_form.username.value|default_if_none:'' }}"
                            class="form-control"
-                           id="{{ form.username.id_for_label }}"
+                           id="{{ login_form.username.id_for_label }}"
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-                    {% if form.username.errors %}
+                    {% if login_form.username.errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.username.errors.as_text|striptags }}
+                        {{ login_form.username.errors.as_text|striptags }}
                       </div>
                     {% endif %}
                 </div>
 
                 <div class="mb-3">
-                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
+                    <label for="{{ login_form.password.id_for_label }}">Contraseña</label>
                     <div class="input-group"> 
                         <input type="password"
-                               name="{{ form.password.name }}"
+                               name="{{ login_form.password.name }}"
                                class="form-control"
-                               id="{{ form.password.id_for_label }}"
+                               id="{{ login_form.password.id_for_label }}"
                                required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                         <button type="button" class="btn btn-outline-secondary" id="toggle-password">
 
@@ -36,21 +36,21 @@
                              
                         </button>
                     </div>
-                    {% if form.password.errors %}
+                    {% if login_form.password.errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.password.errors.as_text|striptags }}
+                        {{ login_form.password.errors.as_text|striptags }}
                       </div>
                     {% endif %}
-                    {% if form.non_field_errors %}
+                    {% if login_form.non_field_errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.non_field_errors }}
+                        {{ login_form.non_field_errors }}
                       </div>
                     {% endif %}
                 </div>
 
                 <div class="form-check mb-3">
-                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
-                    <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
+                    <input type="checkbox" name="{{ login_form.remember_me.name }}" class="form-check-input" id="{{ login_form.remember_me.id_for_label }}" {% if login_form.remember_me.value or login_form.remember_me.initial %}checked{% endif %}>
+                    <label class="form-check-label" for="{{ login_form.remember_me.id_for_label }}">Recordar contraseña</label>
                 </div>
 
 

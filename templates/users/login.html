@@ -32,22 +32,22 @@
         <div class="card p-4" style="width: 100%; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
         
 
-            <form method="post" class="profile-form">
+            <form method="post" class="profile-form" action="{% url 'login' %}">
                 {% csrf_token %}
 
                 <div class="form-field">
                     <input type="text"
-                           name="{{ form.username.name }}"
-                           value="{{ form.username.value|default_if_none:'' }}"
+                           name="{{ login_form.username.name }}"
+                           value="{{ login_form.username.value|default_if_none:'' }}"
                            class="form-control"
-                           id="{{ form.username.id_for_label }}"
+                           id="{{ login_form.username.id_for_label }}"
                            placeholder=" "
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn">×</button>
-                    <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
-                    {% if form.username.errors %}
+                    <label for="{{ login_form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
+                    {% if login_form.username.errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.username.errors.as_text|striptags }}
+                        {{ login_form.username.errors.as_text|striptags }}
                       </div>
                     {% endif %}
                 </div>
@@ -55,27 +55,27 @@
 
                 <div class="form-field">
                     <input type="password"
-                           name="{{ form.password.name }}"
+                           name="{{ login_form.password.name }}"
                            class="form-control"
-                           id="{{ form.password.id_for_label }}"
+                           id="{{ login_form.password.id_for_label }}"
                            placeholder=" "
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn">×</button>
-                    <label for="{{ form.password.id_for_label }}">Contraseña</label>
-                    {% if form.password.errors %}
+                    <label for="{{ login_form.password.id_for_label }}">Contraseña</label>
+                    {% if login_form.password.errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.password.errors.as_text|striptags }}
+                        {{ login_form.password.errors.as_text|striptags }}
                       </div>
                     {% endif %}
-                    {% if form.non_field_errors %}
+                    {% if login_form.non_field_errors %}
                       <div class="invalid-feedback d-block">
-                        {{ form.non_field_errors }}
+                        {{ login_form.non_field_errors }}
                       </div>
                     {% endif %}
                 </div>
                 <div class="form-check mb-3">
-                    <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
-                    <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
+                    <input type="checkbox" name="{{ login_form.remember_me.name }}" class="form-check-input" id="{{ login_form.remember_me.id_for_label }}" {% if login_form.remember_me.value or login_form.remember_me.initial %}checked{% endif %}>
+                    <label class="form-check-label" for="{{ login_form.remember_me.id_for_label }}">Recordar contraseña</label>
                 </div>
 
 
