@@ -4,6 +4,7 @@ from .models import (
     Feature,
     ClubPhoto,
     Competidor,
+    Horario,
     Reseña,
     ClubPost,
     Entrenador,
@@ -19,6 +20,12 @@ class ClubPhotoInline(admin.TabularInline):
 class CompetidorInline(admin.TabularInline):
     model = Competidor
     extra = 1
+
+class HorarioInline(admin.TabularInline):
+    model = Horario
+    extra = 0
+    min_num = 7
+    max_num = 7
 
 class EntrenadorInline(admin.TabularInline):
     model = Entrenador
@@ -40,8 +47,21 @@ class ReseñaInline(admin.TabularInline):
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, EntrenadorInline]
-    fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
+    inlines = [ClubPhotoInline, EntrenadorInline, HorarioInline]
+    fields = (
+        'owner',
+        'logo',
+        'name',
+        'verified',
+        'slug',
+        'city',
+        'address',
+        'phone',
+        'whatsapp_link',
+        'email',
+        'about',
+        'features',
+    )
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):

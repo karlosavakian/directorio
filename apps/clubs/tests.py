@@ -7,6 +7,7 @@ from django.contrib.auth.models import User, Group
 from PIL import Image
 
 from .models import Club, ClubPhoto, ClubPost
+from .models import Horario
 
 
 class SearchResultsTests(TestCase):
@@ -116,3 +117,15 @@ class DashboardPermissionTests(TestCase):
         url = reverse('clubpost_create', args=[self.club.slug])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
         self.assertEqual(response.status_code, 403)
+
+class HorarioCreationTests(TestCase):
+    def test_schedule_created_for_new_club(self):
+        club = Club.objects.create(
+            name='Schedule Club',
+            city='City',
+            address='Addr',
+            phone='123',
+            email='a@example.com',
+        )
+        self.assertEqual(Horario.objects.filter(club=club).count(), 7)
+
