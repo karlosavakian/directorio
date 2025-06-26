@@ -31,12 +31,27 @@ from ..permissions import has_club_permission
 @login_required
 def dashboard(request, slug):
     club = get_object_or_404(Club, slug=slug)
-    # Prepara una lista de tuplas (nombre_dia, horarios)
+    # Prepara una estructura de horarios por franja horaria para mostrar
+    # los días como columnas y las horas como filas
     dias_semana = club.horarios.model.DiasSemana.choices
-    horarios_por_dia = []
-    for dia, nombre in dias_semana:
-        horarios = club.horarios.filter(dia=dia).order_by('hora_inicio')
-        horarios_por_dia.append({'dia': dia, 'nombre': nombre, 'horarios': horarios})
+    all_horarios = list(club.horarios.all())
+
+    # Conjunto de franjas únicas (hora inicio y fin)
+    slots = sorted({(h.hora_inicio, h.hora_fin) for h in all_horarios})
+
+    # Diccionario auxiliar para localizar horarios por franja y día
+    hdict = defaultdict(dict)
+    for h in all_horarios:
+        hdict[(h.hora_inicio, h.hora_fin)][h.dia] = h
+
+    horarios_por_hora = []
+    for inicio, fin in slots:
+        fila = {
+            'hora_inicio': inicio,
+            'hora_fin': fin,
+            'dias': {dia: hdict.get((inicio, fin), {}).get(dia) for dia, _ in dias_semana},
+        }
+        horarios_por_hora.append(fila)
     if club.owner != request.user:
         return redirect('home')
     classes = club.clases.all()
@@ -53,7 +68,8 @@ def dashboard(request, slug):
         'clubs/dashboard.html',
         {
             'club': club,
-            'horarios_por_dia': horarios_por_dia,
+            'dias_semana': dias_semana,
+            'horarios_por_hora': horarios_por_hora,
             'classes': classes,
             'posts': posts,
             'bookings': bookings,
