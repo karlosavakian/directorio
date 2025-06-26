@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.db.models import Q
+from collections import defaultdict
+
 
 from ..models import (
     Club,
@@ -29,6 +31,12 @@ from ..permissions import has_club_permission
 @login_required
 def dashboard(request, slug):
     club = get_object_or_404(Club, slug=slug)
+    # Prepara una lista de tuplas (nombre_dia, horarios)
+    dias_semana = club.horarios.model.DiasSemana.choices
+    horarios_por_dia = []
+    for dia, nombre in dias_semana:
+        horarios = club.horarios.filter(dia=dia).order_by('hora_inicio')
+        horarios_por_dia.append((nombre, horarios))
     if club.owner != request.user:
         return redirect('home')
     classes = club.clases.all()
@@ -45,6 +53,7 @@ def dashboard(request, slug):
         'clubs/dashboard.html',
         {
             'club': club,
+            'horarios_por_dia': horarios_por_dia,
             'classes': classes,
             'posts': posts,
             'bookings': bookings,
@@ -52,8 +61,6 @@ def dashboard(request, slug):
             'coaches': coaches,
         },
     )
-
-
 @login_required
 def club_edit(request, slug):
     club = get_object_or_404(Club, slug=slug)
