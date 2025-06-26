@@ -4,6 +4,9 @@ from .club import Club
 
     
 class Horario(models.Model):
+    class Estado(models.TextChoices):
+        ABIERTO = 'abierto', _('Abierto')
+        CERRADO = 'cerrado', _('Cerrado')
     class DiasSemana(models.TextChoices):
         LUNES = 'lunes', _('Lunes')
         MARTES = 'martes', _('Martes')
@@ -17,6 +20,8 @@ class Horario(models.Model):
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
+    descripcion = models.CharField(max_length=30, blank=True)
+    estado = models.CharField(max_length=8, choices=Estado.choices)
 
     class Meta:
         ordering = ['dia', 'hora_inicio']

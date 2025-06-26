@@ -291,8 +291,11 @@
                                                         {% if h.dia == dia %}
                                                             <div class="border-bottom py-1 small text-muted schedule-item"
                                                                  data-start="{{ h.hora_inicio|time:'H:i' }}"
-                                                                 data-end="{{ h.hora_fin|time:'H:i' }}">
+                                                                 data-end="{{ h.hora_fin|time:'H:i' }}"
+                                                                 data-estado="{{ h.estado }}">
                                                                 {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
+                                                                {% if h.descripcion %}<span class="ms-1">{{ h.descripcion }}</span>{% endif %}
+                                                                {% if h.estado == 'cerrado' %} <span class="text-danger">(Cerrado)</span>{% endif %}
                                                             </div>
                                                         {% endif %}
                                                     {% empty %}

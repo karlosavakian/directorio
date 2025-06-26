@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     items.forEach((item) => {
       const start = item.dataset.start;
       const end = item.dataset.end;
-      if (start && end) {
+      const estado = item.dataset.estado;
+      if (estado === 'abierto' && start && end) {
         const [sh, sm] = start.split(':').map(Number);
         const [eh, em] = end.split(':').map(Number);
         const startMin = sh * 60 + sm;
