@@ -133,3 +133,23 @@ class HorarioDefaultsTests(TestCase):
         self.assertEqual(dias, expected)
         for h in club.horarios.all():
             self.assertEqual(h.estado, h.Estado.CERRADO)
+
+
+class HorarioManageViewTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner2', password='pass')
+        self.club = Club.objects.create(
+            name='Owner Club2',
+            city='C',
+            address='A',
+            phone='1',
+            email='e2@example.com',
+            owner=self.owner,
+        )
+
+    def test_owner_can_access_manage_view(self):
+        self.client.login(username='owner2', password='pass')
+        url = reverse('horario_manage', args=[self.club.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Lunes')

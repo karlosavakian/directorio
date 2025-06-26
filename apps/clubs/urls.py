@@ -23,6 +23,7 @@ from apps.clubs.views.dashboard import (
     horario_create,
     horario_update,
     horario_delete,
+    horario_manage,
     competidor_create,
     competidor_update,
     competidor_delete,
@@ -46,6 +47,7 @@ urlpatterns = [
     path('<slug:slug>/horario/nuevo/', horario_create, name='horario_create'),
     path('horario/<int:pk>/editar/', horario_update, name='horario_update'),
     path('horario/<int:pk>/eliminar/', horario_delete, name='horario_delete'),
+    path('<slug:slug>/horarios/editar/', horario_manage, name='horario_manage'),
 
     path('<slug:slug>/competidor/nuevo/', competidor_create, name='competidor_create'),
     path('competidor/<int:pk>/editar/', competidor_update, name='competidor_update'),
