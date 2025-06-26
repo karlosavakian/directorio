@@ -116,3 +116,20 @@ class DashboardPermissionTests(TestCase):
         url = reverse('clubpost_create', args=[self.club.slug])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
         self.assertEqual(response.status_code, 403)
+
+
+class HorarioDefaultsTests(TestCase):
+    def test_default_schedules_created(self):
+        club = Club.objects.create(
+            name='Test Club',
+            city='City',
+            address='Addr',
+            phone='1',
+            email='test@example.com',
+        )
+
+        dias = {h.dia for h in club.horarios.all()}
+        expected = {d for d, _ in club.horarios.model.DiasSemana.choices}
+        self.assertEqual(dias, expected)
+        for h in club.horarios.all():
+            self.assertEqual(h.estado, h.Estado.CERRADO)

@@ -37,9 +37,23 @@ class Club(models.Model):
 
 
     def save(self, *args, **kwargs):
+        creating = self.pk is None
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+        if creating:
+            from datetime import time
+            from .horario import Horario
+
+            for day, _ in Horario.DiasSemana.choices:
+                Horario.objects.create(
+                    club=self,
+                    dia=day,
+                    hora_inicio=time(0, 0),
+                    hora_fin=time(0, 0),
+                    estado=Horario.Estado.CERRADO,
+                )
 
     def __str__(self):
         return self.name
