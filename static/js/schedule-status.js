@@ -35,4 +35,4 @@ document.addEventListener('DOMContentLoaded', () => {
       statusEl.classList.add('text-danger');
     }
   }
-});
+})
