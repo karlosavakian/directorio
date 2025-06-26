@@ -36,7 +36,7 @@ def dashboard(request, slug):
     horarios_por_dia = []
     for dia, nombre in dias_semana:
         horarios = club.horarios.filter(dia=dia).order_by('hora_inicio')
-        horarios_por_dia.append((nombre, horarios))
+        horarios_por_dia.append({'dia': dia, 'nombre': nombre, 'horarios': horarios})
     if club.owner != request.user:
         return redirect('home')
     classes = club.clases.all()
