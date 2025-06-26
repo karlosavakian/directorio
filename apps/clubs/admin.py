@@ -6,11 +6,12 @@ from .models import (
     Clase,
     Competidor,
     Reseña,
-    Horario,
     ClubPost,
     Entrenador,
     EntrenadorPhoto,
     TrainingLevel,
+    DaySchedule,
+    ClassSlot,
 )
 from django import forms 
 
@@ -40,17 +41,50 @@ class ReseñaInline(admin.TabularInline):
     readonly_fields = ('creado',)
 
 
-class HorarioInline(admin.TabularInline):
-    model = Horario
-    extra = 1
+class BaseDayScheduleInlineFormSet(forms.BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        days = [choice[0] for choice in DaySchedule.WeekDay.choices]
+        existing = {form.instance.day for form in self.forms if form.instance.pk}
+        remaining_days = [d for d in days if d not in existing]
+        # assign remaining days to extra forms
+        for form, day in zip(self.extra_forms, remaining_days):
+            form.initial.setdefault('day', day)
+
+
+class DayScheduleInline(admin.TabularInline):
+    model = DaySchedule
+    formset = BaseDayScheduleInlineFormSet
+    fields = ('day', 'is_open')
+    extra = 0
+    max_num = 7
+    show_change_link = True
+
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj:
+            return max(0, 7 - obj.day_schedules.count())
+        return 7
 
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
-    fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
+    inlines = [ClubPhotoInline, EntrenadorInline, DayScheduleInline]
+    fields = (
+        'owner',
+        'logo',
+        'name',
+        'verified',
+        'slug',
+        'city',
+        'address',
+        'phone',
+        'whatsapp_link',
+        'email',
+        'about',
+        'features',
+    )
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
@@ -87,6 +121,18 @@ class ReseñaAdmin(admin.ModelAdmin):
 @admin.register(ClubPost)
 class ClubPostAdmin(admin.ModelAdmin):
     list_display = ('titulo', 'club', 'user', 'created_at', 'evento_fecha')
+
+
+class ClassSlotInline(admin.TabularInline):
+    model = ClassSlot
+    extra = 1
+
+
+@admin.register(DaySchedule)
+class DayScheduleAdmin(admin.ModelAdmin):
+    list_display = ('club', 'day', 'is_open')
+    list_filter = ('club', 'day', 'is_open')
+    inlines = [ClassSlotInline]
 
 
 @admin.register(Entrenador)

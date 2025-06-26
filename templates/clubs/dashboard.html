@@ -6,7 +6,7 @@
   <div class="profile-tabs">
     <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
-    <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+    <div class="profile-tab" data-target="tab-schedule">Clases</div>
     <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
     <div class="profile-tab" data-target="tab-posts">Publicaciones</div>
@@ -158,7 +158,6 @@
     </div>
     <div id="tab-schedule" class="profile-section">
       <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm me-2 mb-3">Añadir clase</a>
-      <a href="{% url 'horario_create' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir horario</a>
       <h2 class="h5 mt-4">Clases</h2>
       <ul>
         {% for c in classes %}
@@ -172,21 +171,6 @@
         </li>
         {% empty %}
         <li>No hay clases.</li>
-        {% endfor %}
-      </ul>
-      <h2 class="h5 mt-4">Horarios</h2>
-      <ul>
-        {% for h in club.horarios.all %}
-        <li>
-          {{ h.get_dia_display }} {{ h.hora_inicio|time:'H:i' }} - {{ h.hora_fin|time:'H:i' }}
-          <a href="{% url 'horario_update' h.id %}">Editar</a>
-          <form method="post" action="{% url 'horario_delete' h.id %}" class="d-inline">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link p-0">Eliminar</button>
-          </form>
-        </li>
-        {% empty %}
-        <li>No hay horarios.</li>
         {% endfor %}
       </ul>
     </div>
