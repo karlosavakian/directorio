@@ -42,14 +42,35 @@ class ReseñaInline(admin.TabularInline):
 
 class HorarioInline(admin.TabularInline):
     model = Horario
-    extra = 1
+
+    def _missing_days(self, obj):
+        if obj:
+            existing = set(obj.horarios.values_list('dia', flat=True))
+        else:
+            existing = set()
+        return [dia for dia, _ in Horario.DiasSemana.choices if dia not in existing]
+
+    def get_extra(self, request, obj=None, **kwargs):
+        return len(self._missing_days(obj))
+
+    def get_formset(self, request, obj=None, **kwargs):
+        missing = [{"dia": dia} for dia in self._missing_days(obj)]
+        kwargs["extra"] = len(missing)
+        FormSet = super().get_formset(request, obj, **kwargs)
+
+        class InitialFormSet(FormSet):
+            def __init__(self, *args, **kw):
+                kw.setdefault("initial", missing)
+                super().__init__(*args, **kw)
+
+        return InitialFormSet
 
 
 @admin.register(Club)
 class ClubAdmin(admin.ModelAdmin):
     list_display = ('name', 'owner', 'verified', 'city', 'phone', 'email')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ClubPhotoInline, HorarioInline, EntrenadorInline]
+    inlines = [ClubPhotoInline, HorarioInline, ClaseInline, EntrenadorInline]
     fields = ('owner', 'logo', 'name', 'verified', 'slug', 'city', 'address', 'phone', 'whatsapp_link', 'email', 'about', 'features')
 
 @admin.register(Feature)

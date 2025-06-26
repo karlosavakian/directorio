@@ -17,9 +17,16 @@ class Horario(models.Model):
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
+    estado = models.CharField(
+        max_length=7,
+        choices=[('abierto', 'Abierto'), ('cerrado', 'Cerrado')],
+        default='abierto'
+    )
+    nota = models.CharField(max_length=20, blank=True)
 
     class Meta:
         ordering = ['dia', 'hora_inicio']
 
     def __str__(self):
-        return f"{self.club.name} - {self.get_dia_display()} {self.hora_inicio} - {self.hora_fin}"
+        estado = 'Cerrado' if self.estado == 'cerrado' else f"{self.hora_inicio} - {self.hora_fin}"
+        return f"{self.club.name} - {self.get_dia_display()} {estado}"
