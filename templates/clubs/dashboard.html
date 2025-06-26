@@ -207,6 +207,7 @@
                   <div class="collapse" id="edit-{{ h.id }}">
                     <form method="post" action="{% url 'horario_update' h.id %}">
                       {% csrf_token %}
+                      <input type="hidden" name="dia" value="{{ h.dia }}">
                       <div class="row g-2 mt-2">
                         <div class="col">
                           <input type="time" name="hora_inicio" value="{{ h.hora_inicio|time:'H:i' }}" class="form-control form-control-sm" required>
