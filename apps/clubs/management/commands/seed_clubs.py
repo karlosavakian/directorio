@@ -61,6 +61,7 @@ class Command(BaseCommand):
                     dia=random.choice(dias),
                     hora_inicio=fake.time(),
                     hora_fin=fake.time(),
+                    estado='abierto',
                 )
 
             for _ in range(random.randint(1, 4)):
