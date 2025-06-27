@@ -214,6 +214,12 @@
                 <div class="col">
                   <input type="time" name="hora_fin" value="{{ bloque.hora_fin|time:'H:i' }}" class="form-control form-control-sm" required>
                 </div>
+                <div class="col">
+                  <select name="estado" class="form-select form-select-sm">
+                    <option value="abierto" {% if bloque.estado == 'abierto' %}selected{% endif %}>Abierto</option>
+                    <option value="cerrado" {% if bloque.estado == 'cerrado' %}selected{% endif %}>Cerrado</option>
+                  </select>
+                </div>
                 <div class="col-auto">
                   <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
                 </div>
@@ -237,6 +243,12 @@
         </div>
         <div class="col">
           <input type="time" name="hora_fin" class="form-control form-control-sm" required>
+        </div>
+        <div class="col">
+          <select name="estado" class="form-select form-select-sm">
+            <option value="abierto">Abierto</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
@@ -329,4 +341,5 @@
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+<script src="{% static 'js/schedule-form.js' %}"></script>
 {% endblock %}
