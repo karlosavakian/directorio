@@ -20,6 +20,8 @@ from apps.clubs.views.dashboard import (
     clase_delete,
     photo_upload,
     photo_delete,
+    photo_bulk_delete,
+    photo_set_main,
     horario_create,
     horario_update,
     horario_delete,
@@ -42,6 +44,8 @@ urlpatterns = [
 
     path('<slug:slug>/foto/nueva/', photo_upload, name='clubphoto_upload'),
     path('foto/<int:pk>/eliminar/', photo_delete, name='clubphoto_delete'),
+    path('<slug:slug>/foto/eliminar/', photo_bulk_delete, name='clubphoto_bulk_delete'),
+    path('foto/<int:pk>/principal/', photo_set_main, name='clubphoto_set_main'),
 
     path('<slug:slug>/horario/nuevo/', horario_create, name='horario_create'),
     path('horario/<int:pk>/editar/', horario_update, name='horario_update'),
