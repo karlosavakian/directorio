@@ -69,6 +69,7 @@ class ClubPhoto(models.Model):
     club = models.ForeignKey('Club', related_name='photos', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(upload_to='club_photos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+    is_main = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Foto de {self.club.name if self.club else 'Sin club'}"

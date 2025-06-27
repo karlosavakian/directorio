@@ -138,15 +138,19 @@ def photo_upload(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = ClubPhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            photo = form.save(commit=False)
-            photo.club = club
-            photo.save()
-            messages.success(request, 'Foto añadida correctamente.')
-            return redirect('club_dashboard', slug=club.slug)
-    else:
-        form = ClubPhotoForm()
+        images = request.FILES.getlist('image')
+        if not images:
+            form = ClubPhotoForm(request.POST, request.FILES)
+            if form.is_valid():
+                photo = form.save(commit=False)
+                photo.club = club
+                photo.save()
+        else:
+            for img in images:
+                ClubPhoto.objects.create(club=club, image=img)
+        messages.success(request, 'Foto añadida correctamente.')
+        return redirect('club_dashboard', slug=club.slug)
+    form = ClubPhotoForm()
     return render(request, 'clubs/photo_form.html', {'form': form, 'club': club})
 
 
@@ -161,6 +165,31 @@ def photo_delete(request, pk):
         messages.success(request, 'Foto eliminada correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/photo_confirm_delete.html', {'photo': photo})
+
+
+@login_required
+def photo_bulk_delete(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        ids = request.POST.getlist('ids')
+        ClubPhoto.objects.filter(club=club, id__in=ids).delete()
+        messages.success(request, 'Fotos eliminadas correctamente.')
+    return redirect('club_dashboard', slug=club.slug)
+
+
+@login_required
+def photo_set_main(request, pk):
+    photo = get_object_or_404(ClubPhoto, pk=pk)
+    if not has_club_permission(request.user, photo.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        photo.club.photos.update(is_main=False)
+        photo.is_main = True
+        photo.save()
+        messages.success(request, 'Foto establecida como principal.')
+    return redirect('club_dashboard', slug=photo.club.slug)
 
 
 @login_required
