@@ -13,6 +13,14 @@
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
   </div>
   <div class="profile-content">
+    <form id="top-upload-form" method="post" enctype="multipart/form-data" action="{% url 'clubphoto_upload' club.slug %}" class="mb-3 w-100">
+      {% csrf_token %}
+      <div class="photo-dropzone mb-2">
+        <input type="file" name="image" id="id_top_gallery_image" multiple class="d-none">
+        <div class="photo-dropzone-msg">Arrastra imágenes aquí o haz clic para seleccionar</div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">Subir</button>
+    </form>
     <div id="tab-profile" class="profile-section active">
       <h1 class="h3 mb-4">Administrar {{ club.name }}</h1>
       <form method="post" action="{% url 'club_edit' club.slug %}" enctype="multipart/form-data" class="profile-form">
