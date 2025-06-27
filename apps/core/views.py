@@ -7,5 +7,10 @@ def home(request):
     return render(request, 'core/home.html', {
         'search_query': search_query,
     })
+
+
+def prelaunch(request):
+    """Landing page para acceso anticipado."""
+    return render(request, 'core/landing.html')
  
  

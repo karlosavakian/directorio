@@ -1,0 +1,11 @@
+.landing-body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.landing-logo {
+    width: 120px;
+    height: auto;
+}
