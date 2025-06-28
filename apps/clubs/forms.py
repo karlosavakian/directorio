@@ -175,10 +175,11 @@ class ClubPhotoForm(forms.ModelForm):
 class HorarioForm(forms.ModelForm):
     class Meta:
         model = models.Horario
-        fields = ['dia', 'hora_inicio', 'hora_fin']
+        fields = ['dia', 'hora_inicio', 'hora_fin', 'estado']
         widgets = {
             'hora_inicio': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
             'hora_fin': forms.TimeInput(format='%H:%M', attrs={'type': 'time'}),
+            'estado': forms.Select(attrs={'class': 'form-select form-select-sm'}),
         }
 
 

@@ -13,6 +13,14 @@
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
   </div>
   <div class="profile-content">
+    <form id="top-upload-form" method="post" enctype="multipart/form-data" action="{% url 'clubphoto_upload' club.slug %}" class="mb-3 w-100">
+      {% csrf_token %}
+      <div class="photo-dropzone mb-2">
+        <input type="file" name="image" id="id_top_gallery_image" multiple class="d-none">
+        <div class="photo-dropzone-msg">Arrastra imágenes aquí o haz clic para seleccionar</div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm">Subir</button>
+    </form>
     <div id="tab-profile" class="profile-section active">
       <h1 class="h3 mb-4">Administrar {{ club.name }}</h1>
       <form method="post" action="{% url 'club_edit' club.slug %}" enctype="multipart/form-data" class="profile-form">
@@ -141,20 +149,36 @@
       </form>
     </div>
     <div id="tab-gallery" class="profile-section">
-      <a href="{% url 'clubphoto_upload' club.slug %}" class="btn btn-secondary btn-sm mb-3">Añadir foto</a>
-      <ul>
+      <form id="upload-form" method="post" enctype="multipart/form-data" action="{% url 'clubphoto_upload' club.slug %}" class="mb-3">
+        {% csrf_token %}
+        <div class="photo-dropzone mb-2">
+          <input type="file" name="image" id="id_gallery_image" multiple class="d-none">
+          <div class="photo-dropzone-msg">Arrastra imágenes aquí o haz clic para seleccionar</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Subir</button>
+      </form>
+      <div class="d-flex justify-content-between mb-2">
+        <button id="toggle-select" type="button" class="btn btn-sm btn-outline-secondary">Seleccionar</button>
+        <form id="bulk-delete-form" method="post" action="{% url 'clubphoto_bulk_delete' club.slug %}">
+          {% csrf_token %}
+          <input type="hidden" name="ids" id="delete-ids">
+          <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+        </form>
+      </div>
+      <div id="gallery-grid" class="gallery-grid">
         {% for photo in club.photos.all %}
-        <li class="mb-2">
-          <img src="{{ photo.image.url }}" style="width: 100px; height: 80px; object-fit: cover;">
-          <form method="post" action="{% url 'clubphoto_delete' photo.id %}" class="d-inline">
+        <div class="gallery-item position-relative{% if photo.is_main %} main{% endif %}">
+          <img src="{{ photo.image.url }}" alt="foto" class="w-100 h-100 object-fit-cover rounded">
+          <input type="checkbox" class="photo-checkbox" value="{{ photo.id }}">
+          <form method="post" action="{% url 'clubphoto_set_main' photo.id %}" class="set-main-form">
             {% csrf_token %}
-            <button type="submit" class="btn btn-link p-0">Eliminar</button>
+            <button type="submit" class="btn btn-light btn-sm">Principal</button>
           </form>
-        </li>
+        </div>
         {% empty %}
-        <li>No hay fotos.</li>
+        <p>No hay fotos.</p>
         {% endfor %}
-      </ul>
+      </div>
     </div>
     <div id="tab-schedule" class="profile-section">
       <a href="{% url 'clase_create' club.slug %}" class="btn btn-secondary btn-sm me-2 mb-3">Añadir clase</a>
@@ -189,7 +213,13 @@
       <td>
         {% for bloque in horarios_por_dia|get_item:dia %}
           <div class="d-flex justify-content-between align-items-center border rounded p-1 mb-1">
-            <span>{{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}</span>
+            <span>
+              {% if bloque.estado == 'abierto' %}
+                {{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}
+              {% else %}
+                <span class="text-danger">Cerrado</span>
+              {% endif %}
+            </span>
             <span>
               <!-- Editar -->
               <a data-bs-toggle="collapse" href="#edit-{{ bloque.id }}" role="button" aria-expanded="false" aria-controls="edit-{{ bloque.id }}" class="btn btn-sm btn-link me-2">
@@ -214,6 +244,12 @@
                 <div class="col">
                   <input type="time" name="hora_fin" value="{{ bloque.hora_fin|time:'H:i' }}" class="form-control form-control-sm" required>
                 </div>
+                <div class="col">
+                  <select name="estado" class="form-select form-select-sm">
+                    <option value="abierto" {% if bloque.estado == 'abierto' %}selected{% endif %}>Abierto</option>
+                    <option value="cerrado" {% if bloque.estado == 'cerrado' %}selected{% endif %}>Cerrado</option>
+                  </select>
+                </div>
                 <div class="col-auto">
                   <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
                 </div>
@@ -237,6 +273,12 @@
         </div>
         <div class="col">
           <input type="time" name="hora_fin" class="form-control form-control-sm" required>
+        </div>
+        <div class="col">
+          <select name="estado" class="form-select form-select-sm">
+            <option value="abierto">Abierto</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
         </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
@@ -329,4 +371,6 @@
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+<script src="{% static 'js/schedule-form.js' %}"></script>
+<script src="{% static 'js/gallery-manager.js' %}"></script>
 {% endblock %}
