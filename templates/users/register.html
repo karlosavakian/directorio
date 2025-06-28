@@ -39,14 +39,7 @@
 <div class="col-md-6 d-flex flex-column align-items-center justify-content-start py-5">
     <!-- Logo -->
     <div class="mb-4">
-        <a href="/" class="navbar-brand d-flex align-items-center">
-            <img src="{% static 'img/logo.svg' %}" alt="Logo" height="50px">
-            <div class="ms-2 d-grid lh-1" style="font-weight:800;">
-                <span>CLUBS</span>
-                <span> DE BOXEO</span>
-                <span>.COM</span>
-            </div>
-        </a>
+                {% include 'partials/_header-logo.html' %}
     </div>
 
     <!-- Card -->
@@ -83,8 +76,9 @@
 
 <!-- Password1 -->
 <div class="form-field">
+    <button type="button" class="clear-btn me-4">x</button>
     <input type="password" name="{{ form.password1.name }}" class="form-control" id="{{ form.password1.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-    <button type="button" class="clear-btn">×</button>
+    
     <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
     {% if form.password1.errors %}
       <div class="invalid-feedback d-block">
@@ -97,8 +91,8 @@
 
 <!-- Password2 -->
 <div class="form-field">
+    <button type="button" class="clear-btn me-4">x</button>
     <input type="password" name="{{ form.password2.name }}" class="form-control" id="{{ form.password2.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-    <button type="button" class="clear-btn">×</button>
     <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
     {% if form.password2.errors %}
       <div class="invalid-feedback d-block">

@@ -1,17 +1,18 @@
-{% load socialaccount %}
-   
-               <form method="post">
+ {% load socialaccount %}
+ 
+            <form method="post" class="profile-form">
                 {% csrf_token %}
 
-                <div class="mb-3">
-                    <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
-             
+                <div class="form-field">
                     <input type="text"
                            name="{{ form.username.name }}"
                            value="{{ form.username.value|default_if_none:'' }}"
                            class="form-control"
                            id="{{ form.username.id_for_label }}"
+                           placeholder=" "
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                    <button type="button" class="clear-btn">×</button>
+                    <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
                     {% if form.username.errors %}
                       <div class="invalid-feedback d-block">
                         {{ form.username.errors.as_text|striptags }}
@@ -19,23 +20,17 @@
                     {% endif %}
                 </div>
 
-                <div class="mb-3">
+
+                <div class="form-field">
+                  <button type="button" class="clear-btn me-4">x</button>
+                    <input type="password"
+                           name="{{ form.password.name }}"
+                           class="form-control"
+                           id="{{ form.password.id_for_label }}"
+                           placeholder=" "
+                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                    
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
-                    <div class="input-group"> 
-                        <input type="password"
-                               name="{{ form.password.name }}"
-                               class="form-control"
-                               id="{{ form.password.id_for_label }}"
-                               required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-                        <button type="button" class="btn btn-outline-secondary" id="toggle-password">
-
-
-                           <svg class="bi bi-eye"   width="16" height="16" fill="currentColor"data-name="Layer 2" id="ea45fd26-b78a-4b07-94cc-e94b7852e5cc" viewBox="0 0 35 35" xmlns="http://www.w3.org/2000/svg"><path d="M17.5,23.625A6.125,6.125,0,1,1,23.624,17.5,6.132,6.132,0,0,1,17.5,23.625Zm0-9.749A3.625,3.625,0,1,0,21.124,17.5,3.629,3.629,0,0,0,17.5,13.876Z"/><path d="M17.494,29.079A19.508,19.508,0,0,1,.831,19.616a4.119,4.119,0,0,1,0-4.232,19.269,19.269,0,0,1,16.66-9.463,19.54,19.54,0,0,1,16.672,9.462,4.118,4.118,0,0,1,0,4.234A19.517,19.517,0,0,1,17.494,29.079Zm0-20.658A16.792,16.792,0,0,0,2.978,16.669a1.643,1.643,0,0,0,0,1.666,16.994,16.994,0,0,0,14.516,8.244,16.784,16.784,0,0,0,14.528-8.244,1.644,1.644,0,0,0,0-1.668A16.8,16.8,0,0,0,17.494,8.421Z"/></svg>
-
-
-                             
-                        </button>
-                    </div>
                     {% if form.password.errors %}
                       <div class="invalid-feedback d-block">
                         {{ form.password.errors.as_text|striptags }}
@@ -47,7 +42,6 @@
                       </div>
                     {% endif %}
                 </div>
-
                 <div class="form-check mb-3">
                     <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
                     <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>

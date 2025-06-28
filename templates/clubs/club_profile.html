@@ -7,8 +7,27 @@
         {% include 'partials/_back-btn.html' %}
         <div class="row">
             <!-- Columna Izquierda: Info del Club -->
-            <div class="col-lg-2  ">
-                {% if club.logo %}<img src="{{ club.logo.url }}" alt="{{ club.name }}">{% endif %}
+            <div class="col-lg-2 ">
+         <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center" style="height: 200px;">
+            {% if club.logo %}
+                <img src="{{ club.logo.url }}"
+                    class="w-100 h-100"
+                    style="object-fit: contain;"
+                    alt="{{ club.name }}">
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center w-100 h-100 bg-dark">
+  <span class="d-flex flex-column align-items-center text-white">
+                    <svg fill="#fff" width="50px" height="50px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"> <g data-name="Layer 28" id="Layer_28">
+
+                        <path d="M32,3A29,29,0,1,0,61,32,29,29,0,0,0,32,3Zm0,56A27,27,0,1,1,59,32,27,27,0,0,1,32,59ZM43,37a1,1,0,0,1-1,1H22a1,1,0,0,1,0-2H42A1,1,0,0,1,43,37Zm5.71-19.29L44.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L43,23.41l-4.29,4.3a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L41.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L43,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42ZM23,23.41l-4.29,4.3a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L21.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L23,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42L24.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0Z"/>
+
+                        </g>
+
+                        </svg>
+                    <small class="mt-2">Sin logo</small></span>
+                </div>
+            {% endif %}
+            </div>
                 <div class="d-flex align-items-start mt-4 mb-4 gap-3 ">
                     <div>
                         <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
