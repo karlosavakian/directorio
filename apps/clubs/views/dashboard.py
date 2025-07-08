@@ -48,7 +48,6 @@ def dashboard(request, slug):
         return redirect('home')
     classes = club.clases.all()
     coaches = club.entrenadores.all()
-    posts = club.posts.filter(parent__isnull=True).select_related('user').prefetch_related('replies__user')
     bookings = Booking.objects.filter(
         Q(clase__club=club) | Q(evento__club=club)
     ).select_related('user', 'clase', 'evento')
@@ -63,7 +62,6 @@ def dashboard(request, slug):
             'dias_semana': dias_semana,
             'horarios_por_dia': horarios_por_dia,
             'classes': classes,
-            'posts': posts,
             'bookings': bookings,
             'form': form,
             'coaches': coaches,

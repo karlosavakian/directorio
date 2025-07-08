@@ -154,13 +154,13 @@
 /* Gallery styles */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
 .gallery-item {
   position: relative;
-  height: 100px;
+  height: 150px;
   overflow: hidden;
 }
 
