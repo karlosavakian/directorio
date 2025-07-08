@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const zone = document.querySelector('.photo-dropzone');
-  if (zone) {
+  document.querySelectorAll('.photo-dropzone').forEach(zone => {
     const input = zone.querySelector('input[type="file"]');
     const msg = zone.querySelector('.photo-dropzone-msg');
+    if (!input || !msg) return;
     const showCount = () => {
       if (input.files.length) {
         msg.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showCount();
     });
     input.addEventListener('change', showCount);
-  }
+  });
 
   const selectBtn = document.getElementById('toggle-select');
   const gallery = document.getElementById('gallery-grid');
