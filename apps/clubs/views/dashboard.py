@@ -171,7 +171,8 @@ def photo_bulk_delete(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        ids = request.POST.getlist('ids')
+        ids_str = request.POST.get('ids', '')
+        ids = [int(i) for i in ids_str.split(',') if i]
         ClubPhoto.objects.filter(club=club, id__in=ids).delete()
         messages.success(request, 'Fotos eliminadas correctamente.')
     return redirect('club_dashboard', slug=club.slug)

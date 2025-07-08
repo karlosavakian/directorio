@@ -22,7 +22,12 @@
                     <div class="avatar-dropzone">
                          {{ form.avatar }}
 
-                        <div class="avatar-preview{% if profile.avatar %} has-image{% endif %}"{% if profile.avatar %} style="background-image:url('{{ profile.avatar.url }}')"{% endif %}>{% if not profile.avatar %}+{% endif %}</div>
+                        <div class="avatar-preview{% if profile.avatar %} has-image{% endif %}"{% if profile.avatar %} style="background-image:url('{{ profile.avatar.url }}')"{% endif %}>
+                            <div class="avatar-dropzone-msg">
+                                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                                <span>Sube tu avatar</span>
+                            </div>
+                        </div>
                     </div>
                     <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
                     {% if form.avatar.errors %}
