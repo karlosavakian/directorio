@@ -66,6 +66,16 @@ def club_profile(request, slug):
     else:  # relevantes (por defecto)
         reseñas = reseñas.order_by('-creado')  # puedes mejorar esto más adelante
 
+    # Attach forms for editing
+    posts = list(posts)
+    for p in posts:
+        p.edit_form = ClubPostForm(instance=p)
+
+    if not isinstance(reseñas, list):
+        reseñas = list(reseñas)
+    for r in reseñas:
+        r.edit_form = ReseñaForm(instance=r)
+
     return render(request, 'clubs/club_profile.html', {
         'club': club,
         'reseñas': reseñas,
@@ -107,5 +117,10 @@ def ajax_reviews(request, slug):
         reseñas = sorted(reseñas, key=lambda r: r.promedio())
     else:
         reseñas = reseñas.order_by('-creado')
+
+    if not isinstance(reseñas, list):
+        reseñas = list(reseñas)
+    for r in reseñas:
+        r.edit_form = ReseñaForm(instance=r)
 
     return render(request, 'clubs/reviews_list.html', {'reseñas': reseñas})
