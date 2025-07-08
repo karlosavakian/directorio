@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.avatar-dropzone').forEach(zone => {
     const input = zone.querySelector('input[type="file"]');
     const preview = zone.querySelector('.avatar-preview');
+    const msg = preview.querySelector('.avatar-dropzone-msg');
     if (!input || !preview) return;
 
     const showFile = file => {
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
       reader.onload = e => {
         preview.style.backgroundImage = `url('${e.target.result}')`;
         preview.classList.add('has-image');
-        preview.textContent = '';
+        if (msg) msg.style.display = 'none';
       };
       reader.readAsDataURL(file);
     };
