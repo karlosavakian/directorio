@@ -1,0 +1,32 @@
+<div class="modal fade" id="editPostModal{{ post.pk }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{% url 'clubpost_update' post.pk %}" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar publicación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="mb-2">
+                        {{ post.edit_form.contenido }}
+                    </div>
+                    <div class="mb-2 d-flex align-items-center gap-2">
+                        {{ post.edit_form.image }}
+                        <label for="id_image" class="btn p-0" title="Adjuntar imagen">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M2.75 7.75a4.25 4.25 0 1 1 8.5 0v9a2.75 2.75 0 0 1-5.5 0v-8.25h1V16.75a1.75 1.75 0 1 0 3.5 0v-9a3.25 3.25 0 1 0-6.5 0v9a5.25 5.25 0 0 0 10.5 0v-9h1v9a6.25 6.25 0 0 1-12.5 0v-9Z"/>
+                            </svg>
+                        </label>
+                    </div>
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="img-fluid rounded mb-2" style="max-height:300px;" alt="imagen">
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark btn-sm">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
