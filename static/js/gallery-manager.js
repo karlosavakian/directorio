@@ -2,12 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.photo-dropzone').forEach(zone => {
     const input = zone.querySelector('input[type="file"]');
     const msg = zone.querySelector('.photo-dropzone-msg');
-    if (!input || !msg) return;
+    const text = msg && msg.querySelector('span');
+    if (!input || !msg || !text) return;
     const showCount = () => {
       if (input.files.length) {
-        msg.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
+        text.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
       } else {
-        msg.textContent = 'Arrastra imágenes aquí o haz clic para seleccionar';
+        text.textContent = 'Arrastra imágenes aquí o haz clic para seleccionar';
       }
     };
     zone.addEventListener('click', () => input.click());
