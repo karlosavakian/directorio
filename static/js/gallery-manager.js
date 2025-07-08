@@ -26,12 +26,20 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const selectBtn = document.getElementById('toggle-select');
+  const selectAllBtn = document.getElementById('select-all');
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
 
   selectBtn && selectBtn.addEventListener('click', () => {
     gallery.classList.toggle('select-mode');
+    if (selectAllBtn) selectAllBtn.classList.toggle('d-none');
+  });
+
+  selectAllBtn && selectAllBtn.addEventListener('click', () => {
+    const boxes = gallery.querySelectorAll('.photo-checkbox');
+    const allChecked = Array.from(boxes).every(cb => cb.checked);
+    boxes.forEach(cb => { cb.checked = !allChecked; });
   });
 
   deleteForm && deleteForm.addEventListener('submit', e => {
