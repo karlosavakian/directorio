@@ -55,12 +55,13 @@ class ReseñaForm(forms.ModelForm):
         },
     )
     images = forms.FileField(
-        label='Adjuntar fotos',
+        label='Adjuntar fotos', 
         widget=forms.FileInput(attrs={
             'multiple': True,
             'class': 'd-none',
             'id': 'id_review_images'
-        }),
+        }), 
+        widget=forms.ClearableFileInput(attrs={'multiple': True, 'class': 'd-none', 'id': 'id_review_images'}),
         required=False
     )
 
