@@ -360,6 +360,11 @@ textarea.form-control {
   text-align: center;
 }
 
+/* Thumbnails para fotos de reseñas */
+.review-thumb {
+  cursor: pointer;
+}
+
 .competitors-table {
   border-collapse: collapse;
 }
