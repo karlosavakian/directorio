@@ -79,3 +79,14 @@ def youtube_embed(text):
     html = f"<p>{safe_text}</p>" if cleaned else ""
     html += embed
     return mark_safe(html)
+
+
+@register.filter
+def safe_url(file_field):
+    """Return the file URL or empty string if missing."""
+    try:
+        if file_field:
+            return file_field.url
+    except (ValueError, AttributeError):
+        return ""
+    return ""
