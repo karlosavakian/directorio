@@ -1,11 +1,58 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div class="container py-4">
+  {% include 'partials/_back-btn.html' %}
   <h1 class="h5">{% if entrenador %}Editar{% else %}Nuevo{% endif %} entrenador</h1>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" class="profile-form">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="form-field">
+      <div class="avatar-dropzone">
+        {{ form.avatar }}
+        <div class="avatar-preview{% if entrenador and entrenador.avatar %} has-image{% endif %}"{% if entrenador and entrenador.avatar %} style="background-image:url('{{ entrenador.avatar.url }}')"{% endif %}>
+          <div class="avatar-dropzone-msg">
+            <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+            <span>Sube avatar</span>
+          </div>
+        </div>
+      </div>
+      <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
+      {% if form.avatar.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.avatar.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    {% for field in form %}
+      {% if field.name != 'avatar' %}
+        {% if field.field.widget.input_type == 'checkbox' %}
+        <div class="form-field checkbox-field">
+          {{ field }}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% if field.errors %}
+          <div class="invalid-feedback d-block">
+            {{ field.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+        {% else %}
+        <div class="form-field">
+          {{ field }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% if field.errors %}
+          <div class="invalid-feedback d-block">
+            {{ field.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>
 </div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/avatar-dropzone.js' %}"></script>
 {% endblock %}

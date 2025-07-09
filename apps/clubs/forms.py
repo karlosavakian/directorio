@@ -196,9 +196,55 @@ class CompetidorForm(forms.ModelForm):
             'palmares',
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (
+                forms.TextInput,
+                forms.EmailInput,
+                forms.URLInput,
+                forms.NumberInput,
+                forms.PasswordInput,
+                forms.Textarea,
+                forms.DateInput,
+                forms.TimeInput,
+            )):
+                field.widget.attrs.setdefault('placeholder', ' ')
+
+        avatar_widget = self.fields.get('avatar')
+        if avatar_widget:
+            css = avatar_widget.widget.attrs.get('class', '')
+            avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
 
 class EntrenadorForm(forms.ModelForm):
     class Meta:
         model = models.Entrenador
         exclude = ['slug', 'club']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            # Avoid adding form-control to checkbox inputs
+            if not isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (
+                forms.TextInput,
+                forms.EmailInput,
+                forms.URLInput,
+                forms.NumberInput,
+                forms.PasswordInput,
+                forms.Textarea,
+                forms.DateInput,
+                forms.TimeInput,
+            )):
+                field.widget.attrs.setdefault('placeholder', ' ')
+
+        avatar_widget = self.fields.get('avatar')
+        if avatar_widget:
+            css = avatar_widget.widget.attrs.get('class', '')
+            avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
