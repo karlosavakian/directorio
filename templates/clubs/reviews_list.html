@@ -1,6 +1,6 @@
 {% load star_rating %}
 {% for reseña in reseñas %}
-  <div class="mb-3 rounded position-relative">
+  <div class="mb-3 rounded position-relative{% if user.is_authenticated and user == reseña.usuario %} bg-light{% endif %}">
     <div class="row justify-content-between"> 
       <!-- Columna izquierda (3 col): avatar -->
       <div class="col-1 d-flex flex-column align-items-start justify-content-start  ">
