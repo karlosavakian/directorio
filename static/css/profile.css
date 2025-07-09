@@ -122,8 +122,8 @@
 }
 /* Avatar dropzone styles */
 .avatar-dropzone {
-  width: 120px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   position: relative;
 }
 .avatar-dropzone input[type="file"] {
@@ -133,7 +133,7 @@
   width: 100%;
   height: 100%;
   border: 2px dashed #666;
-  border-radius: 50%;
+  border-radius: 0;
   background-size: cover;
   background-position: center;
   cursor: pointer;
