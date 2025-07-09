@@ -11,6 +11,7 @@ from .models import (
     Entrenador,
     EntrenadorPhoto,
     TrainingLevel,
+    ReseñaPhoto,
 )
 from django import forms 
 
@@ -112,4 +113,9 @@ class EntrenadorAdmin(admin.ModelAdmin):
         'bio',
         'niveles',
     )
+
+
+@admin.register(ReseñaPhoto)
+class ReseñaPhotoAdmin(admin.ModelAdmin):
+    list_display = ('reseña', 'uploaded_at')
 
