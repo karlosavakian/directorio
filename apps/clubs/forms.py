@@ -54,6 +54,15 @@ class ReseñaForm(forms.ModelForm):
             'min_length': 'El comentario debe tener al menos 200 caracteres.'
         },
     )
+    images = forms.FileField(
+        label='Adjuntar fotos',
+        widget=forms.FileInput(attrs={
+            'multiple': True,
+            'class': 'd-none',
+            'id': 'id_review_images'
+        }),
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

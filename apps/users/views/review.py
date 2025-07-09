@@ -1,7 +1,7 @@
 # Vistas para gestionar reseñas de clubes
 
 from django.shortcuts import render, get_object_or_404, redirect
-from apps.clubs.models import Reseña, Club
+from apps.clubs.models import Reseña, Club, ReseñaPhoto
 from apps.clubs.forms import ReseñaForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -15,13 +15,18 @@ def dejar_reseña(request, slug):
     club = get_object_or_404(Club, slug=slug)
 
     if request.method == 'POST':
-        form = ReseñaForm(request.POST)
+        form = ReseñaForm(request.POST, request.FILES)
         if form.is_valid():
             reseña = form.save(commit=False)
             reseña.club = club
             reseña.usuario = request.user
             reseña.stars = reseña.promedio()  # nota calculada automáticamente
             reseña.save()
+            for img in request.FILES.getlist('images'):
+                if img.size > 5 * 1024 * 1024:
+                    messages.error(request, 'La imagen supera el tamaño máximo permitido (5MB).')
+                    continue
+                ReseñaPhoto.objects.create(reseña=reseña, image=img)
             messages.success(request, '¡Gracias por dejar tu reseña!')
             return redirect('club_profile', slug=slug)
     else:
