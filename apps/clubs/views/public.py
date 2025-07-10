@@ -66,6 +66,15 @@ def club_profile(request, slug):
     else:  # relevantes (por defecto)
         reseñas = reseñas.order_by('-creado')  # puedes mejorar esto más adelante
 
+    # Ensure the logged in user's review is shown first
+    if request.user.is_authenticated:
+        if not isinstance(reseñas, list):
+            reseñas = list(reseñas)
+        user_review = next((r for r in reseñas if r.usuario == request.user), None)
+        if user_review:
+            reseñas.remove(user_review)
+            reseñas.insert(0, user_review)
+
     # Attach forms for editing
     posts = list(posts)
     for p in posts:
@@ -117,6 +126,14 @@ def ajax_reviews(request, slug):
         reseñas = sorted(reseñas, key=lambda r: r.promedio())
     else:
         reseñas = reseñas.order_by('-creado')
+
+    if request.user.is_authenticated:
+        if not isinstance(reseñas, list):
+            reseñas = list(reseñas)
+        user_review = next((r for r in reseñas if r.usuario == request.user), None)
+        if user_review:
+            reseñas.remove(user_review)
+            reseñas.insert(0, user_review)
 
     if not isinstance(reseñas, list):
         reseñas = list(reseñas)

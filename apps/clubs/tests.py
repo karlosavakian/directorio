@@ -116,3 +116,55 @@ class DashboardPermissionTests(TestCase):
         url = reverse('clubpost_create', args=[self.club.slug])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
         self.assertEqual(response.status_code, 403)
+
+
+class UserReviewFirstTests(TestCase):
+    def setUp(self):
+        self.club = Club.objects.create(
+            name='My Club',
+            city='City',
+            address='Addr',
+            phone='111',
+            email='club@example.com',
+        )
+        self.user1 = User.objects.create_user(username='user1', password='pass')
+        self.user2 = User.objects.create_user(username='user2', password='pass')
+
+        self.review1 = Reseña.objects.create(
+            club=self.club,
+            usuario=self.user1,
+            titulo='U1',
+            instalaciones=5,
+            entrenadores=5,
+            ambiente=5,
+            calidad_precio=5,
+            variedad_clases=5,
+            comentario='great',
+        )
+        self.review2 = Reseña.objects.create(
+            club=self.club,
+            usuario=self.user2,
+            titulo='U2',
+            instalaciones=4,
+            entrenadores=4,
+            ambiente=4,
+            calidad_precio=4,
+            variedad_clases=4,
+            comentario='ok',
+        )
+
+    def test_user_review_first_in_profile(self):
+        self.client.login(username='user1', password='pass')
+        url = reverse('club_profile', args=[self.club.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        reviews = list(response.context['reseñas'])
+        self.assertEqual(reviews[0].usuario, self.user1)
+
+    def test_user_review_first_in_ajax(self):
+        self.client.login(username='user1', password='pass')
+        url = reverse('ajax_reviews', args=[self.club.slug])
+        response = self.client.get(url, {'orden': 'recientes'}, HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+        self.assertEqual(response.status_code, 200)
+        reviews = list(response.context['reseñas'])
+        self.assertEqual(reviews[0].usuario, self.user1)
