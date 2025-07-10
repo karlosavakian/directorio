@@ -9,8 +9,8 @@ def home(request):
     })
 
 
-def faq(request):
+def ayuda(request):
     """Display frequently asked questions."""
-    return render(request, 'core/faq.html')
+    return render(request, 'core/ayuda.html')
 
 
