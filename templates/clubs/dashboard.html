@@ -516,7 +516,7 @@
         class="btn btn-secondary btn-sm mb-3"
         >Añadir entrenador</a
       >
-      <div class="row ">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for coach in club.entrenadores.all %}
         <div class="col">
           <div class="card h-100 text-center">
@@ -541,7 +541,7 @@
                                                         </svg>
       </a>
 
-      <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="d-flex align-items-center p-0 m-0">
+      <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="d-flex align-items-center p-0 m-0 delete-profile-form">
         {% csrf_token %}
         <button type="submit" class="btn btn-link text-danger p-0 m-0 d-flex align-items-center">
               <svg style="height:15px"
@@ -567,7 +567,7 @@
         class="btn btn-secondary btn-sm mb-3"
         >Añadir competidor</a
       >
-      <div class="row ">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for comp in club.competidores.all %}
         <div class="col">
           <div class="card h-100 text-center">
@@ -595,7 +595,7 @@
                       </svg>
       </a>
 
-      <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-flex align-items-center p-0 m-0">
+      <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-flex align-items-center p-0 m-0 delete-profile-form">
         {% csrf_token %}
         <button type="submit" class="btn btn-link text-danger p-0 m-0 d-flex align-items-center">
              <svg
@@ -645,10 +645,30 @@
     </div>
   </div>
 </div>
+<!-- Confirm Delete Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar eliminación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Seguro que deseas eliminar este perfil?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger confirm-delete">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
 <script src="{% static 'js/schedule-form.js' %}"></script>
 <script src="{% static 'js/gallery-manager.js' %}"></script>
+<script src="{% static 'js/delete-confirm.js' %}"></script>
 {% endblock %}
