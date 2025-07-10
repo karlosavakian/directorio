@@ -17,9 +17,9 @@ class YoutubeEmbedTests(SimpleTestCase):
         self.assertIn('&lt;script&gt;alert(1)&lt;/script&gt;', html)
 
 
-class FaqViewTests(SimpleTestCase):
-    def test_faq_url_resolves(self):
-        response = self.client.get('/faq/')
+class AyudaViewTests(SimpleTestCase):
+    def test_ayuda_url_resolves(self):
+        response = self.client.get('/ayuda/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'core/faq.html')
+        self.assertTemplateUsed(response, 'core/ayuda.html')
 
