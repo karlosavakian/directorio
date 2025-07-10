@@ -7,5 +7,10 @@ def home(request):
     return render(request, 'core/home.html', {
         'search_query': search_query,
     })
+
+
+def faq(request):
+    """Display frequently asked questions."""
+    return render(request, 'core/faq.html')
  
  
