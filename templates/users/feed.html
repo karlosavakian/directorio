@@ -79,7 +79,7 @@
                             <form method="post" action="{% url 'clubpost_reply' post.pk %}" class="d-flex flex-grow-1 gap-2">
                                 {% csrf_token %}
                                 {{ reply_form.contenido }}
-                                <button type="submit" class="btn btn-primary btn-sm">Responder</button>
+                                <button type="submit" class="btn btn-dark btn-sm">Responder</button>
                             </form>
                         </div>
                     {% else %}

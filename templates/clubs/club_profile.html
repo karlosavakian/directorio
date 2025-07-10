@@ -338,11 +338,11 @@
                                             {% if user.is_authenticated %}
                                                 <form action="{% url 'book_clase' c.id %}" method="post" class="ms-2">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-sm btn-primary">Reservar</button>
+                                                    <button type="submit" class="btn btn-sm btn-dark">Reservar</button>
                                                 </form>
                                             {% else %}
                                                 <button type="button"
-                                                        class="btn btn-sm btn-primary ms-2"
+                                                        class="btn btn-sm btn-dark ms-2"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#signupModal">Reservar</button>
                                             {% endif %}
@@ -502,7 +502,7 @@
                                                   class="d-flex flex-grow-1 gap-2">
                                                 {% csrf_token %}
                                                 {{ reply_form.contenido }}
-                                                <button type="submit" class="btn btn-primary btn-sm">Responder</button>
+                                                <button type="submit" class="btn btn-dark btn-sm">Responder</button>
                                             </form>
                                         </div>
                                     {% else %}
