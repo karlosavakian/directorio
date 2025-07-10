@@ -394,3 +394,16 @@ textarea.form-control {
   stroke: #000;
 }
 
+
+.review-filter-dropdown .selected-text {
+    display: inline-flex;
+    align-items: center;
+}
+
+.review-filter-dropdown .select-arrow {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-left: 5px;
+    pointer-events: auto;
+}
