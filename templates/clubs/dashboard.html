@@ -511,12 +511,8 @@
       </div>
     </div>
     <div id="tab-coaches" class="profile-section">
-      <a
-        href="{% url 'entrenador_create' club.slug %}"
-        class="btn btn-secondary btn-sm mb-3"
-        >Añadir entrenador</a
-      >
-      <div class="row ">
+      <button type="button" class="btn btn-secondary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#entrenadorModal">Añadir entrenador</button>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3">
         {% for coach in club.entrenadores.all %}
         <div class="col">
           <div class="card h-100 text-center">
@@ -527,12 +523,9 @@
                 <span class="text-muted">{{ coach.nombre|first|upper }}</span>
               </div>
             {% endif %}
-          <div class="card-body p-2">
-  <div class="d-flex justify-content-between align-items-center">
-    <span class="fw-medium">{{ coach.nombre }} {{ coach.apellidos }}</span>
-
-    <!-- Iconos alineados -->
-    <div class="d-flex align-items-center gap-2">
+          <div class="card-body p-2 text-center">
+  <div class="fw-medium mb-1">{{ coach.nombre }} {{ coach.apellidos }}</div>
+    <div class="d-flex justify-content-center gap-2">
       <a href="{% url 'entrenador_update' coach.id %}" class="text-decoration-none d-flex align-items-center p-0">
         <svg style="height:15px"
                                                              viewBox="0 0 512 512"
@@ -541,7 +534,7 @@
                                                         </svg>
       </a>
 
-      <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="d-flex align-items-center p-0 m-0">
+      <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="delete-form d-flex align-items-center p-0 m-0">
         {% csrf_token %}
         <button type="submit" class="btn btn-link text-danger p-0 m-0 d-flex align-items-center">
               <svg style="height:15px"
@@ -554,6 +547,111 @@
     </div>
   </div>
 </div>
+<!-- Entrenador Modal -->
+<div class="modal fade" id="entrenadorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Nuevo entrenador</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="post" action="{% url 'entrenador_create' club.slug %}" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="avatar-dropzone">
+              {{ entrenador_form.avatar }}
+              <div class="avatar-preview">
+                <div class="avatar-dropzone-msg">
+                  <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                  <span>Sube avatar</span>
+                </div>
+              </div>
+            </div>
+            <label for="{{ entrenador_form.avatar.id_for_label }}">{{ entrenador_form.avatar.label }}</label>
+          </div>
+          {% for field in entrenador_form %}
+            {% if field.name != 'avatar' %}
+              {% if field.field.widget.input_type == 'checkbox' %}
+              <div class="form-field checkbox-field">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% else %}
+              <div class="form-field">
+                {{ field }}
+                <button type="button" class="clear-btn">×</button>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Competidor Modal -->
+<div class="modal fade" id="competidorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Nuevo competidor</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="post" action="{% url 'competidor_create' club.slug %}" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="form-field">
+            <div class="avatar-dropzone">
+              {{ competidor_form.avatar }}
+              <div class="avatar-preview">
+                <div class="avatar-dropzone-msg">
+                  <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                  <span>Sube avatar</span>
+                </div>
+              </div>
+            </div>
+            <label for="{{ competidor_form.avatar.id_for_label }}">{{ competidor_form.avatar.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.nombre }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ competidor_form.nombre.id_for_label }}">{{ competidor_form.nombre.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.record }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ competidor_form.record.id_for_label }}">{{ competidor_form.record.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.modalidad }}
+            <label for="{{ competidor_form.modalidad.id_for_label }}">{{ competidor_form.modalidad.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.peso }}
+            <label for="{{ competidor_form.peso.id_for_label }}">{{ competidor_form.peso.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.sexo }}
+            <label for="{{ competidor_form.sexo.id_for_label }}">{{ competidor_form.sexo.label }}</label>
+          </div>
+          <div class="form-field">
+            {{ competidor_form.palmares }}
+            <label for="{{ competidor_form.palmares.id_for_label }}">{{ competidor_form.palmares.label }}</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
           </div>
         </div>
         {% empty %}
@@ -562,12 +660,8 @@
       </div>
     </div>
     <div id="tab-competitors" class="profile-section">
-      <a
-        href="{% url 'competidor_create' club.slug %}"
-        class="btn btn-secondary btn-sm mb-3"
-        >Añadir competidor</a
-      >
-      <div class="row ">
+      <button type="button" class="btn btn-secondary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#competidorModal">Añadir competidor</button>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-3">
         {% for comp in club.competidores.all %}
         <div class="col">
           <div class="card h-100 text-center">
@@ -578,11 +672,10 @@
                 <span class="text-muted">{{ comp.nombre|initials }}</span>
               </div>
             {% endif %}
-             <div class="card-body p-2">
-  <div class="d-flex justify-content-between align-items-center">
-    <span class="fw-medium">{{ comp.nombre }}</span>
+             <div class="card-body p-2 text-center">
+  <div class="fw-medium mb-1">{{ comp.nombre }}</div>
 
-    <div class="d-flex align-items-center gap-2">
+    <div class="d-flex justify-content-center gap-2">
       <a href="{% url 'competidor_update' comp.id %}" class="text-decoration-none d-flex align-items-center p-0">
                               <svg
                         style="height: 15px"
@@ -595,7 +688,7 @@
                       </svg>
       </a>
 
-      <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-flex align-items-center p-0 m-0">
+      <form method="post" action="{% url 'competidor_delete' comp.id %}" class="delete-form d-flex align-items-center p-0 m-0">
         {% csrf_token %}
         <button type="submit" class="btn btn-link text-danger p-0 m-0 d-flex align-items-center">
              <svg
@@ -651,4 +744,13 @@
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
 <script src="{% static 'js/schedule-form.js' %}"></script>
 <script src="{% static 'js/gallery-manager.js' %}"></script>
+<script>
+  document.querySelectorAll('.delete-form').forEach(f => {
+    f.addEventListener('submit', e => {
+      if (!confirm('¿Seguro que deseas eliminar este elemento?')) {
+        e.preventDefault();
+      }
+    });
+  });
+</script>
 {% endblock %}

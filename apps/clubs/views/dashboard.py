@@ -53,6 +53,8 @@ def dashboard(request, slug):
     ).select_related('user', 'clase', 'evento')
 
     form = ClubForm(instance=club)
+    competidor_form = CompetidorForm()
+    entrenador_form = EntrenadorForm()
 
     return render(
         request,
@@ -65,6 +67,8 @@ def dashboard(request, slug):
             'bookings': bookings,
             'form': form,
             'coaches': coaches,
+            'competidor_form': competidor_form,
+            'entrenador_form': entrenador_form,
         },
     )
 @login_required
