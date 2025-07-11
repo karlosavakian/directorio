@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container py-5">
-    <div class="mx-auto" style="max-width:600px;">
+<div class="container-fluid px-3 my-5 col-10">
+    <div class="mx-auto"  >
         <h1 class="text-center mb-2">Registro Profesional</h1>
         <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
 
@@ -35,39 +35,44 @@
         <div id="step2" class="step d-none">
             <div class="mb-3">{{ form.plan.label }}</div>
             <p class="text-muted">Selecciona el plan que prefieras.</p> 
-            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4"> 
-            <div class="row 
-            {% for radio in form.plan %}
-                <div class="col">
-                    <label class="plan-card {% if radio.choice_value == 'amateur' %}featured{% endif %} h-100">
-                        {{ radio.tag }}
-                        <h3 class="mb-2">{{ radio.choice_label }}</h3>
-                        {% if radio.choice_value == 'gratis' %}
-                        <ul>
-                            <li>Presencia básica en el directorio</li>
-                            <li>Publicación de eventos</li>
-                            <li>Acceso a valoraciones</li>
-                        </ul>
-                        <div class="plan-card-price">0€ / mes</div>
-                        {% elif radio.choice_value == 'amateur' %}
-                        <ul>
-                            <li>Todos los beneficios del plan gratuito</li>
-                            <li>Galería de fotos y vídeos</li>
-                            <li>Estadísticas básicas</li>
-                        </ul>
-                        <div class="plan-card-price">9€ / mes</div>
-                        {% elif radio.choice_value == 'pro' %}
-                        <ul>
-                            <li>Promoción destacada en búsquedas</li>
-                            <li>Soporte prioritario</li>
-                            <li>Herramientas de marketing avanzadas</li>
-                        </ul>
-                        <div class="plan-card-price">19€ / mes</div>
-                        {% endif %}
-                    </label>
+             <h1 class="text-center mb-3">Nuestros Planes</h1>
+        <p class="text-center text-muted mb-5">Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.</p>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-5">
+            <div class="col">
+                <div class="plan-card h-100">
+                    <h3 class="mb-2">Plan Gratuito</h3>
+                    <ul>
+                        <li>Presencia básica en el directorio</li>
+                        <li>Publicación de eventos</li>
+                        <li>Acceso a valoraciones</li>
+                    </ul>
+                    <div class="plan-card-price">0€ / mes</div>
                 </div>
-            {% endfor %}
             </div>
+            <div class="col">
+                <div class="plan-card featured h-100">
+                    <h3 class="mb-2">Plan Amateur</h3>
+                    <ul>
+                        <li>Todos los beneficios del plan gratuito</li>
+                        <li>Galería de fotos y vídeos</li>
+                        <li>Estadísticas básicas</li>
+                    </ul>
+                    <div class="plan-card-price">9€ / mes</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="plan-card h-100">
+                    <h3 class="mb-2">Plan Pro</h3>
+                    <ul>
+                        <li>Promoción destacada en búsquedas</li>
+                        <li>Soporte prioritario</li>
+                        <li>Herramientas de marketing avanzadas</li>
+                    </ul>
+                    <div class="plan-card-price">19€ / mes</div>
+                </div>
+            </div>
+        </div>
             {% if form.plan.errors %}
             <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
             {% endif %}
