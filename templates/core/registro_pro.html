@@ -39,7 +39,7 @@
 
         <div id="step3" class="step d-none">
             {% for field in form %}
-                {% if field.name not in ('tipo', 'plan') %}
+                {% if field.name != 'tipo' and field.name != 'plan' %}  
                 <div class="form-field">
                     {{ field }}
                     <button type="button" class="clear-btn">×</button>
