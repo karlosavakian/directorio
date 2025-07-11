@@ -2,4 +2,26 @@
   margin:10% 0 50px 0;
 }
 
+.plan-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+}
+
+.plan-card input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.plan-card.active,
+.plan-card.featured {
+  border-color: #198754;
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
 

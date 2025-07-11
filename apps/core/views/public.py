@@ -1,11 +1,7 @@
 # apps/core/views.py
 from django.shortcuts import render, redirect
-from ..forms import (
-    TipoUsuarioForm,
-    PlanForm,
-    BaseInfoForm,
-    RegistroProfesionalForm,
-)
+from ..forms import TipoUsuarioForm, PlanForm, RegistroProfesionalForm
+from apps.clubs.forms import ClubForm, EntrenadorForm
 
 
 def home(request):
@@ -23,23 +19,41 @@ def pro(request):
 
 
 def registro_profesional(request):
-    """Registro profesional mostrado como formulario multipaso mediante JS."""
+    """Registro profesional mostrado como formulario multipaso."""
     if not request.user.is_authenticated:
         return redirect('login')
 
     start_step = 1
-    if request.method == 'POST':
+    club_form = ClubForm(prefix="club")
+    coach_form = EntrenadorForm(prefix="coach")
+
+    if request.method == "POST":
         form = RegistroProfesionalForm(request.POST)
+        tipo = request.POST.get("tipo")
+
+        if tipo == "club":
+            club_form = ClubForm(request.POST, request.FILES, prefix="club")
+        elif tipo == "entrenador":
+            coach_form = EntrenadorForm(request.POST, request.FILES, prefix="coach")
+
         if form.is_valid():
-            return render(request, 'core/registro_pro_success.html')
-        start_step = request.POST.get('current_step', 1)
+            if tipo == "club" and club_form.is_valid():
+                return render(request, "core/registro_pro_success.html")
+            if tipo == "entrenador" and coach_form.is_valid():
+                return render(request, "core/registro_pro_success.html")
+        start_step = request.POST.get("current_step", 1)
     else:
         form = RegistroProfesionalForm()
 
     return render(
         request,
-        'core/registro_pro.html',
-        {'form': form, 'start_step': start_step},
+        "core/registro_pro.html",
+        {
+            "form": form,
+            "start_step": start_step,
+            "club_form": club_form,
+            "coach_form": coach_form,
+        },
     )
 
 
