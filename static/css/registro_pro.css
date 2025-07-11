@@ -1,0 +1,32 @@
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  list-style: none;
+  padding: 0;
+}
+.progress-steps .step-item {
+  flex: 1;
+  text-align: center;
+  font-weight: 600;
+  color: #6c757d;
+}
+.progress-steps .step-item.active {
+  color: #000;
+}
+.progress-steps .step-item::before {
+  content: attr(data-step);
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  margin-bottom: .5rem;
+  transition: background-color .3s, color .3s;
+}
+.progress-steps .step-item.active::before {
+  background-color: currentColor;
+  color: #fff;
+}
