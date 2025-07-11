@@ -6,7 +6,7 @@ class TipoUsuarioForm(forms.Form):
         choices=[
             ('entrenador', 'Entrenador'),
             ('club', 'Club'),
-            ('manager', 'Manager'),
+            ('promotor', 'Promotor'),
             ('servicio', 'Servicio'),
         ],
         widget=forms.RadioSelect

@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=254)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('category', models.CharField(choices=[('club', 'Club'), ('entrenador', 'Entrenador'), ('manager', 'Manager'), ('servicio', 'Servicio')], default='club', max_length=20)),
+                ('category', models.CharField(choices=[('club', 'Club'), ('entrenador', 'Entrenador'), ('promotor', 'Promotor'), ('servicio', 'Servicio')], default='club', max_length=20)),
             ],
         ),
         migrations.CreateModel(
