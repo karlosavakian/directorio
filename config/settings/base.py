@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'apps.core',
     'apps.clubs',
     'apps.users',
+    'apps.blog',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
