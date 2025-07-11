@@ -1,5 +1,9 @@
 # apps/core/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+from .forms import ProfessionalRegistrationForm
 
 
 def home(request):
@@ -32,5 +36,20 @@ def privacidad(request):
 def cookies(request):
     """Display cookies policy page."""
     return render(request, 'core/politica_cookies.html')
+
+
+@login_required
+def professional_register(request):
+    """Handle professional registration form."""
+    if request.method == 'POST':
+        form = ProfessionalRegistrationForm(request.POST)
+        if form.is_valid():
+            messages.success(request, 'Solicitud enviada correctamente.')
+            return redirect('planes')
+    else:
+        form = ProfessionalRegistrationForm()
+    return render(request, 'core/professional_register.html', {
+        'form': form,
+    })
  
  

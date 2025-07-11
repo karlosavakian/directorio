@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block content %}
+<main class="flex-grow-1 py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            {% include 'partials/_back-btn.html' %}
+        </div>
+        <h1 class="text-center mb-4">Registro Profesional</h1>
+        <form method="post" class="mx-auto" style="max-width: 500px;">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="form-label">{{ form.registration_type.label }}</label>
+                {{ form.registration_type }}
+            </div>
+            <div class="mb-4 d-none" id="plan-section">
+                <label class="form-label">{{ form.plan.label }}</label>
+                {{ form.plan }}
+            </div>
+            <button type="submit" class="btn btn-dark">Enviar</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeRadios = document.querySelectorAll('input[name="registration_type"]');
+        const planSection = document.getElementById('plan-section');
+        typeRadios.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                planSection.classList.remove('d-none');
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -52,6 +52,9 @@
                 </div>
             </div>
         </div>
+        <div class="text-center mt-5">
+            <a class="btn btn-dark" {% if user.is_authenticated %}href="{% url 'professional_register' %}"{% else %}href="#" data-bs-toggle="modal" data-bs-target="#loginModal"{% endif %}>Empezar ahora</a>
+        </div>
     </div>
 </main>
 {% endblock %}
