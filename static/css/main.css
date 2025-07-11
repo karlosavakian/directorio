@@ -18,10 +18,13 @@
   cursor: pointer;
 }
 
-.plan-card.active,
-.plan-card.featured {
+.plan-card.active {
   border-color: #198754;
   background-color: rgba(25, 135, 84, 0.1);
+}
+
+.plan-card.featured {
+  transform: scale(1.05);
 }
 
 
@@ -38,4 +41,25 @@
 }
 .plan-card ul li {
   margin-bottom: 0.5rem;
+}
+
+.tipo-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+}
+
+.tipo-card input[type="radio"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.tipo-card.active {
+  border-color: #198754;
+  background-color: rgba(25, 135, 84, 0.1);
 }
