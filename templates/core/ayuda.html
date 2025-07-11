@@ -4,10 +4,10 @@
 {% block content %}
 <main class="flex-grow-1 py-4">
     <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            {% include 'partials/_back-btn.html' %}
+        </div>
         <h1 class="text-center mb-4">Preguntas Frecuentes</h1>
-        <p class="text-center mb-5">
-            <a href="{% url 'home' %}" class="btn btn-outline-primary">Volver a la landing page</a>
-        </p>
         <div class="accordion" id="faqAccordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
