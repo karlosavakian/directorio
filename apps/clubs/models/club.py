@@ -25,7 +25,7 @@ class Club(models.Model):
     CATEGORY_CHOICES = [
         ('club', 'Club'),
         ('entrenador', 'Entrenador'),
-        ('manager', 'Manager'),
+        ('promotor', 'Promotor'),
         ('servicio', 'Servicio'),
     ]
  
