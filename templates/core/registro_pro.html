@@ -34,13 +34,36 @@
 
         <div id="step2" class="step d-none">
             <div class="mb-3">{{ form.plan.label }}</div>
-            <p class="text-muted">Selecciona el plan que prefieras.</p>
-            <div class="row">
+            <p class="text-muted">Selecciona el plan que prefieras.</p> 
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4"> 
+            <div class="row 
             {% for radio in form.plan %}
-                <div class="col-md-4 mb-3">
-                    <label class="plan-card {% if radio.choice_value == 'amateur' %}featured{% endif %}">
+                <div class="col">
+                    <label class="plan-card {% if radio.choice_value == 'amateur' %}featured{% endif %} h-100">
                         {{ radio.tag }}
-                        <div class="h5 mb-0">{{ radio.choice_label }}</div>
+                        <h3 class="mb-2">{{ radio.choice_label }}</h3>
+                        {% if radio.choice_value == 'gratis' %}
+                        <ul>
+                            <li>Presencia básica en el directorio</li>
+                            <li>Publicación de eventos</li>
+                            <li>Acceso a valoraciones</li>
+                        </ul>
+                        <div class="plan-card-price">0€ / mes</div>
+                        {% elif radio.choice_value == 'amateur' %}
+                        <ul>
+                            <li>Todos los beneficios del plan gratuito</li>
+                            <li>Galería de fotos y vídeos</li>
+                            <li>Estadísticas básicas</li>
+                        </ul>
+                        <div class="plan-card-price">9€ / mes</div>
+                        {% elif radio.choice_value == 'pro' %}
+                        <ul>
+                            <li>Promoción destacada en búsquedas</li>
+                            <li>Soporte prioritario</li>
+                            <li>Herramientas de marketing avanzadas</li>
+                        </ul>
+                        <div class="plan-card-price">19€ / mes</div>
+                        {% endif %}
                     </label>
                 </div>
             {% endfor %}
