@@ -17,5 +17,20 @@ def ayuda(request):
 def planes(request):
     """Display available subscription plans."""
     return render(request, 'core/planes.html')
+
+
+def terminos(request):
+    """Display terms and conditions page."""
+    return render(request, 'core/terminos_condiciones.html')
+
+
+def privacidad(request):
+    """Display privacy policy page."""
+    return render(request, 'core/politica_privacidad.html')
+
+
+def cookies(request):
+    """Display cookies policy page."""
+    return render(request, 'core/politica_cookies.html')
  
  
