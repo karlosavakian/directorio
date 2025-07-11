@@ -6,7 +6,6 @@
         {% include 'partials/_back-btn.html' %}
     </div>
     <div class="mx-auto">
-        <h1 class="text-center mb-2">Registro Profesional</h1>
         <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
 
         <ul class="progress-steps mb-4">
@@ -27,15 +26,6 @@
             {% for radio in form.tipo %}
                 <label class="tipo-card">
                     {{ radio.tag }}
-                    {% if radio.choice_value == 'entrenador' %}
-                        <img src="{% static 'img/iconos/coach.svg' %}" width="48" height="48" class="mb-2" alt="">
-                    {% elif radio.choice_value == 'club' %}
-                        <img src="{% static 'img/iconos/ring.svg' %}" width="48" height="48" class="mb-2" alt="">
-                    {% elif radio.choice_value == 'promotor' %}
-                        <img src="{% static 'img/iconos/guantes.svg' %}" width="48" height="48" class="mb-2" alt="">
-                    {% else %}
-                        <img src="{% static 'img/iconos/bike.svg' %}" width="48" height="48" class="mb-2" alt="">
-                    {% endif %}
                     <div class="fw-medium">{{ radio.choice_label }}</div>
                 </label>
             {% endfor %}
