@@ -1,0 +1,36 @@
+{% for field in form %}
+  {% if field.field.widget.input_type == 'file' %}
+  <div class="form-field">
+    <div class="avatar-dropzone mx-auto">
+      {{ field }}
+      <div class="avatar-preview">
+        <div class="avatar-dropzone-msg">
+          <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+          <span>Sube {{ field.label|lower }}</span>
+        </div>
+      </div>
+    </div>
+    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.errors %}
+    <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+    {% endif %}
+  </div>
+  {% elif field.field.widget.input_type == 'checkbox' %}
+  <div class="form-field checkbox-field">
+    {{ field }}
+    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.errors %}
+    <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+    {% endif %}
+  </div>
+  {% else %}
+  <div class="form-field">
+    {{ field }}
+    <button type="button" class="clear-btn">×</button>
+    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+    {% if field.errors %}
+    <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+    {% endif %}
+  </div>
+  {% endif %}
+{% endfor %}
