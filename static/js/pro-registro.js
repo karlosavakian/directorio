@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const steps = ['step1', 'step2', 'step3'].map(id => document.getElementById(id));
+  const progress = ['step-label-1', 'step-label-2', 'step-label-3'].map(id => document.getElementById(id));
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
   const clubFields = document.getElementById('club-fields');
@@ -11,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     steps.forEach((step, idx) => {
       if (!step) return;
       step.classList.toggle('d-none', idx !== n - 1);
+    });
+    progress.forEach((item, idx) => {
+      if (!item) return;
+      item.classList.toggle('active', idx === n - 1);
     });
     current = n;
     currentInput.value = current;

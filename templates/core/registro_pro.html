@@ -2,14 +2,24 @@
 {% load static %}
 {% block content %}
 <div class="container py-5">
-    <h1 class="text-center mb-4">Registro Profesional</h1>
-    <form method="post" class="profile-form">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
-        <input type="hidden" name="current_step" id="current-step" value="{{ start_step }}">
+    <div class="mx-auto" style="max-width:600px;">
+        <h1 class="text-center mb-2">Registro Profesional</h1>
+        <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
+
+        <ul class="progress-steps mb-4">
+            <li class="step-item active" data-step="1" id="step-label-1">Perfil</li>
+            <li class="step-item" data-step="2" id="step-label-2">Plan</li>
+            <li class="step-item" data-step="3" id="step-label-3">Datos</li>
+        </ul>
+
+        <form method="post" class="profile-form">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <input type="hidden" name="current_step" id="current-step" value="{{ start_step }}">
 
         <div id="step1" class="step">
             <div class="mb-3">{{ form.tipo.label }}</div>
+            <p class="text-muted">Indícanos qué tipo de profesional eres.</p>
             {% for radio in form.tipo %}
             <div class="form-check">
                 {{ radio.tag }}
@@ -24,12 +34,35 @@
 
         <div id="step2" class="step d-none">
             <div class="mb-3">{{ form.plan.label }}</div>
-            <div class="row">
+            <p class="text-muted">Selecciona el plan que prefieras.</p>
+            <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
             {% for radio in form.plan %}
-                <div class="col-md-4 mb-3">
-                    <label class="plan-card {% if radio.choice_value == 'amateur' %}featured{% endif %}">
+                <div class="col">
+                    <label class="plan-card {% if radio.choice_value == 'amateur' %}featured{% endif %} h-100">
                         {{ radio.tag }}
-                        <div class="h5 mb-0">{{ radio.choice_label }}</div>
+                        <h3 class="mb-2">{{ radio.choice_label }}</h3>
+                        {% if radio.choice_value == 'gratis' %}
+                        <ul>
+                            <li>Presencia básica en el directorio</li>
+                            <li>Publicación de eventos</li>
+                            <li>Acceso a valoraciones</li>
+                        </ul>
+                        <div class="plan-card-price">0€ / mes</div>
+                        {% elif radio.choice_value == 'amateur' %}
+                        <ul>
+                            <li>Todos los beneficios del plan gratuito</li>
+                            <li>Galería de fotos y vídeos</li>
+                            <li>Estadísticas básicas</li>
+                        </ul>
+                        <div class="plan-card-price">9€ / mes</div>
+                        {% elif radio.choice_value == 'pro' %}
+                        <ul>
+                            <li>Promoción destacada en búsquedas</li>
+                            <li>Soporte prioritario</li>
+                            <li>Herramientas de marketing avanzadas</li>
+                        </ul>
+                        <div class="plan-card-price">19€ / mes</div>
+                        {% endif %}
                     </label>
                 </div>
             {% endfor %}
@@ -42,6 +75,7 @@
         </div>
 
         <div id="step3" class="step d-none">
+            <p class="text-muted">Rellena la información de tu perfil.</p>
             <div id="club-fields" class="d-none">
                 {% include 'core/_profile_fields.html' with form=club_form %}
             </div>
@@ -51,7 +85,8 @@
             <button type="button" class="btn btn-outline-dark me-2" id="prev3">Anterior</button>
             <button type="submit" class="btn btn-dark">Finalizar</button>
         </div>
-    </form>
+        </form>
+    </div>
 </div>
 {% endblock %}
 {% block extra_js %}
