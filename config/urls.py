@@ -28,6 +28,9 @@ urlpatterns = [
     # Clubs: Gestión de Clubs y búsqueda
     path('clubs/', include('apps.clubs.urls')),
 
+    # Blog posts
+    path('blog/', include('apps.blog.urls')),
+
 
     # Rutas de autenticación sin el prefijo "accounts/"
     path('', include('apps.users.urls')),
