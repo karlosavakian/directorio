@@ -12,5 +12,10 @@ def home(request):
 def ayuda(request):
     """Display frequently asked questions."""
     return render(request, 'core/ayuda.html')
+
+
+def planes(request):
+    """Display available subscription plans."""
+    return render(request, 'core/planes.html')
  
  
