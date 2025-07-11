@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const clubFields = document.getElementById('club-fields');
   const coachFields = document.getElementById('coach-fields');
   const tipoRadios = document.querySelectorAll('input[name="tipo"]');
+  const tipoCards = document.querySelectorAll('.tipo-card');
   const planCards = document.querySelectorAll('.plan-card');
 
   function showStep(n) {
@@ -48,8 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   tipoRadios.forEach(radio => radio.addEventListener('change', toggleTipoFields));
 
+  tipoCards.forEach(card => {
+    const input = card.querySelector('input');
+    if (input.checked) {
+      card.classList.add('active');
+    }
+    card.addEventListener('click', () => {
+      input.checked = true;
+      tipoCards.forEach(c => c.classList.toggle('active', c === card));
+      toggleTipoFields();
+    });
+  });
+
   planCards.forEach(card => {
     const input = card.querySelector('input');
+    if (input.checked) {
+      card.classList.add('active');
+    }
     card.addEventListener('click', () => {
       input.checked = true;
       planCards.forEach(c => c.classList.toggle('active', c === card));
