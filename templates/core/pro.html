@@ -3,62 +3,67 @@
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 
 {% block content %}
-<main class="flex-grow-1">
-    <section class="pro-hero py-5">
-        <div class="container-lg px-3 position-relative">
-            <div class="row">
+<main class=" ">
+    <section class="pro-hero ">
+        <div class=" position-relative py-5 my-5">
+            <div class="container d-flex ">
                 <div class="col-lg-6">
-                    <h1 class="mb-3 text-white fw-bold">
-                        Da de alta cualquier tipo de alojamiento en <span class="highlight">Booking.com</span>
-                    </h1>
-                    <p class="text-white lead">
-                        Date de alta en una de las apps de viaje más descargadas del mundo para ganar más dinero, más rápido, y llegar a nuevos mercados.
-                    </p>
-                </div>
-            </div>
-            <div class="pro-floating-box shadow mt-4 mt-lg-0">
-                <h3 class="fw-bold mb-3">Date de alta gratis</h3>
+                    <h1 class=" text-white fw-bold">
+                       ¿Eres un profesional del boxeo? Únete a la mayor comunidad especializada  y empieza a crecer tu negocio.
+                    </h1> 
+                    <p class="text-white lead mt-4">
+Entrenadores, clubes, promotores y profesionales del boxeo ya están usando nuestro directorio para llegar a nuevos clientes y proveedores, gestionar su presencia online y posicionarse como referentes locales.                </div>
+              <div class="pro-floating-box ms-auto shadow p-5 col-lg-4 align-items-end justify-content-end">
+                <h3 class="fw-bold ">Planes y precios</h3>
                 <ul class="list-unstyled mb-4">
-                    <li>El 45% de los anfitriones recibe su primera reserva en el plazo de una semana</li>
-                    <li>Elige entre reservas inmediatas o solicitudes de reserva</li>
-                    <li>Facilitaremos los pagos por ti</li>
+                    <li class="d-flex align-items-start mb-2">
+                        <i class="bi bi-check-lg me-2 mt-1"></i>
+                        <span>Crea tu perfil profesional en minutos</span>
+                    </li>
+                    <li class="d-flex align-items-start mb-2">
+                        <i class="bi bi-check-lg me-2 mt-1"></i>
+                        <span>Aumenta tu presencia online </span>
+                    </li>
+                    <li class="d-flex align-items-start mb-2">
+                        <i class="bi bi-check-lg me-2 mt-1"></i>
+                        <span>Conecta con nuevos clientes y proveedores</span>
+                    </li>
+                    <li class="d-flex align-items-start mb-2">
+                        <i class="bi bi-check-lg me-2 mt-1"></i>
+                        <span>Gestiona tus clases y horarios</span>
+                    </li>
                 </ul>
                 <div class="d-grid mb-2">
-                    <a href="#" class="btn btn-primary">Empieza ahora →</a>
+                    {% if user.is_authenticated %}
+                    <a style="background-color: rgb(175, 175, 175);" href="{% url 'registro_profesional' %}" class="p-3 btn btn-hover-arrow border">Empieza ahora <i class="ms-3 bi bi-arrow-right"></i></a>
+                    {% else %}
+                    <button  style="background-color: rgb(175, 175, 175);"  class="btn btn-hover-arrow p-3" data-bs-toggle="modal" data-bs-target="#loginModal">Empieza ahora <i class="ms-3 bi bi-arrow-right"></i></button>
+                    {% endif %}
                 </div>
-                <a href="#" class="small d-block text-center">¿Ya habías empezado a registrarte? Continúa con tu registro</a>
+                
             </div>
+            </div>
+         
         </div>
     </section>
 
-    <section class="pro-benefits py-5">
-        <div class="container px-3">
-            <div class="row text-center text-md-start">
-                <div class="col-md-4 mb-4">
-                    <h3 class="mb-3">Tu alquiler, tus normas</h3>
-                    <ul class="list-unstyled">
-                        <li>Acepta o rechaza reservas con la función de solicitud de reserva</li>
-                        <li>Gestiona las expectativas de tus huéspedes configurando normas de la casa claras</li>
-                    </ul>
+    <section class="pro-benefits   ">
+        <div class="py-5  col-12 ">
+            <div class="container  d-flex   ">
+                <div class="col-4 p-4   text-center ">
+                    <h3 class="">Tu mejor esquina</h3>
+                     <span>Gestiona tu perfil sin complicaciones, actualiza tus horarios, comparte publicaciones, registra competidores y muchas más.</span>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h3 class="mb-3">Conoce a tus huéspedes</h3>
-                    <ul class="list-unstyled">
-                        <li>Chatea con tus huéspedes antes de aceptar su estancia con nuestra herramienta de mensajería*</li>
-                        <li>Accede al historial de viaje de los huéspedes</li>
-                    </ul>
+                <div class="col-4 p-4   text-center">
+                    <h3 class=" ">Reseñas verificadas</h3>
+                     <span>Descubre lo que opinan tus clientes con reseñas auténticas y detalladas, recibe el feedback que te mereces para seguir mejorando. </span>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <h3 class="mb-3">Protégete</h3>
-                    <ul class="list-unstyled">
-                        <li>Protección frente a reclamaciones de responsabilidad civil de clientes y vecinos de hasta 1.000.000€/$/£</li>
-                        <li>Selecciona la protección frente a daños que más te convenga entre varias opciones</li>
-                    </ul>
+                <div class="col-4 p-4   text-center ">
+                    <h3 class=" ">Conecta y crece</h3>
+                     <span>Forma parte de la primera comunidad especializada que une a clubs de boxeo, entrenadores, promotres y empresas del sector. </span>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <a href="#" class="btn btn-primary btn-lg">Alquila tu alojamiento hoy mismo</a>
-            </div>
+            
         </div>
     </section>
 </main>
