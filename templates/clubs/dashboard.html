@@ -213,26 +213,12 @@
           />
           <div class="photo-dropzone-msg">
             <i class="bi bi-cloud-upload mb-2 fs-2"></i>
-            <span>Arrastra imágenes aquí o haz clic para seleccionar</span>
+            <span>Haz clic para seleccionar imágenes</span>
           </div>
         </div>
         <button type="submit" class="btn btn-dark btn-sm">Subir</button>
       </form>
       <div class="d-flex justify-content-end gap-2 mb-2">
-        <button
-          id="toggle-select"
-          type="button"
-          class="btn btn-sm btn-outline-secondary"
-        >
-          Seleccionar
-        </button>
-        <button
-          id="select-all"
-          type="button"
-          class="btn btn-sm btn-outline-secondary d-none"
-        >
-          Seleccionar todo
-        </button>
         <form
           id="bulk-delete-form"
           method="post"
@@ -247,6 +233,8 @@
         {% for photo in club.photos.all %}
         <div
           class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
+          draggable="true"
+          data-id="{{ photo.id }}"
         >
           <img
             src="{{ photo.image.url }}"
@@ -258,16 +246,33 @@
             class="photo-checkbox"
             value="{{ photo.id }}"
           />
-          <form
-            method="post"
-            action="{% url 'clubphoto_set_main' photo.id %}"
-            class="set-main-form"
-          >
-            {% csrf_token %}
-            <button type="submit" class="btn btn-light btn-sm">
-              Principal
-            </button>
-          </form>
+          <div class="gallery-hover-actions">
+            <span class="drag-handle bi bi-arrows-move"></span>
+            <div class="dropdown">
+              <button
+                class="btn btn-light btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Opciones
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <form method="post" action="{% url 'clubphoto_set_main' photo.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Destacar</button>
+                  </form>
+                </li>
+                <li>
+                  <form method="post" action="{% url 'clubphoto_delete' photo.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
         {% empty %}
         <p>No hay fotos.</p>
