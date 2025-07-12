@@ -195,6 +195,9 @@
       </form>
     </div>
     <div id="tab-gallery" class="profile-section">
+      <h2 class="h5 mb-3">
+        Galería principal <span class="badge bg-secondary">{{ club.photos.count }}</span>
+      </h2>
       <form
         id="upload-form"
         method="post"
@@ -203,20 +206,14 @@
         class="mb-3 text-end"
       >
         {% csrf_token %}
-        <div class="photo-dropzone mb-2">
-          <input
-            type="file"
-            name="image"
-            id="id_gallery_image"
-            multiple
-            class="d-none"
-          />
-          <div class="photo-dropzone-msg">
-            <i class="bi bi-cloud-upload mb-2 fs-2"></i>
-            <span>Arrastra imágenes aquí o haz clic para seleccionar</span>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-dark btn-sm">Subir</button>
+        <input
+          type="file"
+          name="image"
+          id="id_gallery_image"
+          multiple
+          class="form-control mb-2"
+        />
+        <button type="submit" class="btn btn-dark btn-sm float-end">Añadir fotos</button>
       </form>
       <div class="d-flex justify-content-end gap-2 mb-2">
         <button
@@ -243,31 +240,50 @@
           <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
         </form>
       </div>
-      <div id="gallery-grid" class="gallery-grid">
+      <div id="gallery-grid" class="gallery-grid" data-reorder-url="{% url 'clubphoto_reorder' club.slug %}">
         {% for photo in club.photos.all %}
         <div
           class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
+          data-id="{{ photo.id }}"
         >
           <img
             src="{{ photo.image.url }}"
             alt="foto"
             class="w-100 h-100 object-fit-cover rounded"
           />
-          <input
-            type="checkbox"
-            class="photo-checkbox"
-            value="{{ photo.id }}"
-          />
-          <form
-            method="post"
-            action="{% url 'clubphoto_set_main' photo.id %}"
-            class="set-main-form"
-          >
-            {% csrf_token %}
-            <button type="submit" class="btn btn-light btn-sm">
-              Principal
-            </button>
-          </form>
+          <div class="photo-controls">
+            <input
+              type="checkbox"
+              class="photo-checkbox form-check-input"
+              value="{{ photo.id }}"
+            />
+            <div class="dropdown">
+              <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Opciones
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <form method="post" action="{% url 'clubphoto_set_main' photo.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">Establecer como principal</button>
+                  </form>
+                </li>
+                <li>
+                  <form method="post" action="{% url 'clubphoto_toggle_visible' photo.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item">{% if photo.visible %}Ocultar de la galería{% else %}Mostrar en galería{% endif %}</button>
+                  </form>
+                </li>
+                <li>
+                  <form method="post" action="{% url 'clubphoto_delete' photo.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <span class="photo-size badge bg-dark"></span>
         </div>
         {% empty %}
         <p>No hay fotos.</p>

@@ -70,6 +70,8 @@ class ClubPhoto(models.Model):
     image = models.ImageField(upload_to='club_photos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
     is_main = models.BooleanField(default=False)
+    position = models.PositiveIntegerField(default=0)
+    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Foto de {self.club.name if self.club else 'Sin club'}"
@@ -78,6 +80,9 @@ class ClubPhoto(models.Model):
         super().save(*args, **kwargs)
         if self.image and hasattr(self.image, 'path'):
             resize_image(self.image.path)
+
+    class Meta:
+        ordering = ['position', 'id']
 
  
 

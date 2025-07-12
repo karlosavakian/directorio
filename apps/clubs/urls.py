@@ -22,6 +22,8 @@ from apps.clubs.views.dashboard import (
     photo_delete,
     photo_bulk_delete,
     photo_set_main,
+    photo_toggle_visible,
+    photo_reorder,
     horario_create,
     horario_update,
     horario_delete,
@@ -46,6 +48,8 @@ urlpatterns = [
     path('foto/<int:pk>/eliminar/', photo_delete, name='clubphoto_delete'),
     path('<slug:slug>/foto/eliminar/', photo_bulk_delete, name='clubphoto_bulk_delete'),
     path('foto/<int:pk>/principal/', photo_set_main, name='clubphoto_set_main'),
+    path('foto/<int:pk>/visible/', photo_toggle_visible, name='clubphoto_toggle_visible'),
+    path('<slug:slug>/fotos/reordenar/', photo_reorder, name='clubphoto_reorder'),
 
     path('<slug:slug>/horario/nuevo/', horario_create, name='horario_create'),
     path('horario/<int:pk>/editar/', horario_update, name='horario_update'),

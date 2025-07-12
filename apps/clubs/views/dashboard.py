@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseForbidden
-from django.db.models import Q
+from django.http import HttpResponseForbidden, JsonResponse
+from django.db.models import Q, Max
 from collections import defaultdict
 
 
@@ -137,15 +137,18 @@ def photo_upload(request, slug):
         return HttpResponseForbidden()
     if request.method == 'POST':
         images = request.FILES.getlist('image')
+        max_pos = club.photos.aggregate(m=Max('position')).get('m') or 0
         if not images:
             form = ClubPhotoForm(request.POST, request.FILES)
             if form.is_valid():
                 photo = form.save(commit=False)
                 photo.club = club
+                photo.position = max_pos + 1
                 photo.save()
         else:
             for img in images:
-                ClubPhoto.objects.create(club=club, image=img)
+                max_pos += 1
+                ClubPhoto.objects.create(club=club, image=img, position=max_pos)
         messages.success(request, 'Foto añadida correctamente.')
         return redirect('club_dashboard', slug=club.slug)
     form = ClubPhotoForm()
@@ -189,6 +192,31 @@ def photo_set_main(request, pk):
         photo.save()
         messages.success(request, 'Foto establecida como principal.')
     return redirect('club_dashboard', slug=photo.club.slug)
+
+
+@login_required
+def photo_toggle_visible(request, pk):
+    photo = get_object_or_404(ClubPhoto, pk=pk)
+    if not has_club_permission(request.user, photo.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        photo.visible = not photo.visible
+        photo.save()
+    return redirect('club_dashboard', slug=photo.club.slug)
+
+
+@login_required
+def photo_reorder(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        ids = request.POST.get('ids', '')
+        id_list = [int(i) for i in ids.split(',') if i]
+        for order, pid in enumerate(id_list):
+            ClubPhoto.objects.filter(club=club, id=pid).update(position=order)
+        return JsonResponse({'status': 'ok'})
+    return JsonResponse({'status': 'error'}, status=400)
 
 
 @login_required

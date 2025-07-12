@@ -1,31 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.photo-dropzone').forEach(zone => {
-    const input = zone.querySelector('input[type="file"]');
-    const msg = zone.querySelector('.photo-dropzone-msg');
-    const text = msg && msg.querySelector('span');
-    if (!input || !msg || !text) return;
-    const showCount = () => {
-      if (input.files.length) {
-        text.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
-      } else {
-        text.textContent = 'Arrastra imágenes aquí o haz clic para seleccionar';
-      }
-    };
-    zone.addEventListener('click', () => input.click());
-    zone.addEventListener('dragover', e => {
-      e.preventDefault();
-      zone.classList.add('dragover');
-    });
-    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('dragover');
-      input.files = e.dataTransfer.files;
-      showCount();
-    });
-    input.addEventListener('change', showCount);
-  });
-
   const selectBtn = document.getElementById('toggle-select');
   const selectAllBtn = document.getElementById('select-all');
   const gallery = document.getElementById('gallery-grid');
@@ -51,4 +24,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     deleteIds.value = ids.join(',');
   });
+
+  if (gallery) {
+    const reorderUrl = gallery.dataset.reorderUrl;
+    const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    gallery.querySelectorAll('.gallery-item').forEach(item => {
+      const img = item.querySelector('img');
+      const size = item.querySelector('.photo-size');
+      if (img && size) {
+        const setSize = () => {
+          size.textContent = `${img.naturalWidth}px × ${img.naturalHeight}px`;
+        };
+        if (img.complete) setSize();
+        else img.addEventListener('load', setSize);
+      }
+      item.setAttribute('draggable', 'true');
+      item.addEventListener('dragstart', () => item.classList.add('dragging'));
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        const order = [...gallery.querySelectorAll('.gallery-item')].map(el => el.dataset.id);
+        fetch(reorderUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': csrf },
+          body: 'ids=' + order.join(',')
+        });
+      });
+    });
+
+    gallery.addEventListener('dragover', e => {
+      e.preventDefault();
+      const dragging = gallery.querySelector('.dragging');
+      const after = getDragAfterElement(gallery, e.clientY);
+      if (after == null) {
+        gallery.appendChild(dragging);
+      } else {
+        gallery.insertBefore(dragging, after);
+      }
+    });
+  }
+
+  function getDragAfterElement(container, y) {
+    const els = [...container.querySelectorAll('.gallery-item:not(.dragging)')];
+    return els.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
+  }
 });
