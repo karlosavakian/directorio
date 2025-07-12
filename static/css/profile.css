@@ -193,8 +193,25 @@
   display: none;
 }
 
-.gallery-grid.select-mode .photo-checkbox {
+.gallery-item:hover .photo-checkbox,
+.gallery-item .photo-checkbox:checked {
   display: block;
+}
+
+.gallery-hover-actions {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: none;
+  gap: 0.25rem;
+}
+
+.gallery-item:hover .gallery-hover-actions {
+  display: flex;
+}
+
+.drag-handle {
+  cursor: move;
 }
 
 .gallery-item.main::after {

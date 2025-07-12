@@ -8,40 +8,41 @@ document.addEventListener('DOMContentLoaded', () => {
       if (input.files.length) {
         text.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
       } else {
-        text.textContent = 'Arrastra imágenes aquí o haz clic para seleccionar';
+        text.textContent = 'Haz clic para seleccionar imágenes';
       }
     };
     zone.addEventListener('click', () => input.click());
-    zone.addEventListener('dragover', e => {
-      e.preventDefault();
-      zone.classList.add('dragover');
-    });
-    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('dragover');
-      input.files = e.dataTransfer.files;
-      showCount();
-    });
     input.addEventListener('change', showCount);
   });
 
-  const selectBtn = document.getElementById('toggle-select');
-  const selectAllBtn = document.getElementById('select-all');
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
 
-  selectBtn && selectBtn.addEventListener('click', () => {
-    gallery.classList.toggle('select-mode');
-    if (selectAllBtn) selectAllBtn.classList.toggle('d-none');
-  });
+  let dragged = null;
+  if (gallery) {
+    gallery.addEventListener('dragstart', e => {
+      const item = e.target.closest('.gallery-item');
+      if (item) {
+        dragged = item;
+      }
+    });
 
-  selectAllBtn && selectAllBtn.addEventListener('click', () => {
-    const boxes = gallery.querySelectorAll('.photo-checkbox');
-    const allChecked = Array.from(boxes).every(cb => cb.checked);
-    boxes.forEach(cb => { cb.checked = !allChecked; });
-  });
+    gallery.addEventListener('dragover', e => {
+      e.preventDefault();
+      const target = e.target.closest('.gallery-item');
+      if (dragged && target && target !== dragged) {
+        const rect = target.getBoundingClientRect();
+        const next = (e.clientY - rect.top) / (rect.bottom - rect.top) > 0.5;
+        gallery.insertBefore(dragged, next ? target.nextSibling : target);
+      }
+    });
+
+    gallery.addEventListener('drop', e => {
+      e.preventDefault();
+      dragged = null;
+    });
+  }
 
   deleteForm && deleteForm.addEventListener('submit', e => {
     const ids = [...gallery.querySelectorAll('.photo-checkbox:checked')].map(cb => cb.value);
