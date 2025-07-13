@@ -303,19 +303,19 @@
                                                     {% for h in horarios_dia %}
                                                         {% if h.dia == dia %}
                                                             {% if h.estado == 'abierto' %}
-                                                                <div class="border-bottom py-1 small text-muted schedule-item"
+                                                                <div class=" py-1  schedule-item"
                                                                      data-start="{{ h.hora_inicio|time:'H:i' }}"
                                                                      data-end="{{ h.hora_fin|time:'H:i' }}">
                                                                     {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
                                                                 </div>
                                                             {% elif h.estado == 'cerrado' %}
-                                                                <div class="border-bottom py-1 small text-danger">Cerrado</div>
+                                                                <div class="  py-1    ">Cerrado</div>
                                                             {% else %}
-                                                                <div class="border-bottom py-1 small text-muted">{{ h.estado_otro }}</div>
+                                                                <div class="  py-1    ">{{ h.estado_otro }}</div>
                                                             {% endif %}
                                                         {% endif %}
                                                     {% empty %}
-                                                        <span class="text-muted">—</span>
+                                                        <span class="">—</span>
                                                     {% endfor %}
                                                 {% endwith %}
                                             </td>
