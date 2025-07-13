@@ -264,8 +264,8 @@
             alt="foto"
             class="w-100 h-100 object-fit-cover rounded"
           />
-          <div class="photo-dimensions">
-            {{ photo.image.width }}x{{ photo.image.height }}
+          <div class="small photo-dimensions">
+            {{ photo.image.width }}x{{ photo.image.height }}px
           </div>
           <input
             type="checkbox"
@@ -273,7 +273,7 @@
             value="{{ photo.id }}"
           />
           <div class="gallery-hover-actions">
-            <span class="drag-handle bi bi-arrows-move"></span>
+            <span class="drag-handle bi bi-arrows-move  "></span>
             <div class="dropdown">
               <button
                 class="btn btn-light btn-sm dropdown-toggle"
