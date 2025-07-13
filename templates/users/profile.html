@@ -70,10 +70,10 @@
                 {% for b in bookings %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
-                        {% if b.clase %}
-                            Clase: {{ b.clase.nombre }} ({{ b.clase.hora_inicio|time:"H:i" }})
-                        {% elif b.evento %}
+                        {% if b.evento %}
                             Evento: {{ b.evento.titulo }}
+                        {% else %}
+                            Reserva sin referencia
                         {% endif %}
                     </span>
                     {% if b.status != 'cancelled' %}
