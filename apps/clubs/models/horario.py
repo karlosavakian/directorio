@@ -16,6 +16,7 @@ class Horario(models.Model):
     class Estado(models.TextChoices):
         ABIERTO = 'abierto', _('Abierto')
         CERRADO = 'cerrado', _('Cerrado')
+        OTRO = 'otro', _('Otro')
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='horarios')
     dia = models.CharField(max_length=10, choices=DiasSemana.choices)
@@ -26,6 +27,7 @@ class Horario(models.Model):
         choices=Estado.choices,
         default=Estado.ABIERTO,
     )
+    estado_otro = models.CharField(max_length=30, blank=True)
 
     class Meta:
         ordering = ['dia', 'hora_inicio']

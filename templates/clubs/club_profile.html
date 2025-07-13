@@ -314,8 +314,10 @@
                                                                      data-end="{{ h.hora_fin|time:'H:i' }}">
                                                                     {{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}
                                                                 </div>
-                                                            {% else %}
+                                                            {% elif h.estado == 'cerrado' %}
                                                                 <div class="border-bottom py-1 small text-danger">Cerrado</div>
+                                                            {% else %}
+                                                                <div class="border-bottom py-1 small text-muted">{{ h.estado_otro }}</div>
                                                             {% endif %}
                                                         {% endif %}
                                                     {% empty %}
