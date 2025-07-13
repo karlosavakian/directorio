@@ -238,17 +238,8 @@
 .gallery-item:hover .photo-dimensions {
   display: block;
 }
-
-.gallery-item .main-pin {
-.gallery-item.main::after {
-  content: '\1F4CC';
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  color: #fff;
-  font-size: 1.2rem;
-}
-
+ 
+ 
 .photo-dropzone {
   border: 2px dashed #666;
   padding: 1rem;
