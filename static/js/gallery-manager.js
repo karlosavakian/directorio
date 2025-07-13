@@ -36,8 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteBtn = deleteForm && deleteForm.querySelector('button[type="submit"]');
 
   const updateActionStyles = () => {
-    const hasSelected =
-      gallery && gallery.querySelectorAll('.photo-checkbox:checked').length > 0;
+    const checked = gallery
+      ? gallery.querySelectorAll('.photo-checkbox:checked')
+      : [];
+    const hasSelected = checked.length > 0;
     if (deselectAllBtn) {
       deselectAllBtn.classList.toggle('text-secondary', !hasSelected);
       deselectAllBtn.classList.toggle('text-black', hasSelected);
@@ -45,6 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteBtn) {
       deleteBtn.classList.toggle('text-secondary', !hasSelected);
       deleteBtn.classList.toggle('text-danger', hasSelected);
+    }
+    if (gallery) {
+      gallery.classList.toggle('selection-mode', hasSelected);
+      gallery.querySelectorAll('.gallery-item').forEach(item => {
+        const cb = item.querySelector('.photo-checkbox');
+        item.classList.toggle('selected', cb && cb.checked);
+      });
     }
   };
 
