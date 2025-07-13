@@ -211,7 +211,8 @@
 }
 
 .drag-handle {
-  cursor: move;
+  cursor: pointer;
+  color: #fff;
 }
 
 .gallery-item.main::after {

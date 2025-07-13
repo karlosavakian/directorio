@@ -203,22 +203,26 @@
         class="mb-3 text-end"
       >
         {% csrf_token %}
-        <div class="photo-dropzone mb-2">
-          <input
-            type="file"
-            name="image"
-            id="id_gallery_image"
-            multiple
-            class="d-none"
-          />
-          <div class="photo-dropzone-msg">
-            <i class="bi bi-cloud-upload mb-2 fs-2"></i>
-            <span>Haz clic para seleccionar imágenes</span>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-dark btn-sm">Subir</button>
+        <input
+          type="file"
+          name="image"
+          id="id_gallery_image"
+          multiple
+          class="form-control mb-2"
+        />
+        <button type="submit" class="btn btn-dark btn-sm">Añadir fotos</button>
       </form>
       <div class="d-flex justify-content-end gap-2 mb-2">
+        <button type="button" id="select-all" class="btn btn-sm btn-secondary">
+          Seleccionar todas
+        </button>
+        <button
+          type="button"
+          id="deselect-all"
+          class="btn btn-sm btn-secondary"
+        >
+          Desmarcar todas
+        </button>
         <form
           id="bulk-delete-form"
           method="post"

@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
+  const selectAllBtn = document.getElementById('select-all');
+  const deselectAllBtn = document.getElementById('deselect-all');
 
   let dragged = null;
   if (gallery) {
@@ -43,6 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
       dragged = null;
     });
   }
+
+  selectAllBtn && selectAllBtn.addEventListener('click', () => {
+    gallery && gallery
+      .querySelectorAll('.photo-checkbox')
+      .forEach(cb => {
+        cb.checked = true;
+      });
+  });
+
+  deselectAllBtn && deselectAllBtn.addEventListener('click', () => {
+    gallery && gallery
+      .querySelectorAll('.photo-checkbox')
+      .forEach(cb => {
+        cb.checked = false;
+      });
+  });
 
   deleteForm && deleteForm.addEventListener('submit', e => {
     const ids = [...gallery.querySelectorAll('.photo-checkbox:checked')].map(cb => cb.value);
