@@ -197,7 +197,8 @@
 }
 
 .gallery-item:hover .photo-checkbox,
-.gallery-item .photo-checkbox:checked {
+.gallery-item .photo-checkbox:checked,
+.gallery-grid.selection-mode .photo-checkbox {
   display: block;
 }
 
