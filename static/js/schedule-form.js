@@ -25,4 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     select.addEventListener('change', toggleFields);
     toggleFields();
   });
+
+  // Mostrar alerta si se exceden 20 caracteres en el campo "otro"
+  document.querySelectorAll('input[name="estado_otro"]').forEach(input => {
+    input.addEventListener('input', () => {
+      if (input.value.length > 20) {
+        alert('Máximo 20 caracteres');
+        input.value = input.value.slice(0, 20);
+      }
+    });
+  });
 });
