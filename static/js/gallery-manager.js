@@ -15,11 +15,39 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('change', showCount);
   });
 
+  const uploadForm = document.getElementById('upload-form');
+  const uploadInput = document.getElementById('id_gallery_image');
+  const uploadBtn = document.getElementById('add-photos-btn');
+
+  if (uploadForm && uploadInput && uploadBtn) {
+    uploadBtn.addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', () => {
+      if (uploadInput.files.length) {
+        uploadForm.submit();
+      }
+    });
+  }
+
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
+  const deleteBtn = document.getElementById('bulk-delete-btn');
   const selectAllBtn = document.getElementById('select-all');
   const deselectAllBtn = document.getElementById('deselect-all');
+
+  const updateActions = () => {
+    if (!gallery) return;
+    const any = gallery.querySelectorAll('.photo-checkbox:checked').length > 0;
+    if (any) {
+      deselectAllBtn && deselectAllBtn.classList.replace('text-secondary', 'text-dark');
+      deleteBtn && deleteBtn.classList.replace('text-secondary', 'text-dark');
+      deleteBtn && (deleteBtn.disabled = false);
+    } else {
+      deselectAllBtn && deselectAllBtn.classList.replace('text-dark', 'text-secondary');
+      deleteBtn && deleteBtn.classList.replace('text-dark', 'text-secondary');
+      deleteBtn && (deleteBtn.disabled = true);
+    }
+  };
 
   let dragged = null;
   if (gallery) {
@@ -52,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .forEach(cb => {
         cb.checked = true;
       });
+    updateActions();
   });
 
   deselectAllBtn && deselectAllBtn.addEventListener('click', () => {
@@ -60,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .forEach(cb => {
         cb.checked = false;
       });
+    updateActions();
   });
 
   deleteForm && deleteForm.addEventListener('submit', e => {
@@ -70,4 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     deleteIds.value = ids.join(',');
   });
+
+  gallery && gallery.querySelectorAll('.photo-checkbox').forEach(cb => {
+    cb.addEventListener('change', updateActions);
+  });
+
+  updateActions();
 });

@@ -195,43 +195,63 @@
       </form>
     </div>
     <div id="tab-gallery" class="profile-section">
-      <form
-        id="upload-form"
-        method="post"
-        enctype="multipart/form-data"
-        action="{% url 'clubphoto_upload' club.slug %}"
-        class="mb-3 text-end"
-      >
-        {% csrf_token %}
-        <input
-          type="file"
-          name="image"
-          id="id_gallery_image"
-          multiple
-          class="form-control mb-2"
-        />
-        <button type="submit" class="btn btn-dark btn-sm">Añadir fotos</button>
-      </form>
-      <div class="d-flex justify-content-end gap-2 mb-2">
-        <button type="button" id="select-all" class="btn btn-sm btn-secondary">
-          Seleccionar todas
-        </button>
-        <button
-          type="button"
-          id="deselect-all"
-          class="btn btn-sm btn-secondary"
-        >
-          Desmarcar todas
-        </button>
+      <div class="d-flex justify-content-between align-items-center mb-2">
         <form
-          id="bulk-delete-form"
+          id="upload-form"
           method="post"
-          action="{% url 'clubphoto_bulk_delete' club.slug %}"
+          enctype="multipart/form-data"
+          action="{% url 'clubphoto_upload' club.slug %}"
+          class="m-0"
         >
           {% csrf_token %}
-          <input type="hidden" name="ids" id="delete-ids" />
-          <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+          <input
+            type="file"
+            name="image"
+            id="id_gallery_image"
+            multiple
+            class="d-none"
+          />
+          <button
+            type="button"
+            id="add-photos-btn"
+            class="btn btn-dark btn-sm"
+          >
+            Añadir fotos
+          </button>
         </form>
+        <div class="d-flex gap-3">
+          <button
+            type="button"
+            id="select-all"
+            class="btn btn-link p-0 fw-medium text-dark"
+          >
+            Seleccionar todas
+          </button>
+          <button
+            type="button"
+            id="deselect-all"
+            class="btn btn-link p-0 fw-medium text-secondary"
+          >
+            Desmarcar todas
+          </button>
+          <form
+            id="bulk-delete-form"
+            method="post"
+            action="{% url 'clubphoto_bulk_delete' club.slug %}"
+            class="m-0"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="ids" id="delete-ids" />
+            <button
+              type="submit"
+              id="bulk-delete-btn"
+              class="btn btn-link p-0 fw-medium text-secondary"
+              disabled
+            >
+              Eliminar
+            </button>
+          </form>
+        </div>
       </div>
       <div id="gallery-grid" class="gallery-grid">
         {% for photo in club.photos.all %}
