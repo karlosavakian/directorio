@@ -180,6 +180,26 @@
   overflow: hidden;
 }
 
+.gallery-item:hover {
+  cursor: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMicgaGVpZ2h0PSczMic+PGxpbmUgeDE9JzE2JyB5MT0nMCcgeDI9JzE2JyB5Mj0nMzInIHN0cm9rZT0nd2hpdGUnIHN0cm9rZS13aWR0aD0nMicvPjxsaW5lIHgxPScwJyB5MT0nMTYnIHgyPSczMicgeTI9JzE2JyBzdHJva2U9J3doaXRlJyBzdHJva2Utd2lkdGg9JzInLz48L3N2Zz4=") 16 16, crosshair;
+}
+
+.gallery-item .photo-size {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  pointer-events: none;
+  display: none;
+}
+
+.gallery-item:hover .photo-size {
+  display: block;
+}
+
 .gallery-item img {
   width: 100%;
   height: 100%;
