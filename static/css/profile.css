@@ -192,11 +192,13 @@
   position: absolute;
   top: 5px;
   left: 5px;
+  z-index: 3;
   display: none;
 }
 
 .gallery-item:hover .photo-checkbox,
-.gallery-item .photo-checkbox:checked {
+.gallery-item .photo-checkbox:checked,
+.gallery-grid.selection-mode .photo-checkbox {
   display: block;
 }
 
@@ -206,10 +208,31 @@
   display: none;
   align-items: center;
   justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.gallery-hover-actions > * {
+  pointer-events: auto;
 }
 
 .gallery-item:hover .gallery-hover-actions {
   display: flex;
+}
+
+/* Darken image on hover */
+.gallery-item:hover img {
+  filter: brightness(0.7);
+}
+
+/* Darken image when selected */
+.gallery-item.selected img {
+  filter: brightness(0.7);
+}
+
+/* Darken all images when any is selected */
+.gallery-grid.selection-mode .gallery-item img {
+  filter: brightness(0.7);
 }
 
 .gallery-hover-actions .dropdown {
