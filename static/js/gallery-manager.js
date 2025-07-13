@@ -15,6 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('change', showCount);
   });
 
+  const uploadForm = document.getElementById('upload-form');
+  const uploadInput = document.getElementById('id_gallery_image');
+  const uploadBtn = document.getElementById('add-photos-btn');
+
+  if (uploadForm && uploadInput && uploadBtn) {
+    uploadBtn.addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', () => {
+      if (uploadInput.files.length) {
+        uploadForm.submit();
+      }
+    });
+  }
+
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
