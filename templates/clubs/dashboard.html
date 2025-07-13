@@ -463,7 +463,11 @@
                           >
                             Cerrado
                           </option>
+                          <option value="otro" {% if bloque.estado == 'otro' %}selected{% endif %}>Otro</option>
                         </select>
+                      </div>
+                      <div class="col" style="display: none">
+                        <input type="text" name="estado_otro" value="{{ bloque.estado_otro }}" class="form-control form-control-sm" maxlength="30" placeholder="Especificar" />
                       </div>
                       <div class="col-auto">
                         <button type="submit" class="btn btn-sm btn-dark">
@@ -519,7 +523,11 @@
                           >
                             <option value="abierto">Abierto</option>
                             <option value="cerrado">Cerrado</option>
+                            <option value="otro">Otro</option>
                           </select>
+                        </div>
+                        <div class="col" style="display: none">
+                          <input type="text" name="estado_otro" class="form-control form-control-sm" maxlength="30" placeholder="Especificar" />
                         </div>
                         <div class="col-auto">
                           <button type="submit" class="btn btn-sm btn-dark">
