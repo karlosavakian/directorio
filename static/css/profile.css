@@ -191,6 +191,10 @@
   filter: brightness(0.6);
 }
 
+.gallery-item.dimmed img {
+  filter: brightness(0.3);
+}
+
 .gallery-item .photo-checkbox {
   position: absolute;
   top: 5px;

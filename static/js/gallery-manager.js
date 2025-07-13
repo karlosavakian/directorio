@@ -36,8 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteBtn = deleteForm && deleteForm.querySelector('button[type="submit"]');
 
   const updateActionStyles = () => {
-    const hasSelected =
-      gallery && gallery.querySelectorAll('.photo-checkbox:checked').length > 0;
+    const selectedCbs =
+      gallery && gallery.querySelectorAll('.photo-checkbox:checked');
+    const hasSelected = selectedCbs && selectedCbs.length > 0;
+
+    if (gallery) {
+      gallery.querySelectorAll('.gallery-item').forEach(item => {
+        const cb = item.querySelector('.photo-checkbox');
+        if (hasSelected && cb && !cb.checked) {
+          item.classList.add('dimmed');
+        } else {
+          item.classList.remove('dimmed');
+        }
+      });
+    }
+
     if (deselectAllBtn) {
       deselectAllBtn.classList.toggle('text-secondary', !hasSelected);
       deselectAllBtn.classList.toggle('text-black', hasSelected);
