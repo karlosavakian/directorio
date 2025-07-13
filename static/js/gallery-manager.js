@@ -1,23 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.photo-dropzone').forEach(zone => {
-    const input = zone.querySelector('input[type="file"]');
-    const msg = zone.querySelector('.photo-dropzone-msg');
-    const text = msg && msg.querySelector('span');
-    if (!input || !msg || !text) return;
-    const showCount = () => {
-      if (input.files.length) {
-        text.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
-      } else {
-        text.textContent = 'Haz clic para seleccionar imágenes';
+  const uploadForm = document.getElementById('upload-form');
+  const uploadInput = document.getElementById('id_gallery_image');
+  const addBtn = document.getElementById('add-photos-btn');
+
+  if (addBtn && uploadInput && uploadForm) {
+    addBtn.addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', () => {
+      if (uploadInput.files.length) {
+        uploadForm.submit();
       }
-    };
-    zone.addEventListener('click', () => input.click());
-    input.addEventListener('change', showCount);
-  });
+    });
+  }
 
   const gallery = document.getElementById('gallery-grid');
   const deleteForm = document.getElementById('bulk-delete-form');
   const deleteIds = document.getElementById('delete-ids');
+  const selectAllBtn = document.getElementById('select-all');
+  const deselectAllBtn = document.getElementById('deselect-all');
+  const deleteBtn = deleteForm && deleteForm.querySelector('button[type="submit"]');
+
+  const updateActionStates = () => {
+    if (!gallery) return;
+    const anyChecked = gallery.querySelectorAll('.photo-checkbox:checked').length > 0;
+    if (anyChecked) {
+      deselectAllBtn && deselectAllBtn.classList.remove('text-muted');
+      deselectAllBtn && deselectAllBtn.classList.add('text-dark');
+      deleteBtn && deleteBtn.classList.remove('text-muted');
+      deleteBtn && deleteBtn.classList.add('text-dark');
+    } else {
+      deselectAllBtn && deselectAllBtn.classList.add('text-muted');
+      deselectAllBtn && deselectAllBtn.classList.remove('text-dark');
+      deleteBtn && deleteBtn.classList.add('text-muted');
+      deleteBtn && deleteBtn.classList.remove('text-dark');
+    }
+  };
 
   let dragged = null;
   if (gallery) {
@@ -42,7 +58,29 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       dragged = null;
     });
+
+    gallery.querySelectorAll('.photo-checkbox').forEach(cb => {
+      cb.addEventListener('change', updateActionStates);
+    });
   }
+
+  selectAllBtn && selectAllBtn.addEventListener('click', () => {
+    gallery && gallery
+      .querySelectorAll('.photo-checkbox')
+      .forEach(cb => {
+        cb.checked = true;
+      });
+    updateActionStates();
+  });
+
+  deselectAllBtn && deselectAllBtn.addEventListener('click', () => {
+    gallery && gallery
+      .querySelectorAll('.photo-checkbox')
+      .forEach(cb => {
+        cb.checked = false;
+      });
+    updateActionStates();
+  });
 
   deleteForm && deleteForm.addEventListener('submit', e => {
     const ids = [...gallery.querySelectorAll('.photo-checkbox:checked')].map(cb => cb.value);
@@ -52,4 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     deleteIds.value = ids.join(',');
   });
+
+  updateActionStates();
 });
