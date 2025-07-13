@@ -180,6 +180,10 @@
   overflow: hidden;
 }
 
+.gallery-item:hover {
+  cursor: url('../img/crosshair-white.svg') 16 16, crosshair;
+}
+
 .gallery-item img {
   width: 100%;
   height: 100%;
@@ -213,6 +217,22 @@
 .drag-handle {
   cursor: pointer;
   color: #fff;
+}
+
+.photo-dimensions {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 0 2px #000;
+  display: none;
+  pointer-events: none;
+}
+
+.gallery-item:hover .photo-dimensions {
+  display: block;
 }
 
 .gallery-item.main::after {
