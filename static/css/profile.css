@@ -240,7 +240,7 @@
 }
 
 .gallery-item.main::after {
-  content: '★';
+  content: '\1F4CC';
   position: absolute;
   bottom: 5px;
   right: 5px;

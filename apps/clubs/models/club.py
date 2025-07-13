@@ -79,5 +79,8 @@ class ClubPhoto(models.Model):
         if self.image and hasattr(self.image, 'path'):
             resize_image(self.image.path)
 
+    class Meta:
+        ordering = ['-is_main', 'uploaded_at']
+
  
 
