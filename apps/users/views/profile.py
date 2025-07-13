@@ -28,7 +28,7 @@ def profile(request):
                 messages.error(request, error)
     else:
         form = AccountForm(instance=profile_obj, user=request.user)
-    bookings = Booking.objects.filter(user=request.user).select_related('clase', 'evento')
+    bookings = Booking.objects.filter(user=request.user).select_related('evento')
 
     follower_ct = ContentType.objects.get_for_model(request.user)
     club_ct = ContentType.objects.get_for_model(Club)

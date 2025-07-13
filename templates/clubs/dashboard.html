@@ -309,31 +309,7 @@
       </div>
     </div>
     <div id="tab-schedule" class="profile-section">
-      <a
-        href="{% url 'clase_create' club.slug %}"
-        class="btn btn-secondary btn-sm me-2 mb-3"
-        >Añadir clase</a
-      >
-      <h2 class="h5 mt-4">Clases</h2>
-      <ul>
-        {% for c in classes %}
-        <li>
-          {{ c.nombre }} ({{ c.hora_inicio|time:'H:i' }} - {{
-          c.hora_fin|time:'H:i' }})
-          <a href="{% url 'clase_update' c.id %}">Editar</a>
-          <form
-            method="post"
-            action="{% url 'clase_delete' c.id %}"
-            class="d-inline"
-          >
-            {% csrf_token %}
-            <button type="submit" class="btn btn-link p-0">Eliminar</button>
-          </form>
-        </li>
-        {% empty %}
-        <li>No hay clases.</li>
-        {% endfor %}
-      </ul>
+      
       <h2 class="h5 mt-4">Horarios</h2>
       <div class="table-responsive">
         <table
@@ -672,8 +648,7 @@
       <ul>
         {% for b in bookings %}
         <li>
-          {{ b.user.username }} - {% if b.clase %}{{ b.clase.nombre }}{% else
-          %}{{ b.evento.titulo }}{% endif %} ({{ b.status }})
+          {{ b.user.username }} - {{ b.evento.titulo }} ({{ b.status }})
         </li>
         {% empty %}
         <li>No hay reservas.</li>
