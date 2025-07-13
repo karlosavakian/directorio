@@ -269,9 +269,10 @@
 /* Main photo indicator */
 .gallery-item.main .main-pin {
   position: absolute;
-  top: 5px;
+  bottom:0;
   right: 5px;
   color: #fff;
   font-size: 1.5rem;
   z-index: 2;
+
 }
