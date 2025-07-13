@@ -202,14 +202,20 @@
 
 .gallery-hover-actions {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  inset: 0;
   display: none;
-  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery-item:hover .gallery-hover-actions {
   display: flex;
+}
+
+.gallery-hover-actions .dropdown {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
 
 .drag-handle {
