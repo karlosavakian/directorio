@@ -239,12 +239,11 @@
   display: block;
 }
 
-.gallery-item.main::after {
-  content: '★';
+.gallery-item .main-pin {
   position: absolute;
   bottom: 5px;
   right: 5px;
-  color: #ffc107;
+  color: #fff;
   font-size: 1.2rem;
 }
 
