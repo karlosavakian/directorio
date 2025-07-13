@@ -359,8 +359,10 @@
                     {% if bloque.estado == 'abierto' %}
                     {{ bloque.hora_inicio|time:'H:i' }} -
                     {{ bloque.hora_fin|time:'H:i' }}
-                    {% else %}
+                    {% elif bloque.estado == 'cerrado' %}
                     <span class="text-danger">Cerrado</span>
+                    {% else %}
+                    <span class="text-muted">{{ bloque.estado_otro }}</span>
                     {% endif %}
                   </span>
                   <span>
