@@ -240,6 +240,8 @@
 }
 
 .gallery-item .main-pin {
+.gallery-item.main::after {
+  content: '\1F4CC';
   position: absolute;
   bottom: 5px;
   right: 5px;
