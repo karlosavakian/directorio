@@ -24,9 +24,10 @@
                 </li>
                 {% if request.resolver_match.url_name == 'club_dashboard' %}
                 <li class="nav-item d-flex align-items-center ms-2">
-                    <span class="me-1 text-dark">{{ club.name }}</span>
-                    <a href="{% url 'club_profile' club.slug %}" class="text-dark">
-                        <i class="bi bi-eye"></i>
+                    
+                    <a href="{% url 'club_profile' club.slug %}" class="fw-bold ">
+                       <span class="me-1 text-dark ">  {{ club.name }}</span>
+                       <i class="bi bi-eye-fill"></i>
                     </a>
                 </li>
                 {% endif %}
