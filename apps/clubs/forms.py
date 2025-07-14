@@ -239,3 +239,26 @@ class EntrenadorForm(forms.ModelForm):
             css = avatar_widget.widget.attrs.get('class', '')
             avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
+
+class MiembroForm(forms.ModelForm):
+    class Meta:
+        model = models.Miembro
+        exclude = ['club']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (
+                forms.TextInput,
+                forms.EmailInput,
+                forms.URLInput,
+                forms.NumberInput,
+                forms.PasswordInput,
+                forms.Textarea,
+                forms.DateInput,
+                forms.TimeInput,
+            )):
+                field.widget.attrs.setdefault('placeholder', ' ')
+

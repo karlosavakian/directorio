@@ -7,6 +7,7 @@
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
     <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
+    <div class="profile-tab" data-target="tab-members">Gestión de miembros</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
   </div>
   <div class="profile-content">
@@ -618,6 +619,51 @@
         {% empty %}
         <p>No hay competidores.</p>
         {% endfor %}
+      </div>
+    </div>
+    <div id="tab-members" class="profile-section">
+      <form action="{% url 'miembro_create' club.slug %}" method="get" class="mb-3">
+        <button type="submit" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm">
+          <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
+        </button>
+      </form>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle" style="min-width: 600px">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+              <th>Inscrito</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for m in members %}
+            <tr>
+              <td>{{ m.nombre }} {{ m.apellidos }}</td>
+              <td>{{ m.telefono }}</td>
+              <td>{{ m.email }}</td>
+              <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
+              <td>{{ m.get_estado_display }}</td>
+              <td>
+                <a href="{% url 'miembro_update' m.id %}" class="btn btn-sm btn-link"><i class="bi bi-pencil-square icon-large"></i></a>
+                <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-link text-danger">
+                    <i class="bi bi-dash-circle icon-large"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="text-muted">No hay miembros.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">

@@ -8,3 +8,4 @@ from .competidor import Competidor
 from .entrenador import Entrenador, EntrenadorPhoto, TrainingLevel
 from .post import ClubPost
 from .booking import Booking
+from .member import Miembro

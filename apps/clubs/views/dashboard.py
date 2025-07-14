@@ -14,6 +14,7 @@ from ..models import (
     Horario,
     Competidor,
     Entrenador,
+    Miembro,
 )
 from ..forms import (
     ClubForm,
@@ -22,6 +23,7 @@ from ..forms import (
     HorarioForm,
     CompetidorForm,
     EntrenadorForm,
+    MiembroForm,
 )
 from ..permissions import has_club_permission
 
@@ -45,6 +47,7 @@ def dashboard(request, slug):
     if club.owner != request.user:
         return redirect('home')
     coaches = club.entrenadores.all()
+    members = club.miembros.all()
     bookings = Booking.objects.filter(
         Q(evento__club=club)
     ).select_related('user', 'evento')
@@ -61,6 +64,7 @@ def dashboard(request, slug):
             'bookings': bookings,
             'form': form,
             'coaches': coaches,
+            'members': members,
         },
     )
 @login_required
@@ -295,4 +299,57 @@ def entrenador_delete(request, pk):
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/entrenador_confirm_delete.html', {
         'entrenador': entrenador,
+    })
+
+
+@login_required
+def miembro_create(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = MiembroForm(request.POST)
+        if form.is_valid():
+            miembro = form.save(commit=False)
+            miembro.club = club
+            miembro.save()
+            messages.success(request, 'Miembro añadido correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = MiembroForm()
+    return render(request, 'clubs/miembro_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def miembro_update(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if not has_club_permission(request.user, miembro.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = MiembroForm(request.POST, instance=miembro)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Miembro actualizado correctamente.')
+            return redirect('club_dashboard', slug=miembro.club.slug)
+    else:
+        form = MiembroForm(instance=miembro)
+    return render(request, 'clubs/miembro_form.html', {
+        'form': form,
+        'club': miembro.club,
+        'miembro': miembro,
+    })
+
+
+@login_required
+def miembro_delete(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if not has_club_permission(request.user, miembro.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = miembro.club.slug
+        miembro.delete()
+        messages.success(request, 'Miembro eliminado correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/miembro_confirm_delete.html', {
+        'miembro': miembro,
     })
