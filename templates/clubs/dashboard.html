@@ -636,6 +636,7 @@
               <th>Email</th>
               <th>Inscrito</th>
               <th>Estado</th>
+              <th>Pagos</th>
               <th></th>
             </tr>
           </thead>
@@ -648,6 +649,11 @@
               <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
               <td>{{ m.get_estado_display }}</td>
               <td>
+                <button type="button" class="btn btn-sm btn-outline-secondary view-payments-btn" data-member-id="{{ m.id }}">
+                  Ver Historial
+                </button>
+              </td>
+              <td>
                 <a href="{% url 'miembro_update' m.id %}" class="btn btn-sm btn-link"><i class="bi bi-pencil-square icon-large"></i></a>
                 <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline">
                   {% csrf_token %}
@@ -659,7 +665,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="6" class="text-muted">No hay miembros.</td>
+              <td colspan="7" class="text-muted">No hay miembros.</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -698,6 +704,19 @@
   </div>
 </div>
 
+<!-- Payment History Modal -->
+<div class="modal fade" id="paymentHistoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Historial de Pagos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
@@ -705,4 +724,5 @@
 <script src="{% static 'js/schedule-form.js' %}"></script>
 <script src="{% static 'js/gallery-manager.js' %}"></script>
 <script src="{% static 'js/delete-confirm.js' %}"></script>
+<script src="{% static 'js/payment-history.js' %}"></script>
 {% endblock %}

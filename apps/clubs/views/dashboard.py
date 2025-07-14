@@ -15,6 +15,7 @@ from ..models import (
     Competidor,
     Entrenador,
     Miembro,
+    Pago,
 )
 from ..forms import (
     ClubForm,
@@ -352,4 +353,16 @@ def miembro_delete(request, pk):
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/miembro_confirm_delete.html', {
         'miembro': miembro,
+    })
+
+
+@login_required
+def miembro_pagos(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if not has_club_permission(request.user, miembro.club):
+        return HttpResponseForbidden()
+    pagos = miembro.pagos.all()
+    return render(request, 'clubs/_payment_history.html', {
+        'miembro': miembro,
+        'pagos': pagos,
     })
