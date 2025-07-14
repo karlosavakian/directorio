@@ -262,3 +262,33 @@ class MiembroForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+
+class PagoForm(forms.ModelForm):
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    monto = forms.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={'step': '0.01'})
+    )
+
+    class Meta:
+        model = models.Pago
+        fields = ['fecha', 'monto']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (
+                forms.TextInput,
+                forms.EmailInput,
+                forms.URLInput,
+                forms.NumberInput,
+                forms.PasswordInput,
+                forms.Textarea,
+                forms.DateInput,
+                forms.TimeInput,
+            )):
+                field.widget.attrs.setdefault('placeholder', ' ')
+

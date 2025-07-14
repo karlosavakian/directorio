@@ -1,8 +1,15 @@
+<form action="{% url 'pago_create' miembro.id %}" method="get" class="mb-3">
+  <button type="submit" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 btn-sm">
+    <i class="bi bi-plus-circle icon-large"></i> Añadir pago
+  </button>
+</form>
+
 <table class="table table-bordered text-center align-middle">
   <thead class="table-light">
     <tr>
       <th>Fecha</th>
       <th>Monto</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -10,10 +17,17 @@
     <tr>
       <td>{{ p.fecha|date:"d/m/Y" }}</td>
       <td>{{ p.monto }}</td>
+      <td class="d-flex justify-content-center gap-2">
+        <a href="{% url 'pago_update' p.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+        <form method="post" action="{% url 'pago_delete' p.id %}" class="m-0 p-0 delete-profile-form">
+          {% csrf_token %}
+          <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"></button>
+        </form>
+      </td>
     </tr>
     {% empty %}
     <tr>
-      <td colspan="2" class="text-muted">Sin pagos registrados.</td>
+      <td colspan="3" class="text-muted">Sin pagos registrados.</td>
     </tr>
     {% endfor %}
   </tbody>
