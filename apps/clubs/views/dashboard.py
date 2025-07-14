@@ -25,6 +25,7 @@ from ..forms import (
     CompetidorForm,
     EntrenadorForm,
     MiembroForm,
+    PagoForm,
 )
 from ..permissions import has_club_permission
 
@@ -366,3 +367,57 @@ def miembro_pagos(request, pk):
         'miembro': miembro,
         'pagos': pagos,
     })
+
+
+@login_required
+def pago_create(request, miembro_id):
+    miembro = get_object_or_404(Miembro, pk=miembro_id)
+    if not has_club_permission(request.user, miembro.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = PagoForm(request.POST)
+        if form.is_valid():
+            pago = form.save(commit=False)
+            pago.miembro = miembro
+            pago.save()
+            messages.success(request, 'Pago añadido correctamente.')
+            return redirect('club_dashboard', slug=miembro.club.slug)
+    else:
+        form = PagoForm()
+    return render(request, 'clubs/payment_form.html', {
+        'form': form,
+        'miembro': miembro,
+    })
+
+
+@login_required
+def pago_update(request, pk):
+    pago = get_object_or_404(Pago, pk=pk)
+    if not has_club_permission(request.user, pago.miembro.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = PagoForm(request.POST, instance=pago)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Pago actualizado correctamente.')
+            return redirect('club_dashboard', slug=pago.miembro.club.slug)
+    else:
+        form = PagoForm(instance=pago)
+    return render(request, 'clubs/payment_form.html', {
+        'form': form,
+        'miembro': pago.miembro,
+        'pago': pago,
+    })
+
+
+@login_required
+def pago_delete(request, pk):
+    pago = get_object_or_404(Pago, pk=pk)
+    if not has_club_permission(request.user, pago.miembro.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = pago.miembro.club.slug
+        pago.delete()
+        messages.success(request, 'Pago eliminado correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/pago_confirm_delete.html', {'pago': pago})
