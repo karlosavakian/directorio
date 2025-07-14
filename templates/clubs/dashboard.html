@@ -545,7 +545,7 @@
     <span class="fw-medium text-center mb-2">{{ coach.nombre }} {{ coach.apellidos }}</span>
 
     <!-- Iconos debajo del nombre, centrados -->
-    <div class="mt-2 d-flex justify-content-center gap-3">
+    <div class="mt-2 d-flex justify-content-center gap-2">
       <a href="{% url 'entrenador_update' coach.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
 
       <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="m-0 p-0 delete-profile-form">
