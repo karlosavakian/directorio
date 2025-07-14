@@ -300,10 +300,4 @@
 
 }
 
-/* Keep schedule add buttons visible at the top */
-.schedule-add-sticky {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #fff;
-}
+ 
