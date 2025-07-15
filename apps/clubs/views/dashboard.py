@@ -310,16 +310,19 @@ def miembro_create(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = MiembroForm(request.POST)
+        form = MiembroForm(request.POST, request.FILES)
         if form.is_valid():
             miembro = form.save(commit=False)
             miembro.club = club
             miembro.save()
             messages.success(request, 'Miembro añadido correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = MiembroForm()
-    return render(request, 'clubs/miembro_form.html', {'form': form, 'club': club})
+    template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
+    return render(request, template, {'form': form, 'club': club})
 
 
 @login_required

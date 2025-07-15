@@ -622,11 +622,9 @@
       </div>
     </div>
     <div id="tab-members" class="profile-section">
-      <form action="{% url 'miembro_create' club.slug %}" method="get" class="mb-3">
-        <button type="submit" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm">
-          <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
-        </button>
-      </form>
+      <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn" data-club-slug="{{ club.slug }}">
+        <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
+      </button>
       <div class="table-responsive">
         <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
@@ -748,6 +746,19 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Editar miembro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Member Modal -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo miembro</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body"></div>
