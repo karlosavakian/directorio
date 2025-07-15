@@ -633,7 +633,7 @@
           </thead>
           <tbody>
             {% for m in members %}
-            <tr>
+            <tr class="{% if m.estado == 'activo' %}table-success{% else %}table-danger{% endif %}">
               <td>
                 {{ m.nombre }} {{ m.apellidos }}
                 <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
@@ -661,8 +661,8 @@
                 </button>
               </td>
               <td>
-                <button type="button" class="btn btn-sm btn-link edit-member-btn" data-member-id="{{ m.id }}">
-                  <i class="bi bi-pencil-square icon-large"></i>
+                <button type="button" class="btn btn-sm btn-link edit-member-btn text-dark" data-member-id="{{ m.id }}">
+                  <i class="bi bi-pencil-square icon-large text-dark"></i>
                 </button>
                 <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline">
                   {% csrf_token %}

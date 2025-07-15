@@ -9,7 +9,7 @@
       <div class="form-field text-center">
         <div class="avatar-dropzone mx-auto">
         {{ form.avatar }}
-        <div class="avatar-preview rounded-circle{% if miembro and miembro.avatar %} has-image{% endif %}"{% if miembro and miembro.avatar %} style="background-image:url('{{ miembro.avatar.url }}')"{% endif %}>
+          <div class="avatar-preview rounded-circle{% if miembro and miembro.avatar.name %} has-image{% endif %}"{% if miembro and miembro.avatar.name %} style="background-image:url('{{ miembro.avatar.url }}')"{% endif %}>
           <div class="avatar-dropzone-msg">
             <i class="bi bi-cloud-upload mb-1 fs-4"></i>
             <span>Sube avatar</span>
