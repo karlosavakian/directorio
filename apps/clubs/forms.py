@@ -300,6 +300,8 @@ class MiembroForm(forms.ModelForm):
         if nacionalidad_field:
             other = [c for c in COUNTRY_CHOICES if c[0] != 'España']
             nacionalidad_field.choices = [('', 'País'), ('España', 'España')] + other
+            nacionalidad_field.label = 'País'
+            nacionalidad_field.widget.attrs['placeholder'] = 'País'
 
         # Set default labels for new fields
         if 'localidad' in self.fields:
