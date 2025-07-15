@@ -1,0 +1,13 @@
+<form id="edit-payment-form" action="{% url 'pago_update' pago.id %}" method="post" data-member="{{ pago.miembro.id }}" class="row g-2 align-items-end mb-3">
+  {% csrf_token %}
+  <div class="col">
+    {{ form.fecha }}
+  </div>
+  <div class="col">
+    {{ form.monto }}
+  </div>
+  <div class="col-auto d-flex gap-2">
+    <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
+    <button type="button" id="cancel-edit" class="btn btn-outline-secondary btn-sm">Cancelar</button>
+  </div>
+</form>

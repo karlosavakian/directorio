@@ -1,14 +1,24 @@
-<form action="{% url 'pago_create' miembro.id %}" method="get" class="mb-3">
-  <button type="submit" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 btn-sm">
-    <i class="bi bi-plus-circle icon-large"></i> Añadir pago
-  </button>
+<button id="add-payment-btn" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 mb-3">
+  <i class="bi bi-plus-circle icon-large"></i> Añadir pago
+</button>
+<form id="payment-form" action="{% url 'pago_create' miembro.id %}" method="post" class="row g-2 align-items-end mb-3 d-none">
+  {% csrf_token %}
+  <div class="col">
+    {{ form.fecha }}
+  </div>
+  <div class="col">
+    {{ form.monto }}
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-dark btn-sm">Guardar</button>
+  </div>
 </form>
 
 <table class="table table-bordered text-center align-middle">
   <thead class="table-light">
     <tr>
       <th>Fecha</th>
-      <th>Monto</th>
+      <th>Cantidad</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -18,8 +28,8 @@
       <td>{{ p.fecha|date:"d/m/Y" }}</td>
       <td>{{ p.monto }}</td>
       <td class="d-flex justify-content-center gap-2">
-        <a href="{% url 'pago_update' p.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
-        <form method="post" action="{% url 'pago_delete' p.id %}" class="m-0 p-0 delete-profile-form">
+        <a href="{% url 'pago_update' p.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0 edit-payment-btn"></a>
+        <form method="post" action="{% url 'pago_delete' p.id %}" class="m-0 p-0 delete-payment-form">
           {% csrf_token %}
           <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"></button>
         </form>
@@ -32,3 +42,11 @@
     {% endfor %}
   </tbody>
 </table>
+
+<div id="delete-confirm-box" class="d-none border rounded p-3">
+  <p class="mb-3">¿Seguro que deseas eliminar este pago?</p>
+  <div class="text-end">
+    <button type="button" class="btn btn-sm btn-secondary me-2 cancel-delete">Cancelar</button>
+    <button type="button" class="btn btn-sm btn-danger confirm-delete">Eliminar</button>
+  </div>
+</div>

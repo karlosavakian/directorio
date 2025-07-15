@@ -277,6 +277,7 @@ class PagoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['monto'].label = 'Cantidad'
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = (css + ' form-control').strip()
