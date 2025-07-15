@@ -28,8 +28,8 @@
       <td>{{ p.fecha|date:"d/m/Y" }}</td>
       <td>{{ p.monto }}</td>
       <td class="d-flex justify-content-center gap-2">
-        <a href="{% url 'pago_update' p.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
-        <form method="post" action="{% url 'pago_delete' p.id %}" class="m-0 p-0 delete-profile-form">
+        <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-payment-btn" data-url="{% url 'pago_update' p.id %}" data-fecha="{{ p.fecha|date:'Y-m-d' }}" data-monto="{{ p.monto }}"></button>
+        <form method="post" action="{% url 'pago_delete' p.id %}" class="m-0 p-0 delete-payment-form">
           {% csrf_token %}
           <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"></button>
         </form>

@@ -404,6 +404,8 @@ def pago_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Pago actualizado correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=pago.miembro.club.slug)
     else:
         form = PagoForm(instance=pago)
