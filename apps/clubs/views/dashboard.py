@@ -328,18 +328,29 @@ def miembro_update(request, pk):
     if not has_club_permission(request.user, miembro.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = MiembroForm(request.POST, instance=miembro)
+        form = MiembroForm(request.POST, request.FILES, instance=miembro)
         if form.is_valid():
             form.save()
             messages.success(request, 'Miembro actualizado correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=miembro.club.slug)
     else:
         form = MiembroForm(instance=miembro)
-    return render(request, 'clubs/miembro_form.html', {
+    template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
+    return render(request, template, {
         'form': form,
         'club': miembro.club,
         'miembro': miembro,
     })
+
+
+@login_required
+def miembro_detail(request, pk):
+    miembro = get_object_or_404(Miembro, pk=pk)
+    if not has_club_permission(request.user, miembro.club):
+        return HttpResponseForbidden()
+    return render(request, 'clubs/_miembro_detail.html', {'miembro': miembro})
 
 
 @login_required

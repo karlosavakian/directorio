@@ -1,0 +1,19 @@
+<div class="text-center mb-3">
+  {% if miembro.avatar %}
+  <img src="{{ miembro.avatar.url }}" alt="{{ miembro }}" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+  {% else %}
+  <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center text-white" style="width:120px;height:120px;">
+    {{ miembro.nombre|first|upper }}
+  </div>
+  {% endif %}
+</div>
+<ul class="list-unstyled">
+  <li><strong>Nombre:</strong> {{ miembro.nombre }} {{ miembro.apellidos }}</li>
+  <li><strong>Fecha de nacimiento:</strong> {{ miembro.fecha_nacimiento|default:"-" }}</li>
+  <li><strong>Dirección:</strong> {{ miembro.direccion|default:"-" }}</li>
+  <li><strong>Sexo:</strong> {{ miembro.get_sexo_display|default:"-" }}</li>
+  <li><strong>Peso (kg):</strong> {{ miembro.peso|default:"-" }}</li>
+  <li><strong>Altura (cm):</strong> {{ miembro.altura|default:"-" }}</li>
+  <li><strong>Nacionalidad:</strong> {{ miembro.nacionalidad|default:"-" }}</li>
+  <li><strong>Notas:</strong> {{ miembro.notas|default:"-" }}</li>
+</ul>
