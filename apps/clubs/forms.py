@@ -262,6 +262,15 @@ class MiembroForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+        avatar_widget = self.fields.get('avatar')
+        if avatar_widget:
+            css = avatar_widget.widget.attrs.get('class', '')
+            avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
+        fecha_widget = self.fields.get('fecha_nacimiento')
+        if fecha_widget:
+            fecha_widget.widget.input_type = 'date'
+
 
 class PagoForm(forms.ModelForm):
     fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))

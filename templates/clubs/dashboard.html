@@ -631,7 +631,7 @@
         <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
             <tr>
-              <th>Nombre</th>
+              <th>Miembro</th>
               <th>Teléfono</th>
               <th>Email</th>
               <th>Inscrito</th>
@@ -643,7 +643,12 @@
           <tbody>
             {% for m in members %}
             <tr>
-              <td>{{ m.nombre }} {{ m.apellidos }}</td>
+              <td>
+                {{ m.nombre }} {{ m.apellidos }}
+                <button type="button" class="btn btn-sm btn-link view-member-btn" data-member-id="{{ m.id }}">
+                  <i class="bi bi-eye icon-large"></i>
+                </button>
+              </td>
               <td>{{ m.telefono }}</td>
               <td>{{ m.email }}</td>
               <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
@@ -659,7 +664,9 @@
                 </button>
               </td>
               <td>
-                <a href="{% url 'miembro_update' m.id %}" class="btn btn-sm btn-link"><i class="bi bi-pencil-square icon-large"></i></a>
+                <button type="button" class="btn btn-sm btn-link edit-member-btn" data-member-id="{{ m.id }}">
+                  <i class="bi bi-pencil-square icon-large"></i>
+                </button>
                 <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-sm btn-link text-danger">
@@ -722,6 +729,32 @@
   </div>
 </div>
 
+<!-- Member Profile Modal -->
+<div class="modal fade" id="memberProfileModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Perfil de Miembro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Member Modal -->
+<div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar miembro</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
@@ -730,4 +763,5 @@
 <script src="{% static 'js/gallery-manager.js' %}"></script>
 <script src="{% static 'js/delete-confirm.js' %}"></script>
 <script src="{% static 'js/payment-history.js' %}"></script>
+<script src="{% static 'js/member-modal.js' %}"></script>
 {% endblock %}
