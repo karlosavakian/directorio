@@ -1,5 +1,6 @@
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.avatar-dropzone').forEach(zone => {
+function initAvatarDropzones(root = document) {
+  root.querySelectorAll('.avatar-dropzone').forEach(zone => {
+    if (zone.dataset.initialized) return;
     const input = zone.querySelector('input[type="file"]');
     const preview = zone.querySelector('.avatar-preview');
     const msg = preview.querySelector('.avatar-dropzone-msg');
@@ -42,5 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
         showFile(input.files[0]);
       }
     });
+
+    zone.dataset.initialized = 'true';
   });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAvatarDropzones();
 });
+
+window.initAvatarDropzones = initAvatarDropzones;
