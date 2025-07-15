@@ -303,6 +303,11 @@
 }
 
 .icon-large{
-  font-size:17px; 
+  font-size:17px;
+}
+
+/* Divider after Spain in nationality dropdown */
+select option[value="España"] {
+  border-bottom: 1px solid #ccc;
 }
 
