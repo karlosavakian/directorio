@@ -252,6 +252,7 @@ class EntrenadorForm(forms.ModelForm):
 
 class MiembroForm(forms.ModelForm):
     nacionalidad = forms.ChoiceField(
+        label='País',
         choices=[('', 'pais')] + COUNTRY_CHOICES,
         required=False,
     )
