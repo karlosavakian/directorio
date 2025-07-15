@@ -204,6 +204,9 @@ class CompetidorForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+
+
+
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
             css = avatar_widget.widget.attrs.get('class', '')
@@ -233,6 +236,12 @@ class EntrenadorForm(forms.ModelForm):
                 forms.TimeInput,
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
+
+        # Custom labels with units
+        if 'peso' in self.fields:
+            self.fields['peso'].label = 'Peso (kg)'
+        if 'altura' in self.fields:
+            self.fields['altura'].label = 'Altura (cm)'
 
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
@@ -270,6 +279,12 @@ class MiembroForm(forms.ModelForm):
         fecha_widget = self.fields.get('fecha_nacimiento')
         if fecha_widget:
             fecha_widget.widget.input_type = 'date'
+
+        # Set default labels for new fields
+        if 'localidad' in self.fields:
+            self.fields['localidad'].label = 'Localidad'
+        if 'codigo_postal' in self.fields:
+            self.fields['codigo_postal'].label = 'Código postal'
 
 
 class PagoForm(forms.ModelForm):
