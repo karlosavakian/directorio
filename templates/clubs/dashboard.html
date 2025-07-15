@@ -522,12 +522,10 @@
         </table>
       </div>
     </div>
-    <div id="tab-coaches" class="profile-section"> 
-      <form action="{% url 'entrenador_create' club.slug %}" method="get">
-    <button   type="submit"  class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm"  >
+    <div id="tab-coaches" class="profile-section">
+      <button type="button" class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn" data-club-slug="{{ club.slug }}">
         <i class="bi bi-plus-circle icon-large"></i> Añadir entrenador
       </button>
-    </form>
   
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for coach in club.entrenadores.all %}
@@ -564,15 +562,10 @@
       </div>
     </div>
     <div id="tab-competitors" class="profile-section">
-      
-      <form action="{% url 'competidor_create' club.slug %}" method="get" class="mb-3">
-  <button
-    type="submit"
-    class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm"
-  >
+
+      <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3" data-club-slug="{{ club.slug }}">
     <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
   </button>
-</form>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for comp in club.competidores.all %}
@@ -766,6 +759,32 @@
   </div>
 </div>
 
+<!-- Add Coach Modal -->
+<div class="modal fade" id="addCoachModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo entrenador</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Competitor Modal -->
+<div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo competidor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
 {% endblock %} {% block extra_js %}
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
@@ -775,4 +794,6 @@
 <script src="{% static 'js/delete-confirm.js' %}"></script>
 <script src="{% static 'js/payment-history.js' %}"></script>
 <script src="{% static 'js/member-modal.js' %}"></script>
+<script src="{% static 'js/coach-modal.js' %}"></script>
+<script src="{% static 'js/competitor-modal.js' %}"></script>
 {% endblock %}

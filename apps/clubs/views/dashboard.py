@@ -209,10 +209,13 @@ def competidor_create(request, slug):
             competidor.club = club
             competidor.save()
             messages.success(request, 'Competidor añadido correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = CompetidorForm()
-    return render(request, 'clubs/competidor_form.html', {'form': form, 'club': club})
+    template = 'clubs/_competidor_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/competidor_form.html'
+    return render(request, template, {'form': form, 'club': club})
 
 
 @login_required
@@ -263,10 +266,13 @@ def entrenador_create(request, slug):
             entrenador.save()
             form.save_m2m()
             messages.success(request, 'Entrenador añadido correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = EntrenadorForm()
-    return render(request, 'clubs/entrenador_form.html', {'form': form, 'club': club})
+    template = 'clubs/_entrenador_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/entrenador_form.html'
+    return render(request, template, {'form': form, 'club': club})
 
 
 @login_required
