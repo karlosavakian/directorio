@@ -4,10 +4,10 @@
 <div class="container py-4">
   {% include 'partials/_back-btn.html' %}
   <h1 class="h5">{% if miembro %}Editar{% else %}Nuevo{% endif %} miembro</h1>
-  <form method="post" enctype="multipart/form-data" class="profile-form">
-    {% csrf_token %}
-    <div class="form-field">
-      <div class="avatar-dropzone">
+    <form method="post" enctype="multipart/form-data" class="profile-form">
+      {% csrf_token %}
+      <div class="form-field text-center">
+        <div class="avatar-dropzone mx-auto">
         {{ form.avatar }}
         <div class="avatar-preview{% if miembro and miembro.avatar %} has-image{% endif %}"{% if miembro and miembro.avatar %} style="background-image:url('{{ miembro.avatar.url }}')"{% endif %}>
           <div class="avatar-dropzone-msg">
@@ -111,16 +111,44 @@
         </div>
       </div>
     </div>
-    <div class="form-field">
-      {{ form.direccion }}
-      <button type="button" class="clear-btn">×</button>
-      <label for="{{ form.direccion.id_for_label }}">{{ form.direccion.label }}</label>
-      {% if form.direccion.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.direccion.errors.as_text|striptags }}
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-field">
+            {{ form.direccion }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.direccion.id_for_label }}">{{ form.direccion.label }}</label>
+            {% if form.direccion.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.direccion.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-field">
+            {{ form.localidad }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.localidad.id_for_label }}">{{ form.localidad.label }}</label>
+            {% if form.localidad.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.localidad.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-field">
+            {{ form.codigo_postal }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.codigo_postal.id_for_label }}">{{ form.codigo_postal.label }}</label>
+            {% if form.codigo_postal.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.codigo_postal.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+        </div>
       </div>
-      {% endif %}
-    </div>
     <div class="row">
       <div class="col-md-6">
         <div class="form-field">
