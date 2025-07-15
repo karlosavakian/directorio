@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reseña
 from . import models
+from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 
 class LoginForm(AuthenticationForm):
@@ -250,6 +251,11 @@ class EntrenadorForm(forms.ModelForm):
 
 
 class MiembroForm(forms.ModelForm):
+    nacionalidad = forms.ChoiceField(
+        choices=[('', 'Seleccione país')] + COUNTRY_CHOICES,
+        required=False,
+    )
+
     class Meta:
         model = models.Miembro
         exclude = ['club']
@@ -271,6 +277,12 @@ class MiembroForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+        # Custom placeholders
+        if 'peso' in self.fields:
+            self.fields['peso'].widget.attrs['placeholder'] = 'peso (kg)'
+        if 'altura' in self.fields:
+            self.fields['altura'].widget.attrs['placeholder'] = 'altura (cm)'
+
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
             css = avatar_widget.widget.attrs.get('class', '')
@@ -279,6 +291,14 @@ class MiembroForm(forms.ModelForm):
         fecha_widget = self.fields.get('fecha_nacimiento')
         if fecha_widget:
             fecha_widget.widget.input_type = 'date'
+
+        sexo_field = self.fields.get('sexo')
+        if sexo_field:
+            sexo_field.choices = [('', 'Seleccione sexo')] + list(models.Miembro.SEXO_CHOICES)
+
+        nacionalidad_field = self.fields.get('nacionalidad')
+        if nacionalidad_field:
+            nacionalidad_field.choices = [('', 'Seleccione país')] + COUNTRY_CHOICES
 
         # Set default labels for new fields
         if 'localidad' in self.fields:
