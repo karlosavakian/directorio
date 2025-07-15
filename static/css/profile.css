@@ -313,7 +313,7 @@ select option[value="España"] {
 
 /* Add Member Modal custom sizing */
 #addMemberModalDialog {
-  max-width: 70%;
+  max-width: 66.6667%;
 }
 
 #addMemberModal .profile-form input,

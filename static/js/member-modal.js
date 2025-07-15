@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(html => {
           if (editEl) {
             editEl.querySelector('.modal-body').innerHTML = html;
+            if (window.initAvatarDropzones) {
+              window.initAvatarDropzones(editEl);
+            }
             const form = editEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
@@ -50,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(html => {
           if (addEl) {
             addEl.querySelector('.modal-body').innerHTML = html;
+            if (window.initAvatarDropzones) {
+              window.initAvatarDropzones(addEl);
+            }
             const form = addEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
