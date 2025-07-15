@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.db.models import Q
 from collections import defaultdict
 
@@ -363,9 +363,11 @@ def miembro_pagos(request, pk):
     if not has_club_permission(request.user, miembro.club):
         return HttpResponseForbidden()
     pagos = miembro.pagos.all()
+    form = PagoForm()
     return render(request, 'clubs/_payment_history.html', {
         'miembro': miembro,
         'pagos': pagos,
+        'form': form,
     })
 
 
@@ -381,6 +383,8 @@ def pago_create(request, miembro_id):
             pago.miembro = miembro
             pago.save()
             messages.success(request, 'Pago añadido correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=miembro.club.slug)
     else:
         form = PagoForm()
@@ -419,5 +423,7 @@ def pago_delete(request, pk):
         slug = pago.miembro.club.slug
         pago.delete()
         messages.success(request, 'Pago eliminado correctamente.')
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return HttpResponse(status=204)
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/pago_confirm_delete.html', {'pago': pago})

@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = new bootstrap.Modal(modalEl);
   let formToSubmit = null;
 
-  document.querySelectorAll('.delete-profile-form').forEach(form => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      formToSubmit = form;
-      modal.show();
-    });
+  document.body.addEventListener('submit', (e) => {
+    const form = e.target.closest('.delete-profile-form');
+    if (!form) return;
+    e.preventDefault();
+    formToSubmit = form;
+    modal.show();
   });
 
   modalEl.querySelector('.confirm-delete').addEventListener('click', () => {
