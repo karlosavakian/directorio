@@ -1,0 +1,77 @@
+<form method="post" enctype="multipart/form-data" class="profile-form">
+  {% csrf_token %}
+    <div class="form-field">
+      <div class="avatar-dropzone">
+        {{ form.avatar }}
+        <div class="avatar-preview{% if competidor and competidor.avatar %} has-image{% endif %}"{% if competidor and competidor.avatar %} style="background-image:url('{{ competidor.avatar.url }}')"{% endif %}>
+          <div class="avatar-dropzone-msg">
+            <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+            <span>Sube avatar</span>
+          </div>
+        </div>
+      </div>
+      <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
+      {% if form.avatar.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.avatar.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.nombre }}
+      <button type="button" class="clear-btn">×</button>
+      <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+      {% if form.nombre.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.nombre.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.record }}
+      <button type="button" class="clear-btn">×</button>
+      <label for="{{ form.record.id_for_label }}">{{ form.record.label }}</label>
+      {% if form.record.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.record.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.modalidad }}
+      <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
+      {% if form.modalidad.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.modalidad.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.peso }}
+      <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+      {% if form.peso.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.peso.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.sexo }}
+      <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+      {% if form.sexo.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.sexo.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.palmares }}
+      <label for="{{ form.palmares.id_for_label }}">{{ form.palmares.label }}</label>
+      {% if form.palmares.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.palmares.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <button type="submit" class="btn btn-dark">Guardar</button>
+</form>
