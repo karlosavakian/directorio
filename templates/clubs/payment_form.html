@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  {% include 'partials/_back-btn.html' %}
+  <h1 class="h5">{% if pago %}Editar{% else %}Nuevo{% endif %} pago</h1>
+  <form method="post" class="profile-form">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-field">
+      {{ field }}
+      <button type="button" class="clear-btn">×</button>
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {% if field.errors %}
+      <div class="invalid-feedback d-block">
+        {{ field.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-dark">Guardar</button>
+  </form>
+</div>
+{% endblock %}
