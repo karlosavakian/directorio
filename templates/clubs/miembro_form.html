@@ -23,20 +23,146 @@
       </div>
       {% endif %}
     </div>
-    {% for field in form %}
-      {% if field.name != 'avatar' %}
-      <div class="form-field">
-        {{ field }}
-        <button type="button" class="clear-btn">×</button>
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% if field.errors %}
-        <div class="invalid-feedback d-block">
-          {{ field.errors.as_text|striptags }}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.nombre }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+          {% if form.nombre.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.nombre.errors.as_text|striptags }}
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
+      </div>
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.apellidos }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.apellidos.id_for_label }}">{{ form.apellidos.label }}</label>
+          {% if form.apellidos.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.apellidos.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.telefono }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>
+          {% if form.telefono.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.telefono.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.email }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+          {% if form.email.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.email.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-field">
+          {{ form.fecha_nacimiento }}
+          <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
+          {% if form.fecha_nacimiento.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.fecha_nacimiento.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-field">
+          {{ form.sexo }}
+          <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+          {% if form.sexo.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.sexo.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-field">
+          {{ form.nacionalidad }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.nacionalidad.id_for_label }}">{{ form.nacionalidad.label }}</label>
+          {% if form.nacionalidad.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.nacionalidad.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="form-field">
+      {{ form.direccion }}
+      <button type="button" class="clear-btn">×</button>
+      <label for="{{ form.direccion.id_for_label }}">{{ form.direccion.label }}</label>
+      {% if form.direccion.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.direccion.errors.as_text|striptags }}
       </div>
       {% endif %}
-    {% endfor %}
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.altura }}
+          <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
+          {% if form.altura.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.altura.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.peso }}
+          <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+          {% if form.peso.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.peso.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="form-field">
+      {{ form.estado }}
+      <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
+      {% if form.estado.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.estado.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field">
+      {{ form.notas }}
+      <label for="{{ form.notas.id_for_label }}">{{ form.notas.label }}</label>
+      {% if form.notas.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.notas.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
     <button type="submit" class="btn btn-dark">Guardar</button>
   </form>
 </div>
