@@ -1,4 +1,4 @@
-<form method="post" enctype="multipart/form-data" class="profile-form">
+<form method="post" enctype="multipart/form-data" class="profile-form" action="{% if miembro %}{% url 'miembro_update' miembro.id %}{% else %}{% url 'miembro_create' club.slug %}{% endif %}">
   {% csrf_token %}
   <div class="form-field text-center">
     <div class="avatar-dropzone mx-auto">
