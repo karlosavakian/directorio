@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from .club import Club
 
 
@@ -23,3 +24,12 @@ class Miembro(models.Model):
 
     def __str__(self):  # pragma: no cover - simple representation
         return f"{self.nombre} {self.apellidos}"
+
+    @property
+    def pago_mes_actual(self):
+        """Return 'completo' if there's a payment for the current month."""
+        today = timezone.now().date()
+        has_payment = self.pagos.filter(
+            fecha__year=today.year, fecha__month=today.month
+        ).exists()
+        return "completo" if has_payment else "pendiente"

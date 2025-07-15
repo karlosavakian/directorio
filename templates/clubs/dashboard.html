@@ -649,8 +649,13 @@
               <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
               <td>{{ m.get_estado_display }}</td>
               <td>
-                <button type="button" class="btn btn-sm btn-outline-secondary view-payments-btn" data-member-id="{{ m.id }}">
-                  Ver Historial
+                {% if m.pago_mes_actual == 'completo' %}
+                <span class="badge bg-success">Completo</span>
+                {% else %}
+                <span class="badge bg-warning text-dark">Pendiente</span>
+                {% endif %}
+                <button type="button" class="btn btn-sm btn-link view-payments-btn" data-member-id="{{ m.id }}">
+                  <i class="bi bi-eye icon-large"></i>
                 </button>
               </td>
               <td>
