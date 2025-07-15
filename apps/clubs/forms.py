@@ -252,7 +252,7 @@ class EntrenadorForm(forms.ModelForm):
 
 class MiembroForm(forms.ModelForm):
     nacionalidad = forms.ChoiceField(
-        choices=[('', 'País')] + COUNTRY_CHOICES,
+        choices=[('', 'pais')] + COUNTRY_CHOICES,
         required=False,
     )
 
@@ -299,7 +299,7 @@ class MiembroForm(forms.ModelForm):
         nacionalidad_field = self.fields.get('nacionalidad')
         if nacionalidad_field:
             other = [c for c in COUNTRY_CHOICES if c[0] != 'España']
-            nacionalidad_field.choices = [('', 'País'), ('España', 'España')] + other
+            nacionalidad_field.choices = [('', 'pais'), ('España', 'España')] + other
 
         # Set default labels for new fields
         if 'localidad' in self.fields:

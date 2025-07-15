@@ -311,3 +311,18 @@ select option[value="España"] {
   border-bottom: 1px solid #ccc;
 }
 
+/* Add Member Modal custom sizing */
+#addMemberModalDialog {
+  max-width: 70%;
+}
+
+#addMemberModal .profile-form input,
+#addMemberModal .profile-form select,
+#addMemberModal .profile-form textarea {
+  width: auto;
+}
+
+#addMemberModal .profile-form select[name="estado"] {
+  width: auto;
+}
+
