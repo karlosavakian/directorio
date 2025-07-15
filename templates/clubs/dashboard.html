@@ -633,7 +633,7 @@
           </thead>
           <tbody>
             {% for m in members %}
-            <tr class="{% if m.estado == 'activo' %}table-success{% else %}table-danger{% endif %}">
+            <tr>
               <td>
                 {{ m.nombre }} {{ m.apellidos }}
                 <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
@@ -647,7 +647,7 @@
                 {% if m.estado == 'activo' %}
                 <span class="badge bg-success">Activo</span>
                 {% else %}
-                <span class="badge bg-danger">Inactivo</span>
+                <span class="badge bg-warning text-dark">Inactivo</span>
                 {% endif %}
               </td>
               <td>
