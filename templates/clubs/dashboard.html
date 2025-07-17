@@ -618,8 +618,10 @@
       <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn mb-3" data-club-slug="{{ club.slug }}">
         <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
       </button>
-      <div class="table-responsive">
-        <table class="table table-bordered text-center align-middle" style="min-width: 600px">
+      <div class="row g-3">
+        <div class="col-lg-9">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
             <tr>
               <th>Miembro</th>
@@ -678,7 +680,38 @@
             </tr>
             {% endfor %}
           </tbody>
-        </table>
+            </table>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <form method="get" class="vstack gap-2">
+            <select name="orden" class="form-select form-select-sm">
+              <option value="">Ordenar</option>
+              <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>A-Z</option>
+              <option value="antiguedad" {% if request.GET.orden == 'antiguedad' %}selected{% endif %}>Antigüedad</option>
+            </select>
+            <select name="estado" class="form-select form-select-sm">
+              <option value="">Estado</option>
+              <option value="activo" {% if request.GET.estado == 'activo' %}selected{% endif %}>Activo</option>
+              <option value="inactivo" {% if request.GET.estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+            </select>
+            <select name="pago" class="form-select form-select-sm">
+              <option value="">Pago</option>
+              <option value="completo" {% if request.GET.pago == 'completo' %}selected{% endif %}>Completo</option>
+              <option value="pendiente" {% if request.GET.pago == 'pendiente' %}selected{% endif %}>Pendiente</option>
+            </select>
+            <select name="sexo" class="form-select form-select-sm">
+              <option value="">Sexo</option>
+              <option value="M" {% if request.GET.sexo == 'M' %}selected{% endif %}>Masculino</option>
+              <option value="F" {% if request.GET.sexo == 'F' %}selected{% endif %}>Femenino</option>
+            </select>
+            <input type="number" step="0.01" name="peso_min" class="form-control form-control-sm" placeholder="Peso mín" value="{{ request.GET.peso_min }}">
+            <input type="number" step="0.01" name="peso_max" class="form-control form-control-sm" placeholder="Peso máx" value="{{ request.GET.peso_max }}">
+            <input type="number" step="0.01" name="altura_min" class="form-control form-control-sm" placeholder="Altura mín" value="{{ request.GET.altura_min }}">
+            <input type="number" step="0.01" name="altura_max" class="form-control form-control-sm" placeholder="Altura máx" value="{{ request.GET.altura_max }}">
+            <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
+          </form>
+        </div>
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">

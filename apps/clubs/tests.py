@@ -6,7 +6,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User, Group
 from PIL import Image
 
-from .models import Club, ClubPhoto, ClubPost
+from .models import Club, ClubPhoto, ClubPost, Miembro, Pago
+from datetime import date
 
 
 class SearchResultsTests(TestCase):
@@ -168,3 +169,38 @@ class UserReviewFirstTests(TestCase):
         self.assertEqual(response.status_code, 200)
         reviews = list(response.context['reseñas'])
         self.assertEqual(reviews[0].usuario, self.user1)
+
+
+class DashboardMemberFilterTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner', password='pass')
+        Group.objects.get_or_create(name='ClubOwner')
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='1', email='e@e.com', owner=self.owner
+        )
+        self.member1 = Miembro.objects.create(
+            club=self.club, nombre='Ana', apellidos='A', estado='activo', sexo='F'
+        )
+        self.member2 = Miembro.objects.create(
+            club=self.club, nombre='Luis', apellidos='B', estado='inactivo', sexo='M'
+        )
+        Pago.objects.create(miembro=self.member1, fecha=date.today(), monto=10)
+        self.client.login(username='owner', password='pass')
+
+    def test_filter_by_estado(self):
+        url = reverse('club_dashboard', args=[self.club.slug])
+        res = self.client.get(url, {'estado': 'activo'})
+        self.assertContains(res, 'Ana')
+        self.assertNotContains(res, 'Luis')
+
+    def test_filter_by_pago(self):
+        url = reverse('club_dashboard', args=[self.club.slug])
+        res = self.client.get(url, {'pago': 'completo'})
+        self.assertContains(res, 'Ana')
+        self.assertNotContains(res, 'Luis')
+
+    def test_order_alpha(self):
+        url = reverse('club_dashboard', args=[self.club.slug])
+        res = self.client.get(url, {'orden': 'alpha'})
+        members = list(res.context['members'])
+        self.assertEqual(members[0], self.member1)
