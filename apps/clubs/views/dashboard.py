@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse
 from django.template.loader import render_to_string
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
+from django.utils import timezone
 from collections import defaultdict
 
 
@@ -51,6 +52,47 @@ def dashboard(request, slug):
         return redirect('home')
     coaches = club.entrenadores.all()
     members = club.miembros.all()
+
+    # Filtros para los miembros
+    estado = request.GET.get('estado')
+    if estado in ['activo', 'inactivo']:
+        members = members.filter(estado=estado)
+
+    sexo = request.GET.get('sexo')
+    if sexo in ['M', 'F']:
+        members = members.filter(sexo=sexo)
+
+    peso_min = request.GET.get('peso_min')
+    if peso_min:
+        members = members.filter(peso__gte=peso_min)
+    peso_max = request.GET.get('peso_max')
+    if peso_max:
+        members = members.filter(peso__lte=peso_max)
+
+    altura_min = request.GET.get('altura_min')
+    if altura_min:
+        members = members.filter(altura__gte=altura_min)
+    altura_max = request.GET.get('altura_max')
+    if altura_max:
+        members = members.filter(altura__lte=altura_max)
+
+    pago = request.GET.get('pago')
+    if pago in ['completo', 'pendiente']:
+        today = timezone.now().date()
+        payment_qs = Pago.objects.filter(
+            miembro=OuterRef('pk'),
+            fecha__year=today.year,
+            fecha__month=today.month,
+        )
+        members = members.annotate(has_payment=Exists(payment_qs))
+        members = members.filter(has_payment=(pago == 'completo'))
+
+    orden = request.GET.get('orden')
+    if orden == 'alpha':
+        members = members.order_by('nombre', 'apellidos')
+    elif orden == 'antiguedad':
+        members = members.order_by('fecha_inscripcion')
+
     bookings = Booking.objects.filter(
         Q(evento__club=club)
     ).select_related('user', 'evento')
