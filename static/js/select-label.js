@@ -1,14 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.form-field select').forEach(select => {
+  document.querySelectorAll('.form-field select').forEach((select) => {
     const update = () => {
-      if (select.value) {
-        select.classList.add('has-value');
-      } else {
-        select.classList.remove('has-value');
-      }
+      select.classList.toggle('has-value', select.value !== '');
     };
-    select.addEventListener('change', update);
+
+    ['change', 'blur'].forEach((evt) => {
+      select.addEventListener(evt, update);
+    });
+
     update();
   });
 });
