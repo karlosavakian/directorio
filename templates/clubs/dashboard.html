@@ -618,20 +618,7 @@
       <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn mb-3" data-club-slug="{{ club.slug }}">
         <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
       </button>
-      <form method="get" id="member-search-form" class="d-inline-flex align-items-center gap-2 ms-2 mb-3">
-        <button type="button" id="member-search-toggle" class="btn btn-outline-dark"><i class="bi bi-search"></i></button>
-        <div id="member-search-wrapper" class="member-search-wrapper ms-2 form-field search-field">
-          <input type="text" name="q" id="member-search-input" list="member-list" class="form-control form-control-sm member-search-input" placeholder="Buscar miembro" value="{{ request.GET.q }}">
-          <button type="button" class="clear-btn">&times;</button>
-          <i class="bi bi-search search-icon"></i>
-          <button type="submit" class="btn btn-outline-dark btn-sm search-submit"><i class="bi bi-search"></i></button>
-        </div>
-        <datalist id="member-list">
-          {% for mem in club.miembros.all %}
-          <option value="{{ mem.nombre }} {{ mem.apellidos }}"></option>
-          {% endfor %}
-        </datalist>
-      </form>
+      {# Buscador de miembros oculto para simplificar la interfaz #}
       <div class="row g-3">
         <div class="col-lg-9">
           <div class="table-responsive">
@@ -703,7 +690,7 @@
               <input type="text" name="q" class="form-control" placeholder="Buscar miembro" value="{{ request.GET.q }}">
               <button type="button" class="clear-btn">&times;</button>
               <i class="bi bi-search search-icon"></i>
-              <button type="submit" class="btn btn-outline-dark"><i class="bi bi-search"></i></button>
+              <button type="submit" class="btn btn-outline-dark">Buscar</button>
             </div>
           </form>
           <form method="get" id="member-filter-form" class="vstack gap-2">
