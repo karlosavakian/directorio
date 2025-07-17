@@ -323,3 +323,17 @@ select option[value="España"] {
   border-bottom: 1px solid #ccc;
 }
 
+.member-search-wrapper {
+  display: none;
+  align-items: center;
+}
+.member-search-wrapper.show {
+  display: inline-flex;
+}
+.member-search-input {
+  width: 0;
+  transition: width 0.3s ease;
+}
+.member-search-wrapper.show .member-search-input {
+  width: 160px;
+}
