@@ -54,13 +54,13 @@ def dashboard(request, slug):
     members = club.miembros.all()
 
     # Filtros para los miembros
-    estado = request.GET.get('estado')
-    if estado in ['activo', 'inactivo']:
-        members = members.filter(estado=estado)
+    estados = [e for e in request.GET.getlist('estado') if e in ['activo', 'inactivo']]
+    if estados:
+        members = members.filter(estado__in=estados)
 
-    sexo = request.GET.get('sexo')
-    if sexo in ['M', 'F']:
-        members = members.filter(sexo=sexo)
+    sexos = [s for s in request.GET.getlist('sexo') if s in ['M', 'F']]
+    if sexos:
+        members = members.filter(sexo__in=sexos)
 
     peso_min = request.GET.get('peso_min')
     if peso_min:
@@ -76,8 +76,8 @@ def dashboard(request, slug):
     if altura_max:
         members = members.filter(altura__lte=altura_max)
 
-    pago = request.GET.get('pago')
-    if pago in ['completo', 'pendiente']:
+    pagos = [p for p in request.GET.getlist('pago') if p in ['completo', 'pendiente']]
+    if pagos:
         today = timezone.now().date()
         payment_qs = Pago.objects.filter(
             miembro=OuterRef('pk'),
@@ -85,7 +85,10 @@ def dashboard(request, slug):
             fecha__month=today.month,
         )
         members = members.annotate(has_payment=Exists(payment_qs))
-        members = members.filter(has_payment=(pago == 'completo'))
+        if 'completo' in pagos and 'pendiente' not in pagos:
+            members = members.filter(has_payment=True)
+        elif 'pendiente' in pagos and 'completo' not in pagos:
+            members = members.filter(has_payment=False)
 
     orden = request.GET.get('orden')
     if orden == 'alpha':
