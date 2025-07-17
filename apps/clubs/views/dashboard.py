@@ -102,9 +102,9 @@ def dashboard(request, slug):
     elif orden == 'alpha_desc':
         members = members.order_by('-nombre', '-apellidos')
     elif orden == 'oldest':
-        members = members.order_by('fecha_inscripcion')
+        members = members.order_by('fecha_inscripcion', 'id')
     elif orden == 'newest':
-        members = members.order_by('-fecha_inscripcion')
+        members = members.order_by('-fecha_inscripcion', '-id')
 
     bookings = Booking.objects.filter(
         Q(evento__club=club)
