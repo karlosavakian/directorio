@@ -206,3 +206,8 @@ p {
         transform: translateX(0);
     }
 }
+
+/* Estilo para checkboxes en negro y blanco */
+input[type="checkbox"] {
+    accent-color: #000;
+}
