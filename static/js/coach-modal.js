@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.initAvatarDropzones) {
               window.initAvatarDropzones(addEl);
             }
+            if (window.initSelectLabels) {
+              window.initSelectLabels(addEl);
+            }
             const form = addEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
