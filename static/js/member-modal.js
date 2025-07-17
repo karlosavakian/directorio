@@ -2,9 +2,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileEl = document.getElementById('memberProfileModal');
   const editEl = document.getElementById('editMemberModal');
   const addEl = document.getElementById('addMemberModal');
+  const confirmEl = document.getElementById('confirmEditModal');
   const profileModal = profileEl ? new bootstrap.Modal(profileEl) : null;
   const editModal = editEl ? new bootstrap.Modal(editEl) : null;
   const addModal = addEl ? new bootstrap.Modal(addEl) : null;
+  const confirmModal = confirmEl ? new bootstrap.Modal(confirmEl) : null;
+  let formToSubmit = null;
+
+  if (confirmEl) {
+    confirmEl.querySelector('.confirm-edit').addEventListener('click', () => {
+      if (!formToSubmit) return;
+      const fd = new FormData(formToSubmit);
+      fetch(formToSubmit.action, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: fd
+      }).then(() => window.location.reload());
+    });
+  }
 
   document.querySelectorAll('.view-member-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -34,9 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const form = editEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
-              const fd = new FormData(form);
-              fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
-                .then(() => window.location.reload());
+              formToSubmit = form;
+              if (confirmModal) {
+                confirmModal.show();
+              } else {
+                const fd = new FormData(form);
+                fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
+                  .then(() => window.location.reload());
+              }
             });
             editModal.show();
           }
