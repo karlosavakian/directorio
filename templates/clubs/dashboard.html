@@ -7,7 +7,7 @@
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
     <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
-    <div class="profile-tab" data-target="tab-members">Gestión miembros</div>
+    <div class="profile-tab" data-target="tab-members">Miembros</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
   </div>
   <div class="profile-content">
@@ -673,7 +673,7 @@
               </td>
             </tr>
             {% empty %}
-            <tr>
+            <tr class="no-members-row">
               <td colspan="7" class="text-muted">No hay miembros.</td>
             </tr>
             {% endfor %}

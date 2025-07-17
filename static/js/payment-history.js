@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  window.loadHistory = loadHistory;
+
   function initForm(memberId) {
     const toggleBtn = modalEl.querySelector('#add-payment-btn');
     const form = modalEl.querySelector('#payment-form');

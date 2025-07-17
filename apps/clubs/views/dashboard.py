@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse
+from django.template.loader import render_to_string
 from django.db.models import Q
 from collections import defaultdict
 
@@ -323,7 +324,8 @@ def miembro_create(request, slug):
             miembro.save()
             messages.success(request, 'Miembro añadido correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                return HttpResponse(status=204)
+                html = render_to_string('clubs/_miembro_row.html', {'m': miembro}, request=request)
+                return HttpResponse(html)
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = MiembroForm()

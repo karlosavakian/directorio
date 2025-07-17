@@ -9,6 +9,64 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmModal = confirmEl ? new bootstrap.Modal(confirmEl) : null;
   let formToSubmit = null;
 
+  function bindMemberRow(row) {
+    const viewBtn = row.querySelector('.view-member-btn');
+    if (viewBtn) {
+      viewBtn.addEventListener('click', () => {
+        const id = viewBtn.dataset.memberId;
+        fetch(`/clubs/miembro/${id}/detalle/`)
+          .then(res => res.text())
+          .then(html => {
+            if (profileEl) {
+              profileEl.querySelector('.modal-body').innerHTML = html;
+              profileModal.show();
+            }
+          });
+      });
+    }
+    const editBtn = row.querySelector('.edit-member-btn');
+    if (editBtn) {
+      editBtn.addEventListener('click', () => {
+        const id = editBtn.dataset.memberId;
+        fetch(`/clubs/miembro/${id}/editar/`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(res => res.text())
+          .then(html => {
+            if (editEl) {
+              editEl.querySelector('.modal-body').innerHTML = html;
+              if (window.initSelectLabels) {
+                window.initSelectLabels(editEl);
+              }
+              const form = editEl.querySelector('form');
+              form.addEventListener('submit', e => {
+                e.preventDefault();
+                formToSubmit = form;
+                if (confirmModal) {
+                  confirmModal.show();
+                } else {
+                  const fd = new FormData(form);
+                  fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
+                    .then(() => window.location.reload());
+                }
+              });
+              editModal.show();
+            }
+          });
+      });
+    }
+    const payBtn = row.querySelector('.view-payments-btn');
+    if (payBtn && window.loadHistory) {
+      payBtn.addEventListener('click', () => {
+        const memberId = payBtn.dataset.memberId;
+        window.loadHistory(memberId);
+        const modalEl = document.getElementById('paymentHistoryModal');
+        if (modalEl) {
+          const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+          modal.show();
+        }
+      });
+    }
+  }
+
   if (confirmEl) {
     confirmEl.querySelector('.confirm-edit').addEventListener('click', () => {
       if (!formToSubmit) return;
@@ -21,48 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  document.querySelectorAll('.view-member-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.memberId;
-      fetch(`/clubs/miembro/${id}/detalle/`)
-        .then(res => res.text())
-        .then(html => {
-          if (profileEl) {
-            profileEl.querySelector('.modal-body').innerHTML = html;
-            profileModal.show();
-          }
-        });
-    });
-  });
-
-  document.querySelectorAll('.edit-member-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.dataset.memberId;
-      fetch(`/clubs/miembro/${id}/editar/`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then(res => res.text())
-        .then(html => {
-          if (editEl) {
-            editEl.querySelector('.modal-body').innerHTML = html;
-            if (window.initSelectLabels) {
-              window.initSelectLabels(editEl);
-            }
-            const form = editEl.querySelector('form');
-            form.addEventListener('submit', e => {
-              e.preventDefault();
-              formToSubmit = form;
-              if (confirmModal) {
-                confirmModal.show();
-              } else {
-                const fd = new FormData(form);
-                fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
-                  .then(() => window.location.reload());
-              }
-            });
-            editModal.show();
-          }
-        });
-    });
-  });
+  document.querySelectorAll('#tab-members tbody tr').forEach(tr => bindMemberRow(tr));
 
   const addBtn = document.querySelector('.add-member-btn');
   if (addBtn) {
@@ -84,7 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
               e.preventDefault();
               const fd = new FormData(form);
               fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
-                .then(() => window.location.reload());
+                .then(res => res.text())
+                .then(html => {
+                  const tbody = document.querySelector('#tab-members tbody');
+                  if (tbody) {
+                    const tmp = document.createElement('tbody');
+                    tmp.innerHTML = html.trim();
+                    const newRow = tmp.querySelector('tr');
+                    if (newRow) {
+                      const emptyRow = tbody.querySelector('.no-members-row');
+                      if (emptyRow) emptyRow.remove();
+                      tbody.appendChild(newRow);
+                      bindMemberRow(newRow);
+                    }
+                  }
+                  addModal.hide();
+                });
             });
             addModal.show();
           }
