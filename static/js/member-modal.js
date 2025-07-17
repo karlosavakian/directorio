@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileEl = document.getElementById('memberProfileModal');
   const editEl = document.getElementById('editMemberModal');
   const addEl = document.getElementById('addMemberModal');
-  const confirmEl = document.getElementById('confirmEditModal');
   const profileModal = profileEl ? new bootstrap.Modal(profileEl) : null;
   const editModal = editEl ? new bootstrap.Modal(editEl) : null;
   const addModal = addEl ? new bootstrap.Modal(addEl) : null;
-  const confirmModal = confirmEl ? new bootstrap.Modal(confirmEl) : null;
   let formToSubmit = null;
+  let confirmContainer = null;
 
   function bindMemberRow(row) {
     const viewBtn = row.querySelector('.view-member-btn');
@@ -40,14 +39,37 @@ document.addEventListener('DOMContentLoaded', () => {
               form.addEventListener('submit', e => {
                 e.preventDefault();
                 formToSubmit = form;
-                if (confirmModal) {
-                  confirmModal.show();
+                confirmContainer = form.querySelector('.confirm-edit-container');
+                if (confirmContainer) {
+                  confirmContainer.classList.remove('d-none');
                 } else {
                   const fd = new FormData(form);
                   fetch(form.action, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: fd })
                     .then(() => window.location.reload());
                 }
               });
+
+              confirmContainer = form.querySelector('.confirm-edit-container');
+              if (confirmContainer) {
+                const confirmBtn = confirmContainer.querySelector('.confirm-edit-btn');
+                const cancelBtn = confirmContainer.querySelector('.cancel-confirm');
+                if (confirmBtn) {
+                  confirmBtn.addEventListener('click', () => {
+                    if (!formToSubmit) return;
+                    const fd = new FormData(formToSubmit);
+                    fetch(formToSubmit.action, {
+                      method: 'POST',
+                      headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                      body: fd
+                    }).then(() => window.location.reload());
+                  });
+                }
+                if (cancelBtn) {
+                  cancelBtn.addEventListener('click', () => {
+                    confirmContainer.classList.add('d-none');
+                  });
+                }
+              }
               editModal.show();
             }
           });
@@ -67,17 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (confirmEl) {
-    confirmEl.querySelector('.confirm-edit').addEventListener('click', () => {
-      if (!formToSubmit) return;
-      const fd = new FormData(formToSubmit);
-      fetch(formToSubmit.action, {
-        method: 'POST',
-        headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        body: fd
-      }).then(() => window.location.reload());
-    });
-  }
+
 
   document.querySelectorAll('#tab-members tbody tr').forEach(tr => bindMemberRow(tr));
 

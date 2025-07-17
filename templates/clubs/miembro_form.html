@@ -191,7 +191,14 @@
       </div>
       {% endif %}
     </div>
-    <button type="submit" class="btn btn-dark">Guardar</button>
+    <button type="submit" class="btn btn-dark save-btn">Guardar</button>
+    <div class="confirm-edit-container alert alert-warning mt-3 d-none" role="alert">
+      ¿Seguro que deseas guardar los cambios?
+      <div class="mt-2 d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-secondary btn-sm cancel-confirm">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-sm confirm-edit-btn">Guardar</button>
+      </div>
+    </div>
   </form>
 </div>
 {% endblock %}
