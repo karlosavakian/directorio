@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(html => {
           if (editEl) {
             editEl.querySelector('.modal-body').innerHTML = html;
+            if (window.initSelectLabels) {
+              window.initSelectLabels(editEl);
+            }
             const form = editEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
@@ -52,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
             addEl.querySelector('.modal-body').innerHTML = html;
             if (window.initAvatarDropzones) {
               window.initAvatarDropzones(addEl);
+            }
+            if (window.initSelectLabels) {
+              window.initSelectLabels(addEl);
             }
             const form = addEl.querySelector('form');
             form.addEventListener('submit', e => {

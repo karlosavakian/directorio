@@ -1,24 +1,26 @@
+function initSelectLabels(root = document) {
+  root.querySelectorAll('.form-field select').forEach(select => {
+    if (select.dataset.initSelectLabels) return;
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.form-field select').forEach((select) => {
+    const placeholder = select.querySelector('option[value=""]');
+    if (placeholder) {
+      placeholder.hidden = true;
+    }
+
     const update = () => {
       select.classList.toggle('has-value', select.value !== '');
     };
 
-    ['change', 'blur'].forEach((evt) => {
-      select.addEventListener(evt, update);
-    });
-
-  document.querySelectorAll('.form-field select').forEach(select => {
-    const update = () => {
-      if (select.value) {
-        select.classList.add('has-value');
-      } else {
-        select.classList.remove('has-value');
-      }
-    };
     select.addEventListener('change', update);
+    select.addEventListener('blur', update);
+
     update();
+    select.dataset.initSelectLabels = 'true';
   });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSelectLabels();
 });
 
+window.initSelectLabels = initSelectLabels;
