@@ -20,7 +20,7 @@
 /* Badges */
 .badge {
     font-size: 0.75rem;
-    background-color: #000000 !important;
+    background-color: #000000 ;
     color: #ffffff;
     border-radius: 6px; 
 }
@@ -106,7 +106,7 @@
 textarea.form-control {
     font-size: 0.9rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc; 
 }
 
  

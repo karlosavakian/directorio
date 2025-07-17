@@ -124,10 +124,18 @@
    background-color:rgb(50, 163, 35, .2);  
 
 }
+
+.form-control{ 
+  min-height:50px;
+}
+#id_notas{
+  height:50px;
+}
+ 
 /* Avatar dropzone styles */
 .avatar-dropzone {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   position: relative;
   margin: 0 auto;
 }
