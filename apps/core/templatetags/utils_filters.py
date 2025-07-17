@@ -90,3 +90,12 @@ def safe_url(file_field):
     except (ValueError, AttributeError):
         return ""
     return ""
+
+
+@register.filter
+def get_list(querydict, key):
+    """Return list of values for ``key`` in a ``QueryDict``."""
+    try:
+        return querydict.getlist(key)
+    except AttributeError:
+        return []
