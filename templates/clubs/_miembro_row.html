@@ -1,0 +1,39 @@
+<tr>
+  <td>
+    {{ m.nombre }} {{ m.apellidos }}
+    <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
+      <i class="bi bi-eye icon-large text-dark"></i>
+    </button>
+  </td>
+  <td>{{ m.telefono }}</td>
+  <td>{{ m.email }}</td>
+  <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
+  <td>
+    {% if m.estado == 'activo' %}
+    <span class="badge p-2 bg-success ">Activo</span>
+    {% else %}
+    <span class="badge  p-2 bg-secondary">Inactivo</span>
+    {% endif %}
+  </td>
+  <td>
+    {% if m.pago_mes_actual == 'completo' %}
+    <span class="badge p-2 bg-primary">Completo</span>
+    {% else %}
+    <span class="badge p-2 bg-warning text-dark">Pendiente</span>
+    {% endif %}
+    <button type="button" class="btn btn-sm btn-link view-payments-btn text-dark" data-member-id="{{ m.id }}">
+      <i class="bi bi-eye icon-large text-dark"></i>
+    </button>
+  </td>
+  <td>
+    <button type="button" class="btn btn-sm btn-link edit-member-btn text-dark" data-member-id="{{ m.id }}">
+      <i class="bi bi-pencil-square icon-large text-dark"></i>
+    </button>
+    <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline delete-profile-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-link text-danger">
+        <i class="bi bi-dash-circle icon-large"></i>
+      </button>
+    </form>
+  </td>
+</tr>
