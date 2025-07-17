@@ -90,11 +90,21 @@ def dashboard(request, slug):
         elif 'pendiente' in pagos and 'completo' not in pagos:
             members = members.filter(has_payment=False)
 
+    search_q = request.GET.get('q', '').strip()
+    if search_q:
+        members = members.filter(
+            Q(nombre__icontains=search_q) | Q(apellidos__icontains=search_q)
+        )
+
     orden = request.GET.get('orden')
     if orden == 'alpha':
         members = members.order_by('nombre', 'apellidos')
-    elif orden == 'antiguedad':
+    elif orden == 'alpha_desc':
+        members = members.order_by('-nombre', '-apellidos')
+    elif orden == 'oldest':
         members = members.order_by('fecha_inscripcion')
+    elif orden == 'newest':
+        members = members.order_by('-fecha_inscripcion')
 
     bookings = Booking.objects.filter(
         Q(evento__club=club)

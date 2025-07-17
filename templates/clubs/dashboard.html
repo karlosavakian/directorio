@@ -685,10 +685,18 @@
         </div>
         <div class="col-lg-3">
           <form method="get" id="member-filter-form" class="vstack gap-2">
+            <input type="text" name="q" list="member-list" class="form-control form-control-sm" placeholder="Buscar miembro" value="{{ request.GET.q }}">
+            <datalist id="member-list">
+              {% for mem in club.miembros.all %}
+              <option value="{{ mem.nombre }} {{ mem.apellidos }}"></option>
+              {% endfor %}
+            </datalist>
             <select name="orden" class="form-select form-select-sm">
               <option value="">Ordenar</option>
               <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>A-Z</option>
-              <option value="antiguedad" {% if request.GET.orden == 'antiguedad' %}selected{% endif %}>Antigüedad</option>
+              <option value="alpha_desc" {% if request.GET.orden == 'alpha_desc' %}selected{% endif %}>Z-A</option>
+              <option value="oldest" {% if request.GET.orden == 'oldest' %}selected{% endif %}>Más antiguos primero</option>
+              <option value="newest" {% if request.GET.orden == 'newest' %}selected{% endif %}>Más nuevos primero</option>
             </select>
             <div>
               <span class="d-block small fw-bold">Estado</span>
