@@ -342,7 +342,6 @@ select option[value="España"] {
 
 .member-search-form.open {
   width: 220px;
-  border: 1px solid #ced4da;
 }
 
 .member-search-form input {
@@ -352,12 +351,19 @@ select option[value="España"] {
   padding: 0 0.5rem;
   opacity: 0;
   width: 0;
-  transition: opacity 0.3s ease;
+  border-bottom: 1px solid transparent;
+  transition: opacity 0.3s ease, border-bottom-color 0.3s ease;
 }
 
 .member-search-form.open input {
   opacity: 1;
   width: auto;
+  border-bottom-color: #ced4da;
+}
+
+.member-search-form input:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .member-search-form .search-icon {
