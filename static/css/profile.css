@@ -376,6 +376,9 @@ select option[value="España"] {
   justify-content: center;
   cursor: pointer;
 }
+.member-search-form .search-icon i {
+  font-size: 1.25rem;
+}
 
 .member-search-form .close-icon {
   display: none;
