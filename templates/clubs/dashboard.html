@@ -627,8 +627,9 @@
             <button type="button" class="close-icon">&times;</button>
           </form>
         </div>
-        <form method="get" id="member-filter-form" class="ms-auto d-flex">
+        <form method="get" id="member-filter-form" class="ms-auto d-flex align-items-center">
           <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
+          <span class="me-2">Ordenar por</span>
           <div class="custom-dropdown small" id="sort-dropdown">
             <div class="selected">
               <span class="selected-text">
@@ -651,7 +652,7 @@
       </div>
         <div class="row g-3">
           <div class="col-12">
-          <div class="table-responsive members-table-responsive">
+          <div class="members-table-responsive">
             <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
             <tr>
