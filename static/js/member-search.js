@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.querySelector('#member-search-form input[name="q"]');
-  if (!input) return;
+  const wrapper = document.querySelector('.member-search-wrapper');
+  const toggleBtn = document.getElementById('member-search-toggle');
+  if (!input || !wrapper || !toggleBtn) return;
+
+  toggleBtn.addEventListener('click', () => {
+    wrapper.classList.toggle('show');
+    if (wrapper.classList.contains('show')) {
+      input.focus();
+    }
+  });
   const rows = Array.from(document.querySelectorAll('#tab-members tbody tr'));
   const emptyRow = document.querySelector('#tab-members tbody .no-members-row');
 

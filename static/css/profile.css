@@ -324,18 +324,18 @@ select option[value="España"] {
 }
 
 .member-search-wrapper {
-  display: none;
-  align-items: center;
-}
-.member-search-wrapper.show {
   display: inline-flex;
+  align-items: center;
 }
 .member-search-input {
   width: 0;
   transition: width 0.3s ease;
+  overflow: hidden;
+  opacity: 0;
 }
 .member-search-wrapper.show .member-search-input {
-  width: 160px;
+  width: 240px;
+  opacity: 1;
 }
 
 /* Generic search field with clear button and icon */
