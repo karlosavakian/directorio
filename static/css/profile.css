@@ -323,19 +323,64 @@ select option[value="España"] {
   border-bottom: 1px solid #ccc;
 }
 
-.member-search-wrapper {
-  display: inline-flex;
-  align-items: center;
+.member-search {
+  position: relative;
+  display: inline-block;
 }
-.member-search-input {
-  width: 0;
-  transition: width 0.3s ease;
+
+.member-search-form {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #ced4da;
   overflow: hidden;
-  opacity: 0;
+  display: flex;
+  align-items: center;
+  transition: width 0.4s ease;
 }
-.member-search-wrapper.show .member-search-input {
-  width: 160px;
+
+.member-search-form.open {
+  width: 220px;
+}
+
+.member-search-form input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0 0.5rem;
+  opacity: 0;
+  width: 0;
+  transition: opacity 0.3s ease;
+}
+
+.member-search-form.open input {
   opacity: 1;
+  width: auto;
+}
+
+.member-search-form .search-icon {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.member-search-form .close-icon {
+  display: none;
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  padding: 0 0.5rem;
+  cursor: pointer;
+}
+
+.member-search-form.open .close-icon {
+  display: block;
 }
 
 /* Generic search field with clear button and icon */
