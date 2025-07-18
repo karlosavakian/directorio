@@ -204,3 +204,32 @@ class DashboardMemberFilterTests(TestCase):
         res = self.client.get(url, {'orden': 'alpha'})
         members = list(res.context['members'])
         self.assertEqual(members[0], self.member1)
+
+class DashboardMatchmakerTests(TestCase):
+    def setUp(self):
+        Group.objects.get_or_create(name='ClubOwner')
+        self.owner1 = User.objects.create_user(username='owner1', password='pass')
+        self.owner2 = User.objects.create_user(username='owner2', password='pass')
+        self.club1 = Club.objects.create(
+            name='Club One', city='City1', address='A1', phone='1', email='1@e.com', owner=self.owner1
+        )
+        self.club2 = Club.objects.create(
+            name='Club Two', city='City2', address='A2', phone='2', email='2@e.com', owner=self.owner2
+        )
+        self.member1 = Miembro.objects.create(
+            club=self.club1,
+            nombre='Alice', apellidos='A', sexo='F', peso=55,
+            fecha_nacimiento=date(2000, 1, 1)
+        )
+        self.member2 = Miembro.objects.create(
+            club=self.club2,
+            nombre='Bob', apellidos='B', sexo='M', peso=70,
+            fecha_nacimiento=date(1995, 1, 1)
+        )
+        self.client.login(username='owner1', password='pass')
+
+    def test_matchmaker_search_across_clubs(self):
+        url = reverse('club_dashboard', args=[self.club1.slug])
+        res = self.client.get(url, {'mm_sexo': 'M'})
+        self.assertContains(res, 'Bob')
+        self.assertNotContains(res, 'Alice')
