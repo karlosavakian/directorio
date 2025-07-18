@@ -638,14 +638,38 @@
               <th>Teléfono</th>
               <th>Email</th>
               <th>Inscrito</th>
-              <th>Estado</th>
-              <th>Pagos</th>
+              <th>
+                <div class="dropdown d-inline">
+                  <span>Estado</span>
+                  <button class="btn btn-link p-0 ms-1" type="button" id="estado-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-funnel-fill"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
+                    <li><button class="dropdown-item estado-option" data-value="">Todos</button></li>
+                    <li><button class="dropdown-item estado-option" data-value="activo">Activo</button></li>
+                    <li><button class="dropdown-item estado-option" data-value="inactivo">Inactivo</button></li>
+                  </ul>
+                </div>
+              </th>
+              <th>
+                <div class="dropdown d-inline">
+                  <span>Pagos</span>
+                  <button class="btn btn-link p-0 ms-1" type="button" id="pago-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-funnel-fill"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
+                    <li><button class="dropdown-item pago-option" data-value="">Todos</button></li>
+                    <li><button class="dropdown-item pago-option" data-value="completo">Completo</button></li>
+                    <li><button class="dropdown-item pago-option" data-value="pendiente">Pendiente</button></li>
+                  </ul>
+                </div>
+              </th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {% for m in members %}
-            <tr>
+{% for m in members %}
+            <tr data-estado="{{ m.estado }}" data-pago="{{ m.pago_mes_actual }}">
               <td>
                 {{ m.nombre }} {{ m.apellidos }}
                 <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
@@ -997,4 +1021,5 @@
 <script src="{% static 'js/member-search.js' %}"></script>
 <script src="{% static 'js/range-slider.js' %}"></script>
 <script src="{% static 'js/matchmaker-filter.js' %}"></script>
+<script src="{% static 'js/member-table-filters.js' %}"></script>
 {% endblock %}
