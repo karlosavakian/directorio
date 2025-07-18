@@ -430,7 +430,7 @@ select option[value="España"] {
 .range-slider .slider-wrapper {
   position: relative;
   height: 1px;
-  background: #000;
+  background: #eee;
 }
 
 .range-slider input[type=range] {

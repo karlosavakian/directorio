@@ -618,9 +618,15 @@
       <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn mb-3" data-club-slug="{{ club.slug }}">
         <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
       </button>
-      {# Buscador de miembros oculto para simplificar la interfaz #}
       <div class="row g-3">
         <div class="col-lg-9">
+          <form method="get" id="member-search-form" class="mb-3 text-end">
+            <div class="search-field">
+              <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar miembro" value="{{ request.GET.q }}">
+              <button type="submit" class="search-btn"><i class="bi bi-search"></i> Buscar</button>
+              <button type="button" class="clear-btn">&times;</button>
+            </div>
+          </form>
           <div class="table-responsive">
             <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
@@ -685,13 +691,6 @@
           </div>
         </div>
         <div class="col-3">
-          <form method="get" id="member-search-form" class="mb-3">
-            <div class="search-field">
-              <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar miembro" value="{{ request.GET.q }}">
-              <button type="submit" class="search-btn"><i class="bi bi-search"></i> Buscar</button>
-              <button type="button" class="clear-btn">&times;</button>
-            </div>
-          </form>
           <form method="get" id="member-filter-form" class="vstack gap-2">
             <select name="orden" class="form-select form-select-sm">
               <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>Nombre A-Z</option>
