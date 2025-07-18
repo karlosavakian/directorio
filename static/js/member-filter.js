@@ -5,4 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('member-filter-form');
   if (!form) return;
   // No listeners: el usuario debe pulsar "Filtrar".
+
+  const clearBtn = document.getElementById('clear-filter-btn');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      window.location.href = window.location.pathname;
+    });
+  }
 });
