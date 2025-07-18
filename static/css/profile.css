@@ -359,7 +359,7 @@ select option[value="España"] {
 
 .search-field .clear-btn {
   position: absolute;
-  right: 0.75rem;
+  right: 2.25rem;
   top: 50%;
   transform: translateY(-50%);
   border: none;
@@ -371,4 +371,96 @@ select option[value="España"] {
 
 .search-field input:not(:placeholder-shown) + .clear-btn {
   display: block;
+}
+
+/* Search button inside input */
+.search-field .search-btn {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  padding: 0;
+  color: #000;
+}
+
+.search-field input:focus {
+  box-shadow: none;
+  border-color: #000;
+}
+
+/* Custom circular checkbox */
+.custom-check {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #000;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.custom-check:checked {
+  background: transparent;
+}
+
+.custom-check:checked::after {
+  content: '\2713';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.75rem;
+  color: #000;
+}
+
+/* Range slider */
+.range-slider {
+  position: relative;
+}
+
+.range-slider .range-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}
+
+.range-slider .slider-wrapper {
+  position: relative;
+  height: 2px;
+  background: #dee2e6;
+}
+
+.range-slider input[type=range] {
+  -webkit-appearance: none;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: none;
+  pointer-events: none;
+}
+
+.range-slider input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.range-slider input[type=range]::-moz-range-thumb {
+  pointer-events: all;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #000;
+}
+
+.range-slider .slider-track {
+  position: absolute;
+  height: 2px;
+  background: #000;
+  top: 0;
 }
