@@ -627,6 +627,14 @@
             <button type="button" class="close-icon">&times;</button>
           </form>
         </div>
+        <form method="get" class="ms-auto" id="member-order-form">
+          <select name="orden" class="form-select form-select-sm w-auto">
+            <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>Nombre A-Z</option>
+            <option value="alpha_desc" {% if request.GET.orden == 'alpha_desc' %}selected{% endif %}>Nombre Z-A</option>
+            <option value="oldest" {% if request.GET.orden == 'oldest' %}selected{% endif %}>Más antiguos primero</option>
+            <option value="newest" {% if request.GET.orden == 'newest' %}selected{% endif %}>Más recientes primero</option>
+          </select>
+        </form>
       </div>
       <div class="row g-3">
         <div class="col-lg-9">
@@ -644,10 +652,29 @@
                   <button class="btn btn-link p-0 ms-1" type="button" id="estado-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-funnel-fill"></i>
                   </button>
-                  <ul class="dropdown-menu" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
-                    <li><button class="dropdown-item estado-option" data-value="">Todos</button></li>
-                    <li><button class="dropdown-item estado-option" data-value="activo">Activo</button></li>
-                    <li><button class="dropdown-item estado-option" data-value="inactivo">Inactivo</button></li>
+                  <ul class="dropdown-menu p-2" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="estado-filter" id="estado-all" value="" checked>
+                        <label class="form-check-label" for="estado-all">Todos</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="estado-filter" id="estado-activo-option" value="activo">
+                        <label class="form-check-label" for="estado-activo-option">Activo</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="estado-filter" id="estado-inactivo-option" value="inactivo">
+                        <label class="form-check-label" for="estado-inactivo-option">Inactivo</label>
+                      </div>
+                    </li>
+                    <li class="mt-2 d-flex justify-content-end gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="cancel-estado-filter">Cancelar</button>
+                      <button type="button" class="btn btn-sm btn-dark" id="apply-estado-filter">Filtrar</button>
+                    </li>
                   </ul>
                 </div>
               </th>
@@ -657,10 +684,29 @@
                   <button class="btn btn-link p-0 ms-1" type="button" id="pago-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-funnel-fill"></i>
                   </button>
-                  <ul class="dropdown-menu" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
-                    <li><button class="dropdown-item pago-option" data-value="">Todos</button></li>
-                    <li><button class="dropdown-item pago-option" data-value="completo">Completo</button></li>
-                    <li><button class="dropdown-item pago-option" data-value="pendiente">Pendiente</button></li>
+                  <ul class="dropdown-menu p-2" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="pago-filter" id="pago-all" value="" checked>
+                        <label class="form-check-label" for="pago-all">Todos</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="pago-filter" id="pago-completo-option" value="completo">
+                        <label class="form-check-label" for="pago-completo-option">Completo</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-check d-flex align-items-center gap-2">
+                        <input class="form-check-input custom-check" type="radio" name="pago-filter" id="pago-pendiente-option" value="pendiente">
+                        <label class="form-check-label" for="pago-pendiente-option">Pendiente</label>
+                      </div>
+                    </li>
+                    <li class="mt-2 d-flex justify-content-end gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-secondary" id="cancel-pago-filter">Cancelar</button>
+                      <button type="button" class="btn btn-sm btn-dark" id="apply-pago-filter">Filtrar</button>
+                    </li>
                   </ul>
                 </div>
               </th>
@@ -717,79 +763,6 @@
             </table>
           </div>
         </div>
-        <div class="col-3">
-          <form method="get" id="member-filter-form" class="vstack gap-2">
-            <select name="orden" class="form-select form-select-sm">
-              <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>Nombre A-Z</option>
-              <option value="alpha_desc" {% if request.GET.orden == 'alpha_desc' %}selected{% endif %}>Nombre Z-A</option>
-              <option value="oldest" {% if request.GET.orden == 'oldest' %}selected{% endif %}>Más antiguos primero</option>
-              <option value="newest" {% if request.GET.orden == 'newest' %}selected{% endif %}>Más recientes primero</option>
-            </select>
-            <div>
-              <span class="d-block small fw-bold">Estado</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2 ">
-                <input class="form-check-input custom-check" type="radio" name="estado" id="estado-activo" value="activo" {% if request.GET.estado == 'activo' %}checked{% endif %}>
-                <label class="form-check-label" for="estado-activo">Activo <span class="text-muted small">({{ estado_counts.activo }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="estado" id="estado-inactivo" value="inactivo" {% if request.GET.estado == 'inactivo' %}checked{% endif %}>
-                <label class="form-check-label" for="estado-inactivo">Inactivo <span class="text-muted small">({{ estado_counts.inactivo }})</span></label>
-              </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Pago</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="pago" id="pago-completo" value="completo" {% if request.GET.pago == 'completo' %}checked{% endif %}>
-                <label class="form-check-label" for="pago-completo">Completo <span class="text-muted small">({{ pago_counts.completo }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="pago" id="pago-pendiente" value="pendiente" {% if request.GET.pago == 'pendiente' %}checked{% endif %}>
-                <label class="form-check-label" for="pago-pendiente">Pendiente <span class="text-muted small">({{ pago_counts.pendiente }})</span></label>
-              </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="sexo" id="sexo-M" value="M" {% if request.GET.sexo == 'M' %}checked{% endif %}>
-                <label class="form-check-label" for="sexo-M">Masculino <span class="text-muted small">({{ sexo_counts.M }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="sexo" id="sexo-F" value="F" {% if request.GET.sexo == 'F' %}checked{% endif %}>
-                <label class="form-check-label" for="sexo-F">Femenino <span class="text-muted small">({{ sexo_counts.F }})</span></label>
-              </div>
-            </div>
-              <span class="d-block small fw-bold  ">Peso</span>
-              <div class="range-slider ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"> </span>
-                  <span class="max-value"></span>
-                </div>
-                <div class="slider-wrapper mt-2">
-                  <div class="slider-track"></div>
-                  <input type="range" name="peso_min" min="30" max="160" step="1" value="{{ request.GET.peso_min|default:30 }}"> 
-                  <input type="range" name="peso_max" min="30" max="160" step="1" value="{{ request.GET.peso_max|default:160 }}">
-                </div>
-              </div>
-              <span class="d-block small fw-bold mt-2">Altura</span>
-              <div class="range-slider   ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-                </div>
-                <div class="slider-wrapper  mt-2">
-                  <div class="slider-track"></div>
-                  <input type="range" name="altura_min" min="100" max="220" step="1" value="{{ request.GET.altura_min|default:100 }}">
-                  <input type="range" name="altura_max" min="100" max="220" step="1" value="{{ request.GET.altura_max|default:220 }}">
-                </div>
-              </div>
-              <div class="text-end mt-4">
-                 <button type="button" id="clear-filter-btn" class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
-
-                <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
-              </div>
-          </form>
-        </div>
-      </div>
     </div>
     <div id="tab-bookings" class="profile-section">
       <ul>
@@ -1017,7 +990,6 @@
 <script src="{% static 'js/member-modal.js' %}"></script>
 <script src="{% static 'js/coach-modal.js' %}"></script>
 <script src="{% static 'js/competitor-modal.js' %}"></script>
-<script src="{% static 'js/member-filter.js' %}"></script>
 <script src="{% static 'js/member-search.js' %}"></script>
 <script src="{% static 'js/range-slider.js' %}"></script>
 <script src="{% static 'js/matchmaker-filter.js' %}"></script>

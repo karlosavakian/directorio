@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const estadoItems = document.querySelectorAll('#estado-filter-menu .estado-option');
-  const pagoItems = document.querySelectorAll('#pago-filter-menu .pago-option');
   const rows = document.querySelectorAll('#tab-members tbody tr');
   const emptyRow = document.querySelector('#tab-members tbody .no-members-row');
 
@@ -27,21 +25,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  estadoItems.forEach(item => {
-    item.addEventListener('click', () => {
-      selectedEstado = item.dataset.value || '';
-      estadoItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      filterRows();
-    });
+  const estadoToggle = document.getElementById('estado-filter-btn');
+  const pagoToggle = document.getElementById('pago-filter-btn');
+
+  const closeDropdown = (toggle) => {
+    if (window.bootstrap && toggle) {
+      const instance = bootstrap.Dropdown.getInstance(toggle);
+      if (instance) instance.hide();
+    }
+  };
+
+  document.getElementById('apply-estado-filter')?.addEventListener('click', () => {
+    const radio = document.querySelector('#estado-filter-menu input[name="estado-filter"]:checked');
+    selectedEstado = radio ? radio.value : '';
+    filterRows();
+    closeDropdown(estadoToggle);
   });
 
-  pagoItems.forEach(item => {
-    item.addEventListener('click', () => {
-      selectedPago = item.dataset.value || '';
-      pagoItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      filterRows();
-    });
+  document.getElementById('cancel-estado-filter')?.addEventListener('click', () => {
+    const current = document.querySelector(`#estado-filter-menu input[name="estado-filter"][value="${selectedEstado}"]`);
+    if (current) current.checked = true;
+    closeDropdown(estadoToggle);
+  });
+
+  document.getElementById('apply-pago-filter')?.addEventListener('click', () => {
+    const radio = document.querySelector('#pago-filter-menu input[name="pago-filter"]:checked');
+    selectedPago = radio ? radio.value : '';
+    filterRows();
+    closeDropdown(pagoToggle);
+  });
+
+  document.getElementById('cancel-pago-filter')?.addEventListener('click', () => {
+    const current = document.querySelector(`#pago-filter-menu input[name="pago-filter"][value="${selectedPago}"]`);
+    if (current) current.checked = true;
+    closeDropdown(pagoToggle);
   });
 });
