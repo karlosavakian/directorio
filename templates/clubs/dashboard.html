@@ -659,7 +659,7 @@
               <th>Teléfono</th>
               <th>Email</th>
               <th>Inscrito</th>
-              <th>
+              <th class="text-nowrap" style="width:1%">
                 <div class="dropdown d-inline">
                   <span>Estado</span>
                   <button class="btn btn-link p-0 ms-1" type="button" id="estado-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -681,7 +681,7 @@
                   </form>
                 </div>
               </th>
-              <th>
+              <th class="text-nowrap" style="width:1%">
                 <div class="dropdown d-inline">
                   <span>Pagos</span>
                   <button class="btn btn-link p-0 ms-1" type="button" id="pago-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
@@ -718,14 +718,14 @@
               <td>{{ m.telefono }}</td>
               <td>{{ m.email }}</td>
               <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
-              <td>
+              <td class="text-nowrap">
                 {% if m.estado == 'activo' %}
-                <span class="badge p-2 bg-success ">Activo</span>
+                <span class="badge p-2 bg-success">Activo</span>
                 {% else %}
-                <span class="badge  p-2bg-secondary">Inactivo</span>
+                <span class="badge p-2 bg-secondary">Inactivo</span>
                 {% endif %}
               </td>
-              <td>
+              <td class="text-nowrap">
                 {% if m.pago_mes_actual == 'completo' %}
                 <span class="badge p-2 bg-primary">Completo</span>
                 {% else %}
