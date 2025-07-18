@@ -1,13 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const input = document.querySelector('#member-search-form input[name="q"]');
-  const wrapper = document.querySelector('.member-search-wrapper');
-  const toggleBtn = document.getElementById('member-search-toggle');
-  if (!input || !wrapper || !toggleBtn) return;
+  const form = document.getElementById('member-search-form');
+  const input = document.getElementById('member-search-input');
+  const searchBtn = form.querySelector('.search-icon');
+  const closeBtn = form.querySelector('.close-icon');
+  if (!form || !input || !searchBtn || !closeBtn) return;
 
-  toggleBtn.addEventListener('click', () => {
-    wrapper.classList.toggle('show');
-    if (wrapper.classList.contains('show')) {
-      input.focus();
+  if (input.value) {
+    form.classList.add('open');
+  }
+
+  const openSearch = () => {
+    form.classList.add('open');
+    input.focus();
+  };
+
+  const closeSearch = () => {
+    form.classList.remove('open');
+    input.value = '';
+    filter();
+  };
+
+  searchBtn.addEventListener('click', (e) => {
+    if (!form.classList.contains('open')) {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+
+  closeBtn.addEventListener('click', closeSearch);
+
+  input.addEventListener('blur', () => {
+    if (!input.value) {
+      form.classList.remove('open');
     }
   });
   const rows = Array.from(document.querySelectorAll('#tab-members tbody tr'));
@@ -32,12 +56,4 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   input.addEventListener('input', filter);
-
-  const clearBtn = document.querySelector('#member-search-form .clear-btn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      filter();
-    });
-  }
 });

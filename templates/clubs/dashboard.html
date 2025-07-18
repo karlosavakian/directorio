@@ -620,17 +620,11 @@
         <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn" data-club-slug="{{ club.slug }}">
           <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
         </button>
-        <div class="member-search-wrapper">
-          <button type="button" id="member-search-toggle" class="btn btn-sm btn-outline-dark">
-            <i class="bi bi-search"></i>
-          </button>
-          <form method="get" id="member-search-form" class="ms-2">
-            <div class="search-field">
-              <i class="bi bi-search search-icon"></i>
-              <input type="text" name="q" class="form-control form-control-sm member-search-input" placeholder="Buscar miembro" value="{{ request.GET.q }}">
-              <button type="submit" class="search-btn"><i class="bi bi-search"></i> Buscar</button>
-              <button type="button" class="clear-btn">&times;</button>
-            </div>
+        <div class="member-search">
+          <form method="get" id="member-search-form" class="member-search-form">
+            <input type="text" name="q" id="member-search-input" placeholder="Buscar miembro" value="{{ request.GET.q }}" autocomplete="off">
+            <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
+            <button type="button" class="close-icon">&times;</button>
           </form>
         </div>
       </div>
