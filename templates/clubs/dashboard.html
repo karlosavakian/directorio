@@ -686,10 +686,10 @@
         </div>
         <div class="col-3">
           <form method="get" id="member-search-form" class="mb-3">
-            <div class="input-group input-group-sm form-field search-field">
-              <input type="text" name="q" class="form-control" placeholder="Buscar miembro" value="{{ request.GET.q }}">
-              <button type="button" class="clear-btn">&times;</button> 
-              <button type="submit" class="btn btn-outline-dark">Buscar</button>
+            <div class="search-field">
+              <input type="text" name="q" class="form-control form-control-sm" placeholder="Buscar miembro" value="{{ request.GET.q }}">
+              <button type="submit" class="search-btn"><i class="bi bi-search"></i></button>
+              <button type="button" class="clear-btn">&times;</button>
             </div>
           </form>
           <form method="get" id="member-filter-form" class="vstack gap-2">
@@ -701,53 +701,59 @@
             </select>
             <div>
               <span class="d-block small fw-bold">Estado</span>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="estado" id="estado-activo" value="activo" {% if 'activo' in request.GET|get_list:'estado' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="estado" id="estado-activo" value="activo" {% if 'activo' in request.GET|get_list:'estado' %}checked{% endif %}>
                 <label class="form-check-label" for="estado-activo">Activo</label>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="estado" id="estado-inactivo" value="inactivo" {% if 'inactivo' in request.GET|get_list:'estado' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="estado" id="estado-inactivo" value="inactivo" {% if 'inactivo' in request.GET|get_list:'estado' %}checked{% endif %}>
                 <label class="form-check-label" for="estado-inactivo">Inactivo</label>
               </div>
             </div>
             <div>
               <span class="d-block small fw-bold">Pago</span>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="pago" id="pago-completo" value="completo" {% if 'completo' in request.GET|get_list:'pago' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="pago" id="pago-completo" value="completo" {% if 'completo' in request.GET|get_list:'pago' %}checked{% endif %}>
                 <label class="form-check-label" for="pago-completo">Completo</label>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="pago" id="pago-pendiente" value="pendiente" {% if 'pendiente' in request.GET|get_list:'pago' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="pago" id="pago-pendiente" value="pendiente" {% if 'pendiente' in request.GET|get_list:'pago' %}checked{% endif %}>
                 <label class="form-check-label" for="pago-pendiente">Pendiente</label>
               </div>
             </div>
             <div>
               <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="sexo" id="sexo-M" value="M" {% if 'M' in request.GET|get_list:'sexo' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="sexo" id="sexo-M" value="M" {% if 'M' in request.GET|get_list:'sexo' %}checked{% endif %}>
                 <label class="form-check-label" for="sexo-M">Masculino</label>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="sexo" id="sexo-F" value="F" {% if 'F' in request.GET|get_list:'sexo' %}checked{% endif %}>
+              <div class="form-check">
+                <input class="form-check-input custom-check" type="checkbox" name="sexo" id="sexo-F" value="F" {% if 'F' in request.GET|get_list:'sexo' %}checked{% endif %}>
                 <label class="form-check-label" for="sexo-F">Femenino</label>
               </div>
             </div>
               <span class="d-block small fw-bold">Peso</span>
-              <div class="row g-2">
-                <div class="col">
-                  <input type="number" step="0.01" name="peso_min" class="form-control form-control-sm" placeholder="Peso mín" value="{{ request.GET.peso_min }}">
+              <div class="range-slider mb-2">
+                <div class="range-values mb-1">
+                  <span class="min-value"></span>
+                  <span class="max-value"></span>
                 </div>
-                <div class="col">
-                  <input type="number" step="0.01" name="peso_max" class="form-control form-control-sm" placeholder="Peso máx" value="{{ request.GET.peso_max }}">
+                <div class="slider-wrapper">
+                  <div class="slider-track"></div>
+                  <input type="range" name="peso_min" min="0" max="200" step="1" value="{{ request.GET.peso_min|default:0 }}">
+                  <input type="range" name="peso_max" min="0" max="200" step="1" value="{{ request.GET.peso_max|default:200 }}">
                 </div>
               </div>
               <span class="d-block small fw-bold">Altura</span>
-              <div class="row g-2">
-                <div class="col">
-                  <input type="number" step="0.01" name="altura_min" class="form-control form-control-sm" placeholder="Altura mín" value="{{ request.GET.altura_min }}">
+              <div class="range-slider mb-2">
+                <div class="range-values mb-1">
+                  <span class="min-value"></span>
+                  <span class="max-value"></span>
                 </div>
-                <div class="col">
-                  <input type="number" step="0.01" name="altura_max" class="form-control form-control-sm" placeholder="Altura máx" value="{{ request.GET.altura_max }}">
+                <div class="slider-wrapper">
+                  <div class="slider-track"></div>
+                  <input type="range" name="altura_min" min="0" max="250" step="1" value="{{ request.GET.altura_min|default:0 }}">
+                  <input type="range" name="altura_max" min="0" max="250" step="1" value="{{ request.GET.altura_max|default:250 }}">
                 </div>
               </div>
               <div class="text-end">
@@ -899,4 +905,5 @@
 <script src="{% static 'js/competitor-modal.js' %}"></script>
 <script src="{% static 'js/member-filter.js' %}"></script>
 <script src="{% static 'js/member-search.js' %}"></script>
+<script src="{% static 'js/range-slider.js' %}"></script>
 {% endblock %}
