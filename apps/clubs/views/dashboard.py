@@ -74,7 +74,8 @@ def dashboard(request, slug):
     }
 
     # --- Matchmaker ---
-    match_qs = Miembro.objects.select_related('club')
+    # Search competitors across all registered clubs
+    match_qs = Miembro.objects.select_related('club').all()
     cities = Club.objects.values_list('city', flat=True).distinct()
 
     mm_sexo = request.GET.get('mm_sexo')
