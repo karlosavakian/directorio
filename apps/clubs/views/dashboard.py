@@ -53,6 +53,25 @@ def dashboard(request, slug):
     coaches = club.entrenadores.all()
     members = club.miembros.all()
 
+    # Conteos para los filtros
+    estado_counts = {
+        'activo': members.filter(estado='activo').count(),
+        'inactivo': members.filter(estado='inactivo').count(),
+    }
+    sexo_counts = {
+        'M': members.filter(sexo='M').count(),
+        'F': members.filter(sexo='F').count(),
+    }
+    today = timezone.now().date()
+    miembros_pagados = members.filter(
+        pagos__fecha__year=today.year,
+        pagos__fecha__month=today.month,
+    ).distinct()
+    pago_counts = {
+        'completo': miembros_pagados.count(),
+        'pendiente': members.exclude(id__in=miembros_pagados).count(),
+    }
+
     # Filtros para los miembros
     estado = request.GET.get('estado')
     if estado in ['activo', 'inactivo']:
@@ -123,6 +142,9 @@ def dashboard(request, slug):
             'form': form,
             'coaches': coaches,
             'members': members,
+            'estado_counts': estado_counts,
+            'sexo_counts': sexo_counts,
+            'pago_counts': pago_counts,
         },
     )
 @login_required
