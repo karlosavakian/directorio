@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseForbidden, HttpResponse
 from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
+from django.db.models.functions import ExtractYear
 from django.utils import timezone
 from collections import defaultdict
 
@@ -71,6 +72,43 @@ def dashboard(request, slug):
         'completo': miembros_pagados.count(),
         'pendiente': members.exclude(id__in=miembros_pagados).count(),
     }
+
+    # --- Matchmaker ---
+    match_qs = Miembro.objects.select_related('club')
+    cities = Club.objects.values_list('city', flat=True).distinct()
+
+    mm_sexo = request.GET.get('mm_sexo')
+    if mm_sexo in ['M', 'F']:
+        match_qs = match_qs.filter(sexo=mm_sexo)
+
+    mm_peso_min = request.GET.get('mm_peso_min')
+    if mm_peso_min:
+        match_qs = match_qs.filter(peso__gte=mm_peso_min)
+    mm_peso_max = request.GET.get('mm_peso_max')
+    if mm_peso_max:
+        match_qs = match_qs.filter(peso__lte=mm_peso_max)
+
+    mm_ciudad = request.GET.get('mm_ciudad')
+    if mm_ciudad:
+        match_qs = match_qs.filter(club__city=mm_ciudad)
+
+    current_year = timezone.now().year
+    match_qs = match_qs.annotate(
+        birth_year=ExtractYear('fecha_nacimiento')
+    )
+
+    mm_edad_min = request.GET.get('mm_edad_min')
+    if mm_edad_min:
+        year_max = current_year - int(mm_edad_min)
+        match_qs = match_qs.filter(birth_year__lte=year_max)
+    mm_edad_max = request.GET.get('mm_edad_max')
+    if mm_edad_max:
+        year_min = current_year - int(mm_edad_max)
+        match_qs = match_qs.filter(birth_year__gte=year_min)
+
+    match_qs = match_qs.annotate(
+        edad=current_year - ExtractYear('fecha_nacimiento')
+    )
 
     # Filtros para los miembros
     estado = request.GET.get('estado')
@@ -140,11 +178,13 @@ def dashboard(request, slug):
             'horarios_por_dia': horarios_por_dia,
             'bookings': bookings,
             'form': form,
-            'coaches': coaches,
-            'members': members,
-            'estado_counts': estado_counts,
-            'sexo_counts': sexo_counts,
-            'pago_counts': pago_counts,
+        'coaches': coaches,
+        'members': members,
+        'match_results': match_qs,
+        'cities': cities,
+        'estado_counts': estado_counts,
+        'sexo_counts': sexo_counts,
+        'pago_counts': pago_counts,
         },
     )
 @login_required

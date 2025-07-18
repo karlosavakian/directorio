@@ -9,6 +9,7 @@
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
     <div class="profile-tab" data-target="tab-members">Miembros</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+    <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
   </div>
   <div class="profile-content">
     <div id="tab-profile" class="profile-section active">
@@ -783,6 +784,92 @@
         {% endfor %}
       </ul>
     </div>
+    <div id="tab-matchmaker" class="profile-section">
+      <div class="row g-3">
+        <div class="col-lg-9">
+          <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle" style="min-width:600px">
+              <thead class="table-dark">
+                <tr>
+                  <th>Nombre</th>
+                  <th>Club</th>
+                  <th>Ciudad</th>
+                  <th>Peso</th>
+                  <th>Edad</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in match_results %}
+                <tr>
+                  <td>{{ c.nombre }} {{ c.apellidos }}</td>
+                  <td>{{ c.club.name }}</td>
+                  <td>{{ c.club.city }}</td>
+                  <td>{{ c.peso|default:'—' }}</td>
+                  <td>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</td>
+                </tr>
+                {% empty %}
+                <tr class="no-match-row">
+                  <td colspan="5" class="text-muted">No hay competidores.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-3">
+          <form method="get" id="matchmaker-filter-form" class="vstack gap-2">
+            <div>
+              <span class="d-block small fw-bold">Sexo</span>
+              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                <input class="form-check-input custom-check" type="radio" name="mm_sexo" id="mm-sexo-m" value="M" {% if request.GET.mm_sexo == 'M' %}checked{% endif %}>
+                <label class="form-check-label" for="mm-sexo-m">Masculino</label>
+              </div>
+              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                <input class="form-check-input custom-check" type="radio" name="mm_sexo" id="mm-sexo-f" value="F" {% if request.GET.mm_sexo == 'F' %}checked{% endif %}>
+                <label class="form-check-label" for="mm-sexo-f">Femenino</label>
+              </div>
+            </div>
+            <span class="d-block small fw-bold">Peso</span>
+            <div class="range-slider ms-2 me-2">
+              <div class="range-values">
+                <span class="min-value"></span>
+                <span class="max-value"></span>
+              </div>
+              <div class="slider-wrapper mt-2">
+                <div class="slider-track"></div>
+                <input type="range" name="mm_peso_min" min="30" max="160" step="1" value="{{ request.GET.mm_peso_min|default:30 }}">
+                <input type="range" name="mm_peso_max" min="30" max="160" step="1" value="{{ request.GET.mm_peso_max|default:160 }}">
+              </div>
+            </div>
+            <div>
+              <span class="d-block small fw-bold">Ciudad</span>
+              <select name="mm_ciudad" class="form-select form-select-sm">
+                <option value="">Todas</option>
+                {% for city in cities %}
+                <option value="{{ city }}" {% if request.GET.mm_ciudad == city %}selected{% endif %}>{{ city }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <span class="d-block small fw-bold">Edad</span>
+            <div class="range-slider ms-2 me-2">
+              <div class="range-values">
+                <span class="min-value"></span>
+                <span class="max-value"></span>
+              </div>
+              <div class="slider-wrapper mt-2">
+                <div class="slider-track"></div>
+                <input type="range" name="mm_edad_min" min="10" max="60" step="1" value="{{ request.GET.mm_edad_min|default:10 }}">
+                <input type="range" name="mm_edad_max" min="10" max="60" step="1" value="{{ request.GET.mm_edad_max|default:60 }}">
+              </div>
+            </div>
+            <div class="text-end mt-4">
+              <button type="button" id="clear-matchmaker-filter-btn" class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
+              <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <!-- Confirm Delete Modal -->
@@ -915,4 +1002,5 @@
 <script src="{% static 'js/member-filter.js' %}"></script>
 <script src="{% static 'js/member-search.js' %}"></script>
 <script src="{% static 'js/range-slider.js' %}"></script>
+<script src="{% static 'js/matchmaker-filter.js' %}"></script>
 {% endblock %}
