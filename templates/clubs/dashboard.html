@@ -644,7 +644,7 @@
                   <button class="btn btn-link p-0 ms-1" type="button" id="estado-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-funnel-fill text-white"></i>
                   </button>
-                  <form class="dropdown-menu p-2" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
+                  <form class="dropdown-menu p-3" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="estado-filter" id="estado-dd-activo" value="activo">
                       <label class="form-check-label" for="estado-dd-activo">Activo</label>
@@ -654,7 +654,7 @@
                       <label class="form-check-label" for="estado-dd-inactivo">Inactivo</label>
                     </div>
                     <div class="d-flex justify-content-end gap-2 mt-2">
-                      <button type="button" class="btn btn-outline-secondary btn-sm cancel-filter">Cancelar</button>
+                      <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
                       <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
                     </div>
                   </form>
@@ -666,7 +666,7 @@
                   <button class="btn btn-link p-0 ms-1" type="button" id="pago-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-funnel-fill text-white"></i>
                   </button>
-                  <form class="dropdown-menu p-2" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
+                  <form class="dropdown-menu p-3" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="pago-filter" id="pago-dd-completo" value="completo">
                       <label class="form-check-label" for="pago-dd-completo">Completo</label>
@@ -676,7 +676,7 @@
                       <label class="form-check-label" for="pago-dd-pendiente">Pendiente</label>
                     </div>
                     <div class="d-flex justify-content-end gap-2 mt-2">
-                      <button type="button" class="btn btn-outline-secondary btn-sm cancel-filter">Cancelar</button>
+                      <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
                       <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
                     </div>
                   </form>
@@ -743,68 +743,7 @@
               <option value="oldest" {% if request.GET.orden == 'oldest' %}selected{% endif %}>Más antiguos primero</option>
               <option value="newest" {% if request.GET.orden == 'newest' %}selected{% endif %}>Más recientes primero</option>
             </select>
-            <div>
-              <span class="d-block small fw-bold">Estado</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2 ">
-                <input class="form-check-input custom-check" type="radio" name="estado" id="estado-activo" value="activo" {% if request.GET.estado == 'activo' %}checked{% endif %}>
-                <label class="form-check-label" for="estado-activo">Activo <span class="text-muted small">({{ estado_counts.activo }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="estado" id="estado-inactivo" value="inactivo" {% if request.GET.estado == 'inactivo' %}checked{% endif %}>
-                <label class="form-check-label" for="estado-inactivo">Inactivo <span class="text-muted small">({{ estado_counts.inactivo }})</span></label>
-              </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Pago</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="pago" id="pago-completo" value="completo" {% if request.GET.pago == 'completo' %}checked{% endif %}>
-                <label class="form-check-label" for="pago-completo">Completo <span class="text-muted small">({{ pago_counts.completo }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="pago" id="pago-pendiente" value="pendiente" {% if request.GET.pago == 'pendiente' %}checked{% endif %}>
-                <label class="form-check-label" for="pago-pendiente">Pendiente <span class="text-muted small">({{ pago_counts.pendiente }})</span></label>
-              </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="sexo" id="sexo-M" value="M" {% if request.GET.sexo == 'M' %}checked{% endif %}>
-                <label class="form-check-label" for="sexo-M">Masculino <span class="text-muted small">({{ sexo_counts.M }})</span></label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small  ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="sexo" id="sexo-F" value="F" {% if request.GET.sexo == 'F' %}checked{% endif %}>
-                <label class="form-check-label" for="sexo-F">Femenino <span class="text-muted small">({{ sexo_counts.F }})</span></label>
-              </div>
-            </div>
-              <span class="d-block small fw-bold  ">Peso</span>
-              <div class="range-slider ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"> </span>
-                  <span class="max-value"></span>
-                </div>
-                <div class="slider-wrapper mt-2">
-                  <div class="slider-track"></div>
-                  <input type="range" name="peso_min" min="30" max="160" step="1" value="{{ request.GET.peso_min|default:30 }}"> 
-                  <input type="range" name="peso_max" min="30" max="160" step="1" value="{{ request.GET.peso_max|default:160 }}">
-                </div>
-              </div>
-              <span class="d-block small fw-bold mt-2">Altura</span>
-              <div class="range-slider   ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-                </div>
-                <div class="slider-wrapper  mt-2">
-                  <div class="slider-track"></div>
-                  <input type="range" name="altura_min" min="100" max="220" step="1" value="{{ request.GET.altura_min|default:100 }}">
-                  <input type="range" name="altura_max" min="100" max="220" step="1" value="{{ request.GET.altura_max|default:220 }}">
-                </div>
-              </div>
-              <div class="text-end mt-4">
-                 <button type="button" id="clear-filter-btn" class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
-
-                <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
-              </div>
+            <button type="submit" class="btn btn-dark btn-sm mt-2">Aplicar</button>
           </form>
         </div>
       </div>
