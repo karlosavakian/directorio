@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const estadoItems = document.querySelectorAll('#estado-filter-menu .estado-option');
-  const pagoItems = document.querySelectorAll('#pago-filter-menu .pago-option');
+  const estadoForm = document.getElementById('estado-filter-menu');
+  const pagoForm = document.getElementById('pago-filter-menu');
+  const estadoBtn = document.getElementById('estado-filter-btn');
+  const pagoBtn = document.getElementById('pago-filter-btn');
   const rows = document.querySelectorAll('#tab-members tbody tr');
   const emptyRow = document.querySelector('#tab-members tbody .no-members-row');
 
@@ -27,21 +29,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  estadoItems.forEach(item => {
-    item.addEventListener('click', () => {
-      selectedEstado = item.dataset.value || '';
-      estadoItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      filterRows();
+  function restoreRadio(form, value) {
+    const radios = form.querySelectorAll('input[type="radio"]');
+    radios.forEach(r => {
+      r.checked = r.value === value;
     });
-  });
+  }
 
-  pagoItems.forEach(item => {
-    item.addEventListener('click', () => {
-      selectedPago = item.dataset.value || '';
-      pagoItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
+  if (estadoForm) {
+    const dd = bootstrap.Dropdown.getOrCreateInstance(estadoBtn);
+    estadoBtn.addEventListener('click', () => restoreRadio(estadoForm, selectedEstado));
+    estadoForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const checked = estadoForm.querySelector('input[name="estado-filter"]:checked');
+      selectedEstado = checked ? checked.value : '';
+      dd.hide();
       filterRows();
     });
-  });
+    const cancel = estadoForm.querySelector('.cancel-filter');
+    if (cancel) {
+      cancel.addEventListener('click', () => {
+        dd.hide();
+        restoreRadio(estadoForm, selectedEstado);
+      });
+    }
+  }
+
+  if (pagoForm) {
+    const dd = bootstrap.Dropdown.getOrCreateInstance(pagoBtn);
+    pagoBtn.addEventListener('click', () => restoreRadio(pagoForm, selectedPago));
+    pagoForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const checked = pagoForm.querySelector('input[name="pago-filter"]:checked');
+      selectedPago = checked ? checked.value : '';
+      dd.hide();
+      filterRows();
+    });
+    const cancel = pagoForm.querySelector('.cancel-filter');
+    if (cancel) {
+      cancel.addEventListener('click', () => {
+        dd.hide();
+        restoreRadio(pagoForm, selectedPago);
+      });
+    }
+  }
 });
