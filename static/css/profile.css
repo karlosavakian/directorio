@@ -522,3 +522,15 @@ select option[value="España"] {
   background: #000;
   top: 0;
 }
+
+/* Members table adjustments */
+#tab-members .members-table-responsive {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+#tab-members .phone-column,
+#tab-members .actions-column {
+  width: 1%;
+  white-space: nowrap;
+}

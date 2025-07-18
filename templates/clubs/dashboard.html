@@ -649,14 +649,14 @@
           </div>
         </form>
       </div>
-      <div class="row g-3">
-        <div class="col-12">
-          <div class="table-responsive">
+        <div class="row g-3">
+          <div class="col-12">
+          <div class="table-responsive members-table-responsive">
             <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
             <tr>
               <th>Miembro</th>
-              <th>Teléfono</th>
+              <th class="text-nowrap phone-column">Teléfono</th>
               <th>Email</th>
               <th>Inscrito</th>
               <th class="text-nowrap" style="width:1%">
@@ -703,11 +703,11 @@
                   </form>
                 </div>
               </th>
-              <th></th>
+              <th class="actions-column"></th>
             </tr>
           </thead>
           <tbody>
-{% for m in members %}
+  {% for m in members %}
             <tr data-estado="{{ m.estado }}" data-pago="{{ m.pago_mes_actual }}">
               <td>
                 {{ m.nombre }} {{ m.apellidos }}
@@ -715,7 +715,7 @@
              <i class="bi bi-person-bounding-box"></i>
                 </button>
               </td>
-              <td>{{ m.telefono }}</td>
+              <td class="phone-column">{{ m.telefono }}</td>
               <td>{{ m.email }}</td>
               <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
               <td class="text-nowrap">
@@ -735,7 +735,7 @@
 <i class="bi bi-kanban"></i>
                 </button>
               </td>
-              <td>
+              <td class="actions-column">
                 <button type="button" class="btn btn-sm btn-link edit-member-btn text-dark" data-member-id="{{ m.id }}">
                   <i class="bi bi-pencil-square icon-large text-dark"></i>
                 </button>
