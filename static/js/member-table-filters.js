@@ -49,8 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancel = estadoForm.querySelector('.cancel-filter');
     if (cancel) {
       cancel.addEventListener('click', () => {
+        estadoForm.querySelectorAll('input[type="radio"]').forEach(r => {
+          r.checked = false;
+        });
+        selectedEstado = '';
         dd.hide();
-        restoreRadio(estadoForm, selectedEstado);
+        filterRows();
       });
     }
   }
@@ -68,8 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancel = pagoForm.querySelector('.cancel-filter');
     if (cancel) {
       cancel.addEventListener('click', () => {
+        pagoForm.querySelectorAll('input[type="radio"]').forEach(r => {
+          r.checked = false;
+        });
+        selectedPago = '';
         dd.hide();
-        restoreRadio(pagoForm, selectedPago);
+        filterRows();
       });
     }
   }
