@@ -333,7 +333,7 @@ select option[value="España"] {
   height: 36px;
   border-radius: 18px;
   background: #fff;
-  border: 1px solid #ced4da;
+  border: none;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -342,6 +342,7 @@ select option[value="España"] {
 
 .member-search-form.open {
   width: 220px;
+  border: 1px solid #ced4da;
 }
 
 .member-search-form input {

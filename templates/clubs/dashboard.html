@@ -627,9 +627,30 @@
             <button type="button" class="close-icon">&times;</button>
           </form>
         </div>
+        <form method="get" id="member-filter-form" class="ms-auto d-flex">
+          <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
+          <div class="custom-dropdown small" id="sort-dropdown">
+            <div class="selected">
+              <span class="selected-text">
+                {% if request.GET.orden == 'alpha' %}Nombre A-Z
+                {% elif request.GET.orden == 'alpha_desc' %}Nombre Z-A
+                {% elif request.GET.orden == 'oldest' %}Más antiguos primero
+                {% elif request.GET.orden == 'newest' %}Más recientes primero
+                {% else %}Ordenar por{% endif %}
+              </span>
+              <span class="select-arrow"></span>
+            </div>
+            <div class="dropdown-menu" id="sort-menu">
+              <div class="dropdown-item" data-value="alpha">Nombre A-Z</div>
+              <div class="dropdown-item" data-value="alpha_desc">Nombre Z-A</div>
+              <div class="dropdown-item" data-value="oldest">Más antiguos primero</div>
+              <div class="dropdown-item" data-value="newest">Más recientes primero</div>
+            </div>
+          </div>
+        </form>
       </div>
       <div class="row g-3">
-        <div class="col-lg-9">
+        <div class="col-12">
           <div class="table-responsive">
             <table class="table table-bordered text-center align-middle" style="min-width: 600px">
           <thead class="table-dark">
@@ -734,17 +755,6 @@
           </tbody>
             </table>
           </div>
-        </div>
-        <div class="col-3">
-          <form method="get" id="member-filter-form" class="vstack gap-2">
-            <select name="orden" class="form-select form-select-sm">
-              <option value="alpha" {% if request.GET.orden == 'alpha' %}selected{% endif %}>Nombre A-Z</option>
-              <option value="alpha_desc" {% if request.GET.orden == 'alpha_desc' %}selected{% endif %}>Nombre Z-A</option>
-              <option value="oldest" {% if request.GET.orden == 'oldest' %}selected{% endif %}>Más antiguos primero</option>
-              <option value="newest" {% if request.GET.orden == 'newest' %}selected{% endif %}>Más recientes primero</option>
-            </select>
-            <button type="submit" class="btn btn-dark btn-sm mt-2">Aplicar</button>
-          </form>
         </div>
       </div>
     </div>
@@ -974,8 +984,8 @@
 <script src="{% static 'js/member-modal.js' %}"></script>
 <script src="{% static 'js/coach-modal.js' %}"></script>
 <script src="{% static 'js/competitor-modal.js' %}"></script>
-<script src="{% static 'js/member-filter.js' %}"></script>
 <script src="{% static 'js/member-search.js' %}"></script>
+<script src="{% static 'js/sort.js' %}"></script>
 <script src="{% static 'js/range-slider.js' %}"></script>
 <script src="{% static 'js/matchmaker-filter.js' %}"></script>
 <script src="{% static 'js/member-table-filters.js' %}"></script>
