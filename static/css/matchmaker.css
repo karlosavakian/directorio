@@ -1,0 +1,10 @@
+.matchmaker-card {
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+.matchmaker-card .competitor-avatar,
+.matchmaker-card .competitor-avatar-img {
+  width: 60px;
+  height: 60px;
+  font-size: 1rem;
+}
