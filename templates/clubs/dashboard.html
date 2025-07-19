@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static utils_filters %} {% block content %}
 
-<div class="d-flex mt-5 mb-5 container-fluid col-12 ">
+<div class="d-flex mt-5 mb-5 container-fluid col-12">
   <div class="profile-tabs">
     <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
@@ -24,7 +24,17 @@
         <div class="form-field">
           <div class="avatar-dropzone mx-auto">
             {{ form.logo }}
-            <div class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"{% if club.logo|safe_url %} style="background-image:url('{{ club.logo|safe_url }}')"{% endif %}>
+            <div
+              class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
+              {%
+              if
+              club.logo|safe_url
+              %}
+              style="background-image:url('{{ club.logo|safe_url }}')"
+              {%
+              endif
+              %}
+            >
               <div class="avatar-dropzone-msg">
                 <i class="bi bi-cloud-upload mb-1 fs-4"></i>
                 <span>Sube tu logo</span>
@@ -196,37 +206,37 @@
         <button type="submit" class="btn btn-dark">Guardar</button>
       </form>
     </div>
-    <div id="tab-gallery" class="profile-section ">
-   <div class="d-flex justify-content-between align-items-center mb-3">
-  <!-- Col izquierda: Añadir fotos -->
-  <div>
-    <form
-      id="upload-form"
-      method="post"
-      enctype="multipart/form-data"
-      action="{% url 'clubphoto_upload' club.slug %}"
-      class="mb-0"
-    >
-      {% csrf_token %}
-      <input
-        type="file"
-        name="image"
-        id="id_gallery_image"
-        multiple
-        class="d-none"
-      />
-      <button
-        type="button"
-        id="add-photos-btn"
-        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
-      >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
-      </button>
-    </form>
-  </div>
+    <div id="tab-gallery" class="profile-section">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Col izquierda: Añadir fotos -->
+        <div>
+          <form
+            id="upload-form"
+            method="post"
+            enctype="multipart/form-data"
+            action="{% url 'clubphoto_upload' club.slug %}"
+            class="mb-0"
+          >
+            {% csrf_token %}
+            <input
+              type="file"
+              name="image"
+              id="id_gallery_image"
+              multiple
+              class="d-none"
+            />
+            <button
+              type="button"
+              id="add-photos-btn"
+              class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
+            >
+              <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
+            </button>
+          </form>
+        </div>
 
-  <!-- Col derecha: botones de acciones -->
-  <div class="d-flex align-items-center gap-3">
+        <!-- Col derecha: botones de acciones -->
+        <div class="d-flex align-items-center gap-3">
           <button
             type="button"
             id="select-all"
@@ -283,7 +293,7 @@
             value="{{ photo.id }}"
           />
           <div class="gallery-hover-actions">
-            <span class="drag-handle bi bi-arrows-move  "></span>
+            <span class="drag-handle bi bi-arrows-move"></span>
             <div class="dropdown">
               <button
                 class="btn btn-light btn-sm dropdown-toggle"
@@ -295,22 +305,32 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <form method="post" action="{% url 'clubphoto_set_main' photo.id %}">
+                  <form
+                    method="post"
+                    action="{% url 'clubphoto_set_main' photo.id %}"
+                  >
                     {% csrf_token %}
-                    <button type="submit" class="dropdown-item">Destacar</button>
+                    <button type="submit" class="dropdown-item">
+                      Destacar
+                    </button>
                   </form>
                 </li>
                 <li>
-                  <form method="post" action="{% url 'clubphoto_delete' photo.id %}">
+                  <form
+                    method="post"
+                    action="{% url 'clubphoto_delete' photo.id %}"
+                  >
                     {% csrf_token %}
-                    <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                    <button type="submit" class="dropdown-item text-danger">
+                      Eliminar
+                    </button>
                   </form>
                 </li>
               </ul>
             </div>
           </div>
           {% if photo.is_main %}
-          <span class="bi bi-pin-angle-fill main-pin "></span>
+          <span class="bi bi-pin-angle-fill main-pin"></span>
           {% endif %}
         </div>
         {% empty %}
@@ -319,7 +339,6 @@
       </div>
     </div>
     <div id="tab-schedule" class="profile-section">
-      
       <h2 class="h5 mt-4">Horarios</h2>
       <div class="table-responsive">
         <table
@@ -336,19 +355,19 @@
           <tbody>
             <tr>
               {% for dia, nombre in dias_semana %}
-                    <td style=" vertical-align: top;">
+              <td style="vertical-align: top">
                 <!-- Botón añadir -->
-                <div class="mb-3  ">
-              <button
-            class="btn btn-sm btn-outline-dark w-100 h-50"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#add-{{ dia }}"
-            aria-expanded="false"
-            aria-controls="add-{{ dia }}"
-          >
-            <i class="bi bi-plus-circle"></i> Añadir
-          </button>
+                <div class="mb-3">
+                  <button
+                    class="btn btn-sm btn-outline-dark w-100 h-50"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#add-{{ dia }}"
+                    aria-expanded="false"
+                    aria-controls="add-{{ dia }}"
+                  >
+                    <i class="bi bi-plus-circle"></i> Añadir
+                  </button>
 
                   <div class="collapse mt-2" id="add-{{ dia }}">
                     <form
@@ -385,7 +404,13 @@
                           </select>
                         </div>
                         <div class="col" style="display: none">
-                          <input type="text" name="estado_otro" class="form-control form-control-sm" maxlength="30" placeholder="Especificar" />
+                          <input
+                            type="text"
+                            name="estado_otro"
+                            class="form-control form-control-sm"
+                            maxlength="30"
+                            placeholder="Especificar"
+                          />
                         </div>
                         <div class="col-auto">
                           <button type="submit" class="btn btn-sm btn-dark">
@@ -395,18 +420,17 @@
                       </div>
                     </form>
                   </div>
-                </div> 
+                </div>
 
                 {% for bloque in horarios_por_dia|get_item:dia %}
                 <div
-                  class="small  fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1"
+                  class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1"
                 >
-                
                   <span>
-                    {% if bloque.estado == 'abierto' %}
-                    {{ bloque.hora_inicio|time:'H:i' }} -
-                    {{ bloque.hora_fin|time:'H:i' }}
-                    {% elif bloque.estado == 'cerrado' %}
+                    {% if bloque.estado == 'abierto' %} {{
+                    bloque.hora_inicio|time:'H:i' }} - {{
+                    bloque.hora_fin|time:'H:i' }} {% elif bloque.estado ==
+                    'cerrado' %}
                     <span class="text-danger">Cerrado</span>
                     {% else %}
                     <span class="text-muted">{{ bloque.estado_otro }}</span>
@@ -420,10 +444,9 @@
                       role="button"
                       aria-expanded="false"
                       aria-controls="edit-{{ bloque.id }}"
-                      class="btn btn-sm btn-link  "
+                      class="btn btn-sm btn-link"
                     >
-                     <i class="bi bi-pencil-square icon-large"></i>
-                     
+                      <i class="bi bi-pencil-square icon-large"></i>
                     </a>
                     <!-- Borrar -->
                     <form
@@ -436,7 +459,7 @@
                         type="submit"
                         class="btn btn-sm btn-link text-danger"
                       >
-                        <i class= "bi bi-dash-circle icon-large"></i>
+                        <i class="bi bi-dash-circle icon-large"></i>
                       </button>
                     </form>
                   </span>
@@ -497,11 +520,29 @@
                           >
                             Cerrado
                           </option>
-                          <option value="otro" {% if bloque.estado == 'otro' %}selected{% endif %}>Otro</option>
+                          <option
+                            value="otro"
+                            {%
+                            if
+                            bloque.estado=""
+                            ="otro"
+                            %}selected{%
+                            endif
+                            %}
+                          >
+                            Otro
+                          </option>
                         </select>
                       </div>
                       <div class="col" style="display: none">
-                        <input type="text" name="estado_otro" value="{{ bloque.estado_otro }}" class="form-control form-control-sm" maxlength="30" placeholder="Especificar" />
+                        <input
+                          type="text"
+                          name="estado_otro"
+                          value="{{ bloque.estado_otro }}"
+                          class="form-control form-control-sm"
+                          maxlength="30"
+                          placeholder="Especificar"
+                        />
                       </div>
                       <div class="col-auto">
                         <button type="submit" class="btn btn-sm btn-dark">
@@ -514,8 +555,6 @@
                 {% empty %}
                 <small class="text-muted">Sin horarios</small>
                 {% endfor %}
-
-
               </td>
               {% endfor %}
             </tr>
@@ -524,38 +563,61 @@
       </div>
     </div>
     <div id="tab-coaches" class="profile-section">
-      <button type="button" class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn" data-club-slug="{{ club.slug }}">
+      <button
+        type="button"
+        class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn"
+        data-club-slug="{{ club.slug }}"
+      >
         <i class="bi bi-plus-circle icon-large"></i> Añadir entrenador
       </button>
-  
+
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for coach in club.entrenadores.all %}
         <div class="col">
           <div class="card h-100 text-center">
-  {% if coach.avatar %}
-    <img src="{{ coach.avatar.url }}" class="card-img-top object-fit-cover" style="height:250px" alt="{{ coach.nombre }}">
-  {% else %}
-    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:250px;">
-      <span class="text-muted">{{ coach.nombre|first|upper }}</span>
-    </div>
-  {% endif %}
+            {% if coach.avatar %}
+            <img
+              src="{{ coach.avatar.url }}"
+              class="card-img-top object-fit-cover"
+              style="height: 250px"
+              alt="{{ coach.nombre }}"
+            />
+            {% else %}
+            <div
+              class="card-img-top d-flex align-items-center justify-content-center bg-light"
+              style="height: 250px"
+            >
+              <span class="text-muted">{{ coach.nombre|first|upper }}</span>
+            </div>
+            {% endif %}
 
-  <div class="card-body p-2">
-    <!-- Nombre centrado -->
-    <span class="fw-medium text-center mb-2">{{ coach.nombre }} {{ coach.apellidos }}</span>
+            <div class="card-body p-2">
+              <!-- Nombre centrado -->
+              <span class="fw-medium text-center mb-2"
+                >{{ coach.nombre }} {{ coach.apellidos }}</span
+              >
 
-    <!-- Iconos debajo del nombre, centrados -->
-    <div class="mt-2 d-flex justify-content-center gap-2">
-      <a href="{% url 'entrenador_update' coach.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+              <!-- Iconos debajo del nombre, centrados -->
+              <div class="mt-2 d-flex justify-content-center gap-2">
+                <a
+                  href="{% url 'entrenador_update' coach.id %}"
+                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
+                ></a>
 
-      <form method="post" action="{% url 'entrenador_delete' coach.id %}" class="m-0 p-0 delete-profile-form">
-        {% csrf_token %}
-        <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0  d-flex align-items-center"></button>
-      </form>
-    </div>
-  </div>
-</div>
-
+                <form
+                  method="post"
+                  action="{% url 'entrenador_delete' coach.id %}"
+                  class="m-0 p-0 delete-profile-form"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"
+                  ></button>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
         {% empty %}
         <p>No hay entrenadores.</p>
@@ -563,51 +625,74 @@
       </div>
     </div>
     <div id="tab-competitors" class="profile-section">
-
-      <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3" data-club-slug="{{ club.slug }}">
-    <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
-  </button>
+      <button
+        type="button"
+        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
+        data-club-slug="{{ club.slug }}"
+      >
+        <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
+      </button>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for comp in club.competidores.all %}
         <div class="col">
-          <div class="card  text-center">
+          <div class="card text-center">
             {% if comp.avatar %}
-              <img src="{{ comp.avatar.url }}" class="card-img-top object-fit-cover" style="height:200px" alt="{{ comp.nombre }}">
+            <img
+              src="{{ comp.avatar.url }}"
+              class="card-img-top object-fit-cover"
+              style="height: 200px"
+              alt="{{ comp.nombre }}"
+            />
             {% else %}
-              <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height:200px;">
-                <span class="text-muted">{{ comp.nombre|initials }}</span>
-              </div>
+            <div
+              class="card-img-top d-flex align-items-center justify-content-center bg-light"
+              style="height: 200px"
+            >
+              <span class="text-muted">{{ comp.nombre|initials }}</span>
+            </div>
             {% endif %}
-            <div class="card-body p-2 d-flex flex-column justify-content-between">
-  <!-- Nombre centrado -->
-  <div class="d-flex justify-content-center align-items-center mb-2">
-    <span class="fw-medium text-center">{{ comp.nombre }}</span>
-  </div>
+            <div
+              class="card-body p-2 d-flex flex-column justify-content-between"
+            >
+              <!-- Nombre centrado -->
+              <div
+                class="d-flex justify-content-center align-items-center mb-2"
+              >
+                <span class="fw-medium text-center">{{ comp.nombre }}</span>
+              </div>
 
-  <!-- Información del competidor -->
-  <small class="text-center mb-2">
-    {% with rec=comp.record_tuple %}
-      <span class="fw-bold text-success">{{ rec.0 }}</span>-
-      <span class="fw-bold text-danger">{{ rec.1 }}</span>-
-      <span class="fw-bold text-primary">{{ rec.2 }}</span> 
-    {% endwith %}
-    <br>
-    <span>{{ comp.categoria }}</span>
-  </small>
+              <!-- Información del competidor -->
+              <small class="text-center mb-2">
+                {% with rec=comp.record_tuple %}
+                <span class="fw-bold text-success">{{ rec.0 }}</span>-
+                <span class="fw-bold text-danger">{{ rec.1 }}</span>-
+                <span class="fw-bold text-primary">{{ rec.2 }}</span>
+                {% endwith %}
+                <br />
+                <span>{{ comp.categoria }}</span>
+              </small>
 
-  <!-- Iconos abajo, centrados -->
-  <div class="mt-1 d-flex justify-content-center gap-2">
-    <a href="{% url 'competidor_update' comp.id %}" class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+              <!-- Iconos abajo, centrados -->
+              <div class="mt-1 d-flex justify-content-center gap-2">
+                <a
+                  href="{% url 'competidor_update' comp.id %}"
+                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
+                ></a>
 
-    <form method="post" action="{% url 'competidor_delete' comp.id %}" class="d-flex align-items-center p-0 m-0 delete-profile-form">
-      {% csrf_token %}
-      <button type="submit" class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center"></button>
-    </form>
-  </div>
-</div>
-
-               
+                <form
+                  method="post"
+                  action="{% url 'competidor_delete' comp.id %}"
+                  class="d-flex align-items-center p-0 m-0 delete-profile-form"
+                >
+                  {% csrf_token %}
+                  <button
+                    type="submit"
+                    class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center"
+                  ></button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
         {% empty %}
@@ -617,122 +702,240 @@
     </div>
     <div id="tab-members" class="profile-section">
       <div class="d-flex align-items-center gap-2 mb-3">
-        <button type="button" class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn" data-club-slug="{{ club.slug }}">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn"
+          data-club-slug="{{ club.slug }}"
+        >
           <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
         </button>
         <div class="member-search">
           <form method="get" id="member-search-form" class="member-search-form">
-            <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
-            <input type="text" name="q" id="member-search-input" placeholder="Buscar miembro" value="{{ request.GET.q }}" autocomplete="off">
+            <button type="submit" class="search-icon">
+              <i class="bi bi-search"></i>
+            </button>
+            <input
+              type="text"
+              name="q"
+              id="member-search-input"
+              placeholder="Buscar miembro"
+              value="{{ request.GET.q }}"
+              autocomplete="off"
+            />
             <button type="button" class="close-icon">&times;</button>
           </form>
         </div>
-        {% include 'partials/_member-sort.html' %}
+        <div class="ms-auto d-flex align-items-center">
+          {% include 'partials/_member-sort.html' %}
+        </div>
       </div>
-        <div class="row g-3">
-          <div class="col-12">
+      <div class="row g-3">
+        <div class="col-12">
           <div class="members-table-responsive">
-            <table class="table table-bordered text-center align-middle" style="min-width: 600px">
-          <thead class="table-dark">
-            <tr>
-              <th>Miembro</th>
-              <th class="text-nowrap phone-column">Teléfono</th>
-              <th>Email</th>
-              <th>Inscrito</th>
-              <th class="text-nowrap" style="width:1%">
-                <div class="dropdown d-inline">
-                  <span>Estado</span>
-                  <button class="btn btn-link p-0 ms-1" type="button" id="estado-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-funnel-fill text-white"></i>
-                  </button>
-                  <form class="dropdown-menu p-3" aria-labelledby="estado-filter-btn" id="estado-filter-menu">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="estado-filter" id="estado-dd-activo" value="activo">
-                      <label class="form-check-label" for="estado-dd-activo">Activo</label>
+            <table
+              class="table table-bordered text-center align-middle"
+              style="min-width: 600px"
+            >
+              <thead class="table-dark">
+                <tr>
+                  <th>Miembro</th>
+                  <th class="text-nowrap phone-column">Teléfono</th>
+                  <th>Email</th>
+                  <th>Inscrito</th>
+                  <th class="text-nowrap" style="width: 1%">
+                    <div class="dropdown d-inline">
+                      <span>Estado</span>
+                      <button
+                        class="btn btn-link p-0 ms-1"
+                        type="button"
+                        id="estado-filter-btn"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="bi bi-funnel-fill text-white"></i>
+                      </button>
+                      <form
+                        class="dropdown-menu p-3"
+                        aria-labelledby="estado-filter-btn"
+                        id="estado-filter-menu"
+                      >
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="estado-filter"
+                            id="estado-dd-activo"
+                            value="activo"
+                          />
+                          <label class="form-check-label" for="estado-dd-activo"
+                            >Activo</label
+                          >
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="estado-filter"
+                            id="estado-dd-inactivo"
+                            value="inactivo"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="estado-dd-inactivo"
+                            >Inactivo</label
+                          >
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-2">
+                          <button
+                            type="button"
+                            class="btn btn-light btn-sm cancel-filter"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-dark btn-sm apply-filter"
+                          >
+                            Filtrar
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="estado-filter" id="estado-dd-inactivo" value="inactivo">
-                      <label class="form-check-label" for="estado-dd-inactivo">Inactivo</label>
+                  </th>
+                  <th class="text-nowrap" style="width: 1%">
+                    <div class="dropdown d-inline">
+                      <span>Pagos</span>
+                      <button
+                        class="btn btn-link p-0 ms-1"
+                        type="button"
+                        id="pago-filter-btn"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="bi bi-funnel-fill text-white"></i>
+                      </button>
+                      <form
+                        class="dropdown-menu p-3"
+                        aria-labelledby="pago-filter-btn"
+                        id="pago-filter-menu"
+                      >
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="pago-filter"
+                            id="pago-dd-completo"
+                            value="completo"
+                          />
+                          <label class="form-check-label" for="pago-dd-completo"
+                            >Completo</label
+                          >
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="pago-filter"
+                            id="pago-dd-pendiente"
+                            value="pendiente"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="pago-dd-pendiente"
+                            >Pendiente</label
+                          >
+                        </div>
+                        <div class="d-flex justify-content-end gap-2 mt-2">
+                          <button
+                            type="button"
+                            class="btn btn-light btn-sm cancel-filter"
+                          >
+                            Cancelar
+                          </button>
+                          <button
+                            type="submit"
+                            class="btn btn-dark btn-sm apply-filter"
+                          >
+                            Filtrar
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="d-flex justify-content-end gap-2 mt-2">
-                      <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
-                      <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
-                    </div>
-                  </form>
-                </div>
-              </th>
-              <th class="text-nowrap" style="width:1%">
-                <div class="dropdown d-inline">
-                  <span>Pagos</span>
-                  <button class="btn btn-link p-0 ms-1" type="button" id="pago-filter-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-funnel-fill text-white"></i>
-                  </button>
-                  <form class="dropdown-menu p-3" aria-labelledby="pago-filter-btn" id="pago-filter-menu">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="pago-filter" id="pago-dd-completo" value="completo">
-                      <label class="form-check-label" for="pago-dd-completo">Completo</label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="pago-filter" id="pago-dd-pendiente" value="pendiente">
-                      <label class="form-check-label" for="pago-dd-pendiente">Pendiente</label>
-                    </div>
-                    <div class="d-flex justify-content-end gap-2 mt-2">
-                      <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
-                      <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
-                    </div>
-                  </form>
-                </div>
-              </th>
-              <th class="actions-column"></th>
-            </tr>
-          </thead>
-          <tbody>
-  {% for m in members %}
-            <tr data-estado="{{ m.estado }}" data-pago="{{ m.pago_mes_actual }}">
-              <td>
-                {{ m.nombre }} {{ m.apellidos }}
-                <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
-             <i class="bi bi-person-bounding-box"></i>
-                </button>
-              </td>
-              <td class="phone-column">{{ m.telefono }}</td>
-              <td>{{ m.email }}</td>
-              <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
-              <td class="text-nowrap">
-                {% if m.estado == 'activo' %}
-                <span class="badge p-2 bg-success">Activo</span>
-                {% else %}
-                <span class="badge p-2 bg-secondary">Inactivo</span>
-                {% endif %}
-              </td>
-              <td class="text-nowrap">
-                {% if m.pago_mes_actual == 'completo' %}
-                <span class="badge p-2 bg-primary">Completo</span>
-                {% else %}
-                <span class="badge p-2 bg-warning text-dark">Pendiente</span>
-                {% endif %}
-                <button type="button" class="btn btn-sm btn-link view-payments-btn text-dark" data-member-id="{{ m.id }}">
-<i class="bi bi-kanban"></i>
-                </button>
-              </td>
-              <td class="actions-column">
-                <button type="button" class="btn btn-sm btn-link edit-member-btn text-dark" data-member-id="{{ m.id }}">
-                  <i class="bi bi-pencil-square icon-large text-dark"></i>
-                </button>
-                <form method="post" action="{% url 'miembro_delete' m.id %}" class="d-inline delete-profile-form">
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-sm btn-link text-danger">
-                    <i class="bi bi-dash-circle icon-large"></i>
-                  </button>
-                </form>
-              </td>
-            </tr>
-            {% empty %}
-            <tr class="no-members-row">
-              <td colspan="7" class="text-muted">No hay miembros.</td>
-            </tr>
-            {% endfor %}
-          </tbody>
+                  </th>
+                  <th class="actions-column"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for m in members %}
+                <tr
+                  data-estado="{{ m.estado }}"
+                  data-pago="{{ m.pago_mes_actual }}"
+                >
+                  <td>
+                    {{ m.nombre }} {{ m.apellidos }}
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-link view-member-btn text-dark"
+                      data-member-id="{{ m.id }}"
+                    >
+                      <i class="bi bi-person-bounding-box"></i>
+                    </button>
+                  </td>
+                  <td class="phone-column">{{ m.telefono }}</td>
+                  <td>{{ m.email }}</td>
+                  <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
+                  <td class="text-nowrap">
+                    {% if m.estado == 'activo' %}
+                    <span class="badge p-2 bg-success">Activo</span>
+                    {% else %}
+                    <span class="badge p-2 bg-secondary">Inactivo</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-nowrap">
+                    {% if m.pago_mes_actual == 'completo' %}
+                    <span class="badge p-2 bg-primary">Completo</span>
+                    {% else %}
+                    <span class="badge p-2 bg-warning text-dark"
+                      >Pendiente</span
+                    >
+                    {% endif %}
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-link view-payments-btn text-dark"
+                      data-member-id="{{ m.id }}"
+                    >
+                      <i class="bi bi-kanban"></i>
+                    </button>
+                  </td>
+                  <td class="actions-column">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-link edit-member-btn text-dark"
+                      data-member-id="{{ m.id }}"
+                    >
+                      <i class="bi bi-pencil-square icon-large text-dark"></i>
+                    </button>
+                    <form
+                      method="post"
+                      action="{% url 'miembro_delete' m.id %}"
+                      class="d-inline delete-profile-form"
+                    >
+                      {% csrf_token %}
+                      <button
+                        type="submit"
+                        class="btn btn-sm btn-link text-danger"
+                      >
+                        <i class="bi bi-dash-circle icon-large"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr class="no-members-row">
+                  <td colspan="7" class="text-muted">No hay miembros.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
             </table>
           </div>
         </div>
@@ -741,9 +944,7 @@
     <div id="tab-bookings" class="profile-section">
       <ul>
         {% for b in bookings %}
-        <li>
-          {{ b.user.username }} - {{ b.evento.titulo }} ({{ b.status }})
-        </li>
+        <li>{{ b.user.username }} - {{ b.evento.titulo }} ({{ b.status }})</li>
         {% empty %}
         <li>No hay reservas.</li>
         {% endfor %}
@@ -753,7 +954,10 @@
       <div class="row g-3">
         <div class="col-lg-9">
           <div class="table-responsive">
-            <table class="table table-bordered text-center align-middle" style="min-width:600px">
+            <table
+              class="table table-bordered text-center align-middle"
+              style="min-width: 600px"
+            >
               <thead class="table-dark">
                 <tr>
                   <th>Nombre</th>
@@ -785,12 +989,44 @@
           <form method="get" id="matchmaker-filter-form" class="vstack gap-2">
             <div>
               <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="mm_sexo" id="mm-sexo-m" value="M" {% if request.GET.mm_sexo == 'M' %}checked{% endif %}>
-                <label class="form-check-label" for="mm-sexo-m">Masculino</label>
+              <div
+                class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2"
+              >
+                <input
+                  class="form-check-input custom-check"
+                  type="radio"
+                  name="mm_sexo"
+                  id="mm-sexo-m"
+                  value="M"
+                  {%
+                  if
+                  request.GET.mm_sexo=""
+                  ="M"
+                  %}checked{%
+                  endif
+                  %}
+                />
+                <label class="form-check-label" for="mm-sexo-m"
+                  >Masculino</label
+                >
               </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input class="form-check-input custom-check" type="radio" name="mm_sexo" id="mm-sexo-f" value="F" {% if request.GET.mm_sexo == 'F' %}checked{% endif %}>
+              <div
+                class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2"
+              >
+                <input
+                  class="form-check-input custom-check"
+                  type="radio"
+                  name="mm_sexo"
+                  id="mm-sexo-f"
+                  value="F"
+                  {%
+                  if
+                  request.GET.mm_sexo=""
+                  ="F"
+                  %}checked{%
+                  endif
+                  %}
+                />
                 <label class="form-check-label" for="mm-sexo-f">Femenino</label>
               </div>
             </div>
@@ -802,8 +1038,22 @@
               </div>
               <div class="slider-wrapper mt-2">
                 <div class="slider-track"></div>
-                <input type="range" name="mm_peso_min" min="30" max="160" step="1" value="{{ request.GET.mm_peso_min|default:30 }}">
-                <input type="range" name="mm_peso_max" min="30" max="160" step="1" value="{{ request.GET.mm_peso_max|default:160 }}">
+                <input
+                  type="range"
+                  name="mm_peso_min"
+                  min="30"
+                  max="160"
+                  step="1"
+                  value="{{ request.GET.mm_peso_min|default:30 }}"
+                />
+                <input
+                  type="range"
+                  name="mm_peso_max"
+                  min="30"
+                  max="160"
+                  step="1"
+                  value="{{ request.GET.mm_peso_max|default:160 }}"
+                />
               </div>
             </div>
             <div>
@@ -811,7 +1061,18 @@
               <select name="mm_ciudad" class="form-select form-select-sm">
                 <option value="">Todas</option>
                 {% for city in cities %}
-                <option value="{{ city }}" {% if request.GET.mm_ciudad == city %}selected{% endif %}>{{ city }}</option>
+                <option
+                  value="{{ city }}"
+                  {%
+                  if
+                  request.GET.mm_ciudad=""
+                  ="city"
+                  %}selected{%
+                  endif
+                  %}
+                >
+                  {{ city }}
+                </option>
                 {% endfor %}
               </select>
             </div>
@@ -823,12 +1084,32 @@
               </div>
               <div class="slider-wrapper mt-2">
                 <div class="slider-track"></div>
-                <input type="range" name="mm_edad_min" min="10" max="60" step="1" value="{{ request.GET.mm_edad_min|default:10 }}">
-                <input type="range" name="mm_edad_max" min="10" max="60" step="1" value="{{ request.GET.mm_edad_max|default:60 }}">
+                <input
+                  type="range"
+                  name="mm_edad_min"
+                  min="10"
+                  max="60"
+                  step="1"
+                  value="{{ request.GET.mm_edad_min|default:10 }}"
+                />
+                <input
+                  type="range"
+                  name="mm_edad_max"
+                  min="10"
+                  max="60"
+                  step="1"
+                  value="{{ request.GET.mm_edad_max|default:60 }}"
+                />
               </div>
             </div>
             <div class="text-end mt-4">
-              <button type="button" id="clear-matchmaker-filter-btn" class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
+              <button
+                type="button"
+                id="clear-matchmaker-filter-btn"
+                class="btn btn-outline-dark btn-sm ms-2"
+              >
+                Limpiar
+              </button>
               <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
             </div>
           </form>
@@ -838,19 +1119,31 @@
   </div>
 </div>
 <!-- Confirm Delete Modal -->
-<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+<div
+  class="modal fade"
+  id="confirmDeleteModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirmar eliminación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
-      <div class="modal-body">
-        ¿Seguro que deseas eliminar este perfil?
-      </div>
+      <div class="modal-body">¿Seguro que deseas eliminar este perfil?</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger confirm-delete">Eliminar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger confirm-delete">
+          Eliminar
+        </button>
       </div>
     </div>
   </div>
@@ -862,26 +1155,43 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Confirmar cambios</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
-      <div class="modal-body">
-        ¿Seguro que deseas guardar los cambios?
-      </div>
+      <div class="modal-body">¿Seguro que deseas guardar los cambios?</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary confirm-edit">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary confirm-edit">
+          Guardar
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Payment History Modal -->
-<div class="modal fade" id="paymentHistoryModal" tabindex="-1" aria-hidden="true">
+<div
+  class="modal fade"
+  id="paymentHistoryModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Historial de Pagos</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body"></div>
     </div>
@@ -889,12 +1199,22 @@
 </div>
 
 <!-- Member Profile Modal -->
-<div class="modal fade" id="memberProfileModal" tabindex="-1" aria-hidden="true">
+<div
+  class="modal fade"
+  id="memberProfileModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Perfil de Miembro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body text-center"></div>
     </div>
@@ -907,7 +1227,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Editar miembro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body p-5"></div>
     </div>
@@ -920,7 +1245,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo miembro</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body"></div>
     </div>
@@ -933,7 +1263,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo entrenador</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body"></div>
     </div>
@@ -941,12 +1276,22 @@
 </div>
 
 <!-- Add Competitor Modal -->
-<div class="modal fade" id="addCompetitorModal" tabindex="-1" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addCompetitorModal"
+  tabindex="-1"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo competidor</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body"></div>
     </div>
