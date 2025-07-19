@@ -1,14 +1,21 @@
-<form method="get" id="member-filter-form" class="ms-auto d-flex align-items-center">
-  <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
-  <span class="me-2">Ordenar por</span>
+<form
+  method="get"
+  id="member-filter-form"
+  class="ms-auto d-flex align-items-center"
+>
+  <input
+    type="hidden"
+    name="orden"
+    id="sort-input"
+    value="{{ request.GET.orden|default:'' }}"
+  />
   <div class="custom-dropdown small" id="sort-dropdown">
     <div class="selected">
       <span class="selected-text">
-        {% if request.GET.orden == 'alpha' %}Nombre A-Z
-        {% elif request.GET.orden == 'alpha_desc' %}Nombre Z-A
-        {% elif request.GET.orden == 'oldest' %}Más antiguos primero
-        {% elif request.GET.orden == 'newest' %}Más recientes primero
-        {% else %}Ordenar por{% endif %}
+        {% if request.GET.orden == 'alpha' %}Nombre A-Z {% elif
+        request.GET.orden == 'alpha_desc' %}Nombre Z-A {% elif request.GET.orden
+        == 'oldest' %}Más antiguos primero {% elif request.GET.orden == 'newest'
+        %}Más recientes primero {% else %}Ordenar por{% endif %}
       </span>
       <span class="select-arrow"></span>
     </div>
