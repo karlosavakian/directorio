@@ -1,29 +1,23 @@
-<form
-  method="get"
-  id="member-filter-form"
-  class="ms-auto d-flex align-items-center"
->
-  <input
-    type="hidden"
-    name="orden"
-    id="sort-input"
-    value="{{ request.GET.orden|default:'' }}"
-  />
-  <div class="custom-dropdown small" id="sort-dropdown">
-    <div class="selected">
-      <span class="selected-text">
-        {% if request.GET.orden == 'alpha' %}Nombre A-Z {% elif
-        request.GET.orden == 'alpha_desc' %}Nombre Z-A {% elif request.GET.orden
-        == 'oldest' %}Más antiguos primero {% elif request.GET.orden == 'newest'
-        %}Más recientes primero {% else %}Ordenar por{% endif %}
-      </span>
-      <span class="select-arrow"></span>
+<form method="get" id="member-filter-form" class="d-flex align-items-center" style="gap: 10px;">
+    <input type="hidden" name="q" value="{{ request.GET.q }}">
+    <input type="hidden" name="orden" id="sort-input" value="{{ request.GET.orden|default:'' }}">
+
+    <div class="custom-dropdown small" id="sort-dropdown">
+        <div class="selected">
+            <span class="selected-text">
+                {% if request.GET.orden == 'alpha' %}Nombre A-Z
+                {% elif request.GET.orden == 'alpha_desc' %}Nombre Z-A
+                {% elif request.GET.orden == 'oldest' %}Más antiguos primero
+                {% elif request.GET.orden == 'newest' %}Más recientes primero
+                {% else %}Ordenar por{% endif %}
+            </span>
+            <span class="select-arrow"></span>
+        </div>
+        <div class="dropdown-menu" id="sort-menu">
+            <div class="dropdown-item" data-value="alpha">Nombre A-Z</div>
+            <div class="dropdown-item" data-value="alpha_desc">Nombre Z-A</div>
+            <div class="dropdown-item" data-value="oldest">Más antiguos primero</div>
+            <div class="dropdown-item" data-value="newest">Más recientes primero</div>
+        </div>
     </div>
-    <div class="dropdown-menu" id="sort-menu">
-      <div class="dropdown-item" data-value="alpha">Nombre A-Z</div>
-      <div class="dropdown-item" data-value="alpha_desc">Nombre Z-A</div>
-      <div class="dropdown-item" data-value="oldest">Más antiguos primero</div>
-      <div class="dropdown-item" data-value="newest">Más recientes primero</div>
-    </div>
-  </div>
 </form>
