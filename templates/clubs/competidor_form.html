@@ -4,7 +4,7 @@
 <div class="container py-4">
   {% include 'partials/_back-btn.html' %}
   <h1 class="h5">{% if competidor %}Editar{% else %}Nuevo{% endif %} competidor</h1>
-  <form method="post" enctype="multipart/form-data" class="profile-form">
+  <form method="post" enctype="multipart/form-data" class="profile-form" action="{% if competidor %}{% url 'competidor_update' competidor.id %}{% else %}{% url 'competidor_create' club.slug %}{% endif %}">
     {% csrf_token %}
     <div class="form-field">
       <div class="avatar-dropzone">
