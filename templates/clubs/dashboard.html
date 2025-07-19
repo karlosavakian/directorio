@@ -1086,8 +1086,9 @@
             {% for c in match_results %}
             <div class="col">
               <div class="card matchmaker-card h-100">
-                <div class="card-body">
-                  <div class="d-flex align-items-center mb-2">
+                <div class="matchmaker-inner">
+                  <div class="matchmaker-front card-body">
+                    <div class="d-flex align-items-center mb-2">
                     {% if c.avatar %}
                       <img src="{{ c.avatar.url }}" alt="{{ c.nombre }}" class="competitor-avatar-img me-2">
                     {% else %}
@@ -1098,30 +1099,33 @@
                       <div class="small text-muted">{{ c.club.name }} - {{ c.club.city }}</div>
                     </div>
                   </div>
-                  <div class="row text-center">
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Peso</span>
-                      <span>{{ c.peso|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Edad</span>
-                      <span>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Sexo</span>
-                      <span>{{ c.get_sexo_display|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Altura</span>
-                      <span>{{ c.altura|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Categoria</span>
-                      <span>—</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Record</span>
-                      <span>—</span>
+                  </div>
+                  <div class="matchmaker-back card-body d-flex align-items-center">
+                    <div class="row text-center w-100">
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Peso</span>
+                        <span>{{ c.peso|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Edad</span>
+                        <span>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Sexo</span>
+                        <span>{{ c.get_sexo_display|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Altura</span>
+                        <span>{{ c.altura|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Categoria</span>
+                        <span>—</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Record</span>
+                        <span>—</span>
+                      </div>
                     </div>
                   </div>
                 </div>
