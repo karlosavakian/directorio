@@ -1085,43 +1085,47 @@
           <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
             {% for c in match_results %}
             <div class="col">
-              <div class="card matchmaker-card h-100">
-                <div class="card-body">
-                  <div class="d-flex align-items-center mb-2">
+              <div class="card text-center matchmaker-card">
+                <div class="matchmaker-inner">
+                  <div class="matchmaker-front">
                     {% if c.avatar %}
-                      <img src="{{ c.avatar.url }}" alt="{{ c.nombre }}" class="competitor-avatar-img me-2">
+                      <img src="{{ c.avatar.url }}" class="card-img-top object-fit-cover" style="height: 200px" alt="{{ c.nombre }}" />
                     {% else %}
-                      <div class="competitor-avatar me-2">{{ c.nombre|initials }}</div>
+                      <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px">
+                        <span class="text-muted">{{ c.nombre|initials }}</span>
+                      </div>
                     {% endif %}
-                    <div>
+                    <div class="card-body p-2">
                       <div class="fw-bold">{{ c.nombre }} {{ c.apellidos }}</div>
                       <div class="small text-muted">{{ c.club.name }} - {{ c.club.city }}</div>
                     </div>
                   </div>
-                  <div class="row text-center">
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Peso</span>
-                      <span>{{ c.peso|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Edad</span>
-                      <span>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Sexo</span>
-                      <span>{{ c.get_sexo_display|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Altura</span>
-                      <span>{{ c.altura|default:'—' }}</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Categoria</span>
-                      <span>—</span>
-                    </div>
-                    <div class="col-6">
-                      <span class="d-block small fw-bold">Record</span>
-                      <span>—</span>
+                  <div class="matchmaker-back card-body">
+                    <div class="row text-center w-100 mx-0">
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Peso</span>
+                        <span>{{ c.peso|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Edad</span>
+                        <span>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Sexo</span>
+                        <span>{{ c.get_sexo_display|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Altura</span>
+                        <span>{{ c.altura|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Categoria</span>
+                        <span>—</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Record</span>
+                        <span>—</span>
+                      </div>
                     </div>
                   </div>
                 </div>
