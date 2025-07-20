@@ -129,6 +129,8 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                                     </svg>
                                 </button>
+                                <a href="#" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">Inscribirse</a>
+                                <a href="#" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">Reservar</a>
                             </div>
                             {% for photo in club.photos.all %}
                                 <div class="gallery-slide{% if forloop.first %} active{% endif %}">
@@ -629,6 +631,8 @@
     </div>
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
+    {% include 'partials/_member_signup_modal.html' %}
+    {% include 'partials/_booking_modal.html' %}
     <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
@@ -717,6 +721,8 @@
     <script src="{% static 'js/post-like.js' %}"></script>
     <script src="{% static 'js/gallery-slideshow.js' %}"></script>
     <script src="{% static 'js/schedule-status.js' %}"></script>
+    <script src="{% static 'js/member-signup-modal.js' %}"></script>
+    <script src="{% static 'js/booking-modal.js' %}"></script>
     <script src="{% static 'js/club-tabs.js' %}"></script>
     <script src="{% static 'js/post-media-preview.js' %}"></script>
 {% endblock %}
