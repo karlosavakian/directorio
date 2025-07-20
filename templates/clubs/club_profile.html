@@ -103,10 +103,7 @@
             <div class="col-lg-8">
                 <div class="mb-4   rounded">
                     {% if club.photos.all %}
-                        <div class="d-flex justify-content-end gap-2 mb-2">
-                            <a href="#" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">Inscribirse</a>
-                            <a href="#" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">Reservar</a>
-                        </div>
+                        <!-- Botones de inscripción y reserva moved to reviews column -->
                         <div class="mb-4 gallery-slideshow position-relative">
                             <div class="gallery-actions">
                                 <!-- Heart and Share buttons -->
@@ -563,6 +560,10 @@
             </div>
             <!-- Columna Derecha: Valoraciones y Reseñas -->
             <div class="col-lg-2">
+                <div class="d-flex justify-content-end gap-2 mb-2">
+                    <a href="#" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">Inscribirse</a>
+                    <a href="#" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">Reservar clase</a>
+                </div>
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">
