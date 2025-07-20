@@ -954,7 +954,7 @@
       </ul>
     </div>
     <div id="tab-matchmaker" class="profile-section">
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-12 col-lg-4">
           <form
             method="get"
@@ -1063,11 +1063,13 @@
             </div>
           </form>
         </div>
-        <div class="col-12 col-lg-8">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            {% for c in match_results %}
-            <div class="col">
-              <div class="card text-center">
+      </div>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+        {% for c in match_results %}
+        <div class="col">
+          <div class="card-flip">
+            <div class="card-flip-inner">
+              <div class="card text-center card-flip-front">
                 {% if c.avatar %}
                 <img src="{{ c.avatar.url }}" class="card-img-top object-fit-cover" style="height: 200px" alt="{{ c.nombre }}" />
                 {% else %}
@@ -1084,12 +1086,19 @@
                   </small>
                 </div>
               </div>
+              <div class="card card-flip-back text-center bg-dark text-white">
+                <div class="p-2 d-flex flex-column justify-content-center align-items-center h-100">
+                  <small class="d-block">Sexo: {{ c.get_sexo_display|default:'—' }}</small>
+                  <small class="d-block">Edad: {{ c.edad|default:'—' }}</small>
+                  <small class="d-block">Peso: {{ c.peso|default:'—' }}</small>
+                </div>
+              </div>
             </div>
-            {% empty %}
-            <p>No hay competidores.</p>
-            {% endfor %}
           </div>
         </div>
+        {% empty %}
+        <p>No hay competidores.</p>
+        {% endfor %}
       </div>
     </div>
   </div>
