@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="row g-2">
-      <div class="col-6">
+      <div class="col-6 col-md-3">
         <div class="form-field">
           {{ form.nombre }}
           <button type="button" class="clear-btn">×</button>
@@ -39,7 +39,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-6 col-md-3">
         <div class="form-field">
           {{ form.apellidos }}
           <button type="button" class="clear-btn">×</button>
@@ -72,20 +72,46 @@
         </div>
       </div>
     </div>
-    <div class="form-field">
-      <div class="d-flex justify-content-center gap-3">
-        {% for radio in form.tipo_competidor %}
-        <div class="form-check form-check-inline">
-          {{ radio.tag }}
-          <label class="form-check-label">{{ radio.choice_label }}</label>
+    <div class="row g-2 align-items-end">
+      <div class="col-6 col-md-3">
+        <div class="form-field">
+          {{ form.sexo }}
+          <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+          {% if form.sexo.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.sexo.errors.as_text|striptags }}
+          </div>
+          {% endif %}
         </div>
-        {% endfor %}
       </div>
-      {% if form.tipo_competidor.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.tipo_competidor.errors.as_text|striptags }}
+      <div class="col-6 col-md-3">
+        <div class="form-field">
+          {{ form.edad }}
+          <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
+          {% if form.edad.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.edad.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
       </div>
-      {% endif %}
+      <div class="col-12 col-md-6">
+        <div class="form-field">
+          <div class="d-flex justify-content-center gap-3">
+            {% for radio in form.tipo_competidor %}
+            <div class="form-check form-check-inline">
+              {{ radio.tag }}
+              <label class="form-check-label">{{ radio.choice_label }}</label>
+            </div>
+            {% endfor %}
+          </div>
+          {% if form.tipo_competidor.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.tipo_competidor.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="form-field" id="modalidad-field">
       {{ form.modalidad }}
@@ -119,30 +145,6 @@
       </div>
       {% endif %}
     </div>
-    <div class="row">
-      <div class="col-6 col-md-4">
-        <div class="form-field">
-          {{ form.edad }}
-          <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
-          {% if form.edad.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.edad.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      <div class="col-6 col-md-4">
-        <div class="form-field">
-          {{ form.sexo }}
-          <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
-          {% if form.sexo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.sexo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
     <div class="form-field">
       {{ form.palmares }}
       <label for="{{ form.palmares.id_for_label }}">{{ form.palmares.label }}</label>
@@ -152,6 +154,8 @@
       </div>
       {% endif %}
     </div>
-    <button type="submit" class="btn btn-dark">Guardar</button>
+    <div class="text-end">
+      <button type="submit" class="btn btn-dark">Guardar</button>
+    </div>
 </form>
 {{ members|json_script:"competitor-members" }}
