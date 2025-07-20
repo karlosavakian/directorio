@@ -335,8 +335,11 @@ def competidor_create(request, slug):
         form = CompetidorForm()
     template = 'clubs/_competidor_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/competidor_form.html'
     members = club.miembros.all()
-    return render(request, template, {'form': form, 'club': club, 'members': members})
-
+    return render(request, template, {
+        'form': form,
+        'club': club,
+        'members': list(members.values('id', 'nombre', 'apellidos', 'sexo', 'peso', 'altura'))
+    })
 
 @login_required
 def competidor_update(request, pk):
