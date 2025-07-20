@@ -185,12 +185,15 @@ class CompetidorForm(forms.ModelForm):
     altura_cm = forms.DecimalField(
         required=False, max_digits=5, decimal_places=2, label='Altura (cm)'
     )
+    edad = forms.IntegerField(required=False, min_value=0, label='Edad')
 
     class Meta:
         model = models.Competidor
         fields = [
             'avatar',
             'nombre',
+            'apellidos',
+            'edad',
             'modalidad',
             'peso',
             'peso_kg',
@@ -218,6 +221,10 @@ class CompetidorForm(forms.ModelForm):
                 forms.TimeInput,
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
+
+        palmares_field = self.fields.get('palmares')
+        if palmares_field:
+            palmares_field.widget.attrs['rows'] = 3
 
         if self.instance and getattr(self.instance, 'record', None):
             try:

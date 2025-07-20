@@ -23,15 +23,31 @@
       </div>
       {% endif %}
     </div>
-    <div class="form-field">
-      {{ form.nombre }}
-      <button type="button" class="clear-btn">×</button>
-      <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
-      {% if form.nombre.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.nombre.errors.as_text|striptags }}
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.nombre }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+          {% if form.nombre.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.nombre.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
       </div>
-      {% endif %}
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.apellidos }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.apellidos.id_for_label }}">{{ form.apellidos.label }}</label>
+          {% if form.apellidos.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.apellidos.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="form-field">
       {{ form.record }}

@@ -35,6 +35,8 @@ class Competidor(models.Model):
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="competidores")
     avatar = models.ImageField(upload_to="competidores/", blank=True, null=True)
     nombre = models.CharField(max_length=100)
+    apellidos = models.CharField(max_length=150, blank=True)
+    edad = models.PositiveIntegerField(null=True, blank=True)
     record = models.CharField(max_length=20, blank=True)
     modalidad = models.CharField(max_length=15, choices=MODALIDAD_CHOICES, blank=True)
     peso = models.CharField(max_length=15, choices=PESO_CHOICES, blank=True)
@@ -60,7 +62,7 @@ class Competidor(models.Model):
         return " ".join(parts)
 
     def __str__(self):
-        return self.nombre
+        return f"{self.nombre} {self.apellidos}".strip()
 
     @property
     def record_tuple(self):

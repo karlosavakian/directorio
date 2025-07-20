@@ -39,7 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.textContent = `${m.nombre} ${m.apellidos}`;
                 li.addEventListener('click', () => {
                   const nameField = addEl.querySelector(`input[name='nombre']`);
-                  if (nameField) nameField.value = `${m.nombre} ${m.apellidos}`;
+                  const lastField = addEl.querySelector(`input[name='apellidos']`);
+                  if (nameField) nameField.value = m.nombre || '';
+                  if (lastField) lastField.value = m.apellidos || '';
                   const sexoField = addEl.querySelector(`select[name='sexo']`);
                   if (sexoField) sexoField.value = m.sexo || '';
                   const pesoField = addEl.querySelector(`input[name='peso_kg']`);
