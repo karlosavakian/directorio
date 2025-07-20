@@ -28,9 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 members = JSON.parse(membersDataEl.textContent);
               } catch (e) {}
             }
+            const searchForm = addEl.querySelector('#competitor-member-search-form');
             const searchInput = addEl.querySelector('#competitor-member-search');
             const resultsEl = addEl.querySelector('#competitor-member-results');
-            const closeBtn = addEl.querySelector('#competitor-member-search-form .close-icon');
+            const searchBtn = searchForm ? searchForm.querySelector('.search-icon') : null;
+            const closeBtn = searchForm ? searchForm.querySelector('.close-icon') : null;
             function renderResults(query) {
               if (!resultsEl) return;
               resultsEl.innerHTML = '';
@@ -61,11 +63,24 @@ document.addEventListener('DOMContentLoaded', () => {
               searchInput.addEventListener('input', () => {
                 renderResults(searchInput.value);
               });
+              searchInput.addEventListener('blur', () => {
+                if (!searchInput.value && searchForm) searchForm.classList.remove('open');
+              });
+            }
+            if (searchBtn) {
+              searchBtn.addEventListener('click', e => {
+                if (searchForm && !searchForm.classList.contains('open')) {
+                  e.preventDefault();
+                  searchForm.classList.add('open');
+                  searchInput && searchInput.focus();
+                }
+              });
             }
             if (closeBtn) {
               closeBtn.addEventListener('click', () => {
                 if (resultsEl) resultsEl.innerHTML = '';
                 if (searchInput) searchInput.value = '';
+                if (searchForm) searchForm.classList.remove('open');
               });
             }
             const form = addEl.querySelector('form');
