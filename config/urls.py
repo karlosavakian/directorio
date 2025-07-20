@@ -19,6 +19,8 @@ urlpatterns = [
 
     # Perfil público de clubs
     path('@<slug:slug>/admin/', dashboard, name='club_dashboard'),
+    path('@<slug:slug>/inscribirse/', club_public.member_signup, name='club_member_signup'),
+    path('@<slug:slug>/reservar/', club_public.booking_form, name='club_booking'),
     path('@<slug:slug>/', club_public.club_profile, name='club_profile'),
     path('coach/@<slug:slug>/', club_public.coach_profile, name='coach_profile'),
 

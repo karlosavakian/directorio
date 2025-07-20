@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
 from ..models import Club, Entrenador
 from django.contrib import messages
-from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
+from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm, MiembroForm
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
@@ -141,3 +142,28 @@ def ajax_reviews(request, slug):
         r.edit_form = ReseñaForm(instance=r)
 
     return render(request, 'clubs/reviews_list.html', {'reseñas': reseñas})
+
+
+def member_signup(request, slug):
+    """Allow public users to register as club members."""
+    club = get_object_or_404(Club, slug=slug)
+    if request.method == 'POST':
+        form = MiembroForm(request.POST, request.FILES)
+        if form.is_valid():
+            miembro = form.save(commit=False)
+            miembro.club = club
+            miembro.save()
+            messages.success(request, 'Inscripción guardada correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
+            return redirect('club_profile', slug=club.slug)
+    else:
+        form = MiembroForm()
+    template = 'clubs/_miembro_public_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
+    return render(request, template, {'form': form, 'club': club})
+
+
+def booking_form(request, slug):
+    """Display a simple booking form modal."""
+    club = get_object_or_404(Club, slug=slug)
+    return render(request, 'partials/_booking_modal.html', {'club': club})
