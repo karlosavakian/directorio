@@ -192,6 +192,15 @@
     </div>
   </div>
   <div class="form-field">
+    {{ form.edad }}
+    <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
+    {% if form.edad.errors %}
+    <div class="invalid-feedback d-block">
+      {{ form.edad.errors.as_text|striptags }}
+    </div>
+    {% endif %}
+  </div>
+  <div class="form-field">
     {{ form.estado }}
     <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
     {% if form.estado.errors %}
