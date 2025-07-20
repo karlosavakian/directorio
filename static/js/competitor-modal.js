@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.initSelectLabels) {
               window.initSelectLabels(addEl);
             }
+            if (window.initAgeCategory) {
+              window.initAgeCategory(addEl);
+            }
             const membersDataEl = addEl.querySelector('#competitor-members');
             let members = [];
             if (membersDataEl) {
