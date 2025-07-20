@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseForbidden, HttpResponse
+from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
 from django.db.models.functions import ExtractYear
@@ -334,7 +334,8 @@ def competidor_create(request, slug):
     else:
         form = CompetidorForm()
     template = 'clubs/_competidor_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/competidor_form.html'
-    return render(request, template, {'form': form, 'club': club})
+    members = club.miembros.all()
+    return render(request, template, {'form': form, 'club': club, 'members': members})
 
 
 @login_required
@@ -370,6 +371,18 @@ def competidor_delete(request, pk):
     return render(request, 'clubs/competidor_confirm_delete.html', {
         'competidor': competidor,
     })
+
+
+@login_required
+def miembros_json(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    qs = club.miembros.all().values('id', 'nombre', 'apellidos', 'sexo', 'peso', 'altura')
+    q = request.GET.get('q')
+    if q:
+        qs = qs.filter(Q(nombre__icontains=q) | Q(apellidos__icontains=q))
+    return JsonResponse(list(qs), safe=False)
 
 
 @login_required

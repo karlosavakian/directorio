@@ -39,6 +39,8 @@ class Competidor(models.Model):
     modalidad = models.CharField(max_length=15, choices=MODALIDAD_CHOICES, blank=True)
     peso = models.CharField(max_length=15, choices=PESO_CHOICES, blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True)
+    peso_kg = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    altura_cm = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     palmares = models.TextField(blank=True, verbose_name="Palmarés")
 
     def save(self, *args, **kwargs):

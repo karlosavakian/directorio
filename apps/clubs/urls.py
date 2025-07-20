@@ -35,6 +35,7 @@ from apps.clubs.views.dashboard import (
     pago_create,
     pago_update,
     pago_delete,
+    miembros_json,
 )
 
 urlpatterns = [
@@ -55,6 +56,7 @@ urlpatterns = [
     path('<slug:slug>/competidor/nuevo/', competidor_create, name='competidor_create'),
     path('competidor/<int:pk>/editar/', competidor_update, name='competidor_update'),
     path('competidor/<int:pk>/eliminar/', competidor_delete, name='competidor_delete'),
+    path('<slug:slug>/miembros/json/', miembros_json, name='miembros_json'),
 
     path('<slug:slug>/entrenador/nuevo/', entrenador_create, name='entrenador_create'),
     path('entrenador/<int:pk>/editar/', entrenador_update, name='entrenador_update'),

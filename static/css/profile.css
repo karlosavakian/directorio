@@ -393,6 +393,12 @@ select option[value="España"] {
   display: block;
 }
 
+#competitor-member-results {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
 /* Generic search field with clear button and icon */
 .search-field {
   position: relative;
