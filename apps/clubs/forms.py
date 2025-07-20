@@ -186,6 +186,12 @@ class CompetidorForm(forms.ModelForm):
         required=False, max_digits=5, decimal_places=2, label='Altura (cm)'
     )
     edad = forms.IntegerField(required=False, min_value=0, label='Edad')
+    tipo_competidor = forms.ChoiceField(
+        choices=[('amateur', 'Amateur'), ('profesional', 'Profesional')],
+        widget=forms.RadioSelect,
+        required=False,
+        label='Tipo'
+    )
 
     class Meta:
         model = models.Competidor
@@ -209,7 +215,8 @@ class CompetidorForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = (css + ' form-control').strip()
+            if not isinstance(field.widget, (forms.CheckboxInput, forms.RadioSelect)):
+                field.widget.attrs['class'] = (css + ' form-control').strip()
             if isinstance(field.widget, (
                 forms.TextInput,
                 forms.EmailInput,
@@ -225,6 +232,21 @@ class CompetidorForm(forms.ModelForm):
         palmares_field = self.fields.get('palmares')
         if palmares_field:
             palmares_field.widget.attrs['rows'] = 3
+
+        modalidad_field = self.fields.get('modalidad')
+        if modalidad_field:
+            modalidad_field.choices = [
+                ('', '---------'),
+                ('schoolboy', 'Schoolboy'),
+                ('junior', 'Junior'),
+                ('joven', 'Joven'),
+                ('elite', 'Elite'),
+            ]
+
+        tipo_field = self.fields.get('tipo_competidor')
+        if tipo_field:
+            tipo = 'profesional' if getattr(self.instance, 'modalidad', '') == 'profesional' else 'amateur'
+            tipo_field.initial = tipo
 
         if self.instance and getattr(self.instance, 'record', None):
             try:
@@ -245,6 +267,11 @@ class CompetidorForm(forms.ModelForm):
         losses = self.cleaned_data.get('derrotas') or 0
         draws = self.cleaned_data.get('empates') or 0
         self.instance.record = f"{wins}-{losses}-{draws}"
+
+        tipo = self.cleaned_data.get('tipo_competidor')
+        if tipo == 'profesional':
+            self.instance.modalidad = 'profesional'
+
         return super().save(commit)
 
 

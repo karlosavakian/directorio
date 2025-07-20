@@ -69,6 +69,15 @@
       </div>
     </div>
     <div class="form-field">
+      {{ form.tipo_competidor }}
+      <label>{{ form.tipo_competidor.label }}</label>
+      {% if form.tipo_competidor.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.tipo_competidor.errors.as_text|striptags }}
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-field" id="modalidad-field">
       {{ form.modalidad }}
       <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
       {% if form.modalidad.errors %}
