@@ -10,31 +10,44 @@
           </div>
         </div>
       </div>
-      <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
       {% if form.avatar.errors %}
       <div class="invalid-feedback d-block">
         {{ form.avatar.errors.as_text|striptags }}
       </div>
       {% endif %}
     </div>
-    <div class="d-flex gap-2 align-items-start">
-      <div class="form-field flex-grow-1">
-        {{ form.nombre }}
-        <button type="button" class="clear-btn">×</button>
-        <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
-        {% if form.nombre.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.nombre.errors.as_text|striptags }}
+    <div class="member-search mb-2">
+      <form id="competitor-member-search-form" class="member-search-form" onsubmit="return false;">
+        <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
+        <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
+        <button type="button" class="close-icon">&times;</button>
+      </form>
+      <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
+    </div>
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.nombre }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+          {% if form.nombre.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.nombre.errors.as_text|striptags }}
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
       </div>
-      <div class="member-search">
-        <form id="competitor-member-search-form" class="member-search-form" onsubmit="return false;">
-          <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
-          <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
-          <button type="button" class="close-icon">&times;</button>
-        </form>
-        <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.apellidos }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.apellidos.id_for_label }}">{{ form.apellidos.label }}</label>
+          {% if form.apellidos.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.apellidos.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
       </div>
     </div>
     <div class="row">
@@ -88,6 +101,15 @@
           <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
         </div>
       </div>
+    </div>
+    <div class="form-field">
+      {{ form.edad }}
+      <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
+      {% if form.edad.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.edad.errors.as_text|striptags }}
+      </div>
+      {% endif %}
     </div>
     <div class="form-field">
       {{ form.sexo }}

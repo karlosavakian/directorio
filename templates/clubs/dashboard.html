@@ -645,14 +645,14 @@
               src="{{ comp.avatar.url }}"
               class="card-img-top object-fit-cover"
               style="height: 200px"
-              alt="{{ comp.nombre }}"
+              alt="{{ comp.nombre }} {{ comp.apellidos }}"
             />
             {% else %}
             <div
               class="card-img-top d-flex align-items-center justify-content-center bg-light"
               style="height: 200px"
             >
-              <span class="text-muted">{{ comp.nombre|initials }}</span>
+              <span class="text-muted">{{ comp.nombre|add:' '|add:comp.apellidos|initials }}</span>
             </div>
             {% endif %}
             <div
@@ -662,7 +662,7 @@
               <div
                 class="d-flex justify-content-center align-items-center mb-2"
               >
-                <span class="fw-medium text-center">{{ comp.nombre }}</span>
+                <span class="fw-medium text-center">{{ comp.nombre }} {{ comp.apellidos }}</span>
               </div>
 
               <!-- Información del competidor -->
@@ -1244,7 +1244,7 @@
 
 <!-- Add Coach Modal -->
 <div class="modal fade" id="addCoachModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo entrenador</h5>
@@ -1267,7 +1267,7 @@
   tabindex="-1"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo competidor</h5>
