@@ -46,6 +46,17 @@ class Competidor(models.Model):
     palmares = models.TextField(blank=True, verbose_name="Palmarés")
 
     def save(self, *args, **kwargs):
+        if self.edad is not None and not self.modalidad:
+            if 13 <= self.edad <= 14:
+                self.modalidad = "schoolboy"
+            elif 15 <= self.edad <= 16:
+                self.modalidad = "junior"
+            elif 17 <= self.edad <= 18:
+                self.modalidad = "joven"
+            elif 19 <= self.edad <= 40:
+                self.modalidad = "elite"
+            elif self.edad >= 18:
+                self.modalidad = "profesional"
         super().save(*args, **kwargs)
         if self.avatar and hasattr(self.avatar, "path"):
             resize_image(self.avatar.path)
