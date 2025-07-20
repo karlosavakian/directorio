@@ -69,8 +69,15 @@
       </div>
     </div>
     <div class="form-field">
-      {{ form.tipo_competidor }}
-      <label>{{ form.tipo_competidor.label }}</label>
+      <label class="d-block">{{ form.tipo_competidor.label }}</label>
+      <div class="d-flex gap-3">
+        {% for radio in form.tipo_competidor %}
+        <div class="form-check form-check-inline">
+          {{ radio.tag }}
+          <label class="form-check-label">{{ radio.choice_label }}</label>
+        </div>
+        {% endfor %}
+      </div>
       {% if form.tipo_competidor.errors %}
       <div class="invalid-feedback d-block">
         {{ form.tipo_competidor.errors.as_text|striptags }}

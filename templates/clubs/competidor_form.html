@@ -25,7 +25,24 @@
     </div>
     {% for field in form %}
       {% if field.name != 'avatar' %}
-        {% if field.field.widget.input_type == 'checkbox' %}
+        {% if field.name == 'tipo_competidor' %}
+        <div class="form-field">
+          <label class="d-block">{{ field.label }}</label>
+          <div class="d-flex gap-3">
+            {% for radio in field %}
+            <div class="form-check form-check-inline">
+              {{ radio.tag }}
+              <label class="form-check-label">{{ radio.choice_label }}</label>
+            </div>
+            {% endfor %}
+          </div>
+          {% if field.errors %}
+          <div class="invalid-feedback d-block">
+            {{ field.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+        {% elif field.field.widget.input_type == 'checkbox' %}
         <div class="form-field checkbox-field">
           {{ field }}
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
