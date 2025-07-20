@@ -285,6 +285,7 @@ class EntrenadorForm(forms.ModelForm):
 
 
 class MiembroForm(forms.ModelForm):
+    edad = forms.IntegerField(required=False, min_value=0, label='Edad')
     nacionalidad = forms.ChoiceField(
         choices=[('', 'País')] + COUNTRY_CHOICES,
         required=False,
