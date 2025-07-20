@@ -426,16 +426,22 @@
                 <div
                   class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1"
                 >
-                  <span>
-                    {% if bloque.estado == 'abierto' %} {{
-                    bloque.hora_inicio|time:'H:i' }} - {{
-                    bloque.hora_fin|time:'H:i' }} {% elif bloque.estado ==
-                    'cerrado' %}
-                    <span class="text-danger">Cerrado</span>
+                  <div>
+                    {% if bloque.estado == 'abierto' %}
+                      <div
+                        class="py-1 schedule-item"
+                        data-start="{{ bloque.hora_inicio|time:'H:i' }}"
+                        data-end="{{ bloque.hora_fin|time:'H:i' }}"
+                      >
+                        {{ bloque.hora_inicio|time:'H:i' }} -
+                        {{ bloque.hora_fin|time:'H:i' }}
+                      </div>
+                    {% elif bloque.estado == 'cerrado' %}
+                      <div class="py-1 text-danger">Cerrado</div>
                     {% else %}
-                    <span class="text-muted">{{ bloque.estado_otro }}</span>
+                      <div class="py-1 text-muted">{{ bloque.estado_otro }}</div>
                     {% endif %}
-                  </span>
+                  </div>
                   <span>
                     <!-- Editar -->
                     <a
@@ -952,41 +958,8 @@
     </div>
     <div id="tab-matchmaker" class="profile-section">
       <div class="row g-3">
-        <div class="col-lg-9">
-          <div class="table-responsive">
-            <table
-              class="table table-bordered text-center align-middle"
-              style="min-width: 600px"
-            >
-              <thead class="table-dark">
-                <tr>
-                  <th>Nombre</th>
-                  <th>Club</th>
-                  <th>Ciudad</th>
-                  <th>Peso</th>
-                  <th>Edad</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for c in match_results %}
-                <tr>
-                  <td>{{ c.nombre }} {{ c.apellidos }}</td>
-                  <td>{{ c.club.name }}</td>
-                  <td>{{ c.club.city }}</td>
-                  <td>{{ c.peso|default:'—' }}</td>
-                  <td>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</td>
-                </tr>
-                {% empty %}
-                <tr class="no-match-row">
-                  <td colspan="5" class="text-muted">No hay competidores.</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-3">
-          <form method="get" id="matchmaker-filter-form" class="vstack gap-2">
+        <div class="col-12">
+          <form method="get" id="matchmaker-filter-form" class="vstack gap-2 mb-3">
             <div>
               <span class="d-block small fw-bold">Sexo</span>
               <div
@@ -1114,10 +1087,66 @@
             </div>
           </form>
         </div>
+        <div class="col-12">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            {% for c in match_results %}
+            <div class="col">
+              <div class="card matchmaker-card h-100">
+                <div class="matchmaker-inner">
+                  <div class="matchmaker-front card-body">
+                    <div class="d-flex align-items-center mb-2">
+                    {% if c.avatar %}
+                      <img src="{{ c.avatar.url }}" alt="{{ c.nombre }}" class="competitor-avatar-img me-2">
+                    {% else %}
+                      <div class="competitor-avatar me-2">{{ c.nombre|initials }}</div>
+                    {% endif %}
+                    <div>
+                      <div class="fw-bold">{{ c.nombre }} {{ c.apellidos }}</div>
+                      <div class="small text-muted">{{ c.club.name }} - {{ c.club.city }}</div>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="matchmaker-back card-body d-flex align-items-center">
+                    <div class="row text-center w-100">
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Peso</span>
+                        <span>{{ c.peso|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Edad</span>
+                        <span>{% if c.edad %}{{ c.edad }}{% else %}—{% endif %}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Sexo</span>
+                        <span>{{ c.get_sexo_display|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Altura</span>
+                        <span>{{ c.altura|default:'—' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Categoria</span>
+                        <span>—</span>
+                      </div>
+                      <div class="col-6">
+                        <span class="d-block small fw-bold">Record</span>
+                        <span>—</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="col">
+              <p class="text-muted">No hay competidores.</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 <!-- Confirm Delete Modal -->
 <div
   class="modal fade"
