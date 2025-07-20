@@ -16,12 +16,10 @@
       </div>
       {% endif %}
     </div>
-    <div class="member-search mb-2">
-      <form id="competitor-member-search-form" class="member-search-form" onsubmit="return false;">
-        <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
-        <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
-        <button type="button" class="close-icon">&times;</button>
-      </form>
+    <div class="member-search mb-2 member-search-form" id="competitor-member-search-form">
+      <button type="button" class="search-icon"><i class="bi bi-search"></i></button>
+      <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
+      <button type="button" class="close-icon">&times;</button>
       <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
     </div>
     <div class="row g-2">
