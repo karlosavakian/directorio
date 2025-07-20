@@ -83,6 +83,12 @@
   align-items: center;
 }
 
+.profile-form .form-field .form-check-label {
+  position: static;
+  transform: none;
+  padding: 0;
+}
+
 .profile-form .form-field input:not(:placeholder-shown) ~ label,
 .profile-form .form-field input:focus ~ label,
 .profile-form .form-field textarea:not(:placeholder-shown) ~ label,
@@ -341,7 +347,7 @@ select option[value="España"] {
 }
 
 .member-search-form.open {
-  width: 220px;
+  width: 300px;
 }
 
 .member-search-form input {
