@@ -105,7 +105,7 @@
                     {% if club.photos.all %}
                         <div class="mb-4 gallery-slideshow position-relative">
                             <div class="gallery-actions">
-                                <!-- Heart and Share buttons -->
+                                <!-- Heart, Share and Reserve buttons -->
                                 <button id="club-heart"
                                         aria-label="Seguir"
                                         data-url="{% url 'toggle_follow' 'club' club.id %}"
@@ -129,6 +129,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
                                     </svg>
                                 </button>
+                                <button id="openReservationModal" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#reserveClassModal">Reservar clase</button>
                             </div>
                             {% for photo in club.photos.all %}
                                 <div class="gallery-slide{% if forloop.first %} active{% endif %}">
@@ -629,6 +630,30 @@
     </div>
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
+    <div class="modal fade" id="reserveClassModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reservar clase</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'reserve_class' club.slug %}" id="classReservationForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Seleccionar clase</label>
+                            {{ reservation_form.class_type }}
+                        </div>
+                        <div class="mb-3" id="reservation-date-field" style="display:none;">
+                            <label class="form-label">Fecha</label>
+                            {{ reservation_form.date }}
+                        </div>
+                        <button type="submit" class="btn btn-dark" id="reservation-submit" style="display:none;">Reservar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
@@ -719,4 +744,5 @@
     <script src="{% static 'js/schedule-status.js' %}"></script>
     <script src="{% static 'js/club-tabs.js' %}"></script>
     <script src="{% static 'js/post-media-preview.js' %}"></script>
+    <script src="{% static 'js/class-reservation.js' %}"></script>
 {% endblock %}

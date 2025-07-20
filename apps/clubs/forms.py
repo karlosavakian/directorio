@@ -129,6 +129,16 @@ class BookingForm(forms.ModelForm):
         fields = []
 
 
+class ClassReservationForm(forms.ModelForm):
+    class Meta:
+        model = models.ClassReservation
+        fields = ['class_type', 'date']
+        widgets = {
+            'class_type': forms.Select(attrs={'class': 'form-select'}),
+            'date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+
+
 class ClubForm(forms.ModelForm):
     class Meta:
         model = models.Club

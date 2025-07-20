@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect 
 from ..models import Club, Entrenador
 from django.contrib import messages
-from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm
+from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm, ClassReservationForm
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
@@ -42,6 +42,7 @@ def club_profile(request, slug):
     form = ReseñaForm()
     post_form = ClubPostForm()
     reply_form = ClubPostReplyForm()
+    reservation_form = ClassReservationForm()
     register_form = RegistroUsuarioForm()
     if request.method == 'POST' and not reseña_existente:
         form = ReseñaForm(request.POST)
@@ -92,6 +93,7 @@ def club_profile(request, slug):
         'form': form,
         'post_form': post_form,
         'reply_form': reply_form,
+        'reservation_form': reservation_form,
         'reseña_existente': reseña_existente,
         'detallado': detallado,
         'competidores': competidores,

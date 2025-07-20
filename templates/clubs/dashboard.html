@@ -946,11 +946,16 @@
     </div>
     <div id="tab-bookings" class="profile-section">
       <ul>
-        {% for b in bookings %}
-        <li>{{ b.user.username }} - {{ b.evento.titulo }} ({{ b.status }})</li>
-        {% empty %}
-        <li>No hay reservas.</li>
-        {% endfor %}
+        {% if bookings or reservations %}
+          {% for b in bookings %}
+          <li>{{ b.user.username }} - {{ b.evento.titulo }} ({{ b.status }})</li>
+          {% endfor %}
+          {% for r in reservations %}
+          <li>{{ r.user.username }} - {{ r.get_class_type_display }} - {{ r.date }} ({{ r.status }})</li>
+          {% endfor %}
+        {% else %}
+          <li>No hay reservas.</li>
+        {% endif %}
       </ul>
     </div>
     <div id="tab-matchmaker" class="profile-section">

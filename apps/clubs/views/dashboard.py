@@ -13,6 +13,7 @@ from ..models import (
     Club,
     ClubPost,
     Booking,
+    ClassReservation,
     ClubPhoto,
     Horario,
     Competidor,
@@ -167,6 +168,7 @@ def dashboard(request, slug):
     bookings = Booking.objects.filter(
         Q(evento__club=club)
     ).select_related('user', 'evento')
+    reservations = ClassReservation.objects.filter(club=club).select_related('user')
 
     form = ClubForm(instance=club)
 
@@ -178,6 +180,7 @@ def dashboard(request, slug):
             'dias_semana': dias_semana,
             'horarios_por_dia': horarios_por_dia,
             'bookings': bookings,
+            'reservations': reservations,
             'form': form,
         'coaches': coaches,
         'members': members,

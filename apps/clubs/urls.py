@@ -78,6 +78,7 @@ urlpatterns = [
     path('posts/<int:pk>/like/', post_toggle_like, name='clubpost_like'),
 
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),
+    path('<slug:slug>/reservar/', reserve_class, name='reserve_class'),
 
     # El perfil público ahora se maneja desde config.urls con la ruta '@slug'
 
