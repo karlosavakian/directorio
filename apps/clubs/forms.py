@@ -176,15 +176,29 @@ class HorarioForm(forms.ModelForm):
 
 
 class CompetidorForm(forms.ModelForm):
+    victorias = forms.IntegerField(required=False, min_value=0, label='Victorias')
+    derrotas = forms.IntegerField(required=False, min_value=0, label='Derrotas')
+    empates = forms.IntegerField(required=False, min_value=0, label='Empates')
+    peso_kg = forms.DecimalField(
+        required=False, max_digits=5, decimal_places=2, label='Peso (kg)'
+    )
+    altura_cm = forms.DecimalField(
+        required=False, max_digits=5, decimal_places=2, label='Altura (cm)'
+    )
+
     class Meta:
         model = models.Competidor
         fields = [
             'avatar',
             'nombre',
-            'record',
             'modalidad',
             'peso',
+            'peso_kg',
+            'altura_cm',
             'sexo',
+            'victorias',
+            'derrotas',
+            'empates',
             'palmares',
         ]
 
@@ -205,13 +219,26 @@ class CompetidorForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
-
-
+        if self.instance and getattr(self.instance, 'record', None):
+            try:
+                w, l, d = [int(p) for p in self.instance.record.split('-')]
+            except Exception:
+                w = l = d = 0
+            self.fields['victorias'].initial = w
+            self.fields['derrotas'].initial = l
+            self.fields['empates'].initial = d
 
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
             css = avatar_widget.widget.attrs.get('class', '')
             avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
+    def save(self, commit=True):
+        wins = self.cleaned_data.get('victorias') or 0
+        losses = self.cleaned_data.get('derrotas') or 0
+        draws = self.cleaned_data.get('empates') or 0
+        self.instance.record = f"{wins}-{losses}-{draws}"
+        return super().save(commit)
 
 
 class EntrenadorForm(forms.ModelForm):

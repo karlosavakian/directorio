@@ -17,25 +17,45 @@
       </div>
       {% endif %}
     </div>
-    <div class="form-field">
-      {{ form.nombre }}
-      <button type="button" class="clear-btn">×</button>
-      <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
-      {% if form.nombre.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.nombre.errors.as_text|striptags }}
+    <div class="d-flex gap-2 align-items-start">
+      <div class="form-field flex-grow-1">
+        {{ form.nombre }}
+        <button type="button" class="clear-btn">×</button>
+        <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+        {% if form.nombre.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.nombre.errors.as_text|striptags }}
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
+      <div class="member-search">
+        <form id="competitor-member-search-form" class="member-search-form" onsubmit="return false;">
+          <button type="submit" class="search-icon"><i class="bi bi-search"></i></button>
+          <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
+          <button type="button" class="close-icon">&times;</button>
+        </form>
+        <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
+      </div>
     </div>
-    <div class="form-field">
-      {{ form.record }}
-      <button type="button" class="clear-btn">×</button>
-      <label for="{{ form.record.id_for_label }}">{{ form.record.label }}</label>
-      {% if form.record.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.record.errors.as_text|striptags }}
+    <div class="row">
+      <div class="col-4">
+        <div class="form-field">
+          {{ form.victorias }}
+          <label for="{{ form.victorias.id_for_label }}" class="text-success">Victorias</label>
+        </div>
       </div>
-      {% endif %}
+      <div class="col-4">
+        <div class="form-field">
+          {{ form.derrotas }}
+          <label for="{{ form.derrotas.id_for_label }}" class="text-danger">Derrotas</label>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-field">
+          {{ form.empates }}
+          <label for="{{ form.empates.id_for_label }}" class="text-primary">Empates</label>
+        </div>
+      </div>
     </div>
     <div class="form-field">
       {{ form.modalidad }}
@@ -54,6 +74,20 @@
         {{ form.peso.errors.as_text|striptags }}
       </div>
       {% endif %}
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.peso_kg }}
+          <label for="{{ form.peso_kg.id_for_label }}">{{ form.peso_kg.label }}</label>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-field">
+          {{ form.altura_cm }}
+          <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
+        </div>
+      </div>
     </div>
     <div class="form-field">
       {{ form.sexo }}
@@ -75,3 +109,4 @@
     </div>
     <button type="submit" class="btn btn-dark">Guardar</button>
 </form>
+{{ members|json_script:"competitor-members" }}
