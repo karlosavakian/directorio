@@ -4,72 +4,7 @@
 <div class="container py-4">
   {% include 'partials/_back-btn.html' %}
   <h1 class="h5">{% if competidor %}Editar{% else %}Nuevo{% endif %} competidor</h1>
-  <form method="post" enctype="multipart/form-data" class="profile-form">
-    {% csrf_token %}
-    <div class="form-field">
-      <div class="avatar-dropzone">
-        {{ form.avatar }}
-        <div class="avatar-preview{% if competidor and competidor.avatar %} has-image{% endif %}"{% if competidor and competidor.avatar %} style="background-image:url('{{ competidor.avatar.url }}')"{% endif %}>
-          <div class="avatar-dropzone-msg">
-            <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-            <span>Sube avatar</span>
-          </div>
-        </div>
-      </div>
-      <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
-      {% if form.avatar.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.avatar.errors.as_text|striptags }}
-      </div>
-      {% endif %}
-    </div>
-    {% for field in form %}
-      {% if field.name != 'avatar' %}
-        {% if field.name == 'tipo_competidor' %}
-        <div class="form-field">
-          <label class="d-block">{{ field.label }}</label>
-          <div class="d-flex gap-3">
-            {% for radio in field %}
-            <div class="form-check form-check-inline">
-              {{ radio.tag }}
-              <label class="form-check-label">{{ radio.choice_label }}</label>
-            </div>
-            {% endfor %}
-          </div>
-          {% if field.errors %}
-          <div class="invalid-feedback d-block">
-            {{ field.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        {% elif field.field.widget.input_type == 'checkbox' %}
-        <div class="form-field checkbox-field">
-          {{ field }}
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {% if field.errors %}
-          <div class="invalid-feedback d-block">
-            {{ field.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        {% else %}
-        <div class="form-field">
-          {{ field }}
-          {% if field.field.widget.input_type != 'radio' %}
-          <button type="button" class="clear-btn">×</button>
-          {% endif %}
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {% if field.errors %}
-          <div class="invalid-feedback d-block">
-            {{ field.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-    <button type="submit" class="btn btn-dark">Guardar</button>
-  </form>
+  {% include 'clubs/_competidor_form.html' %}
 </div>
 {% endblock %}
 {% block extra_js %}

@@ -53,47 +53,23 @@
       </div>
  
     </div>
-    <div class="row">
-      <div class="col-4">
+    <div class="row align-items-end">
+      <div class="col-4 col-md-2">
         <div class="form-field">
           {{ form.victorias }}
           <label for="{{ form.victorias.id_for_label }}" class="text-success">Victorias</label>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-4 col-md-2">
         <div class="form-field">
           {{ form.derrotas }}
           <label for="{{ form.derrotas.id_for_label }}" class="text-danger">Derrotas</label>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-4 col-md-2">
         <div class="form-field">
           {{ form.empates }}
           <label for="{{ form.empates.id_for_label }}" class="text-primary">Empates</label>
-        </div>
-      </div>
-    </div>
-    <div class="row g-2 align-items-end">
-      <div class="col-6 col-md-3">
-        <div class="form-field">
-          {{ form.sexo }}
-          <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
-          {% if form.sexo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.sexo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="form-field">
-          {{ form.edad }}
-          <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
-          {% if form.edad.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.edad.errors.as_text|striptags }}
-          </div>
-          {% endif %}
         </div>
       </div>
       <div class="col-12 col-md-6">
@@ -114,14 +90,53 @@
         </div>
       </div>
     </div>
-    <div class="form-field" id="modalidad-field">
-      {{ form.modalidad }}
-      <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
-      {% if form.modalidad.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.modalidad.errors.as_text|striptags }}
+    <div class="row g-2 align-items-end">
+      <div class="col-6 col-md-4">
+        <div class="form-field">
+          {{ form.sexo }}
+          <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+          {% if form.sexo.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.sexo.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
       </div>
-      {% endif %}
+      <div class="col-6 col-md-2">
+        <div class="form-field">
+          {{ form.edad }}
+          <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
+          {% if form.edad.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.edad.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <div class="form-field" id="modalidad-field">
+          {{ form.modalidad }}
+          <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
+          {% if form.modalidad.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.modalidad.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="form-field">
+          {{ form.peso }}
+          <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+          {% if form.peso.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.peso.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-6">
@@ -136,15 +151,6 @@
           <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
         </div>
       </div>
-    </div>
-    <div class="form-field">
-      {{ form.peso }}
-      <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
-      {% if form.peso.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.peso.errors.as_text|striptags }}
-      </div>
-      {% endif %}
     </div>
     <div class="form-field">
       {{ form.palmares }}
