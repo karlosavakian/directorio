@@ -243,6 +243,10 @@ class CompetidorForm(forms.ModelForm):
                 ('elite', 'Elite'),
             ]
 
+        peso_field = self.fields.get('peso')
+        if peso_field:
+            peso_field.label = 'Categoría'
+
         tipo_field = self.fields.get('tipo_competidor')
         if tipo_field:
             tipo = 'profesional' if getattr(self.instance, 'modalidad', '') == 'profesional' else 'amateur'
