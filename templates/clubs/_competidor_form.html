@@ -16,11 +16,13 @@
       </div>
       {% endif %}
     </div>
-    <div class="member-search mb-2 member-search-form" id="competitor-member-search-form">
-      <button type="button" class="search-icon"><i class="bi bi-search"></i></button>
-      <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
-      <button type="button" class="close-icon">&times;</button>
-      <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
+    <div class="d-flex justify-content-center">
+      <div class="member-search mb-2 member-search-form" id="competitor-member-search-form">
+        <button type="button" class="search-icon"><i class="bi bi-search"></i></button>
+        <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
+        <button type="button" class="close-icon">&times;</button>
+        <ul id="competitor-member-results" class="list-group position-absolute w-100"></ul>
+      </div>
     </div>
     <div class="row g-2">
       <div class="col-6">
@@ -70,7 +72,7 @@
     </div>
     <div class="form-field">
       <label class="d-block">{{ form.tipo_competidor.label }}</label>
-      <div class="d-flex gap-3">
+      <div class="d-flex justify-content-center gap-3">
         {% for radio in form.tipo_competidor %}
         <div class="form-check form-check-inline">
           {{ radio.tag }}
@@ -93,15 +95,6 @@
       </div>
       {% endif %}
     </div>
-    <div class="form-field">
-      {{ form.peso }}
-      <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
-      {% if form.peso.errors %}
-      <div class="invalid-feedback d-block">
-        {{ form.peso.errors.as_text|striptags }}
-      </div>
-      {% endif %}
-    </div>
     <div class="row">
       <div class="col-6">
         <div class="form-field">
@@ -115,6 +108,15 @@
           <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
         </div>
       </div>
+    </div>
+    <div class="form-field">
+      {{ form.peso }}
+      <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+      {% if form.peso.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.peso.errors.as_text|striptags }}
+      </div>
+      {% endif %}
     </div>
     <div class="form-field">
       {{ form.edad }}
