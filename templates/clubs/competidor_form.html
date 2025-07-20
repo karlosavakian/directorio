@@ -38,7 +38,9 @@
         {% else %}
         <div class="form-field">
           {{ field }}
+          {% if field.field.widget.input_type != 'radio' %}
           <button type="button" class="clear-btn">×</button>
+          {% endif %}
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
           {% if field.errors %}
           <div class="invalid-feedback d-block">
