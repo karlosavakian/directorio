@@ -1,7 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
-from ..models import ClubPost, Booking
+from ..models import ClubPost, Booking, Club
 from ..forms import BookingForm, CancelBookingForm
 
 
@@ -17,3 +18,14 @@ def cancel_booking(request, pk):
     else:
         form = CancelBookingForm()
     return render(request, 'clubs/booking_cancel.html', {'form': form, 'booking': booking})
+
+
+@login_required
+def create_booking(request, slug):
+    """Create a booking record for the current user."""
+    if request.method != 'POST':
+        return JsonResponse({'error': 'invalid method'}, status=400)
+
+    club = get_object_or_404(Club, slug=slug)
+    Booking.objects.create(user=request.user)
+    return JsonResponse({'success': True})
