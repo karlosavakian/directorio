@@ -7,7 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('availability-next');
 
   const DAYS_STEP = 10;
-  let startDay = 1;
+  const today = new Date();
+  let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const endOfYear = new Date(today.getFullYear(), 11, 31);
+
+  function updateSelectors() {
+    monthSelect.value = startDate.getMonth();
+    yearSelect.value = startDate.getFullYear();
+  }
 
   function updateCellColor(td, value) {
     td.classList.toggle('bg-danger', value === 0);
@@ -15,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildTable() {
+    updateSelectors();
     const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
-    const month = parseInt(monthSelect.value, 10);
-    const year = parseInt(yearSelect.value, 10);
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    if (startDay > daysInMonth) startDay = 1;
-    const maxDays = Math.min(daysInMonth - startDay + 1, DAYS_STEP);
+    const maxDays = Math.min(
+      DAYS_STEP,
+      Math.floor((endOfYear - startDate) / (24 * 60 * 60 * 1000)) + 1
+    );
 
     const thead = table.querySelector('thead');
     thead.innerHTML = '';
@@ -28,15 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const empty = document.createElement('th');
     headRow.appendChild(empty);
     for (let i = 0; i < maxDays; i++) {
-      const d = startDay + i;
-      const date = new Date(year, month, d);
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
       const dow = dayNames[date.getDay()];
       const th = document.createElement('th');
       const dayDiv = document.createElement('div');
       dayDiv.className = 'small';
       dayDiv.textContent = dow;
       const numDiv = document.createElement('div');
-      numDiv.textContent = d;
+      numDiv.textContent = date.getDate();
       th.appendChild(dayDiv);
       th.appendChild(numDiv);
       headRow.appendChild(th);
@@ -70,17 +77,36 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function changeDays(step) {
-    const month = parseInt(monthSelect.value, 10);
-    const year = parseInt(yearSelect.value, 10);
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    startDay += step * DAYS_STEP;
-    if (startDay < 1) startDay = 1;
-    if (startDay > daysInMonth) startDay = Math.max(1, daysInMonth - DAYS_STEP + 1);
+    const newDate = new Date(startDate);
+    newDate.setDate(newDate.getDate() + step * DAYS_STEP);
+    if (newDate < today) {
+      startDate = new Date(today);
+    } else if (newDate > endOfYear) {
+      startDate = new Date(endOfYear);
+      startDate.setDate(endOfYear.getDate() - DAYS_STEP + 1);
+      if (startDate < today) startDate = new Date(today);
+    } else {
+      startDate = newDate;
+    }
     buildTable();
   }
 
-  monthSelect.addEventListener('change', () => { startDay = 1; buildTable(); });
-  yearSelect.addEventListener('change', () => { startDay = 1; buildTable(); });
+  monthSelect.addEventListener('change', () => {
+    const month = parseInt(monthSelect.value, 10);
+    const year = parseInt(yearSelect.value, 10);
+    startDate = new Date(year, month, 1);
+    if (startDate < today) startDate = new Date(today);
+    buildTable();
+  });
+
+  yearSelect.addEventListener('change', () => {
+    const month = parseInt(monthSelect.value, 10);
+    const year = parseInt(yearSelect.value, 10);
+    startDate = new Date(year, month, 1);
+    if (startDate < today) startDate = new Date(today);
+    buildTable();
+  });
+
   if (prevBtn) prevBtn.addEventListener('click', () => changeDays(-1));
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
   buildTable();
