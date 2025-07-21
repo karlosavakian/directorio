@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmModal = confirmEl ? new bootstrap.Modal(confirmEl) : null;
   const bookingBtns = document.querySelectorAll('.booking-btn');
   let clubSlug = null;
+  let availability = {};
 
   const dayPrev = modalEl?.querySelector('#days-prev');
   const dayNext = modalEl?.querySelector('#days-next');
@@ -38,23 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const startDay = year === today.getFullYear() && month === today.getMonth() ? today.getDate() : 1;
     for (let i = startDay; i <= daysInMonth; i++) {
       const date = new Date(year, month, i);
+      const dateStr = date.toISOString().split('T')[0];
       const dayName = date.toLocaleDateString('es', { weekday: 'short' });
       const card = document.createElement('div');
       card.className = 'day-card border rounded text-center p-2';
       card.style.cursor = 'pointer';
-      const badgeClass = Math.random() > 0.5 ? 'bg-success' : 'bg-danger';
+      const dayData = availability[dateStr] || {};
+      const maxSlots = Math.max(0, ...Object.values(dayData));
+      const badgeClass = maxSlots >= 2 ? 'bg-success' : maxSlots === 1 ? 'bg-warning text-dark' : 'bg-danger';
       card.innerHTML =
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
         `<span class="badge ${badgeClass}"></span>`;
-      card.dataset.date = date.toISOString().split('T')[0];
-      const badge = card.querySelector('.badge');
-      if (!badge.classList.contains('bg-success')) {
+      card.dataset.date = dateStr;
+      if (maxSlots === 0) {
         card.classList.add('disabled');
       } else {
         card.addEventListener('click', () => {
           modalEl.querySelectorAll('.day-card.active').forEach(d => d.classList.remove('active'));
           card.classList.add('active');
+          loadTimes(dateStr);
         });
       }
       days.push(card);
@@ -85,14 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function populateModal() {
-    if (!modalEl) return;
-    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    updateMonthTitle();
-    buildDays();
-    renderDays();
-
-    Object.values(timeContainers).forEach(info => {info.slots = []; info.start = 0;});
+  function loadTimes(dateStr) {
+    Object.values(timeContainers).forEach(info => { info.slots = []; info.start = 0; });
 
     function createSlot(time) {
       const button = document.createElement('button');
@@ -106,17 +104,43 @@ document.addEventListener('DOMContentLoaded', () => {
       return button;
     }
 
-    for (let h = 0; h < 24; h++) {
-      for (let m = 0; m < 60; m += 30) {
-        const time = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    const dayData = availability[dateStr] || {};
+    Object.keys(dayData).sort().forEach(time => {
+      if (dayData[time] > 0) {
+        const [h] = time.split(':').map(Number);
         const btn = createSlot(time);
         if (h < 12) timeContainers.morning.slots.push(btn);
         else if (h < 18) timeContainers.afternoon.slots.push(btn);
         else timeContainers.evening.slots.push(btn);
       }
-    }
-
+    });
     renderTimes();
+  }
+
+  function selectFirstAvailable() {
+    const first = days.find(d => !d.classList.contains('disabled'));
+    if (first) {
+      modalEl.querySelectorAll('.day-card.active').forEach(d => d.classList.remove('active'));
+      first.classList.add('active');
+      loadTimes(first.dataset.date);
+    } else {
+      Object.values(timeContainers).forEach(info => { info.slots = []; info.start = 0; });
+      renderTimes();
+    }
+  }
+
+  function populateModal() {
+    if (!modalEl) return;
+    try {
+      availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
+    } catch { availability = {}; }
+
+    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+    updateMonthTitle();
+    buildDays();
+    renderDays();
+
+    selectFirstAvailable();
   }
 
   if (modal) {
@@ -143,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
         renderDays();
+        selectFirstAvailable();
       });
     }
     if (dayNext) {
@@ -155,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
           buildDays();
         }
         renderDays();
+        selectFirstAvailable();
       });
     }
 
