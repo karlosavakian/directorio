@@ -204,6 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (confirmBtn) {
         confirmBtn.addEventListener('click', () => {
           modalEl.dataset.forced = 'true';
+          confirmModal.hide();
           modal.hide();
         });
       }
