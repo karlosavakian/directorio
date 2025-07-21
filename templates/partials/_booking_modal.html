@@ -1,18 +1,18 @@
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
     <div class="modal-content">
       <form id="booking-form">
         <div class="modal-header">
-          <h5 class="modal-title" id="booking-month-title"></h5>
+          <h5 class="modal-title w-100 text-center" id="booking-month-title"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3" id="booking-days-wrapper">
-            <button type="button" class="btn btn-link p-0" id="days-prev">
+            <button type="button" class="btn btn-link text-black p-0 px-2" id="days-prev">
               <i class="bi bi-chevron-left"></i>
             </button>
             <div id="booking-days" class="d-flex flex-nowrap"></div>
-            <button type="button" class="btn btn-link p-0" id="days-next">
+            <button type="button" class="btn btn-link text-black p-0 px-2" id="days-next">
               <i class="bi bi-chevron-right"></i>
             </button>
           </div>
@@ -30,33 +30,33 @@
           <div class="tab-content py-3">
             <div class="tab-pane fade show active" id="morning" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link p-0 time-prev" data-target="morning">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="morning">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="morning-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link p-0 time-next" data-target="morning">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="morning">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
             </div>
             <div class="tab-pane fade" id="afternoon" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link p-0 time-prev" data-target="afternoon">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="afternoon">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="afternoon-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link p-0 time-next" data-target="afternoon">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="afternoon">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
             </div>
             <div class="tab-pane fade" id="evening" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link p-0 time-prev" data-target="evening">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="evening">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="evening-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link p-0 time-next" data-target="evening">
+                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="evening">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>

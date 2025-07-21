@@ -55,12 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const dayName = date.toLocaleDateString('es', { weekday: 'short' });
       const card = document.createElement('div');
       card.className = 'day-card border rounded text-center p-2';
+      card.style.cursor = 'pointer';
       const badgeClass = Math.random() > 0.5 ? 'bg-success' : 'bg-danger';
       card.innerHTML =
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
         `<span class="badge ${badgeClass}"></span>`;
+      const badge = card.querySelector('.badge');
       card.addEventListener('click', () => {
+        if (!badge.classList.contains('bg-success')) return;
         modalEl.querySelectorAll('.day-card.active').forEach(d => d.classList.remove('active'));
         card.classList.add('active');
       });
