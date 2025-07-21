@@ -15,6 +15,11 @@ class Booking(models.Model):
     evento = models.ForeignKey(ClubPost, on_delete=models.CASCADE, null=True, blank=True, related_name='bookings')
     fecha = models.DateField(null=True, blank=True)
     hora = models.TimeField(null=True, blank=True)
+    TIPO_CLASE_CHOICES = [
+        ('privada', 'Privada'),
+        ('prueba', 'Prueba'),
+    ]
+    tipo_clase = models.CharField(max_length=20, choices=TIPO_CLASE_CHOICES, default='privada')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -22,7 +27,7 @@ class Booking(models.Model):
         if self.evento:
             item = self.evento.titulo
         else:
-            item = 'Sin referencia'
+            item = self.get_tipo_clase_display()
         fecha = self.fecha.isoformat() if self.fecha else 'sin fecha'
         hora = self.hora.strftime('%H:%M') if self.hora else '--:--'
         return f"{self.user.username} - {item} {fecha} {hora} ({self.status})"

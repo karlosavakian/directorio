@@ -30,5 +30,32 @@ def create_booking(request, slug):
     club = get_object_or_404(Club, slug=slug)
     fecha = parse_date(request.POST.get('date', ''))
     hora = parse_time(request.POST.get('time', ''))
-    Booking.objects.create(user=request.user, club=club, fecha=fecha, hora=hora)
+    tipo_clase = request.POST.get('tipo_clase', 'privada')
+    Booking.objects.create(
+        user=request.user,
+        club=club,
+        fecha=fecha,
+        hora=hora,
+        tipo_clase=tipo_clase,
+    )
     return JsonResponse({'success': True})
+
+
+@login_required
+def booking_set_status(request, pk, status):
+    """Update booking status (for club owners)."""
+    booking = get_object_or_404(Booking, pk=pk)
+    if booking.club and booking.club.owner != request.user:
+        return redirect('home')
+    if request.method == 'POST':
+        booking.status = status
+        booking.save()
+    return redirect('club_dashboard', slug=booking.club.slug)
+
+
+def booking_confirm(request, pk):
+    return booking_set_status(request, pk, 'active')
+
+
+def booking_cancel_admin(request, pk):
+    return booking_set_status(request, pk, 'cancelled')

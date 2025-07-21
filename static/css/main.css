@@ -127,3 +127,9 @@
   color: #000;
   margin: 0 0.5rem;
 }
+
+/* Booking modal radio color */
+#bookingModal .form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}
