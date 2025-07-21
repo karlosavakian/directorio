@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!table) return;
   const monthSelect = document.getElementById('availability-month');
   const yearSelect = document.getElementById('availability-year');
+  const prevBtn = document.getElementById('availability-prev');
+  const nextBtn = document.getElementById('availability-next');
 
   function updateCellColor(td, value) {
     td.classList.toggle('bg-danger', value === 0);
@@ -10,20 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildTable() {
-    const daysOfWeek = [
-      'Lunes',
-      'Martes',
-      'Miércoles',
-      'Jueves',
-      'Viernes',
-      'Sábado',
-      'Domingo',
-    ];
+    const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const month = parseInt(monthSelect.value, 10);
+    const year = parseInt(yearSelect.value, 10);
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     const thead = table.querySelector('thead');
     thead.innerHTML = '<tr><th></th>';
-    daysOfWeek.forEach((day) => {
-      thead.innerHTML += `<th>${day}</th>`;
-    });
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month, d);
+      const dow = dayNames[date.getDay()];
+      thead.innerHTML += `<th><div class="small">${dow}</div><div>${d}</div></th>`;
+    }
     thead.innerHTML += '</tr>';
 
     const tbody = table.querySelector('tbody');
@@ -33,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.createElement('th');
       th.textContent = `${String(h).padStart(2, '0')}:00`;
       row.appendChild(th);
-      for (let d = 0; d < daysOfWeek.length; d++) {
+      for (let d = 1; d <= daysInMonth; d++) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
@@ -52,8 +51,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function changeMonth(offset) {
+    let month = parseInt(monthSelect.value, 10);
+    let year = parseInt(yearSelect.value, 10);
+    month += offset;
+    if (month < 0) {
+      month = 11;
+      year -= 1;
+    } else if (month > 11) {
+      month = 0;
+      year += 1;
+    }
+    monthSelect.value = month;
+    let yearOption = Array.from(yearSelect.options).find((o) => parseInt(o.value, 10) === year);
+    if (!yearOption) {
+      yearOption = document.createElement('option');
+      yearOption.value = year;
+      yearOption.textContent = year;
+      yearSelect.appendChild(yearOption);
+    }
+    yearSelect.value = year;
+    buildTable();
+  }
+
   monthSelect.addEventListener('change', buildTable);
   yearSelect.addEventListener('change', buildTable);
+  if (prevBtn) prevBtn.addEventListener('click', () => changeMonth(-1));
+  if (nextBtn) nextBtn.addEventListener('click', () => changeMonth(1));
   buildTable();
 
   const saveBtn = document.getElementById('availability-save');
