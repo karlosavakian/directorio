@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const modalEl = document.getElementById('bookingModal');
   const modal = modalEl ? new bootstrap.Modal(modalEl) : null;
+  const confirmEl = document.getElementById('confirmCancelModal');
+  const confirmModal = confirmEl ? new bootstrap.Modal(confirmEl) : null;
   const bookingBtns = document.querySelectorAll('.booking-btn');
   let clubSlug = null;
 
@@ -8,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const dayNext = modalEl?.querySelector('#days-next');
   let days = [];
   let dayStart = 0;
+  let currentDate;
+  const today = new Date();
 
   const timeContainers = {
     morning: {start: 0, slots: []},
@@ -15,43 +19,25 @@ document.addEventListener('DOMContentLoaded', () => {
     evening: {start: 0, slots: []}
   };
 
-  function renderDays() {
-    const container = modalEl.querySelector('#booking-days');
-    container.innerHTML = '';
-    const visible = days.slice(dayStart, dayStart + 7);
-    visible.forEach(card => container.appendChild(card));
-    if (dayPrev) dayPrev.disabled = dayStart === 0;
-    if (dayNext) dayNext.disabled = dayStart + 7 >= days.length;
-  }
-
-  function renderTimes() {
-    ['morning', 'afternoon', 'evening'].forEach(key => {
-      const info = timeContainers[key];
-      const container = modalEl.querySelector(`#${key}-slots`);
-      container.innerHTML = '';
-      info.slots.slice(info.start, info.start + 7).forEach(btn => container.appendChild(btn));
-      const prev = modalEl.querySelector(`.time-prev[data-target="${key}"]`);
-      const next = modalEl.querySelector(`.time-next[data-target="${key}"]`);
-      if (prev) prev.disabled = info.start === 0;
-      if (next) next.disabled = info.start + 7 >= info.slots.length;
-    });
-  }
-
-  function populateModal() {
-    if (!modalEl) return;
-
-    const now = new Date();
+  function updateMonthTitle() {
     const monthTitle = modalEl.querySelector('#booking-month-title');
-    monthTitle.textContent = now.toLocaleDateString('es', {
-      month: 'long',
-      year: 'numeric'
-    });
+    if (monthTitle) {
+      monthTitle.textContent = currentDate.toLocaleDateString('es', {
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
 
+  function buildDays() {
     days = [];
     dayStart = 0;
-    const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-    for (let i = now.getDate(); i <= daysInMonth; i++) {
-      const date = new Date(now.getFullYear(), now.getMonth(), i);
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const startDay = year === today.getFullYear() && month === today.getMonth() ? today.getDate() : 1;
+    for (let i = startDay; i <= daysInMonth; i++) {
+      const date = new Date(year, month, i);
       const dayName = date.toLocaleDateString('es', { weekday: 'short' });
       const card = document.createElement('div');
       card.className = 'day-card border rounded text-center p-2';
@@ -73,6 +59,37 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       days.push(card);
     }
+  }
+
+  function renderDays() {
+    const container = modalEl.querySelector('#booking-days');
+    container.innerHTML = '';
+    const visible = days.slice(dayStart, dayStart + 7);
+    visible.forEach(card => container.appendChild(card));
+    const startOfToday = new Date(today.getFullYear(), today.getMonth(), 1);
+    const prevAvailable = dayStart > 0 || currentDate > startOfToday;
+    if (dayPrev) dayPrev.disabled = !prevAvailable;
+    if (dayNext) dayNext.disabled = false;
+  }
+
+  function renderTimes() {
+    ['morning', 'afternoon', 'evening'].forEach(key => {
+      const info = timeContainers[key];
+      const container = modalEl.querySelector(`#${key}-slots`);
+      container.innerHTML = '';
+      info.slots.slice(info.start, info.start + 7).forEach(btn => container.appendChild(btn));
+      const prev = modalEl.querySelector(`.time-prev[data-target="${key}"]`);
+      const next = modalEl.querySelector(`.time-next[data-target="${key}"]`);
+      if (prev) prev.disabled = info.start === 0;
+      if (next) next.disabled = info.start + 7 >= info.slots.length;
+    });
+  }
+
+  function populateModal() {
+    if (!modalEl) return;
+    currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
+    updateMonthTitle();
+    buildDays();
     renderDays();
 
     Object.values(timeContainers).forEach(info => {info.slots = []; info.start = 0;});
@@ -111,8 +128,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    if (dayPrev) dayPrev.addEventListener('click', () => { if (dayStart > 0) { dayStart -= 7; renderDays(); } });
-    if (dayNext) dayNext.addEventListener('click', () => { if (dayStart + 7 < days.length) { dayStart += 7; renderDays(); } });
+    if (dayPrev) {
+      dayPrev.addEventListener('click', () => {
+        if (dayStart > 0) {
+          dayStart -= 7;
+        } else {
+          const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+          const startOfToday = new Date(today.getFullYear(), today.getMonth(), 1);
+          if (prevMonth >= startOfToday) {
+            currentDate = prevMonth;
+            updateMonthTitle();
+            buildDays();
+            dayStart = Math.max(0, days.length - 7);
+          }
+        }
+        renderDays();
+      });
+    }
+    if (dayNext) {
+      dayNext.addEventListener('click', () => {
+        if (dayStart + 7 < days.length) {
+          dayStart += 7;
+        } else {
+          currentDate.setMonth(currentDate.getMonth() + 1);
+          updateMonthTitle();
+          buildDays();
+        }
+        renderDays();
+      });
+    }
 
     modalEl.querySelectorAll('.time-prev').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -127,6 +171,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const info = timeContainers[key];
         if (info.start + 7 < info.slots.length) { info.start += 7; renderTimes(); }
       });
+    });
+
+    if (confirmModal) {
+      const confirmBtn = confirmEl.querySelector('.confirm-cancel');
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+          modalEl.dataset.forced = 'true';
+          modal.hide();
+        });
+      }
+    }
+
+    modalEl.addEventListener('hide.bs.modal', e => {
+      if (!modalEl.dataset.forced && confirmModal) {
+        e.preventDefault();
+        confirmModal.show();
+      }
+    });
+
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      delete modalEl.dataset.forced;
     });
 
     const form = modalEl.querySelector('#booking-form');
