@@ -164,9 +164,7 @@ def dashboard(request, slug):
     elif orden == 'newest':
         members = members.order_by('-fecha_inscripcion', '-id')
 
-    bookings = Booking.objects.filter(
-        Q(evento__club=club)
-    ).select_related('user', 'evento')
+    bookings = Booking.objects.filter(club=club).select_related('user', 'evento')
 
     form = ClubForm(instance=club)
 
