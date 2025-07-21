@@ -1,10 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
   const table = document.getElementById('availability-table');
   if (!table) return;
+  const manager = document.getElementById('availability-manager');
+  const clubSlug = manager?.dataset.clubSlug || 'default';
   const monthSelect = document.getElementById('availability-month');
   const yearSelect = document.getElementById('availability-year');
   const prevBtn = document.getElementById('availability-prev');
   const nextBtn = document.getElementById('availability-next');
+
+  let availability = {};
+  try {
+    availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
+  } catch {
+    availability = {};
+  }
 
   const DAYS_STEP = 10;
   const today = new Date();
@@ -18,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateCellColor(td, value) {
     td.classList.toggle('bg-danger', value === 0);
-    td.classList.toggle('bg-success', value > 0);
+    td.classList.toggle('bg-warning', value === 1);
+    td.classList.toggle('bg-success', value >= 2);
   }
 
   function buildTable() {
@@ -58,17 +68,24 @@ document.addEventListener('DOMContentLoaded', () => {
       th.textContent = `${String(h).padStart(2, '0')}:00`;
       row.appendChild(th);
       for (let i = 0; i < maxDays; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+        const dateStr = date.toISOString().split('T')[0];
+        const timeStr = `${String(h).padStart(2, '0')}:00`;
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
         input.min = '0';
-        input.value = '0';
+        input.dataset.date = dateStr;
+        input.dataset.time = timeStr;
+        const val = availability[dateStr]?.[timeStr] || 0;
+        input.value = val;
         input.className = 'form-control form-control-sm text-center';
         input.addEventListener('input', () => {
-          const val = parseInt(input.value, 10) || 0;
-          updateCellColor(td, val);
+          const v = parseInt(input.value, 10) || 0;
+          updateCellColor(td, v);
         });
-        td.classList.add('bg-danger');
+        updateCellColor(td, val);
         td.appendChild(input);
         row.appendChild(td);
       }
@@ -114,7 +131,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('availability-save');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      alert('Cambios guardados (demo).');
+      table.querySelectorAll('tbody input').forEach(input => {
+        const date = input.dataset.date;
+        const time = input.dataset.time;
+        const val = parseInt(input.value, 10) || 0;
+        if (!availability[date]) availability[date] = {};
+        availability[date][time] = val;
+      });
+      localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+      alert('Cambios guardados');
     });
   }
 });
