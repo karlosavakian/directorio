@@ -10,14 +10,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function buildTable() {
-    const month = parseInt(monthSelect.value, 10);
-    const year = parseInt(yearSelect.value, 10);
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysOfWeek = [
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
+    ];
     const thead = table.querySelector('thead');
     thead.innerHTML = '<tr><th></th>';
-    for (let d = 1; d <= daysInMonth; d++) {
-      thead.innerHTML += `<th>${d}</th>`;
-    }
+    daysOfWeek.forEach((day) => {
+      thead.innerHTML += `<th>${day}</th>`;
+    });
     thead.innerHTML += '</tr>';
 
     const tbody = table.querySelector('tbody');
@@ -27,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.createElement('th');
       th.textContent = `${String(h).padStart(2, '0')}:00`;
       row.appendChild(th);
-      for (let d = 1; d <= daysInMonth; d++) {
+      for (let d = 0; d < daysOfWeek.length; d++) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
