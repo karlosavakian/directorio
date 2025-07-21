@@ -64,6 +64,11 @@ def dashboard(request, slug):
         'F': members.filter(sexo='F').count(),
     }
     today = timezone.now().date()
+    months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ]
+    years = [today.year, today.year + 1]
     miembros_pagados = members.filter(
         pagos__fecha__year=today.year,
         pagos__fecha__month=today.month,
@@ -177,13 +182,16 @@ def dashboard(request, slug):
             'horarios_por_dia': horarios_por_dia,
             'bookings': bookings,
             'form': form,
-        'coaches': coaches,
-        'members': members,
-        'match_results': match_qs,
-        'cities': cities,
-        'estado_counts': estado_counts,
-        'sexo_counts': sexo_counts,
-        'pago_counts': pago_counts,
+            'coaches': coaches,
+            'members': members,
+            'match_results': match_qs,
+            'cities': cities,
+            'estado_counts': estado_counts,
+            'sexo_counts': sexo_counts,
+            'pago_counts': pago_counts,
+            'months': months,
+            'years': years,
+            'today': today,
         },
     )
 @login_required

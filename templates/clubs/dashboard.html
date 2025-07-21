@@ -945,6 +945,30 @@
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">
+      <div id="availability-manager" class="mb-4">
+        <h5 class="mb-3">Administrar disponibilidad</h5>
+        <div class="d-flex gap-2 mb-2">
+          <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
+            {% for m in months %}
+              <option value="{{ forloop.counter0 }}" {% if forloop.counter0 == today.month|add:'-1' %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+          </select>
+          <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
+            {% for y in years %}
+              <option value="{{ y }}" {% if y == today.year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table id="availability-table" class="table table-bordered table-sm text-center">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="availability-save" class="btn btn-primary btn-sm">Guardar cambios</button>
+        </div>
+      </div>
       <table class="table table-sm">
         <thead>
           <tr>
@@ -1328,4 +1352,5 @@
 <script src="{% static 'js/range-slider.js' %}"></script>
 <script src="{% static 'js/matchmaker-filter.js' %}"></script>
 <script src="{% static 'js/member-table-filters.js' %}"></script>
+<script src="{% static 'js/availability-manager.js' %}"></script>
 {% endblock %}
