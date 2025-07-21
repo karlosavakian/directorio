@@ -947,7 +947,10 @@
     <div id="tab-bookings" class="profile-section">
       <div id="availability-manager" class="mb-4">
         <h5 class="mb-3">Administrar disponibilidad</h5>
-        <div class="d-flex gap-2 mb-2">
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <button id="availability-prev" class="btn btn-light btn-sm">
+            <i class="bi bi-chevron-left"></i>
+          </button>
           <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
             {% for m in months %}
               <option value="{{ forloop.counter0 }}" {% if forloop.counter0 == today.month|add:'-1' %}selected{% endif %}>{{ m }}</option>
@@ -958,6 +961,9 @@
               <option value="{{ y }}" {% if y == today.year %}selected{% endif %}>{{ y }}</option>
             {% endfor %}
           </select>
+          <button id="availability-next" class="btn btn-light btn-sm">
+            <i class="bi bi-chevron-right"></i>
+          </button>
         </div>
         <div class="table-responsive">
           <table id="availability-table" class="table table-bordered table-sm text-center">
