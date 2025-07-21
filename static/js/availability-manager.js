@@ -16,13 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const month = parseInt(monthSelect.value, 10);
     const year = parseInt(yearSelect.value, 10);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const maxDays = Math.min(daysInMonth, 10);
 
     const thead = table.querySelector('thead');
     thead.innerHTML = '';
     const headRow = document.createElement('tr');
     const empty = document.createElement('th');
     headRow.appendChild(empty);
-    for (let d = 1; d <= daysInMonth; d++) {
+    for (let d = 1; d <= maxDays; d++) {
       const date = new Date(year, month, d);
       const dow = dayNames[date.getDay()];
       const th = document.createElement('th');
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.createElement('th');
       th.textContent = `${String(h).padStart(2, '0')}:00`;
       row.appendChild(th);
-      for (let d = 1; d <= daysInMonth; d++) {
+      for (let d = 1; d <= maxDays; d++) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
