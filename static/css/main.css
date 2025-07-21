@@ -95,6 +95,10 @@
   min-width: 60px;
   cursor: pointer;
 }
+#booking-days .day-card.active {
+  background-color: #000;
+  color: #fff;
+}
 #booking-days .day-card.disabled {
   cursor: not-allowed;
   opacity: 0.5;
