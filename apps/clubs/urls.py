@@ -11,6 +11,8 @@ from apps.clubs.views import (
     post_toggle_like,
     cancel_booking,
     create_booking,
+    booking_confirm,
+    booking_cancel_admin,
 )
 from apps.clubs.views.dashboard import (
     dashboard,
@@ -80,6 +82,8 @@ urlpatterns = [
 
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),
     path('<slug:slug>/reservar/crear/', create_booking, name='create_booking'),
+    path('booking/<int:pk>/confirmar/', booking_confirm, name='booking_confirm'),
+    path('booking/<int:pk>/cancelar-admin/', booking_cancel_admin, name='booking_cancel_admin'),
 
     # El perfil público ahora se maneja desde config.urls con la ruta '@slug'
 

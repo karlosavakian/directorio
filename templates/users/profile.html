@@ -70,11 +70,7 @@
                 {% for b in bookings %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
-                        {% if b.evento %}
-                            Evento: {{ b.evento.titulo }}
-                        {% else %}
-                            Reserva sin referencia
-                        {% endif %}
+                        {{ b.get_tipo_clase_display }}
                     </span>
                     {% if b.status != 'cancelled' %}
                     <form action="{% url 'cancel_booking' b.id %}" method="post" class="ms-2">
