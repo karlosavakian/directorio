@@ -950,7 +950,7 @@
           <tr>
             <th>Usuario</th>
             <th>Evento</th>
-            <th>Fecha</th>
+            <th>Reserva</th>
             <th>Estado</th>
           </tr>
         </thead>
@@ -959,7 +959,7 @@
           <tr>
             <td>{{ b.user.username }}</td>
             <td>{{ b.evento.titulo|default:'-' }}</td>
-            <td>{{ b.created_at|date:'Y-m-d H:i' }}</td>
+            <td>{{ b.fecha }} {{ b.hora|default:'' }}</td>
             <td>{{ b.get_status_display }}</td>
           </tr>
           {% empty %}

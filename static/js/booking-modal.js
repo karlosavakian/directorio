@@ -61,12 +61,16 @@ document.addEventListener('DOMContentLoaded', () => {
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
         `<span class="badge ${badgeClass}"></span>`;
+      card.dataset.date = date.toISOString().split('T')[0];
       const badge = card.querySelector('.badge');
-      card.addEventListener('click', () => {
-        if (!badge.classList.contains('bg-success')) return;
-        modalEl.querySelectorAll('.day-card.active').forEach(d => d.classList.remove('active'));
-        card.classList.add('active');
-      });
+      if (!badge.classList.contains('bg-success')) {
+        card.classList.add('disabled');
+      } else {
+        card.addEventListener('click', () => {
+          modalEl.querySelectorAll('.day-card.active').forEach(d => d.classList.remove('active'));
+          card.classList.add('active');
+        });
+      }
       days.push(card);
     }
     renderDays();
@@ -129,14 +133,20 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
-      if (!clubSlug) return;
+      const dayCard = modalEl.querySelector('.day-card.active');
+      const slotBtn = modalEl.querySelector('.slot-btn.active');
+      if (!clubSlug || !dayCard || !slotBtn) return;
+      const data = new URLSearchParams();
+      data.append('date', dayCard.dataset.date);
+      data.append('time', slotBtn.textContent);
       await fetch(`/clubs/${clubSlug}/reservar/crear/`, {
         method: 'POST',
         headers: {
           'X-CSRFToken': csrftoken,
           'X-Requested-With': 'XMLHttpRequest'
         },
-        credentials: 'same-origin'
+        credentials: 'same-origin',
+        body: data
       });
       modal.hide();
     });
