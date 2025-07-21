@@ -16,14 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const month = parseInt(monthSelect.value, 10);
     const year = parseInt(yearSelect.value, 10);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
     const thead = table.querySelector('thead');
-    thead.innerHTML = '<tr><th></th>';
+    thead.innerHTML = '';
+    const headRow = document.createElement('tr');
+    const empty = document.createElement('th');
+    headRow.appendChild(empty);
     for (let d = 1; d <= daysInMonth; d++) {
       const date = new Date(year, month, d);
       const dow = dayNames[date.getDay()];
-      thead.innerHTML += `<th><div class="small">${dow}</div><div>${d}</div></th>`;
+      const th = document.createElement('th');
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'small';
+      dayDiv.textContent = dow;
+      const numDiv = document.createElement('div');
+      numDiv.textContent = d;
+      th.appendChild(dayDiv);
+      th.appendChild(numDiv);
+      headRow.appendChild(th);
     }
-    thead.innerHTML += '</tr>';
+    thead.appendChild(headRow);
 
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
