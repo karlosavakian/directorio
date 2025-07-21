@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearSelect = document.getElementById('availability-year');
   const prevBtn = document.getElementById('availability-prev');
   const nextBtn = document.getElementById('availability-next');
+  const DAYS_PER_PAGE = 10;
+  let startDay = 1;
 
   function updateCellColor(td, value) {
     td.classList.toggle('bg-danger', value === 0);
@@ -16,14 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const month = parseInt(monthSelect.value, 10);
     const year = parseInt(yearSelect.value, 10);
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const maxDays = Math.min(daysInMonth, 10);
+    const endDay = Math.min(daysInMonth, startDay + DAYS_PER_PAGE - 1);
 
     const thead = table.querySelector('thead');
     thead.innerHTML = '';
     const headRow = document.createElement('tr');
     const empty = document.createElement('th');
     headRow.appendChild(empty);
-    for (let d = 1; d <= maxDays; d++) {
+    for (let d = startDay; d <= endDay; d++) {
       const date = new Date(year, month, d);
       const dow = dayNames[date.getDay()];
       const th = document.createElement('th');
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.createElement('th');
       th.textContent = `${String(h).padStart(2, '0')}:00`;
       row.appendChild(th);
-      for (let d = 1; d <= maxDays; d++) {
+      for (let d = startDay; d <= endDay; d++) {
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
@@ -84,13 +86,39 @@ document.addEventListener('DOMContentLoaded', () => {
       yearSelect.appendChild(yearOption);
     }
     yearSelect.value = year;
+    startDay = 1;
     buildTable();
   }
 
-  monthSelect.addEventListener('change', buildTable);
-  yearSelect.addEventListener('change', buildTable);
-  if (prevBtn) prevBtn.addEventListener('click', () => changeMonth(-1));
-  if (nextBtn) nextBtn.addEventListener('click', () => changeMonth(1));
+  function changeRange(offset) {
+    startDay += offset;
+    let month = parseInt(monthSelect.value, 10);
+    let year = parseInt(yearSelect.value, 10);
+    let daysInMonth = new Date(year, month + 1, 0).getDate();
+    if (startDay > daysInMonth) {
+      changeMonth(1);
+      startDay = 1;
+      return;
+    }
+    if (startDay < 1) {
+      changeMonth(-1);
+      const prevDays = new Date(year, month, 0).getDate();
+      startDay = Math.max(1, prevDays - DAYS_PER_PAGE + 1);
+      return;
+    }
+    buildTable();
+  }
+
+  monthSelect.addEventListener('change', () => {
+    startDay = 1;
+    buildTable();
+  });
+  yearSelect.addEventListener('change', () => {
+    startDay = 1;
+    buildTable();
+  });
+  if (prevBtn) prevBtn.addEventListener('click', () => changeRange(-DAYS_PER_PAGE));
+  if (nextBtn) nextBtn.addEventListener('click', () => changeRange(DAYS_PER_PAGE));
   buildTable();
 
   const saveBtn = document.getElementById('availability-save');
