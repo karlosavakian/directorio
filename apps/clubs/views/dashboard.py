@@ -64,11 +64,14 @@ def dashboard(request, slug):
         'F': members.filter(sexo='F').count(),
     }
     today = timezone.now().date()
-    months = [
+    months_full = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ]
-    years = [today.year, today.year + 1]
+    # Only include months from the current month to December
+    months = [(i, months_full[i]) for i in range(today.month - 1, 12)]
+    # Availability is limited to the current year
+    years = [today.year]
     miembros_pagados = members.filter(
         pagos__fecha__year=today.year,
         pagos__fecha__month=today.month,

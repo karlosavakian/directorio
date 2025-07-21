@@ -952,14 +952,12 @@
             <i class="bi bi-chevron-left"></i>
           </button>
           <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
-            {% for m in months %}
-              <option value="{{ forloop.counter0 }}" {% if forloop.counter0 == today.month|add:'-1' %}selected{% endif %}>{{ m }}</option>
+            {% for idx, label in months %}
+              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
           </select>
           <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
-            {% for y in years %}
-              <option value="{{ y }}" {% if y == today.year %}selected{% endif %}>{{ y }}</option>
-            {% endfor %}
+            <option value="{{ today.year }}" selected>{{ today.year }}</option>
           </select>
           <button id="availability-next" class="btn btn-light btn-sm">
             <i class="bi bi-chevron-right"></i>

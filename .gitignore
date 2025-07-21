@@ -5,3 +5,4 @@ config/db.sqlite4
 staticfiles/
 media/
 
+venv/
