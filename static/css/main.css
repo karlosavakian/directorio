@@ -80,18 +80,25 @@
 }
 
 /* Booking modal */
+#booking-days-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 #booking-days {
-  overflow-x: auto;
+  overflow: hidden;
+  display: flex;
   gap: 0.5rem;
 }
 #booking-days .day-card {
   min-width: 60px;
 }
 #booking-days .badge {
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  border-radius: 50%;
+  width: 30px;
+  height: 4px;
+  display: block;
+  border-radius: 2px;
+  margin: 0 auto;
 }
 .slot-btn.active {
   background-color: #000;
