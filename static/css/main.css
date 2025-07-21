@@ -83,6 +83,7 @@
 #booking-days-wrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 }
 #booking-days {
@@ -92,6 +93,7 @@
 }
 #booking-days .day-card {
   min-width: 60px;
+  cursor: pointer;
 }
 #booking-days .badge {
   width: 30px;
@@ -103,4 +105,17 @@
 .slot-btn.active {
   background-color: #000;
   color: #fff;
+}
+
+/* Hover effect for booking button */
+.booking-btn:hover {
+  color: #fff !important;
+}
+
+/* Booking modal arrows */
+#booking-days-wrapper .btn-link,
+.time-prev.btn-link,
+.time-next.btn-link {
+  color: #000;
+  margin: 0 0.5rem;
 }
