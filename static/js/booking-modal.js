@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
       data.append('time', slotBtn.textContent);
       const tipoRadio = modalEl.querySelector('input[name="tipo_clase"]:checked');
       if (tipoRadio) data.append('tipo_clase', tipoRadio.value);
-      await fetch(`/clubs/${clubSlug}/reservar/crear/`, {
+      const res = await fetch(`/clubs/${clubSlug}/reservar/crear/`, {
         method: 'POST',
         headers: {
           'X-CSRFToken': csrftoken,
@@ -241,7 +241,27 @@ document.addEventListener('DOMContentLoaded', () => {
         credentials: 'same-origin',
         body: data
       });
+      if (res.ok) {
+        showToast('Reserva completada');
+      }
+      modalEl.dataset.forced = 'true';
       modal.hide();
     });
   }
 });
+
+function showToast(message) {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container position-fixed top-0 end-0 p-3';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast bg-black text-bg-success border-0 mb-2';
+  toast.role = 'alert';
+  toast.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div>` +
+                    `<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
+  container.appendChild(toast);
+  new bootstrap.Toast(toast).show();
+}
