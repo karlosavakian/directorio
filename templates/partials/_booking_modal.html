@@ -1,19 +1,53 @@
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Reservar</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="booking-form">
+      <form id="booking-form">
+        <div class="modal-header">
+          <h5 class="modal-title" id="booking-month-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
           <div class="mb-3">
-            <label for="booking-date" class="form-label">Fecha</label>
-            <input type="date" id="booking-date" class="form-control" required>
+            <div id="booking-days" class="d-flex flex-nowrap overflow-auto"></div>
           </div>
-          <button type="submit" class="btn btn-dark">Reservar</button>
-        </form>
-      </div>
+          <ul class="nav nav-tabs custom-tab-menu justify-content-center" id="timeTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="morning-tab" data-bs-toggle="tab" data-bs-target="#morning" type="button" role="tab">Mañana</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="afternoon-tab" data-bs-toggle="tab" data-bs-target="#afternoon" type="button" role="tab">Tarde</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="evening-tab" data-bs-toggle="tab" data-bs-target="#evening" type="button" role="tab">Noche</button>
+            </li>
+          </ul>
+          <div class="tab-content py-3">
+            <div class="tab-pane fade show active" id="morning" role="tabpanel">
+              <div id="morning-slots" class="d-flex flex-wrap gap-2"></div>
+            </div>
+            <div class="tab-pane fade" id="afternoon" role="tabpanel">
+              <div id="afternoon-slots" class="d-flex flex-wrap gap-2"></div>
+            </div>
+            <div class="tab-pane fade" id="evening" role="tabpanel">
+              <div id="evening-slots" class="d-flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+          <div class="mt-3">
+            <label class="form-label">Concepto de clase</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tipo_clase" id="clase_privada" value="privada" checked>
+              <label class="form-check-label" for="clase_privada">Clase privada - 30€ - 60min</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tipo_clase" id="clase_prueba" value="prueba">
+              <label class="form-check-label" for="clase_prueba">Clase de prueba - Gratis - 60min</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="submit" class="btn btn-dark ms-auto">Continuar</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
