@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('schedule-next');
   const availMonth = document.getElementById('availability-month');
   const availYear = document.getElementById('availability-year');
+  const hoursForm = document.getElementById('schedule-hours-form');
+  const hoursStart = document.getElementById('schedule-hours-start');
+  const hoursEnd = document.getElementById('schedule-hours-end');
+  const hoursList = document.getElementById('schedule-hours-list');
 
   let schedule = {};
   if (dataEl) {
@@ -20,12 +24,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  let hours = [];
+  try {
+    hours = JSON.parse(localStorage.getItem('schedule-hours')) || [];
+  } catch { hours = []; }
+  if (!hours.length) {
+    const set = new Set();
+    Object.values(schedule).forEach(arr => {
+      arr.forEach(b => {
+        set.add(b.hora_inicio);
+        set.add(b.hora_fin);
+      });
+    });
+    hours = Array.from(set).sort();
+  }
+
   const DAYS_STEP = 10;
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const dayKeys = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
   const today = new Date();
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
+
+  function renderHours() {
+    if (!hoursList) return;
+    hoursList.innerHTML = '';
+    hours.sort().forEach(t => {
+      const li = document.createElement('li');
+      li.className = 'd-flex justify-content-between align-items-center mb-1';
+      li.textContent = t;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-link btn-sm text-danger p-0';
+      btn.innerHTML = '<i class="bi bi-dash-circle"></i>';
+      btn.addEventListener('click', () => {
+        hours = hours.filter(h => h !== t);
+        renderHours();
+        saveHours();
+      });
+      li.appendChild(btn);
+      hoursList.appendChild(li);
+    });
+  }
+
+  function saveHours() {
+    localStorage.setItem('schedule-hours', JSON.stringify(hours));
+    document.dispatchEvent(new CustomEvent('scheduleHoursUpdate', { detail: { hours } }));
+  }
 
   function updateSelectors() {
     monthSelect.value = startDate.getMonth();
@@ -145,6 +190,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prevBtn) prevBtn.addEventListener('click', () => changeDays(-1));
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
+
+  if (hoursForm) {
+    hoursForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const start = hoursStart.value;
+      const end = hoursEnd.value;
+      if (start && !hours.includes(start)) hours.push(start);
+      if (end && !hours.includes(end)) hours.push(end);
+      hoursStart.value = '';
+      hoursEnd.value = '';
+      renderHours();
+      saveHours();
+    });
+    renderHours();
+    saveHours();
+  }
 
   document.addEventListener('availabilityDateChange', e => {
     if (!e.detail || !e.detail.startDate) return;

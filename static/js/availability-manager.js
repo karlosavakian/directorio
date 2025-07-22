@@ -15,11 +15,17 @@ document.addEventListener('DOMContentLoaded', () => {
   } catch {
     availability = {};
   }
+  let hours = [];
 
   const DAYS_STEP = 10;
   const today = new Date();
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
+
+  document.addEventListener('scheduleHoursUpdate', e => {
+    hours = e.detail?.hours || [];
+    buildTable();
+  });
 
   function updateSelectors() {
     monthSelect.value = startDate.getMonth();
@@ -63,16 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
-    for (let h = 0; h < 24; h++) {
+    const timeList = hours.length
+      ? hours.slice().sort()
+      : Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
+    for (const t of timeList) {
       const row = document.createElement('tr');
       const th = document.createElement('th');
-      th.textContent = `${String(h).padStart(2, '0')}:00`;
+      th.textContent = t;
       row.appendChild(th);
       for (let i = 0; i < maxDays; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
         const dateStr = date.toISOString().split('T')[0];
-        const timeStr = `${String(h).padStart(2, '0')}:00`;
+        const timeStr = t;
         const td = document.createElement('td');
         const input = document.createElement('input');
         input.type = 'number';
