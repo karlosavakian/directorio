@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('availability-prev');
   const nextBtn = document.getElementById('availability-next');
 
+
   let availability = {};
   try {
     availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
@@ -91,6 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       tbody.appendChild(row);
     }
+    document.dispatchEvent(
+      new CustomEvent('availabilityDateChange', {
+        detail: { startDate: startDate.toISOString() },
+      })
+    );
   }
 
   function changeDays(step) {

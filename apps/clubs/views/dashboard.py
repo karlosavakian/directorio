@@ -49,6 +49,19 @@ def dashboard(request, slug):
 
     for dia in horarios_por_dia:
         horarios_por_dia[dia].sort(key=lambda h: h.hora_inicio)
+
+    horarios_json = {
+        dia: [
+            {
+                'hora_inicio': h.hora_inicio.strftime('%H:%M'),
+                'hora_fin': h.hora_fin.strftime('%H:%M'),
+                'estado': h.estado,
+                'estado_otro': h.estado_otro,
+            }
+            for h in horarios_por_dia.get(dia, [])
+        ]
+        for dia, _ in dias_semana
+    }
     if club.owner != request.user:
         return redirect('home')
     coaches = club.entrenadores.all()
@@ -183,6 +196,7 @@ def dashboard(request, slug):
             'club': club,
             'dias_semana': dias_semana,
             'horarios_por_dia': horarios_por_dia,
+            'horarios_json': horarios_json,
             'bookings': bookings,
             'form': form,
             'coaches': coaches,
