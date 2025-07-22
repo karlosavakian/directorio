@@ -27,16 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let hours = [];
   try {
     hours = JSON.parse(localStorage.getItem('schedule-hours')) || [];
-  } catch { hours = []; }
-  if (!hours.length) {
-    const set = new Set();
-    Object.values(schedule).forEach(arr => {
-      arr.forEach(b => {
-        set.add(b.hora_inicio);
-        set.add(b.hora_fin);
-      });
-    });
-    hours = Array.from(set).sort();
+  } catch {
+    hours = [];
   }
 
   const DAYS_STEP = 10;
@@ -49,20 +41,68 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderHours() {
     if (!hoursList) return;
     hoursList.innerHTML = '';
-    hours.sort().forEach(t => {
+    hours.sort().forEach((t, idx) => {
       const li = document.createElement('li');
-      li.className = 'd-flex justify-content-between align-items-center mb-1';
-      li.textContent = t;
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'btn btn-link btn-sm text-danger p-0';
-      btn.innerHTML = '<i class="bi bi-dash-circle"></i>';
-      btn.addEventListener('click', () => {
+      li.className = 'mb-1';
+
+      const row = document.createElement('div');
+      row.className = 'd-flex justify-content-between align-items-center';
+      const text = document.createElement('span');
+      text.textContent = t;
+      row.appendChild(text);
+
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'btn btn-link btn-sm p-0 me-1';
+      editBtn.innerHTML = '<i class="bi bi-pencil-square"></i>';
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'btn btn-link btn-sm text-danger p-0';
+      delBtn.innerHTML = '<i class="bi bi-dash-circle"></i>';
+
+      row.appendChild(editBtn);
+      row.appendChild(delBtn);
+      li.appendChild(row);
+
+      const form = document.createElement('form');
+      form.className = 'd-flex gap-2 mt-1';
+      form.style.display = 'none';
+      const input = document.createElement('input');
+      input.type = 'time';
+      input.value = t;
+      input.className = 'form-control form-control-sm';
+      const saveB = document.createElement('button');
+      saveB.type = 'submit';
+      saveB.className = 'btn btn-sm btn-dark';
+      saveB.textContent = 'Guardar';
+      form.appendChild(input);
+      form.appendChild(saveB);
+      li.appendChild(form);
+
+      editBtn.addEventListener('click', () => {
+        form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+      });
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const val = input.value;
+        if (!val) return;
+        if (hours.includes(val) && val !== t) {
+          form.style.display = 'none';
+          return;
+        }
+        hours[idx] = val;
+        renderHours();
+        saveHours();
+      });
+
+      delBtn.addEventListener('click', () => {
         hours = hours.filter(h => h !== t);
         renderHours();
         saveHours();
       });
-      li.appendChild(btn);
+
       hoursList.appendChild(li);
     });
   }
