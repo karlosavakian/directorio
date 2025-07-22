@@ -2,7 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const table = document.getElementById('schedule-table');
-  if (!table) return;
   const dataEl = document.getElementById('schedule-data');
   const monthSelect = document.getElementById('schedule-month');
   const yearSelect = document.getElementById('schedule-year');
@@ -119,11 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateSelectors() {
+    if (!monthSelect || !yearSelect) return;
     monthSelect.value = startDate.getMonth();
     yearSelect.value = startDate.getFullYear();
   }
 
   function buildTable() {
+    if (!table) return;
     updateSelectors();
     const maxDays = Math.min(
       DAYS_STEP,
@@ -216,29 +217,31 @@ document.addEventListener('DOMContentLoaded', () => {
     syncAvailability();
   }
 
-  monthSelect.addEventListener('change', () => {
-    const month = parseInt(monthSelect.value, 10);
-    const year = parseInt(yearSelect.value, 10);
-    startDate = new Date(year, month, 1);
-    if (startDate < today) startDate = new Date(today);
-    loadHours();
-    renderHours();
-    saveHours();
-    buildTable();
-    syncAvailability();
-  });
+  if (monthSelect)
+    monthSelect.addEventListener('change', () => {
+      const month = parseInt(monthSelect.value, 10);
+      const year = parseInt(yearSelect.value, 10);
+      startDate = new Date(year, month, 1);
+      if (startDate < today) startDate = new Date(today);
+      loadHours();
+      renderHours();
+      saveHours();
+      buildTable();
+      syncAvailability();
+    });
 
-  yearSelect.addEventListener('change', () => {
-    const month = parseInt(monthSelect.value, 10);
-    const year = parseInt(yearSelect.value, 10);
-    startDate = new Date(year, month, 1);
-    if (startDate < today) startDate = new Date(today);
-    loadHours();
-    renderHours();
-    saveHours();
-    buildTable();
-    syncAvailability();
-  });
+  if (yearSelect)
+    yearSelect.addEventListener('change', () => {
+      const month = parseInt(monthSelect.value, 10);
+      const year = parseInt(yearSelect.value, 10);
+      startDate = new Date(year, month, 1);
+      if (startDate < today) startDate = new Date(today);
+      loadHours();
+      renderHours();
+      saveHours();
+      buildTable();
+      syncAvailability();
+    });
 
   if (prevBtn) prevBtn.addEventListener('click', () => changeDays(-1));
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
