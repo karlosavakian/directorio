@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Clase de Boxeo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="open-modal" class="primary-btn">Reservar</button>
+
+    <div id="booking-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h2>Reserva tu clase</h2>
+
+            <div class="field">
+                <label for="class-select">Tipo de clase</label>
+                <select id="class-select">
+                    <option value="privada">Clase Privada con entrenador</option>
+                    <option value="prueba">Clase de prueba gratuita</option>
+                </select>
+            </div>
+
+            <div id="calendar" class="calendar"></div>
+
+            <div id="time-filters" class="time-filters">
+                <button data-filter="morning" class="filter-btn active">Mañana</button>
+                <button data-filter="afternoon" class="filter-btn">Tarde</button>
+                <button data-filter="night" class="filter-btn">Noche</button>
+            </div>
+
+            <div id="time-slots" class="time-slots"></div>
+
+            <div id="class-info" class="class-info hidden">
+                <div class="info-card">
+                    <h3 id="info-type"></h3>
+                    <p id="info-price" class="price"></p>
+                    <p id="info-schedule" class="schedule"></p>
+                    <p id="info-trainer" class="trainer"></p>
+                </div>
+                <button id="add-class" class="add-class">+ Añadir otra clase</button>
+            </div>
+
+            <div class="summary">
+                <p>Total: <span id="total">0,00 €</span></p>
+                <p>Duración: <span id="duration">40min</span></p>
+            </div>
+
+            <button id="reserve-btn" class="primary-btn">Reservar clase</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
