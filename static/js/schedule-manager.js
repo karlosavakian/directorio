@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hoursStart = document.getElementById('schedule-hours-start');
   const hoursEnd = document.getElementById('schedule-hours-end');
   const hoursList = document.getElementById('schedule-hours-list');
+  const clearBtn = document.getElementById('schedule-hours-clear');
 
   let schedule = {};
   if (dataEl) {
@@ -24,12 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  const getHoursKey = () => `schedule-hours-${yearSelect.value}-${monthSelect.value}`;
+
   let hours = [];
-  try {
-    hours = JSON.parse(localStorage.getItem('schedule-hours')) || [];
-  } catch {
-    hours = [];
+  function loadHours() {
+    try {
+      hours = JSON.parse(localStorage.getItem(getHoursKey())) || [];
+    } catch {
+      hours = [];
+    }
   }
+  loadHours();
 
   const DAYS_STEP = 10;
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
@@ -108,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveHours() {
-    localStorage.setItem('schedule-hours', JSON.stringify(hours));
+    localStorage.setItem(getHoursKey(), JSON.stringify(hours));
     document.dispatchEvent(new CustomEvent('scheduleHoursUpdate', { detail: { hours } }));
   }
 
@@ -215,6 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const year = parseInt(yearSelect.value, 10);
     startDate = new Date(year, month, 1);
     if (startDate < today) startDate = new Date(today);
+    loadHours();
+    renderHours();
+    saveHours();
     buildTable();
     syncAvailability();
   });
@@ -224,6 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const year = parseInt(yearSelect.value, 10);
     startDate = new Date(year, month, 1);
     if (startDate < today) startDate = new Date(today);
+    loadHours();
+    renderHours();
+    saveHours();
     buildTable();
     syncAvailability();
   });
@@ -243,8 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
       renderHours();
       saveHours();
     });
-    renderHours();
-    saveHours();
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      hours = [];
+      renderHours();
+      saveHours();
+    });
   }
 
   document.addEventListener('availabilityDateChange', e => {
@@ -259,6 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
     startDate = new Date(parseInt(availYear.value, 10), parseInt(availMonth.value, 10), 1);
     if (startDate < today) startDate = new Date(today);
   }
+
+  loadHours();
+  renderHours();
+  saveHours();
 
   buildTable();
 });

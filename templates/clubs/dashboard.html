@@ -979,6 +979,9 @@
           <div class="col-auto">
             <button type="submit" class="btn btn-dark btn-sm">Añadir</button>
           </div>
+          <div class="col-auto">
+            <button type="button" id="schedule-hours-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
+          </div>
         </form>
         <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
         {{ horarios_json|json_script:"schedule-data" }}
