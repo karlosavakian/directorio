@@ -948,7 +948,6 @@
       <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
         <h5 class="mb-3">Administrar disponibilidad</h5>
         <div id="schedule-manager" class="mb-3">
-          <h6 class="mb-3">Gestor de horario</h6>
           <!-- Removed legacy day and time pickers -->
           {{ horarios_json|json_script:"schedule-data" }}
         </div>
@@ -975,7 +974,7 @@
           </table>
         </div>
         <div class="d-flex gap-2">
-          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar</button>
+          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
           <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
         </div>
       </div>
@@ -1254,7 +1253,7 @@
       <div class="modal-body">¿Copiar esta disponibilidad a todas las fechas?</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary confirm-copy">Copiar</button>
+        <button type="button" class="btn btn-dark confirm-copy">Copiar</button>
       </div>
     </div>
   </div>
@@ -1271,7 +1270,7 @@
       <div class="modal-body">¿Seguro que deseas guardar la disponibilidad?</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary confirm-save">Guardar</button>
+        <button type="button" class="btn btn-dark confirm-save">Guardar</button>
       </div>
     </div>
   </div>

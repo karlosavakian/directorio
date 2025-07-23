@@ -263,10 +263,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!rowToCopy) return;
     const inputs = rowToCopy.querySelectorAll('input');
     const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
+    const timeStr = inputs[0]?.dataset.time;
     inputs.forEach(input => {
       input.value = val;
       updateCellColor(input.closest('td'), val);
     });
+
+    if (timeStr) {
+      const iter = new Date(today);
+      while (iter <= endOfYear) {
+        const dateStr = iter.toISOString().split('T')[0];
+        if (!availability[dateStr]) availability[dateStr] = {};
+        availability[dateStr][timeStr] = val;
+        if (!hoursMap[dateStr]) hoursMap[dateStr] = [];
+        if (!hoursMap[dateStr].includes(timeStr)) hoursMap[dateStr].push(timeStr);
+        iter.setDate(iter.getDate() + 1);
+      }
+      localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+      saveHoursStorage();
+    }
     saveAvailability();
   }
 
