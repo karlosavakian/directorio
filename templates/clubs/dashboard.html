@@ -949,22 +949,6 @@
         <h5 class="mb-3">Administrar disponibilidad</h5>
         <div id="schedule-manager" class="mb-3">
           <h6 class="mb-3">Gestor de horario</h6>
-          <div class="d-flex align-items-center gap-2 mb-2">
-            <button id="schedule-prev" class="btn btn-light btn-sm">
-              <i class="bi bi-chevron-left"></i>
-            </button>
-            <select id="schedule-month" class="form-select form-select-sm" style="width:auto;">
-              {% for idx, label in months %}
-                <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-            <select id="schedule-year" class="form-select form-select-sm" style="width:auto;">
-              <option value="{{ today.year }}" selected>{{ today.year }}</option>
-            </select>
-            <button id="schedule-next" class="btn btn-light btn-sm">
-              <i class="bi bi-chevron-right"></i>
-            </button>
-          </div>
           <form id="schedule-hours-form" class="row g-2 mt-2">
             <div class="col-auto">
               <input
@@ -990,13 +974,7 @@
             </div>
           </form>
           <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
-          <div class="table-responsive mt-3">
-            <table id="schedule-table" class="table table-bordered table-sm text-center">
-              <thead></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          {{ horarios_json|json_script:"schedule-data" }}
+            {{ horarios_json|json_script:"schedule-data" }}
         </div>
         <div class="d-flex align-items-center gap-2 mb-2">
           <button id="availability-prev" class="btn btn-light btn-sm">
