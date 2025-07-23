@@ -45,16 +45,21 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'day-card border rounded text-center p-2';
       card.style.cursor = 'pointer';
       const dayData = availability[dateStr] || {};
+      const totalHours = Object.keys(dayData).length;
       const availableHours = Object.values(dayData).reduce(
         (acc, val) => acc + (val > 0 ? 1 : 0),
         0
       );
-      const badgeClass =
-        availableHours > 2
-          ? 'bg-success'
-          : availableHours > 0
-          ? 'bg-warning text-dark'
-          : 'bg-secondary';
+      let badgeClass;
+      if (totalHours === 0) {
+        badgeClass = 'bg-secondary';
+      } else if (availableHours === 0) {
+        badgeClass = 'bg-danger';
+      } else if (availableHours > 2) {
+        badgeClass = 'bg-success';
+      } else {
+        badgeClass = 'bg-warning text-dark';
+      }
       card.innerHTML =
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
@@ -257,6 +262,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     modalEl.addEventListener('hidden.bs.modal', () => {
       delete modalEl.dataset.forced;
+    });
+
+    const classCards = modalEl.querySelectorAll('.class-card');
+    classCards.forEach(card => {
+      const radio = card.querySelector('input[type="radio"]');
+      if (radio.checked) card.classList.add('active');
+      card.addEventListener('click', () => {
+        radio.checked = true;
+        classCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
     });
 
     const form = modalEl.querySelector('#booking-form');
