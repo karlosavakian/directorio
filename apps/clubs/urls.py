@@ -14,6 +14,7 @@ from apps.clubs.views import (
     booking_confirm,
     booking_cancel_admin,
     booking_delete,
+    save_availability,
 )
 from apps.clubs.views.dashboard import (
     dashboard,
