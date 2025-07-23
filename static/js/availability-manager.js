@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let hours = [];
   let hoursMap = {};
 
-  const DAYS_STEP = 10;
+  const DAYS_STEP = 365;
   const today = new Date();
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
