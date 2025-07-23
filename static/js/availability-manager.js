@@ -23,7 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const endOfYear = new Date(today.getFullYear(), 11, 31);
 
   document.addEventListener('scheduleHoursUpdate', e => {
-    hours = e.detail?.hours || [];
+    if (e.detail?.hours) {
+      hours = e.detail.hours;
+    } else if (e.detail?.hoursMap) {
+      hours = Array.from(
+        new Set(Object.values(e.detail.hoursMap).reduce((a, v) => a.concat(v || []), []))
+      ).sort();
+    }
     buildTable();
   });
 

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('schedule-next');
   const availMonth = document.getElementById('availability-month');
   const availYear = document.getElementById('availability-year');
+  // legacy global form elements (kept for backwards compatibility)
   const hoursForm = document.getElementById('schedule-hours-form');
   const hoursStart = document.getElementById('schedule-hours-start');
   const hoursList = document.getElementById('schedule-hours-list');
@@ -23,14 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const getHoursKey = () => `schedule-hours-${yearSelect.value}-${monthSelect.value}`;
+  const getMonthKey = () => `schedule-hours-${yearSelect.value}-${monthSelect.value}`;
 
-  let hours = [];
+  let hoursMap = {};
   function loadHours() {
     try {
-      hours = JSON.parse(localStorage.getItem(getHoursKey())) || [];
+      hoursMap = JSON.parse(localStorage.getItem(getMonthKey())) || {};
     } catch {
-      hours = [];
+      hoursMap = {};
     }
   }
   loadHours();
@@ -42,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
 
-  function renderHours() {
-    if (!hoursList) return;
-    hoursList.innerHTML = '';
-    hours.sort().forEach((t, idx) => {
+  function renderDay(listEl, dateKey) {
+    listEl.innerHTML = '';
+    const arr = hoursMap[dateKey] || [];
+    arr.sort().forEach((t, idx) => {
       const li = document.createElement('li');
       li.className = 'mb-1';
 
@@ -92,28 +93,50 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const val = input.value;
         if (!val) return;
-        if (hours.includes(val) && val !== t) {
+        if (arr.includes(val) && val !== t) {
           form.style.display = 'none';
           return;
         }
-        hours[idx] = val;
-        renderHours();
+        arr[idx] = val;
+        hoursMap[dateKey] = arr;
+        renderDay(listEl, dateKey);
         saveHours();
       });
 
       delBtn.addEventListener('click', () => {
-        hours = hours.filter(h => h !== t);
-        renderHours();
+        hoursMap[dateKey] = arr.filter(h => h !== t);
+        renderDay(listEl, dateKey);
         saveHours();
       });
 
+      listEl.appendChild(li);
+    });
+  }
+
+  function getUnionHours() {
+    return Array.from(
+      new Set(Object.values(hoursMap).reduce((acc, v) => acc.concat(v || []), []))
+    ).sort();
+  }
+
+  function renderHours() {
+    if (!hoursList) return;
+    hoursList.innerHTML = '';
+    getUnionHours().forEach(t => {
+      const li = document.createElement('li');
+      li.textContent = t;
+      li.className = 'small';
       hoursList.appendChild(li);
     });
   }
 
   function saveHours() {
-    localStorage.setItem(getHoursKey(), JSON.stringify(hours));
-    document.dispatchEvent(new CustomEvent('scheduleHoursUpdate', { detail: { hours } }));
+    localStorage.setItem(getMonthKey(), JSON.stringify(hoursMap));
+    document.dispatchEvent(
+      new CustomEvent('scheduleHoursUpdate', {
+        detail: { hours: getUnionHours(), hoursMap },
+      })
+    );
   }
 
   function updateSelectors() {
@@ -154,40 +177,63 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < maxDays; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
-      const key = dayKeys[date.getDay()];
+      const dateKey = date.toISOString().split('T')[0];
+      if (!hoursMap[dateKey]) {
+        const dowKey = dayKeys[date.getDay()];
+        hoursMap[dateKey] = (schedule[dowKey] || []).map(b => b.hora_inicio);
+      }
       const cell = document.createElement('td');
       cell.style.verticalAlign = 'top';
-      const blocks = schedule[key] || [];
-      if (!blocks.length) {
-        const small = document.createElement('small');
-        small.className = 'text-muted';
-        small.textContent = 'Sin horarios';
-        cell.appendChild(small);
-      } else {
-        blocks.forEach(b => {
-          const div = document.createElement('div');
-          div.className = 'small fw-medium border rounded p-1 mb-1';
-          if (b.estado === 'abierto') {
-            const span = document.createElement('span');
-            span.className = 'schedule-item';
-            span.dataset.start = b.hora_inicio;
-            span.dataset.end = b.hora_fin;
-            span.textContent = `${b.hora_inicio} - ${b.hora_fin}`;
-            div.appendChild(span);
-          } else if (b.estado === 'cerrado') {
-            const span = document.createElement('span');
-            span.className = 'text-danger';
-            span.textContent = 'Cerrado';
-            div.appendChild(span);
-          } else {
-            const span = document.createElement('span');
-            span.className = 'text-muted';
-            span.textContent = b.estado_otro;
-            div.appendChild(span);
-          }
-          cell.appendChild(div);
-        });
-      }
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn btn-outline-dark btn-sm w-100';
+      btn.dataset.bsToggle = 'collapse';
+      btn.dataset.bsTarget = `#hours-add-${dateKey}`;
+      btn.innerHTML = '<i class="bi bi-plus-circle"></i> Añadir';
+
+      const collapse = document.createElement('div');
+      collapse.className = 'collapse mt-2';
+      collapse.id = `hours-add-${dateKey}`;
+
+      const form = document.createElement('form');
+      form.className = 'row g-2';
+      const col = document.createElement('div');
+      col.className = 'col';
+      const input = document.createElement('input');
+      input.type = 'time';
+      input.required = true;
+      input.className = 'form-control form-control-sm';
+      col.appendChild(input);
+      const colBtn = document.createElement('div');
+      colBtn.className = 'col-auto';
+      const saveB = document.createElement('button');
+      saveB.type = 'submit';
+      saveB.className = 'btn btn-sm btn-dark';
+      saveB.textContent = 'Guardar';
+      colBtn.appendChild(saveB);
+      form.appendChild(col);
+      form.appendChild(colBtn);
+      collapse.appendChild(form);
+
+      const list = document.createElement('ul');
+      list.className = 'list-unstyled mt-2';
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const val = input.value;
+        if (!val) return;
+        if (!hoursMap[dateKey].includes(val)) hoursMap[dateKey].push(val);
+        input.value = '';
+        collapse.classList.remove('show');
+        renderDay(list, dateKey);
+        saveHours();
+      });
+
+      cell.appendChild(btn);
+      cell.appendChild(collapse);
+      cell.appendChild(list);
+      renderDay(list, dateKey);
       row.appendChild(cell);
     }
     tbody.appendChild(row);
@@ -249,7 +295,11 @@ document.addEventListener('DOMContentLoaded', () => {
     hoursForm.addEventListener('submit', e => {
       e.preventDefault();
       const start = hoursStart.value;
-      if (start && !hours.includes(start)) hours.push(start);
+      if (start) {
+        const dateKey = `${yearSelect.value}-${String(parseInt(monthSelect.value,10)+1).padStart(2,'0')}-01`;
+        if (!hoursMap[dateKey]) hoursMap[dateKey] = [];
+        if (!hoursMap[dateKey].includes(start)) hoursMap[dateKey].push(start);
+      }
       hoursStart.value = '';
       renderHours();
       saveHours();
@@ -258,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      hours = [];
+      hoursMap = {};
       renderHours();
       saveHours();
     });

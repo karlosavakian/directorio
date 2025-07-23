@@ -977,6 +977,12 @@
             </div>
           </form>
           <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
+          <div class="table-responsive mt-3">
+            <table id="schedule-table" class="table table-bordered table-sm text-center">
+              <thead></thead>
+              <tbody></tbody>
+            </table>
+          </div>
           {{ horarios_json|json_script:"schedule-data" }}
         </div>
         <div class="d-flex align-items-center gap-2 mb-2">
