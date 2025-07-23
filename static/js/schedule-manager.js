@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const availYear = document.getElementById('availability-year');
   const hoursForm = document.getElementById('schedule-hours-form');
   const hoursStart = document.getElementById('schedule-hours-start');
-  const hoursEnd = document.getElementById('schedule-hours-end');
   const hoursList = document.getElementById('schedule-hours-list');
   const clearBtn = document.getElementById('schedule-hours-clear');
 
@@ -250,11 +249,8 @@ document.addEventListener('DOMContentLoaded', () => {
     hoursForm.addEventListener('submit', e => {
       e.preventDefault();
       const start = hoursStart.value;
-      const end = hoursEnd.value;
       if (start && !hours.includes(start)) hours.push(start);
-      if (end && !hours.includes(end)) hours.push(end);
       hoursStart.value = '';
-      hoursEnd.value = '';
       renderHours();
       saveHours();
     });

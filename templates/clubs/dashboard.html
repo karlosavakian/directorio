@@ -945,43 +945,40 @@
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">
-      <div id="schedule-manager" class="mb-4">
-        <h5 class="mb-3">Gestor de horario</h5>
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <button id="schedule-prev" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <select id="schedule-month" class="form-select form-select-sm" style="width:auto;">
-            {% for idx, label in months %}
-              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-          <select id="schedule-year" class="form-select form-select-sm" style="width:auto;">
-            <option value="{{ today.year }}" selected>{{ today.year }}</option>
-          </select>
-          <button id="schedule-next" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <form id="schedule-hours-form" class="row g-2 mt-2">
-          <div class="col">
-            <input type="time" id="schedule-hours-start" class="form-control form-control-sm" required />
-          </div>
-          <div class="col">
-            <input type="time" id="schedule-hours-end" class="form-control form-control-sm" />
-          </div>
-          <div class="col-auto">
-            <button type="submit" class="btn btn-dark btn-sm">Añadir</button>
-          </div>
-          <div class="col-auto">
-            <button type="button" id="schedule-hours-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
-          </div>
-        </form>
-        <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
-        {{ horarios_json|json_script:"schedule-data" }}
-      </div>
       <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
         <h5 class="mb-3">Administrar disponibilidad</h5>
+        <div id="schedule-manager" class="mb-3">
+          <h6 class="mb-3">Gestor de horario</h6>
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <button id="schedule-prev" class="btn btn-light btn-sm">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <select id="schedule-month" class="form-select form-select-sm" style="width:auto;">
+              {% for idx, label in months %}
+                <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            <select id="schedule-year" class="form-select form-select-sm" style="width:auto;">
+              <option value="{{ today.year }}" selected>{{ today.year }}</option>
+            </select>
+            <button id="schedule-next" class="btn btn-light btn-sm">
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </div>
+          <form id="schedule-hours-form" class="row g-2 mt-2">
+            <div class="col">
+              <input type="time" id="schedule-hours-start" class="form-control form-control-sm" required />
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-dark btn-sm">Añadir</button>
+            </div>
+            <div class="col-auto">
+              <button type="button" id="schedule-hours-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
+            </div>
+          </form>
+          <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
+          {{ horarios_json|json_script:"schedule-data" }}
+        </div>
         <div class="d-flex align-items-center gap-2 mb-2">
           <button id="availability-prev" class="btn btn-light btn-sm">
             <i class="bi bi-chevron-left"></i>
