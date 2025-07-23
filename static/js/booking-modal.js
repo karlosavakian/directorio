@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.cursor = 'pointer';
       const dayData = availability[dateStr] || {};
       const maxSlots = Math.max(0, ...Object.values(dayData));
-      const badgeClass = maxSlots >= 2 ? 'bg-success' : maxSlots === 1 ? 'bg-warning text-dark' : 'bg-danger';
+      const badgeClass = maxSlots >= 2 ? 'bg-success' : maxSlots === 1 ? 'bg-warning text-dark' : 'bg-secondary';
       card.innerHTML =
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
@@ -77,16 +77,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderTimes() {
+    let firstVisible = null;
     ['morning', 'afternoon', 'evening'].forEach(key => {
       const info = timeContainers[key];
       const container = modalEl.querySelector(`#${key}-slots`);
       container.innerHTML = '';
       info.slots.slice(info.start, info.start + 7).forEach(btn => container.appendChild(btn));
+
       const prev = modalEl.querySelector(`.time-prev[data-target="${key}"]`);
       const next = modalEl.querySelector(`.time-next[data-target="${key}"]`);
       if (prev) prev.disabled = info.start === 0;
       if (next) next.disabled = info.start + 7 >= info.slots.length;
+
+      const tabBtn = modalEl.querySelector(`#${key}-tab`);
+      const tabItem = tabBtn?.closest('.nav-item');
+      const pane = modalEl.querySelector(`#${key}`);
+      if (info.slots.length === 0) {
+        tabItem?.classList.add('d-none');
+        pane?.classList.add('d-none');
+      } else {
+        tabItem?.classList.remove('d-none');
+        pane?.classList.remove('d-none');
+        if (!firstVisible) firstVisible = key;
+      }
     });
+
+    let activeKey = ['morning', 'afternoon', 'evening'].find(k => {
+      const btn = modalEl.querySelector(`#${k}-tab`);
+      return btn && btn.classList.contains('active') && !btn.closest('.nav-item').classList.contains('d-none');
+    });
+
+    if (!activeKey) activeKey = firstVisible;
+
+    modalEl.querySelectorAll('#timeTabs .nav-link').forEach(btn => btn.classList.remove('active'));
+    modalEl.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+
+    if (activeKey) {
+      modalEl.querySelector(`#${activeKey}-tab`)?.classList.add('active');
+      const pane = modalEl.querySelector(`#${activeKey}`);
+      pane?.classList.add('show', 'active');
+    }
   }
 
   function loadTimes(dateStr) {
