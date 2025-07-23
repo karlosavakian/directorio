@@ -973,8 +973,7 @@
               <button type="button" id="schedule-hours-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
             </div>
           </form>
-          <ul id="schedule-hours-list" class="list-unstyled mt-2"></ul>
-            {{ horarios_json|json_script:"schedule-data" }}
+          {{ horarios_json|json_script:"schedule-data" }}
         </div>
         <div class="d-flex align-items-center gap-2 mb-2">
           <button id="availability-prev" class="btn btn-light btn-sm">

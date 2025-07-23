@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     buildTable();
+    saveAvailability();
   });
 
   function updateSelectors() {
@@ -125,6 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
+  function saveAvailability() {
+    table.querySelectorAll('tbody input').forEach(input => {
+      const date = input.dataset.date;
+      const time = input.dataset.time;
+      const val = parseInt(input.value, 10) || 0;
+      if (!availability[date]) availability[date] = {};
+      availability[date][time] = val;
+    });
+    localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+  }
+
   function changeDays(step) {
     const newDate = new Date(startDate);
     newDate.setDate(newDate.getDate() + step * DAYS_STEP);
@@ -159,18 +171,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (prevBtn) prevBtn.addEventListener('click', () => changeDays(-1));
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
   buildTable();
+  saveAvailability();
 
   const saveBtn = document.getElementById('availability-save');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      table.querySelectorAll('tbody input').forEach(input => {
-        const date = input.dataset.date;
-        const time = input.dataset.time;
-        const val = parseInt(input.value, 10) || 0;
-        if (!availability[date]) availability[date] = {};
-        availability[date][time] = val;
-      });
-      localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+      saveAvailability();
       alert('Cambios guardados');
     });
   }
