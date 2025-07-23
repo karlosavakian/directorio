@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
 from django.db.models.functions import ExtractYear
 from django.utils import timezone
+import json
 from collections import defaultdict
 
 
@@ -19,6 +20,7 @@ from ..models import (
     Entrenador,
     Miembro,
     Pago,
+    ScheduleHour,
 )
 from ..forms import (
     ClubForm,
@@ -608,3 +610,38 @@ def pago_delete(request, pk):
             return HttpResponse(status=204)
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/pago_confirm_delete.html', {'pago': pago})
+
+
+@login_required
+def schedule_hours(request, slug):
+    """Persist or retrieve schedule hours for a club."""
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        try:
+            payload = json.loads(request.body or '{}')
+            hours = payload.get('hours', [])
+        except json.JSONDecodeError:
+            hours = []
+
+        valid_times = []
+        for h in hours:
+            try:
+                t = timezone.datetime.strptime(h, '%H:%M').time()
+                valid_times.append(t)
+            except ValueError:
+                continue
+
+        ScheduleHour.objects.filter(club=club).exclude(hora__in=valid_times).delete()
+        existing = set(
+            ScheduleHour.objects.filter(club=club).values_list('hora', flat=True)
+        )
+        for t in valid_times:
+            if t not in existing:
+                ScheduleHour.objects.create(club=club, hora=t)
+        return JsonResponse({'success': True})
+
+    qs = club.schedule_hours.order_by('hora')
+    data = [h.hora.strftime('%H:%M') for h in qs]
+    return JsonResponse({'hours': data})

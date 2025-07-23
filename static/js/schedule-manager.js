@@ -1,6 +1,6 @@
 // static/js/schedule-manager.js
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const table = document.getElementById('schedule-table');
   const dataEl = document.getElementById('schedule-data');
   const monthSelect = document.getElementById('schedule-month');
@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const timeInput = document.getElementById('schedule-time');
   const hoursList = document.getElementById('schedule-hours-list');
   const clearBtn = document.getElementById('schedule-hours-clear');
+  const managerEl = document.getElementById('availability-manager');
+  const clubSlug = managerEl?.dataset.clubSlug;
 
   let schedule = {};
   if (dataEl) {
@@ -28,19 +30,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const STORAGE_KEY = 'schedule-hours';
 
   let hoursMap = {};
-  function loadHours() {
+  async function loadHours() {
     try {
       hoursMap = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
     } catch {
       hoursMap = {};
     }
+    if (clubSlug) {
+      try {
+        const res = await fetch(`/clubs/${clubSlug}/schedule-hours/`, {
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const serverHours = data.hours || [];
+          serverHours.forEach(h => {
+            for (const d in hoursMap) {
+              if (!hoursMap[d].includes(h)) hoursMap[d].push(h);
+            }
+            if (Object.keys(hoursMap).length === 0) {
+              hoursMap[today.toISOString().split('T')[0]] = [h];
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load hours', err);
+      }
+    }
   }
-  loadHours();
+  const today = new Date();
+  await loadHours();
 
   const DAYS_STEP = 10;
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const dayKeys = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
-  const today = new Date();
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
 
