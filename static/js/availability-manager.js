@@ -10,6 +10,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const clearBtn = document.getElementById('availability-clear');
 
   const HOURS_KEY = 'schedule-hours';
+  async function persistScheduleHours() {
+    if (!clubSlug) return;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+    try {
+      await fetch(`/clubs/${clubSlug}/schedule-hours/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ hours })
+      });
+    } catch (err) {
+      console.error('Failed to save hours', err);
+    }
+  }
   const deleteModalEl = document.getElementById('confirmTimeDeleteModal');
   const deleteModal = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
   let timeToDelete = null;
@@ -232,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     buildTable();
+    persistScheduleHours();
   }
 
   function changeDays(step) {
@@ -276,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
     saveBtn.addEventListener('click', () => {
       saveAvailability();
       saveHoursStorage();
+      persistScheduleHours();
       showToast('Disponibilidad guardada');
     });
   }
@@ -303,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       localStorage.removeItem('availability-' + clubSlug);
       localStorage.removeItem(HOURS_KEY);
+      persistScheduleHours();
     });
   }
 });
