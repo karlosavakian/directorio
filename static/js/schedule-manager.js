@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function syncAvailability() {
     if (!availMonth || !availYear) return;
+    if (!monthSelect || !yearSelect) return;
     availMonth.value = monthSelect.value;
     availYear.value = yearSelect.value;
     availMonth.dispatchEvent(new Event('change'));
