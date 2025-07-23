@@ -69,9 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
-    const timeList = hours.length
-      ? hours.slice().sort()
-      : Array.from({ length: 24 }, (_, i) => `${String(i).padStart(2, '0')}:00`);
+    // When no hours are defined by the schedule manager we
+    // shouldn't populate the table with the full 24 hour range.
+    // Instead leave it empty so hours are only those introduced
+    // by the manager.
+    const timeList = hours.length ? hours.slice().sort() : [];
     for (const t of timeList) {
       const row = document.createElement('tr');
       const th = document.createElement('th');
