@@ -45,14 +45,22 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'day-card border rounded text-center p-2';
       card.style.cursor = 'pointer';
       const dayData = availability[dateStr] || {};
-      const maxSlots = Math.max(0, ...Object.values(dayData));
-      const badgeClass = maxSlots >= 2 ? 'bg-success' : maxSlots === 1 ? 'bg-warning text-dark' : 'bg-secondary';
+      const availableHours = Object.values(dayData).reduce(
+        (acc, val) => acc + (val > 0 ? 1 : 0),
+        0
+      );
+      const badgeClass =
+        availableHours > 2
+          ? 'bg-success'
+          : availableHours > 0
+          ? 'bg-warning text-dark'
+          : 'bg-secondary';
       card.innerHTML =
         `<div class="small">${dayName.charAt(0).toUpperCase() + dayName.slice(1)}</div>` +
         `<div class="fw-bold">${i}</div>` +
         `<span class="badge ${badgeClass}"></span>`;
       card.dataset.date = dateStr;
-      if (maxSlots === 0) {
+      if (availableHours === 0) {
         card.classList.add('disabled');
       } else {
         card.addEventListener('click', () => {
