@@ -1010,6 +1010,7 @@
         <div class="d-flex gap-2">
           <button id="availability-save" class="btn btn-primary btn-sm">Guardar cambios</button>
           <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
         </div>
       </div>
       <table class="table table-sm">

@@ -129,10 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function populateModal() {
+  async function populateModal() {
     if (!modalEl) return;
+    availability = {};
     try {
-      availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
+      const res = await fetch(`/clubs/${clubSlug}/availability/json/`, {credentials: 'same-origin'});
+      if (res.ok) {
+        availability = await res.json();
+      }
     } catch { availability = {}; }
 
     currentDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -145,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (modal) {
     bookingBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         clubSlug = btn.dataset.clubSlug;
-        populateModal();
+        await populateModal();
         modal.show();
       });
     });

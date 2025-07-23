@@ -11,10 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   let availability = {};
-  try {
-    availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
-  } catch {
-    availability = {};
+  async function loadAvailability() {
+    try {
+      const res = await fetch(`/clubs/${clubSlug}/availability/json/`, {credentials: 'same-origin'});
+      if (res.ok) {
+        availability = await res.json();
+      }
+    } catch { availability = {}; }
   }
   let hours = [];
   let hoursMap = {};
@@ -158,11 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prevBtn) prevBtn.addEventListener('click', () => changeDays(-1));
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
-  buildTable();
+  (async () => { await loadAvailability(); buildTable(); })();
 
   const saveBtn = document.getElementById('availability-save');
   if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
+    saveBtn.addEventListener('click', async () => {
       table.querySelectorAll('tbody input').forEach(input => {
         const date = input.dataset.date;
         const time = input.dataset.time;
@@ -170,7 +173,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!availability[date]) availability[date] = {};
         availability[date][time] = val;
       });
-      localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+      await fetch(`/clubs/${clubSlug}/availability/save/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value,
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(availability),
+      });
       alert('Cambios guardados');
     });
   }
@@ -182,7 +193,15 @@ document.addEventListener('DOMContentLoaded', () => {
         input.value = 0;
         updateCellColor(input.closest('td'), 0);
       });
-      localStorage.removeItem('availability-' + clubSlug);
+      await fetch(`/clubs/${clubSlug}/availability/save/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value,
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(availability),
+      });
     });
   }
 });
