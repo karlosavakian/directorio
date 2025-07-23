@@ -80,6 +80,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     thead.appendChild(headRow);
 
+    // Row with add-time pickers
+    const addRow = document.createElement('tr');
+    const addEmpty = document.createElement('th');
+    addRow.appendChild(addEmpty);
+    for (let i = 0; i < maxDays; i++) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+      const th = document.createElement('th');
+      const form = document.createElement('form');
+      form.className = 'd-flex gap-1';
+      const input = document.createElement('input');
+      input.type = 'time';
+      input.required = true;
+      input.className = 'form-control form-control-sm';
+      const btn = document.createElement('button');
+      btn.type = 'submit';
+      btn.className = 'btn btn-sm btn-dark';
+      btn.innerHTML = '<i class="bi bi-plus-circle"></i>';
+      form.appendChild(input);
+      form.appendChild(btn);
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const val = input.value;
+        if (!val) return;
+        addTime(dateStr, val);
+        input.value = '';
+      });
+      th.appendChild(form);
+      addRow.appendChild(th);
+    }
+    thead.appendChild(addRow);
+
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
     // When no hours are defined by the schedule manager we
@@ -90,7 +123,15 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const t of timeList) {
       const row = document.createElement('tr');
       const th = document.createElement('th');
-      th.textContent = t;
+      const label = document.createElement('span');
+      label.textContent = t;
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'btn btn-link btn-sm text-danger ms-1';
+      delBtn.innerHTML = '<i class="bi bi-dash-circle"></i>';
+      delBtn.addEventListener('click', () => removeTime(t));
+      th.appendChild(label);
+      th.appendChild(delBtn);
       row.appendChild(th);
       for (let i = 0; i < maxDays; i++) {
         const date = new Date(startDate);
@@ -135,6 +176,29 @@ document.addEventListener('DOMContentLoaded', () => {
       availability[date][time] = val;
     });
     localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
+  }
+
+  function addTime(dateStr, timeStr) {
+    if (!hours.includes(timeStr)) hours.push(timeStr);
+    if (!hoursMap[dateStr]) hoursMap[dateStr] = [];
+    if (!hoursMap[dateStr].includes(timeStr)) hoursMap[dateStr].push(timeStr);
+    buildTable();
+    saveAvailability();
+  }
+
+  function removeTime(timeStr) {
+    hours = hours.filter(t => t !== timeStr);
+    for (const d in hoursMap) {
+      hoursMap[d] = (hoursMap[d] || []).filter(t => t !== timeStr);
+    }
+    for (const d in availability) {
+      if (availability[d]) {
+        delete availability[d][timeStr];
+        if (Object.keys(availability[d]).length === 0) delete availability[d];
+      }
+    }
+    buildTable();
+    saveAvailability();
   }
 
   function changeDays(step) {
