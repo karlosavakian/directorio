@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let hours = [];
   let hoursMap = {};
 
-  const DAYS_STEP = 10;
+  const DAYS_STEP = 14;
   const today = new Date();
   let startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   const endOfYear = new Date(today.getFullYear(), 11, 31);
@@ -127,17 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
       label.textContent = t;
       const copyBtn = document.createElement('button');
       copyBtn.type = 'button';
-      copyBtn.className = 'btn btn-link btn-sm text-secondary ms-1';
+      copyBtn.className = 'btn btn-link btn-sm text-success ms-1';
       copyBtn.innerHTML = '<i class="bi bi-copy"></i>';
       copyBtn.addEventListener('click', () => {
-        if (!confirm('¿Copiar disponibilidad a todas las fechas?')) return;
-        const inputs = row.querySelectorAll('input');
-        const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
-        inputs.forEach(input => {
-          input.value = val;
-          updateCellColor(input.closest('td'), val);
+        showConfirm('¿Copiar disponibilidad a todas las fechas?').then(ok => {
+          if (!ok) return;
+          const inputs = row.querySelectorAll('input');
+          const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
+          inputs.forEach(input => {
+            input.value = val;
+            updateCellColor(input.closest('td'), val);
+          });
+          saveAvailability();
         });
-        saveAvailability();
       });
 
       const delBtn = document.createElement('button');
@@ -145,7 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
       delBtn.className = 'btn btn-link btn-sm text-danger ms-1';
       delBtn.innerHTML = '<i class="bi bi-dash-circle"></i>';
       delBtn.addEventListener('click', () => {
-        if (confirm('¿Eliminar hora?')) removeTime(t);
+        showConfirm('¿Eliminar hora?').then(ok => {
+          if (ok) removeTime(t);
+        });
       });
       th.appendChild(label);
       th.appendChild(copyBtn);
@@ -289,5 +293,49 @@ function showToast(message) {
                     `<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
   container.appendChild(toast);
   new bootstrap.Toast(toast).show();
+}
+
+function showConfirm(message) {
+  return new Promise(resolve => {
+    let modalEl = document.getElementById('confirmActionModal');
+    if (!modalEl) {
+      modalEl = document.createElement('div');
+      modalEl.className = 'modal fade';
+      modalEl.id = 'confirmActionModal';
+      modalEl.tabIndex = -1;
+      modalEl.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirmar</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary confirm-action">Aceptar</button>
+            </div>
+          </div>
+        </div>`;
+      document.body.appendChild(modalEl);
+    }
+    modalEl.querySelector('.modal-body').textContent = message;
+    const modal = new bootstrap.Modal(modalEl);
+    const confirmBtn = modalEl.querySelector('.confirm-action');
+    const onHidden = () => {
+      modalEl.removeEventListener('hidden.bs.modal', onHidden);
+      confirmBtn.removeEventListener('click', onConfirm);
+      resolve(false);
+    };
+    const onConfirm = () => {
+      confirmBtn.removeEventListener('click', onConfirm);
+      modalEl.removeEventListener('hidden.bs.modal', onHidden);
+      modal.hide();
+      resolve(true);
+    };
+    modalEl.addEventListener('hidden.bs.modal', onHidden);
+    confirmBtn.addEventListener('click', onConfirm);
+    modal.show();
+  });
 }
 
