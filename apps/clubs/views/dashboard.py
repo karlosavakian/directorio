@@ -85,6 +85,12 @@ def dashboard(request, slug):
     months = [(i, months_full[i]) for i in range(today.month - 1, 12)]
     # Availability is limited to the current year
     years = [today.year]
+
+    availability_qs = club.availabilities.filter(date__year=today.year)
+    availability_data = defaultdict(dict)
+    for a in availability_qs:
+        availability_data[a.date.isoformat()][a.time.strftime('%H:%M')] = a.slots
+
     miembros_pagados = members.filter(
         pagos__fecha__year=today.year,
         pagos__fecha__month=today.month,
@@ -209,6 +215,7 @@ def dashboard(request, slug):
             'months': months,
             'years': years,
             'today': today,
+            'availability_json': availability_data,
         },
     )
 @login_required

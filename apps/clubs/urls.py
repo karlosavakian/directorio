@@ -83,6 +83,7 @@ urlpatterns = [
 
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),
     path('<slug:slug>/reservar/crear/', create_booking, name='create_booking'),
+    path('<slug:slug>/availability/save/', save_availability, name='availability_save'),
     path('booking/<int:pk>/confirmar/', booking_confirm, name='booking_confirm'),
     path('booking/<int:pk>/cancelar-admin/', booking_cancel_admin, name='booking_cancel_admin'),
     path('booking/<int:pk>/eliminar/', booking_delete, name='booking_delete'),

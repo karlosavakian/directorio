@@ -10,3 +10,4 @@ from .post import ClubPost
 from .booking import Booking
 from .member import Miembro
 from .payment import Pago
+from .availability import Availability
