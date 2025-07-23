@@ -32,6 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteModal = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
   let timeToDelete = null;
 
+  const copyModalEl = document.getElementById('confirmCopyModal');
+  const copyModal = copyModalEl ? new bootstrap.Modal(copyModalEl) : null;
+  const saveModalEl = document.getElementById('confirmSaveModal');
+  const saveModal = saveModalEl ? new bootstrap.Modal(saveModalEl) : null;
+  const clearModalEl = document.getElementById('confirmClearModal');
+  const clearModal = clearModalEl ? new bootstrap.Modal(clearModalEl) : null;
+  let rowToCopy = null;
+
 
   let availability = {};
   try {
@@ -153,14 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
       copyBtn.className = 'btn btn-link btn-sm text-secondary ms-1';
       copyBtn.innerHTML = '<i class="bi bi-copy"></i>';
       copyBtn.addEventListener('click', () => {
-        if (!confirm('¿Copiar disponibilidad a todas las fechas?')) return;
-        const inputs = row.querySelectorAll('input');
-        const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
-        inputs.forEach(input => {
-          input.value = val;
-          updateCellColor(input.closest('td'), val);
-        });
-        saveAvailability();
+        rowToCopy = row;
+        if (copyModal) {
+          copyModal.show();
+        } else if (confirm('¿Copiar disponibilidad a todas las fechas?')) {
+          performCopy();
+        }
       });
 
       const delBtn = document.createElement('button');
@@ -253,6 +259,30 @@ document.addEventListener('DOMContentLoaded', () => {
     persistScheduleHours();
   }
 
+  function performCopy() {
+    if (!rowToCopy) return;
+    const inputs = rowToCopy.querySelectorAll('input');
+    const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
+    inputs.forEach(input => {
+      input.value = val;
+      updateCellColor(input.closest('td'), val);
+    });
+    saveAvailability();
+  }
+
+  function performClear() {
+    availability = {};
+    hours = [];
+    hoursMap = {};
+    table.querySelectorAll('tbody input').forEach(input => {
+      input.value = 0;
+      updateCellColor(input.closest('td'), 0);
+    });
+    localStorage.removeItem('availability-' + clubSlug);
+    localStorage.removeItem(HOURS_KEY);
+    persistScheduleHours();
+  }
+
   function changeDays(step) {
     const newDate = new Date(startDate);
     newDate.setDate(newDate.getDate() + step * DAYS_STEP);
@@ -293,10 +323,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('availability-save');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
-      saveAvailability();
-      saveHoursStorage();
-      persistScheduleHours();
-      showToast('Disponibilidad guardada');
+      if (saveModal) {
+        saveModal.show();
+      } else {
+        saveAvailability();
+        saveHoursStorage();
+        persistScheduleHours();
+        showToast('Disponibilidad guardada');
+      }
     });
   }
 
@@ -312,18 +346,38 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
+  if (copyModalEl) {
+    copyModalEl.querySelector('.confirm-copy').addEventListener('click', () => {
+      performCopy();
+      rowToCopy = null;
+      copyModal.hide();
+    });
+  }
+
+  if (saveModalEl) {
+    saveModalEl.querySelector('.confirm-save').addEventListener('click', () => {
+      saveAvailability();
+      saveHoursStorage();
+      persistScheduleHours();
+      showToast('Disponibilidad guardada');
+      saveModal.hide();
+    });
+  }
+
+  if (clearModalEl) {
+    clearModalEl.querySelector('.confirm-clear').addEventListener('click', () => {
+      performClear();
+      clearModal.hide();
+    });
+  }
+
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      availability = {};
-      hours = [];
-      hoursMap = {};
-      table.querySelectorAll('tbody input').forEach(input => {
-        input.value = 0;
-        updateCellColor(input.closest('td'), 0);
-      });
-      localStorage.removeItem('availability-' + clubSlug);
-      localStorage.removeItem(HOURS_KEY);
-      persistScheduleHours();
+      if (clearModal) {
+        clearModal.show();
+      } else if (confirm('¿Seguro que deseas limpiar la disponibilidad?')) {
+        performClear();
+      }
     });
   }
 });
