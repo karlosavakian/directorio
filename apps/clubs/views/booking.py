@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.utils.dateparse import parse_date, parse_time
 from ..models import ClubPost, Booking, Club
 from ..forms import BookingForm, CancelBookingForm
+from django.contrib import messages
 
 
 @login_required
@@ -59,3 +60,16 @@ def booking_confirm(request, pk):
 
 def booking_cancel_admin(request, pk):
     return booking_set_status(request, pk, 'cancelled')
+
+
+@login_required
+def booking_delete(request, pk):
+    booking = get_object_or_404(Booking, pk=pk)
+    if booking.club and booking.club.owner != request.user:
+        return redirect('home')
+    if request.method == 'POST':
+        slug = booking.club.slug
+        booking.delete()
+        messages.success(request, 'Reserva eliminada correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/booking_confirm_delete.html', {'booking': booking})
