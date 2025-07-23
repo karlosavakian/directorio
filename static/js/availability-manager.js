@@ -125,12 +125,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const th = document.createElement('th');
       const label = document.createElement('span');
       label.textContent = t;
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'btn btn-link btn-sm text-secondary ms-1';
+      copyBtn.innerHTML = '<i class="bi bi-copy"></i>';
+      copyBtn.addEventListener('click', () => {
+        if (!confirm('¿Copiar disponibilidad a todas las fechas?')) return;
+        const inputs = row.querySelectorAll('input');
+        const val = inputs[0] ? parseInt(inputs[0].value, 10) || 0 : 0;
+        inputs.forEach(input => {
+          input.value = val;
+          updateCellColor(input.closest('td'), val);
+        });
+        saveAvailability();
+      });
+
       const delBtn = document.createElement('button');
       delBtn.type = 'button';
       delBtn.className = 'btn btn-link btn-sm text-danger ms-1';
       delBtn.innerHTML = '<i class="bi bi-dash-circle"></i>';
-      delBtn.addEventListener('click', () => removeTime(t));
+      delBtn.addEventListener('click', () => {
+        if (confirm('¿Eliminar hora?')) removeTime(t);
+      });
       th.appendChild(label);
+      th.appendChild(copyBtn);
       th.appendChild(delBtn);
       row.appendChild(th);
       for (let i = 0; i < maxDays; i++) {
@@ -237,13 +255,13 @@ document.addEventListener('DOMContentLoaded', () => {
   buildTable();
   saveAvailability();
 
-  const saveBtn = document.getElementById('availability-save');
-  if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      saveAvailability();
-      alert('Cambios guardados');
-    });
-  }
+    const saveBtn = document.getElementById('availability-save');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        saveAvailability();
+        showToast('Disponibilidad guardada');
+      });
+    }
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -256,4 +274,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+function showToast(message) {
+  let container = document.querySelector('.toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'toast-container position-fixed top-0 end-0 p-3';
+    document.body.appendChild(container);
+  }
+  const toast = document.createElement('div');
+  toast.className = 'toast bg-black text-bg-success border-0 mb-2';
+  toast.role = 'alert';
+  toast.innerHTML = `<div class="d-flex"><div class="toast-body">${message}</div>` +
+                    `<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div>`;
+  container.appendChild(toast);
+  new bootstrap.Toast(toast).show();
+}
 

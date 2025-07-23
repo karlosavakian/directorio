@@ -975,7 +975,7 @@
           </table>
         </div>
         <div class="d-flex gap-2">
-          <button id="availability-save" class="btn btn-primary btn-sm">Guardar cambios</button>
+          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar</button>
           <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
         </div>
       </div>
@@ -1004,6 +1004,10 @@
               <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+              </form>
+              <form method="post" action="{% url 'booking_delete' b.id %}" class="delete-profile-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
               </form>
             </td>
           </tr>
