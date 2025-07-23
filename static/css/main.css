@@ -115,6 +115,18 @@
   color: #fff;
 }
 
+/* Booking modal class cards */
+#bookingModal .class-card {
+  cursor: pointer;
+}
+#bookingModal .class-card .form-check-input {
+  display: none;
+}
+#bookingModal .class-card.active {
+  background-color: #000;
+  color: #fff;
+}
+
 /* Hover effect for booking button */
 .booking-btn:hover {
   color: #fff !important;
