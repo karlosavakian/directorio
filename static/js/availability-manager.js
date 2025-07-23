@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     availability = {};
   }
   let hours = [];
+  let hoursMap = {};
 
   const DAYS_STEP = 10;
   const today = new Date();
@@ -25,10 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('scheduleHoursUpdate', e => {
     if (e.detail?.hours) {
       hours = e.detail.hours;
-    } else if (e.detail?.hoursMap) {
-      hours = Array.from(
-        new Set(Object.values(e.detail.hoursMap).reduce((a, v) => a.concat(v || []), []))
-      ).sort();
+    }
+    if (e.detail?.hoursMap) {
+      hoursMap = e.detail.hoursMap;
+      if (!hours.length) {
+        hours = Array.from(
+          new Set(Object.values(hoursMap).reduce((a, v) => a.concat(v || []), []))
+        ).sort();
+      }
     }
     buildTable();
   });
@@ -96,7 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
         input.min = '0';
         input.dataset.date = dateStr;
         input.dataset.time = timeStr;
-        const val = availability[dateStr]?.[timeStr] ?? 1;
+        let val = availability[dateStr]?.[timeStr];
+        if (val === undefined) {
+          val = hoursMap[dateStr]?.includes(timeStr) ? 1 : 0;
+        }
         input.value = val;
         input.className = 'form-control form-control-sm text-center';
         input.addEventListener('input', () => {
