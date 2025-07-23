@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const availYear = document.getElementById('availability-year');
   // legacy global form elements (kept for backwards compatibility)
   const hoursForm = document.getElementById('schedule-hours-form');
-  const hoursStart = document.getElementById('schedule-hours-start');
+  const dateInput = document.getElementById('schedule-date');
+  const timeInput = document.getElementById('schedule-time');
   const hoursList = document.getElementById('schedule-hours-list');
   const clearBtn = document.getElementById('schedule-hours-clear');
 
@@ -24,12 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  const getMonthKey = () => `schedule-hours-${yearSelect.value}-${monthSelect.value}`;
+  const STORAGE_KEY = 'schedule-hours';
 
   let hoursMap = {};
   function loadHours() {
     try {
-      hoursMap = JSON.parse(localStorage.getItem(getMonthKey())) || {};
+      hoursMap = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
     } catch {
       hoursMap = {};
     }
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function saveHours() {
-    localStorage.setItem(getMonthKey(), JSON.stringify(hoursMap));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(hoursMap));
     document.dispatchEvent(
       new CustomEvent('scheduleHoursUpdate', {
         detail: { hours: getUnionHours(), hoursMap },
@@ -143,6 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!monthSelect || !yearSelect) return;
     monthSelect.value = startDate.getMonth();
     yearSelect.value = startDate.getFullYear();
+    if (dateInput) {
+      const y = startDate.getFullYear();
+      const m = startDate.getMonth();
+      const first = `${y}-${String(m + 1).padStart(2, '0')}-01`;
+      const lastDay = new Date(y, m + 1, 0).getDate();
+      const last = `${y}-${String(m + 1).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      dateInput.min = first;
+      dateInput.max = last;
+      if (!dateInput.value) dateInput.value = first;
+    }
   }
 
   function buildTable() {
@@ -268,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const year = parseInt(yearSelect.value, 10);
       startDate = new Date(year, month, 1);
       if (startDate < today) startDate = new Date(today);
-      loadHours();
       renderHours();
       saveHours();
       buildTable();
@@ -281,7 +291,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const year = parseInt(yearSelect.value, 10);
       startDate = new Date(year, month, 1);
       if (startDate < today) startDate = new Date(today);
-      loadHours();
       renderHours();
       saveHours();
       buildTable();
@@ -294,15 +303,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hoursForm) {
     hoursForm.addEventListener('submit', e => {
       e.preventDefault();
-      const start = hoursStart.value;
-      if (start) {
-        const dateKey = `${yearSelect.value}-${String(parseInt(monthSelect.value,10)+1).padStart(2,'0')}-01`;
-        if (!hoursMap[dateKey]) hoursMap[dateKey] = [];
-        if (!hoursMap[dateKey].includes(start)) hoursMap[dateKey].push(start);
-      }
-      hoursStart.value = '';
+      const dateVal = dateInput.value;
+      const timeVal = timeInput.value;
+      if (!dateVal || !timeVal) return;
+      if (!hoursMap[dateVal]) hoursMap[dateVal] = [];
+      if (!hoursMap[dateVal].includes(timeVal)) hoursMap[dateVal].push(timeVal);
+      dateInput.value = '';
+      timeInput.value = '';
       renderHours();
       saveHours();
+      buildTable();
     });
   }
 
@@ -327,9 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (startDate < today) startDate = new Date(today);
   }
 
-  loadHours();
   renderHours();
   saveHours();
-
   buildTable();
 });

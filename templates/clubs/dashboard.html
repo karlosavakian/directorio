@@ -966,8 +966,21 @@
             </button>
           </div>
           <form id="schedule-hours-form" class="row g-2 mt-2">
-            <div class="col">
-              <input type="time" id="schedule-hours-start" class="form-control form-control-sm" required />
+            <div class="col-auto">
+              <input
+                type="date"
+                id="schedule-date"
+                class="form-control form-control-sm"
+                required
+              />
+            </div>
+            <div class="col-auto">
+              <input
+                type="time"
+                id="schedule-time"
+                class="form-control form-control-sm"
+                required
+              />
             </div>
             <div class="col-auto">
               <button type="submit" class="btn btn-dark btn-sm">Añadir</button>
