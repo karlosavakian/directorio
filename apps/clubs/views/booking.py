@@ -1,9 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 
 from django.utils.dateparse import parse_date, parse_time
-from ..models import ClubPost, Booking, Club
+from django.utils import timezone
+from ..models import ClubPost, Booking, Club, Availability
+import json
 from ..forms import BookingForm, CancelBookingForm
 from django.contrib import messages
 
@@ -73,3 +75,38 @@ def booking_delete(request, pk):
         messages.success(request, 'Reserva eliminada correctamente.')
         return redirect('club_dashboard', slug=slug)
     return render(request, 'clubs/booking_confirm_delete.html', {'booking': booking})
+
+
+@login_required
+def save_availability(request, slug):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'invalid method'}, status=400)
+    club = get_object_or_404(Club, slug=slug)
+    if club.owner != request.user:
+        return HttpResponseForbidden()
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+    except ValueError:
+        data = {}
+    availability = data.get('availability', {})
+
+    year = timezone.now().year
+    club.availabilities.filter(date__year=year).delete()
+
+    objs = []
+    for date_str, times in availability.items():
+        d = parse_date(date_str)
+        if not d:
+            continue
+        for time_str, val in times.items():
+            t = parse_time(time_str)
+            if t is None:
+                continue
+            val_int = int(val)
+            if val_int > 0:
+                objs.append(Availability(club=club, date=d, time=t, slots=val_int))
+
+    if objs:
+        Availability.objects.bulk_create(objs)
+
+    return JsonResponse({'success': True})

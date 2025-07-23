@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   let availability = {};
+  const dataEl = document.getElementById('availability-data');
   try {
-    availability = JSON.parse(localStorage.getItem('availability-' + clubSlug)) || {};
+    availability = JSON.parse(dataEl?.textContent || localStorage.getItem('availability-' + clubSlug)) || {};
   } catch {
     availability = {};
   }
@@ -261,20 +262,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const saveBtn = document.getElementById('availability-save');
     if (saveBtn) {
-      saveBtn.addEventListener('click', () => {
+      saveBtn.addEventListener('click', async () => {
         saveAvailability();
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+        await fetch(`/clubs/${clubSlug}/availability/save/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ availability })
+        });
         showToast('Disponibilidad guardada');
       });
     }
 
   if (clearBtn) {
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener('click', async () => {
       availability = {};
       table.querySelectorAll('tbody input').forEach(input => {
         input.value = 0;
         updateCellColor(input.closest('td'), 0);
       });
       localStorage.removeItem('availability-' + clubSlug);
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+      await fetch(`/clubs/${clubSlug}/availability/save/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ availability })
+      });
     });
   }
 });

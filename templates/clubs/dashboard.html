@@ -947,9 +947,10 @@
     <div id="tab-bookings" class="profile-section">
       <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
         <h5 class="mb-3">Administrar disponibilidad</h5>
-        <div id="schedule-manager" class="mb-3"> 
+        <div id="schedule-manager" class="mb-3">
           <!-- Removed legacy day and time pickers -->
           {{ horarios_json|json_script:"schedule-data" }}
+          {{ availability_json|json_script:"availability-data" }}
         </div>
         <div class="d-flex align-items-center gap-2 mb-2">
           <button id="availability-prev" class="btn btn-light btn-sm ">
