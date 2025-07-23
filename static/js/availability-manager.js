@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('availability-next');
   const clearBtn = document.getElementById('availability-clear');
 
+  const HOURS_KEY = 'schedule-hours';
+  const deleteModalEl = document.getElementById('confirmTimeDeleteModal');
+  const deleteModal = deleteModalEl ? new bootstrap.Modal(deleteModalEl) : null;
+  let timeToDelete = null;
+
 
   let availability = {};
   try {
@@ -145,7 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
       delBtn.className = 'btn btn-link btn-sm text-danger ms-1';
       delBtn.innerHTML = '<i class="bi bi-dash-circle"></i>';
       delBtn.addEventListener('click', () => {
-        if (confirm('¿Eliminar hora?')) removeTime(t);
+        timeToDelete = t;
+        if (deleteModal) deleteModal.show();
+        else if (confirm('¿Eliminar hora?')) removeTime(t);
       });
       th.appendChild(label);
       th.appendChild(copyBtn);
@@ -196,12 +203,21 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
   }
 
+  function saveHoursStorage() {
+    localStorage.setItem(HOURS_KEY, JSON.stringify(hoursMap));
+    hours = Array.from(
+      new Set(Object.values(hoursMap).reduce((a, v) => a.concat(v || []), []))
+    ).sort();
+    document.dispatchEvent(
+      new CustomEvent('scheduleHoursUpdate', { detail: { hours, hoursMap } })
+    );
+  }
+
   function addTime(dateStr, timeStr) {
     if (!hours.includes(timeStr)) hours.push(timeStr);
     if (!hoursMap[dateStr]) hoursMap[dateStr] = [];
     if (!hoursMap[dateStr].includes(timeStr)) hoursMap[dateStr].push(timeStr);
     buildTable();
-    saveAvailability();
   }
 
   function removeTime(timeStr) {
@@ -216,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     buildTable();
-    saveAvailability();
   }
 
   function changeDays(step) {
@@ -254,23 +269,40 @@ document.addEventListener('DOMContentLoaded', () => {
   if (nextBtn) nextBtn.addEventListener('click', () => changeDays(1));
   buildTable();
   saveAvailability();
+  saveHoursStorage();
 
-    const saveBtn = document.getElementById('availability-save');
-    if (saveBtn) {
-      saveBtn.addEventListener('click', () => {
-        saveAvailability();
-        showToast('Disponibilidad guardada');
+  const saveBtn = document.getElementById('availability-save');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      saveAvailability();
+      saveHoursStorage();
+      showToast('Disponibilidad guardada');
+    });
+  }
+
+  if (deleteModalEl) {
+    deleteModalEl
+      .querySelector('.confirm-time-delete')
+      .addEventListener('click', () => {
+        if (timeToDelete) {
+          removeTime(timeToDelete);
+          timeToDelete = null;
+        }
+        deleteModal.hide();
       });
-    }
+  }
 
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       availability = {};
+      hours = [];
+      hoursMap = {};
       table.querySelectorAll('tbody input').forEach(input => {
         input.value = 0;
         updateCellColor(input.closest('td'), 0);
       });
       localStorage.removeItem('availability-' + clubSlug);
+      localStorage.removeItem(HOURS_KEY);
     });
   }
 });
