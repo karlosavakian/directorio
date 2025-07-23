@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearSelect = document.getElementById('availability-year');
   const prevBtn = document.getElementById('availability-prev');
   const nextBtn = document.getElementById('availability-next');
+  const clearBtn = document.getElementById('availability-clear');
 
 
   let availability = {};
@@ -171,6 +172,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       localStorage.setItem('availability-' + clubSlug, JSON.stringify(availability));
       alert('Cambios guardados');
+    });
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      availability = {};
+      table.querySelectorAll('tbody input').forEach(input => {
+        input.value = 0;
+        updateCellColor(input.closest('td'), 0);
+      });
+      localStorage.removeItem('availability-' + clubSlug);
     });
   }
 });
