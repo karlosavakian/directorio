@@ -141,3 +141,10 @@
   padding-bottom: 0.125rem;
   font-size: 0.75rem;
 }
+
+/* Availability table column width */
+#availability-table th,
+#availability-table td {
+  width: 40px;
+  padding: 0.25rem;
+}

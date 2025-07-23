@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   loadHours();
 
-  const DAYS_STEP = 10;
+  const DAYS_STEP = 14;
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const dayKeys = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
   const today = new Date();
