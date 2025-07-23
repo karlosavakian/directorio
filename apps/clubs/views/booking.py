@@ -91,9 +91,13 @@ def save_availability(request, slug):
     availability = data.get('availability', {})
 
     year = timezone.now().year
-    club.availabilities.filter(date__year=year).delete()
 
-    objs = []
+    existing = {
+        (a.date, a.time): a
+        for a in club.availabilities.filter(date__year=year)
+    }
+
+    new_data = {}
     for date_str, times in availability.items():
         d = parse_date(date_str)
         if not d:
@@ -104,9 +108,19 @@ def save_availability(request, slug):
                 continue
             val_int = int(val)
             if val_int > 0:
-                objs.append(Availability(club=club, date=d, time=t, slots=val_int))
+                new_data[(d, t)] = val_int
 
-    if objs:
-        Availability.objects.bulk_create(objs)
+    for (d, t), slots in new_data.items():
+        if (d, t) in existing:
+            obj = existing[(d, t)]
+            if obj.slots != slots:
+                obj.slots = slots
+                obj.save(update_fields=['slots'])
+        else:
+            Availability.objects.create(club=club, date=d, time=t, slots=slots)
+
+    for (d, t), obj in existing.items():
+        if (d, t) not in new_data:
+            obj.delete()
 
     return JsonResponse({'success': True})

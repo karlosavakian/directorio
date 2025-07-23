@@ -145,6 +145,6 @@
 /* Availability table column width */
 #availability-table th,
 #availability-table td {
-  width: 30px;
+  width: 24px;
   padding: 0.25rem;
 }
