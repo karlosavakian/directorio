@@ -137,6 +137,27 @@ class BookingClassForm(forms.ModelForm):
             'detalle': forms.Textarea(attrs={'rows': 2, 'maxlength': 400, 'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            if not isinstance(field.widget, forms.CheckboxInput):
+                css = field.widget.attrs.get('class', '')
+                field.widget.attrs['class'] = (css + ' form-control').strip()
+                if isinstance(
+                    field.widget,
+                    (
+                        forms.TextInput,
+                        forms.EmailInput,
+                        forms.URLInput,
+                        forms.NumberInput,
+                        forms.PasswordInput,
+                        forms.Textarea,
+                        forms.DateInput,
+                        forms.TimeInput,
+                    ),
+                ):
+                    field.widget.attrs.setdefault('placeholder', ' ')
+
 
 class ClubForm(forms.ModelForm):
     class Meta:

@@ -1037,7 +1037,7 @@
           {% for c in booking_classes %}
           <tr>
             <td>{{ c.titulo }}</td>
-            <td>{{ c.precio }} €</td>
+            <td>{% if c.precio %}{{ c.precio }} €{% else %}gratis{% endif %}</td>
             <td>{{ c.duracion }} min</td>
             <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
             <td class="d-flex gap-1">
@@ -1374,7 +1374,7 @@
 
 <!-- Edit Member Modal -->
 <div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Editar miembro</h5>
@@ -1392,7 +1392,7 @@
 
 <!-- Add Member Modal -->
 <div class="modal fade" id="addMemberModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo miembro</h5>
@@ -1410,7 +1410,7 @@
 
 <!-- Add Coach Modal -->
 <div class="modal fade" id="addCoachModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo entrenador</h5>
@@ -1433,7 +1433,7 @@
   tabindex="-1"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nuevo competidor</h5>
@@ -1451,7 +1451,7 @@
 
 <!-- Add Booking Class Modal -->
 <div class="modal fade" id="addBookingClassModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Nueva clase</h5>
