@@ -69,7 +69,11 @@
               <label class="form-check-label fw-bold text-uppercase" for="clase_{{ c.id }}">{{ c.titulo }}</label>
               <span class="d-block text-center">{{ c.precio }} €</span>
               <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
-              {% if c.detalle %}<div class="small">{{ c.detalle }}</div>{% endif %}
+              {% if c.detalle %}
+              <span class="d-block">
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="{{ c.detalle }}"></i>
+              </span>
+              {% endif %}
             </div>
             {% empty %}
             <p>No hay clases disponibles.</p>
