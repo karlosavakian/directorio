@@ -128,14 +128,37 @@ class BookingForm(forms.ModelForm):
         model = models.Booking
         fields = []
 
+ 
 
 class BookingClassForm(forms.ModelForm):
     class Meta:
         model = models.BookingClass
         fields = ['titulo', 'precio', 'duracion', 'detalle', 'destacado']
         widgets = {
-            'detalle': forms.Textarea(attrs={'rows': 2, 'maxlength': 400, 'class': 'form-control'}),
+            'detalle': forms.Textarea(attrs={
+                'rows': 2,
+                'maxlength': 400,  # HTML5
+                'class': 'form-control',  # se asegura en __init__
+            }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            css = field.widget.attrs.get('class', '')
+            if not isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs['class'] = (css + ' form-control').strip()
+            if isinstance(field.widget, (
+                forms.TextInput,
+                forms.EmailInput,
+                forms.URLInput,
+                forms.NumberInput,
+                forms.PasswordInput,
+                forms.Textarea,
+                forms.DateInput,
+                forms.TimeInput,
+            )):
+                field.widget.attrs.setdefault('placeholder', ' ')
 
 
 class ClubForm(forms.ModelForm):

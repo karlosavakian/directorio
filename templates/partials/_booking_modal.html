@@ -65,15 +65,16 @@
         <div class="mt-3 d-flex flex-row justify-content-center gap-3 flex-wrap">
             {% for c in booking_classes %}
             <div class="form-check class-card border rounded text-center p-3 {% if c.destacado %}highlighted{% endif %}">
-              <input class="form-check-input" type="radio" name="clase_id" id="clase_{{ c.id }}" value="{{ c.id }}">
-              <label class="form-check-label fw-bold text-uppercase" for="clase_{{ c.id }}">{{ c.titulo }}</label>
-              <span class="d-block text-center">{{ c.precio }} €</span>
-              <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
-              {% if c.detalle %}
+               {% if c.detalle %}
               <span class="d-block">
                 <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="{{ c.detalle }}"></i>
               </span>
               {% endif %}
+              <input class="form-check-input" type="radio" name="clase_id" id="clase_{{ c.id }}" value="{{ c.id }}">
+              <label class="form-check-label fw-bold text-uppercase" for="clase_{{ c.id }}">{{ c.titulo }} </label>
+              <span class="d-block text-center">{{ c.precio }} €</span>
+              <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
+             
             </div>
             {% empty %}
             <p>No hay clases disponibles.</p>
