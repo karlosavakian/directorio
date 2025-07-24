@@ -662,10 +662,17 @@ def booking_class_create(request, slug):
             obj.club = club
             obj.save()
             messages.success(request, 'Clase añadida correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=club.slug)
     else:
         form = BookingClassForm()
-    return render(request, 'clubs/booking_class_form.html', {'form': form, 'club': club})
+    template = (
+        'clubs/_booking_class_form.html'
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest'
+        else 'clubs/booking_class_form.html'
+    )
+    return render(request, template, {'form': form, 'club': club})
 
 
 @login_required
