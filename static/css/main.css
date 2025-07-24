@@ -118,6 +118,7 @@
 /* Booking modal class cards */
 #bookingModal .class-card {
   cursor: pointer;
+  flex: 0 0 calc((100% - 2rem) / 3);
 }
 #bookingModal .class-card .form-check-input {
   display: none;
@@ -148,8 +149,9 @@
 
 /* Scroll area for booking class cards */
 #bookingModal #class-cards-container {
-  overflow-x: auto;
+  overflow: hidden;
   scroll-behavior: smooth;
+  width: 100%;
 }
 
 /* Booking modal radio color */
