@@ -119,6 +119,7 @@
 #bookingModal .class-card {
   cursor: pointer;
   flex: 0 0 calc((100% - 2rem) / 3);
+  position: relative;
 }
 #bookingModal .class-card .form-check-input {
   display: none;
@@ -128,8 +129,12 @@
   color: #fff;
 }
 #bookingModal .class-card.highlighted {
-  transform: scale(1.2);
-  margin: 0 0.5rem;
+  /* Highlighted card no longer scaled */
+}
+
+/* Offer badge inside highlighted card */
+#bookingModal .offer-badge {
+  font-size: 0.75rem;
 }
 
 /* Hover effect for booking button */
