@@ -5,10 +5,11 @@
     <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+    <div class="profile-tab" data-target="tab-clase">Servicios</div>
+    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
     <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
     <div class="profile-tab" data-target="tab-competitors">Competidores</div>
-    <div class="profile-tab" data-target="tab-members">Miembros</div>
-    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+    <div class="profile-tab" data-target="tab-members">Miembros</div> 
     <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
   </div>
   <div class="profile-content">
@@ -338,6 +339,49 @@
         {% endfor %}
       </div>
     </div>
+
+    <div id="tab-clase" class="profile-section">
+            <h5 class="mt-4">Administrar clases</h5>
+      <div class="mb-2">
+        <button
+          type="button"
+          class="btn btn-sm btn-dark add-booking-class-btn"
+          data-club-slug="{{ club.slug }}"
+        >
+          <i class="bi bi-plus-circle icon-large"></i> Añadir clase
+        </button>
+      </div>
+      <table class="table table-sm"  >
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Duración</th>
+            <th>Destacada</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in booking_classes %}
+          <tr>
+            <td>{{ c.titulo }}</td>
+            <td>{{ c.precio }} €</td>
+            <td>{{ c.duracion }} min</td>
+            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
+            <td class="d-flex gap-1">
+              <button type="button" class="btn btn-sm btn-outline-dark edit-booking-class-btn" data-class-id="{{ c.id }}">Editar</button>
+              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="text-muted">No hay clases.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     <div id="tab-schedule" class="profile-section">
       <h2 class="h5 mt-4">Horarios</h2>
       <div class="table-responsive">
@@ -564,6 +608,42 @@
           </tbody>
         </table>
       </div>
+
+           <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
+        <h5 class="mb-3">Administrar disponibilidad</h5>
+        <div id="schedule-manager" class="mb-3">
+          <!-- Removed legacy day and time pickers -->
+          {{ horarios_json|json_script:"schedule-data" }}
+        </div>
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <button id="availability-prev" class="btn btn-light btn-sm">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
+            {% for idx, label in months %}
+              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
+            <option value="{{ today.year }}" selected>{{ today.year }}</option>
+          </select>
+          <button id="availability-next" class="btn btn-light btn-sm">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table id="availability-table" class="table table-bordered table-sm text-center">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="d-flex gap-2">
+          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
+          <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
+        </div>
+      </div>
+
+
     </div>
     <div id="tab-coaches" class="profile-section">
       <button
@@ -945,40 +1025,9 @@
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">
-      <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
-        <h5 class="mb-3">Administrar disponibilidad</h5>
-        <div id="schedule-manager" class="mb-3">
-          <!-- Removed legacy day and time pickers -->
-          {{ horarios_json|json_script:"schedule-data" }}
-        </div>
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <button id="availability-prev" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
-            {% for idx, label in months %}
-              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-          <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
-            <option value="{{ today.year }}" selected>{{ today.year }}</option>
-          </select>
-          <button id="availability-next" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <div class="table-responsive">
-          <table id="availability-table" class="table table-bordered table-sm text-center">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div class="d-flex gap-2">
-          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
-          <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
-        </div>
-      </div>
-      <div class="table-responsive">
+ 
+
+       <div class="table-responsive">
       <table class="table table-sm mb-0" style="min-width:600px">
         <thead>
           <tr>
@@ -1019,46 +1068,6 @@
         </tbody>
       </table>
       </div>
-      <h5 class="mt-4">Tipos de clase</h5>
-      <div class="mb-2">
-        <button
-          type="button"
-          class="btn btn-sm btn-dark add-booking-class-btn"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir clase
-        </button>
-      </div>
-      <table class="table table-sm"  >
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Precio</th>
-            <th>Duración</th>
-            <th>Destacada</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in booking_classes %}
-          <tr>
-            <td>{{ c.titulo }}</td>
-            <td>{{ c.precio }} €</td>
-            <td>{{ c.duracion }} min</td>
-            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
-            <td class="d-flex gap-1">
-              <button type="button" class="btn btn-sm btn-secondary edit-booking-class-btn" data-class-id="{{ c.id }}">Editar</button>
-              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-              </form>
-            </td>
-          </tr>
-          {% empty %}
-          <tr><td colspan="5" class="text-muted">No hay clases.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
     </div>
     <div id="tab-matchmaker" class="profile-section">
       <div class="row mb-3">
