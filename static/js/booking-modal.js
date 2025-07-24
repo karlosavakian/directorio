@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   let classCards = [];
-  let classStart = 0;
 
   function updateMonthTitle() {
     const monthTitle = modalEl.querySelector('#booking-month-title');
@@ -192,22 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderClassCards() {
-    const container = modalEl.querySelector('#class-cards-container');
-    if (!container) return;
-    container.innerHTML = '';
-    const visible = classCards.slice(classStart, classStart + 3);
-    visible.forEach(card => container.appendChild(card));
-    const prev = modalEl.querySelector('.class-prev');
-    const next = modalEl.querySelector('.class-next');
-    if (prev) prev.disabled = classStart === 0;
-    if (next) next.disabled = classStart + 3 >= classCards.length;
+    // legacy function kept for backward compatibility
   }
 
   function setupClassCards() {
     const container = modalEl.querySelector('#class-cards-container');
     if (!container) return;
     classCards = Array.from(container.querySelectorAll('.class-card'));
-    classStart = 0;
     classCards.forEach(card => {
       const radio = card.querySelector('input[type="radio"]');
       if (radio.checked) card.classList.add('active');
@@ -217,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('active');
       });
     });
-    renderClassCards();
   }
 
   function populateModal() {
@@ -298,16 +287,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const classPrev = modalEl.querySelector('.class-prev');
-    if (classPrev) {
-      classPrev.addEventListener('click', () => {
-        if (classStart > 0) { classStart -= 3; renderClassCards(); }
-      });
-    }
     const classNext = modalEl.querySelector('.class-next');
-    if (classNext) {
-      classNext.addEventListener('click', () => {
-        if (classStart + 3 < classCards.length) { classStart += 3; renderClassCards(); }
+    const classContainer = modalEl.querySelector('#class-cards-container');
+
+    function updateClassNav() {
+      if (!classContainer) return;
+      if (classPrev) classPrev.disabled = classContainer.scrollLeft <= 0;
+      if (classNext) classNext.disabled =
+        classContainer.scrollLeft + classContainer.clientWidth >= classContainer.scrollWidth - 1;
+    }
+
+    if (classContainer) {
+      classPrev?.addEventListener('click', () => {
+        classContainer.scrollBy({ left: -classContainer.clientWidth, behavior: 'smooth' });
       });
+      classNext?.addEventListener('click', () => {
+        classContainer.scrollBy({ left: classContainer.clientWidth, behavior: 'smooth' });
+      });
+      classContainer.addEventListener('scroll', updateClassNav);
+      modalEl.addEventListener('shown.bs.modal', updateClassNav);
+      updateClassNav();
     }
 
     if (confirmModal) {
