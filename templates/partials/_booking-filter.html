@@ -3,16 +3,16 @@
     <div class="custom-dropdown small" id="booking-sort-dropdown">
         <div class="selected">
             <span class="selected-text">
-                {% if request.GET.booking_filter == 'newest' %}Más recientes primero{% elif request.GET.booking_filter == 'oldest' %}Más antiguas primero{% elif request.GET.booking_filter == 'active' %}Activas{% elif request.GET.booking_filter == 'confirmed' %}Confirmadas{% elif request.GET.booking_filter == 'cancelled' %}Canceladas{% else %}Filtrar{% endif %}
+                {% if request.GET.booking_filter == 'newest' %}Más recientes primero{% elif request.GET.booking_filter == 'oldest' %}Más antiguas primero{% elif request.GET.booking_filter == 'active' %}activas primero{% elif request.GET.booking_filter == 'confirmed' %}confirmadas primero{% elif request.GET.booking_filter == 'cancelled' %}canceladas primero{% else %}Ordenar por{% endif %}
             </span>
             <span class="select-arrow"></span>
         </div>
         <div class="dropdown-menu" id="booking-sort-menu">
             <div class="dropdown-item" data-value="newest">Más recientes primero</div>
             <div class="dropdown-item" data-value="oldest">Más antiguas primero</div>
-            <div class="dropdown-item" data-value="active">Activas</div>
-            <div class="dropdown-item" data-value="confirmed">Confirmadas</div>
-            <div class="dropdown-item" data-value="cancelled">Canceladas</div>
+            <div class="dropdown-item" data-value="active">activas primero</div>
+            <div class="dropdown-item" data-value="confirmed">confirmadas primero</div>
+            <div class="dropdown-item" data-value="cancelled">canceladas primero</div>
         </div>
     </div>
 </form>
