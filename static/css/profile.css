@@ -566,3 +566,22 @@ select option[value="España"] {
   font-size: 1rem;
   font-weight: 500;
 }
+
+/* Booking class table adjustments */
+.booking-class-title {
+  text-transform: uppercase;
+}
+
+.booking-class-title-col {
+  text-transform: uppercase;
+}
+
+.booking-class-detail {
+  width: 50%;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.booking-class-detail-col {
+  width: 50%;
+}
