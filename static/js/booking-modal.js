@@ -10,6 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let clubSlug = null;
   let availability = {};
 
+  function centerHighlightedCard() {
+    const container = modalEl?.querySelector('#class-cards-container');
+    if (!container) return;
+    const highlight = container.querySelector('.class-card.highlighted');
+    if (!highlight) return;
+    const cards = Array.from(container.querySelectorAll('.class-card'));
+    const index = Math.floor(cards.length / 2);
+    if (cards[index] !== highlight) {
+      container.removeChild(highlight);
+      container.insertBefore(highlight, cards[index]);
+    }
+  }
+
   const dayPrev = modalEl?.querySelector('#days-prev');
   const dayNext = modalEl?.querySelector('#days-next');
   let days = [];
@@ -194,9 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.addEventListener('click', () => {
         clubSlug = btn.dataset.clubSlug;
         populateModal();
+        centerHighlightedCard();
         modal.show();
       });
     });
+
+    modalEl.addEventListener('shown.bs.modal', centerHighlightedCard);
 
     if (dayPrev) {
       dayPrev.addEventListener('click', () => {
