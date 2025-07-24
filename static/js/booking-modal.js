@@ -192,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clubSlug = btn.dataset.clubSlug;
         populateModal();
         modal.show();
+        modalEl.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
       });
     });
 

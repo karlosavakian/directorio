@@ -1021,7 +1021,7 @@
       </div>
       <h5 class="mt-4">Tipos de clase</h5>
       <div class="mb-2">
-        <a href="{% url 'booking_class_create' club.slug %}" class="btn btn-sm btn-primary">Añadir clase</a>
+        <button type="button" class="btn btn-sm btn-dark text-white add-booking-class-btn" data-club-slug="{{ club.slug }}">Añadir clase</button>
       </div>
       <table class="table table-sm" style="min-width:600px">
         <thead>
@@ -1444,6 +1444,19 @@
           aria-label="Close"
         ></button>
       </div>
+<div class="modal-body"></div>
+  </div>
+</div>
+</div>
+
+<!-- Add Booking Class Modal -->
+<div class="modal fade" id="addBookingClassModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nueva clase</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
       <div class="modal-body"></div>
     </div>
   </div>
@@ -1460,6 +1473,7 @@
 <script src="{% static 'js/member-modal.js' %}"></script>
 <script src="{% static 'js/coach-modal.js' %}"></script>
 <script src="{% static 'js/competitor-modal.js' %}"></script>
+<script src="{% static 'js/booking-class-modal.js' %}"></script>
 <script src="{% static 'js/age-category.js' %}"></script>
 <script src="{% static 'js/member-search.js' %}"></script>
 <script src="{% static 'js/sort.js' %}"></script>

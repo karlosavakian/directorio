@@ -2,10 +2,6 @@
 {% block content %}
 <div class="container py-4">
   <h1 class="h5">{% if booking_class %}Editar{% else %}Nueva{% endif %} clase</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-dark">Guardar</button>
-  </form>
+  {% include 'clubs/_booking_class_form.html' %}
 </div>
 {% endblock %}
