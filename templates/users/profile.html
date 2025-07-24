@@ -70,7 +70,7 @@
                 {% for b in bookings %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <span>
-                        {{ b.get_tipo_clase_display }}
+                        {{ b.class_type.titulo }}
                     </span>
                     {% if b.status != 'cancelled' %}
                     <form action="{% url 'cancel_booking' b.id %}" method="post" class="ms-2">

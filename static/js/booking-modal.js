@@ -285,8 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = new URLSearchParams();
       data.append('date', dayCard.dataset.date);
       data.append('time', slotBtn.textContent);
-      const tipoRadio = modalEl.querySelector('input[name="tipo_clase"]:checked');
-      if (tipoRadio) data.append('tipo_clase', tipoRadio.value);
+      const tipoRadio = modalEl.querySelector('input[name="clase_id"]:checked');
+      if (tipoRadio) data.append('clase_id', tipoRadio.value);
       const res = await fetch(`/clubs/${clubSlug}/reservar/crear/`, {
         method: 'POST',
         headers: {

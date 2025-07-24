@@ -129,6 +129,15 @@ class BookingForm(forms.ModelForm):
         fields = []
 
 
+class BookingClassForm(forms.ModelForm):
+    class Meta:
+        model = models.BookingClass
+        fields = ['titulo', 'precio', 'duracion', 'detalle', 'destacado']
+        widgets = {
+            'detalle': forms.Textarea(attrs={'rows': 2, 'maxlength': 400, 'class': 'form-control'}),
+        }
+
+
 class ClubForm(forms.ModelForm):
     class Meta:
         model = models.Club

@@ -993,7 +993,7 @@
           {% for b in bookings %}
           <tr>
             <td>{{ b.user.username }}</td>
-            <td>{{ b.get_tipo_clase_display }}</td>
+            <td>{{ b.class_type.titulo }}</td>
             <td>{{ b.fecha }} {{ b.hora|default:'' }}</td>
             <td>{{ b.get_status_display }}</td>
             <td class="d-flex gap-1">
@@ -1019,6 +1019,37 @@
         </tbody>
       </table>
       </div>
+      <h5 class="mt-4">Tipos de clase</h5>
+      <div class="mb-2">
+        <a href="{% url 'booking_class_create' club.slug %}" class="btn btn-sm btn-primary">Añadir clase</a>
+      </div>
+      <table class="table table-sm" style="min-width:600px">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Duración</th>
+            <th>Destacada</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in booking_classes %}
+          <tr>
+            <td>{{ c.titulo }}</td>
+            <td>{{ c.precio }} €</td>
+            <td>{{ c.duracion }} min</td>
+            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
+            <td class="d-flex gap-1">
+              <a class="btn btn-sm btn-secondary" href="{% url 'booking_class_update' c.id %}">Editar</a>
+              <a class="btn btn-sm btn-danger" href="{% url 'booking_class_delete' c.id %}">Eliminar</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="5" class="text-muted">No hay clases.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
     <div id="tab-matchmaker" class="profile-section">
       <div class="row mb-3">

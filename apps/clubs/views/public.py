@@ -99,6 +99,7 @@ def club_profile(request, slug):
         'club_followed': club_followed,
         'register_form': register_form,
         'schedule_data': schedule_data,
+        'booking_classes': club.booking_classes.all(),
 
     })
 
