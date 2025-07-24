@@ -1047,7 +1047,7 @@
             <td>{{ c.duracion }} min</td>
             <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
             <td class="d-flex gap-1">
-              <a class="btn btn-sm btn-secondary" href="{% url 'booking_class_update' c.id %}">Editar</a>
+              <button type="button" class="btn btn-sm btn-secondary edit-booking-class-btn" data-class-id="{{ c.id }}">Editar</button>
               <a class="btn btn-sm btn-danger" href="{% url 'booking_class_delete' c.id %}">Eliminar</a>
             </td>
           </tr>
@@ -1449,6 +1449,19 @@
           data-bs-dismiss="modal"
           aria-label="Close"
         ></button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Booking Class Modal -->
+<div class="modal fade" id="editBookingClassModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar clase</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body"></div>
     </div>

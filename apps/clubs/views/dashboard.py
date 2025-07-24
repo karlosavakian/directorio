@@ -685,10 +685,21 @@ def booking_class_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Clase actualizada correctamente.')
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return HttpResponse(status=204)
             return redirect('club_dashboard', slug=obj.club.slug)
     else:
         form = BookingClassForm(instance=obj)
-    return render(request, 'clubs/booking_class_form.html', {'form': form, 'club': obj.club, 'booking_class': obj})
+    template = (
+        'clubs/_booking_class_form.html'
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest'
+        else 'clubs/booking_class_form.html'
+    )
+    return render(request, template, {
+        'form': form,
+        'club': obj.club,
+        'booking_class': obj,
+    })
 
 
 @login_required
