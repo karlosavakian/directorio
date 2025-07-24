@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-        <div class="mt-3 d-flex flex-row justify-content-center gap-3 flex-wrap">
+        <div id="class-cards-container" class="mt-3 d-flex flex-row justify-content-center gap-3 flex-wrap">
             {% for c in booking_classes %}
             <div class="form-check class-card border rounded text-center p-3 {% if c.destacado %}highlighted{% endif %}">
                {% if c.detalle %}
@@ -72,7 +72,13 @@
               {% endif %}
               <input class="form-check-input" type="radio" name="clase_id" id="clase_{{ c.id }}" value="{{ c.id }}">
               <label class="form-check-label fw-bold text-uppercase" for="clase_{{ c.id }}">{{ c.titulo }} </label>
-              <span class="d-block text-center">{{ c.precio }} €</span>
+              <span class="d-block text-center">
+                {% if c.precio == 0 %}
+                  Gratis
+                {% else %}
+                  {{ c.precio }} €
+                {% endif %}
+              </span>
               <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
              
             </div>
