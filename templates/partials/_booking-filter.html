@@ -1,0 +1,18 @@
+<form method="get" id="booking-filter-form" class="d-flex align-items-center" style="gap: 10px;">
+    <input type="hidden" name="booking_filter" id="booking-sort-input" value="{{ request.GET.booking_filter|default:'' }}">
+    <div class="custom-dropdown small" id="booking-sort-dropdown">
+        <div class="selected">
+            <span class="selected-text">
+                {% if request.GET.booking_filter == 'newest' %}Más recientes primero{% elif request.GET.booking_filter == 'oldest' %}Más antiguas primero{% elif request.GET.booking_filter == 'active' %}Activas{% elif request.GET.booking_filter == 'confirmed' %}Confirmadas{% elif request.GET.booking_filter == 'cancelled' %}Canceladas{% else %}Filtrar{% endif %}
+            </span>
+            <span class="select-arrow"></span>
+        </div>
+        <div class="dropdown-menu" id="booking-sort-menu">
+            <div class="dropdown-item" data-value="newest">Más recientes primero</div>
+            <div class="dropdown-item" data-value="oldest">Más antiguas primero</div>
+            <div class="dropdown-item" data-value="active">Activas</div>
+            <div class="dropdown-item" data-value="confirmed">Confirmadas</div>
+            <div class="dropdown-item" data-value="cancelled">Canceladas</div>
+        </div>
+    </div>
+</form>
