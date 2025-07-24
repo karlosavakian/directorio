@@ -354,30 +354,32 @@
       <table class="table table-sm"  >
         <thead>
           <tr>
+            <th></th>
             <th>Título</th>
+            <th>Detalle</th>
             <th>Precio</th>
             <th>Duración</th>
             <th>Destacada</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for c in booking_classes %}
           <tr>
-            <td>{{ c.titulo }}</td>
-            <td>{{ c.precio }} €</td>
-            <td>{{ c.duracion }} min</td>
-            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
             <td class="d-flex gap-1">
-              <button type="button" class="btn btn-sm btn-outline-dark edit-booking-class-btn" data-class-id="{{ c.id }}">Editar</button>
+              <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
               <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
               </form>
             </td>
+            <td>{{ c.titulo }}</td>
+            <td>{{ c.detalle }}</td>
+            <td>{% if c.precio == 0 %}Gratis{% else %}{{ c.precio }} €{% endif %}</td>
+            <td>{{ c.duracion }} min</td>
+            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
           </tr>
           {% empty %}
-          <tr><td colspan="5" class="text-muted">No hay clases.</td></tr>
+          <tr><td colspan="6" class="text-muted">No hay clases.</td></tr>
           {% endfor %}
         </tbody>
       </table>
