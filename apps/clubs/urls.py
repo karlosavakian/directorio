@@ -41,6 +41,9 @@ from apps.clubs.views.dashboard import (
     pago_delete,
     schedule_hours,
     miembros_json,
+    booking_class_create,
+    booking_class_update,
+    booking_class_delete,
 )
 
 urlpatterns = [
@@ -88,6 +91,9 @@ urlpatterns = [
     path('booking/<int:pk>/cancelar-admin/', booking_cancel_admin, name='booking_cancel_admin'),
     path('booking/<int:pk>/eliminar/', booking_delete, name='booking_delete'),
     path('<slug:slug>/schedule-hours/', schedule_hours, name='schedule_hours'),
+    path('<slug:slug>/clase/nueva/', booking_class_create, name='booking_class_create'),
+    path('clase/<int:pk>/editar/', booking_class_update, name='booking_class_update'),
+    path('clase/<int:pk>/eliminar/', booking_class_delete, name='booking_class_delete'),
 
     # El perfil público ahora se maneja desde config.urls con la ruta '@slug'
 

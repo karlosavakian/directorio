@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from django.utils.dateparse import parse_date, parse_time
-from ..models import ClubPost, Booking, Club
+from ..models import ClubPost, Booking, Club, BookingClass
 from ..forms import BookingForm, CancelBookingForm
 from django.contrib import messages
 
@@ -31,13 +31,16 @@ def create_booking(request, slug):
     club = get_object_or_404(Club, slug=slug)
     fecha = parse_date(request.POST.get('date', ''))
     hora = parse_time(request.POST.get('time', ''))
-    tipo_clase = request.POST.get('tipo_clase', 'privada')
+    clase_id = request.POST.get('clase_id')
+    booking_class = None
+    if clase_id:
+        booking_class = get_object_or_404(BookingClass, pk=clase_id, club=club)
     Booking.objects.create(
         user=request.user,
         club=club,
         fecha=fecha,
         hora=hora,
-        tipo_clase=tipo_clase,
+        class_type=booking_class,
     )
     return JsonResponse({'success': True})
 

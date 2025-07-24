@@ -21,6 +21,7 @@ from ..models import (
     Miembro,
     Pago,
     ScheduleHour,
+    BookingClass,
 )
 from ..forms import (
     ClubForm,
@@ -31,6 +32,7 @@ from ..forms import (
     EntrenadorForm,
     MiembroForm,
     PagoForm,
+    BookingClassForm,
 )
 from ..permissions import has_club_permission
 
@@ -200,6 +202,7 @@ def dashboard(request, slug):
             'horarios_por_dia': horarios_por_dia,
             'horarios_json': horarios_json,
             'bookings': bookings,
+            'booking_classes': club.booking_classes.all(),
             'form': form,
             'coaches': coaches,
             'members': members,
@@ -645,3 +648,50 @@ def schedule_hours(request, slug):
     qs = club.schedule_hours.order_by('hora')
     data = [h.hora.strftime('%H:%M') for h in qs]
     return JsonResponse({'hours': data})
+
+
+@login_required
+def booking_class_create(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    if not has_club_permission(request.user, club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = BookingClassForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.club = club
+            obj.save()
+            messages.success(request, 'Clase añadida correctamente.')
+            return redirect('club_dashboard', slug=club.slug)
+    else:
+        form = BookingClassForm()
+    return render(request, 'clubs/booking_class_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def booking_class_update(request, pk):
+    obj = get_object_or_404(BookingClass, pk=pk)
+    if not has_club_permission(request.user, obj.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = BookingClassForm(request.POST, instance=obj)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Clase actualizada correctamente.')
+            return redirect('club_dashboard', slug=obj.club.slug)
+    else:
+        form = BookingClassForm(instance=obj)
+    return render(request, 'clubs/booking_class_form.html', {'form': form, 'club': obj.club, 'booking_class': obj})
+
+
+@login_required
+def booking_class_delete(request, pk):
+    obj = get_object_or_404(BookingClass, pk=pk)
+    if not has_club_permission(request.user, obj.club):
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        slug = obj.club.slug
+        obj.delete()
+        messages.success(request, 'Clase eliminada correctamente.')
+        return redirect('club_dashboard', slug=slug)
+    return render(request, 'clubs/booking_class_confirm_delete.html', {'booking_class': obj})

@@ -126,6 +126,9 @@
   background-color: #000;
   color: #fff;
 }
+#bookingModal .class-card.highlighted {
+  transform: scale(1.1);
+}
 
 /* Hover effect for booking button */
 .booking-btn:hover {
