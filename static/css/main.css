@@ -128,6 +128,7 @@
 }
 #bookingModal .class-card.highlighted {
   transform: scale(1.2);
+  margin: 0 0.5rem;
 }
 
 /* Hover effect for booking button */
@@ -138,7 +139,9 @@
 /* Booking modal arrows */
 #booking-days-wrapper .btn-link,
 .time-prev.btn-link,
-.time-next.btn-link {
+.time-next.btn-link,
+.class-prev.btn-link,
+.class-next.btn-link {
   color: #000;
   margin: 0 0.5rem;
 }

@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     evening: {start: 0, slots: []}
   };
 
+  let classCards = [];
+  let classStart = 0;
+
   function updateMonthTitle() {
     const monthTitle = modalEl.querySelector('#booking-month-title');
     if (monthTitle) {
@@ -188,6 +191,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function renderClassCards() {
+    const container = modalEl.querySelector('#class-cards-container');
+    if (!container) return;
+    container.innerHTML = '';
+    const visible = classCards.slice(classStart, classStart + 3);
+    visible.forEach(card => container.appendChild(card));
+    const prev = modalEl.querySelector('.class-prev');
+    const next = modalEl.querySelector('.class-next');
+    if (prev) prev.disabled = classStart === 0;
+    if (next) next.disabled = classStart + 3 >= classCards.length;
+  }
+
+  function setupClassCards() {
+    const container = modalEl.querySelector('#class-cards-container');
+    if (!container) return;
+    classCards = Array.from(container.querySelectorAll('.class-card'));
+    classStart = 0;
+    classCards.forEach(card => {
+      const radio = card.querySelector('input[type="radio"]');
+      if (radio.checked) card.classList.add('active');
+      card.addEventListener('click', () => {
+        radio.checked = true;
+        classCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+    renderClassCards();
+  }
+
   function populateModal() {
     if (!modalEl) return;
     try {
@@ -208,11 +240,15 @@ document.addEventListener('DOMContentLoaded', () => {
         clubSlug = btn.dataset.clubSlug;
         populateModal();
         centerHighlightedCard();
+        setupClassCards();
         modal.show();
       });
     });
 
-    modalEl.addEventListener('shown.bs.modal', centerHighlightedCard);
+    modalEl.addEventListener('shown.bs.modal', () => {
+      centerHighlightedCard();
+      setupClassCards();
+    });
 
     if (dayPrev) {
       dayPrev.addEventListener('click', () => {
@@ -261,6 +297,19 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    const classPrev = modalEl.querySelector('.class-prev');
+    if (classPrev) {
+      classPrev.addEventListener('click', () => {
+        if (classStart > 0) { classStart -= 3; renderClassCards(); }
+      });
+    }
+    const classNext = modalEl.querySelector('.class-next');
+    if (classNext) {
+      classNext.addEventListener('click', () => {
+        if (classStart + 3 < classCards.length) { classStart += 3; renderClassCards(); }
+      });
+    }
+
     if (confirmModal) {
       const confirmBtn = confirmEl.querySelector('.confirm-cancel');
       if (confirmBtn) {
@@ -283,16 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
       delete modalEl.dataset.forced;
     });
 
-    const classCards = modalEl.querySelectorAll('.class-card');
-    classCards.forEach(card => {
-      const radio = card.querySelector('input[type="radio"]');
-      if (radio.checked) card.classList.add('active');
-      card.addEventListener('click', () => {
-        radio.checked = true;
-        classCards.forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-      });
-    });
+    setupClassCards();
 
     const form = modalEl.querySelector('#booking-form');
     form.addEventListener('submit', async e => {
