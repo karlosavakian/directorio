@@ -31,12 +31,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
                 body: fd
-              }).then(res => {
-                if (res.ok) {
-                  showToast('Clase añadida correctamente');
-                }
-                setTimeout(() => window.location.reload(), 500);
-              });
+              })
+                .then(res => {
+                  if (!res.ok) return null;
+                  return res.text();
+                })
+                .then(html => {
+                  if (html) {
+                    const tbody = document.getElementById('booking-class-body');
+                    if (tbody) {
+                      tbody.insertAdjacentHTML('beforeend', html);
+                    }
+                    showToast('Clase añadida correctamente');
+                    addModal.hide();
+                  }
+                });
             });
             addModal.show();
           }

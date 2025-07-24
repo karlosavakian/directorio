@@ -738,7 +738,10 @@ def booking_class_create(request, slug):
             obj.save()
             messages.success(request, "Clase añadida correctamente.")
             if request.headers.get("x-requested-with") == "XMLHttpRequest":
-                return HttpResponse(status=204)
+                row_html = render_to_string(
+                    "clubs/_booking_class_row.html", {"c": obj}, request=request
+                )
+                return HttpResponse(row_html)
             return redirect("club_dashboard", slug=club.slug)
     else:
         form = BookingClassForm()

@@ -1,0 +1,10 @@
+<tr>
+  <td>{{ c.titulo }}</td>
+  <td>{% if c.precio %}{{ c.precio }} €{% else %}gratis{% endif %}</td>
+  <td>{{ c.duracion }} min</td>
+  <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
+  <td class="d-flex gap-1">
+    <a class="btn btn-sm btn-secondary" href="{% url 'booking_class_update' c.id %}">Editar</a>
+    <a class="btn btn-sm btn-danger" href="{% url 'booking_class_delete' c.id %}">Eliminar</a>
+  </td>
+</tr>

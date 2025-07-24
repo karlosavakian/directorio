@@ -1023,7 +1023,7 @@
       <div class="mb-2">
         <button type="button" class="btn btn-sm btn-dark text-white add-booking-class-btn" data-club-slug="{{ club.slug }}">Añadir clase</button>
       </div>
-      <table class="table table-sm" style="min-width:600px">
+      <table class="table table-sm" style="min-width:600px" id="booking-class-table">
         <thead>
           <tr>
             <th>Título</th>
@@ -1033,7 +1033,7 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="booking-class-body">
           {% for c in booking_classes %}
           <tr>
             <td>{{ c.titulo }}</td>
