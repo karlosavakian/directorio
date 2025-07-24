@@ -146,6 +146,12 @@
   margin: 0 0.5rem;
 }
 
+/* Scroll area for booking class cards */
+#bookingModal #class-cards-container {
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
 /* Booking modal radio color */
 #bookingModal .form-check-input:checked {
   background-color: #000;

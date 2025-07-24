@@ -1033,34 +1033,34 @@
       <table class="table table-sm mb-0" style="min-width:600px">
         <thead>
           <tr>
+            <th></th>
             <th>Usuario</th>
             <th>Clase</th>
             <th>Reserva</th>
             <th>Estado</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for b in bookings %}
           <tr>
+            <td class="d-flex gap-1">
+              <form method="post" action="{% url 'booking_confirm' b.id %}">
+                {% csrf_token %}
+                <button type="submit" class="bi bi-check-circle icon-large btn btn-link p-0 text-success"></button>
+              </form>
+              <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
+                {% csrf_token %}
+                <button type="submit" class="bi bi-x-circle icon-large btn btn-link p-0 text-danger"></button>
+              </form>
+              <form method="post" action="{% url 'booking_delete' b.id %}" class="delete-profile-form">
+                {% csrf_token %}
+                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
+              </form>
+            </td>
             <td>{{ b.user.username }}</td>
             <td>{{ b.class_type.titulo }}</td>
             <td>{{ b.fecha }} {{ b.hora|default:'' }}</td>
             <td>{{ b.get_status_display }}</td>
-            <td class="d-flex gap-1">
-              <form method="post" action="{% url 'booking_confirm' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-success btn-sm">Confirmar</button>
-              </form>
-              <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
-              </form>
-              <form method="post" action="{% url 'booking_delete' b.id %}" class="delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
-              </form>
-            </td>
           </tr>
           {% empty %}
           <tr>
