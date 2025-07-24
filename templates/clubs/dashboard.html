@@ -365,7 +365,7 @@
         <tbody>
           {% for c in booking_classes %}
           <tr>
-            <td class="d-flex gap-1">
+            <td class="d-flex gap-1 actions-column">
               <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
               <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
                 {% csrf_token %}
@@ -1027,22 +1027,29 @@
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">
- 
-
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end">
+          {% include 'partials/_booking-filter.html' %}
+        </div>
+      </div>
        <div class="table-responsive">
       <table class="table table-sm mb-0" style="min-width:600px">
         <thead>
           <tr>
-            <th></th>
             <th>Usuario</th>
             <th>Clase</th>
             <th>Reserva</th>
             <th>Estado</th>
+            <th class="actions-column">Opciones</th>
           </tr>
         </thead>
         <tbody>
           {% for b in bookings %}
           <tr>
+            <td>{{ b.user.username }}</td>
+            <td>{{ b.class_type.titulo }}</td>
+            <td>{{ b.fecha|date:"d/m/y" }} {{ b.hora|time:"H:i"|default:'' }}</td>
+            <td>{{ b.get_status_display }}</td>
             <td class="d-flex gap-1">
               <form method="post" action="{% url 'booking_confirm' b.id %}">
                 {% csrf_token %}
@@ -1057,10 +1064,6 @@
                 <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
               </form>
             </td>
-            <td>{{ b.user.username }}</td>
-            <td>{{ b.class_type.titulo }}</td>
-            <td>{{ b.fecha }} {{ b.hora|default:'' }}</td>
-            <td>{{ b.get_status_display }}</td>
           </tr>
           {% empty %}
           <tr>
@@ -1513,6 +1516,7 @@
 <script src="{% static 'js/range-slider.js' %}"></script>
 <script src="{% static 'js/matchmaker-filter.js' %}"></script>
 <script src="{% static 'js/member-table-filters.js' %}"></script>
+<script src="{% static 'js/booking-filter.js' %}"></script>
 <script src="{% static 'js/availability-manager.js' %}"></script>
 <script src="{% static 'js/schedule-manager.js' %}"></script>
 {% endblock %}

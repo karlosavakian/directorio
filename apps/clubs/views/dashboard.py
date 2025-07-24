@@ -189,7 +189,14 @@ def dashboard(request, slug):
     elif orden == 'newest':
         members = members.order_by('-fecha_inscripcion', '-id')
 
+    booking_filter = request.GET.get('booking_filter')
     bookings = Booking.objects.filter(club=club).select_related('user', 'evento')
+    if booking_filter == 'newest':
+        bookings = bookings.order_by('-created_at')
+    elif booking_filter == 'oldest':
+        bookings = bookings.order_by('created_at')
+    elif booking_filter in ['active', 'confirmed', 'cancelled']:
+        bookings = bookings.filter(status=booking_filter)
 
     form = ClubForm(instance=club)
 
