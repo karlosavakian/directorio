@@ -1048,7 +1048,10 @@
             <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
             <td class="d-flex gap-1">
               <button type="button" class="btn btn-sm btn-secondary edit-booking-class-btn" data-class-id="{{ c.id }}">Editar</button>
-              <a class="btn btn-sm btn-danger" href="{% url 'booking_class_delete' c.id %}">Eliminar</a>
+              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+              </form>
             </td>
           </tr>
           {% empty %}
