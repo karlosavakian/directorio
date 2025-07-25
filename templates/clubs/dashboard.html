@@ -19,10 +19,10 @@
         method="post"
         action="{% url 'club_edit' club.slug %}"
         enctype="multipart/form-data"
-        class="profile-form"
+        class="profile-form row"
       >
         {% csrf_token %}
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4 order-md-3">
           <div class="avatar-dropzone mx-auto">
             {{ form.logo }}
             <div
@@ -51,7 +51,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.owner }}
           <label for="{{ form.owner.id_for_label }}"
             >{{ form.owner.label }}</label
@@ -62,7 +62,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.name }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.name.id_for_label }}"
@@ -74,7 +74,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.about }}
           <label for="{{ form.about.id_for_label }}"
             >{{ form.about.label }}</label
@@ -85,7 +85,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.city }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.city.id_for_label }}"
@@ -97,7 +97,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.address }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.address.id_for_label }}"
@@ -109,7 +109,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.phone }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.phone.id_for_label }}"
@@ -121,7 +121,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.whatsapp_link }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.whatsapp_link.id_for_label }}"
@@ -133,7 +133,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.email }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.email.id_for_label }}"
@@ -145,7 +145,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12">
           <h5 class="d-block mb-2">{{ form.features.label }}</h5>
           <div class="d-flex flex-wrap gap-3" id="features-container">
             {% for feature in form.features.field.queryset %}
@@ -193,7 +193,7 @@
           </div>
           {% endif %}
         </div>
-        <div class="form-field">
+        <div class="form-field col-12 col-md-4">
           {{ form.category }}
           <label for="{{ form.category.id_for_label }}"
             >{{ form.category.label }}</label
@@ -204,7 +204,9 @@
           </div>
           {% endif %}
         </div>
+        <div class="col-12">
         <button type="submit" class="btn btn-dark">Guardar</button>
+        </div>
       </form>
     </div>
     <div id="tab-gallery" class="profile-section">

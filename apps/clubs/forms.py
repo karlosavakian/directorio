@@ -177,6 +177,10 @@ class ClubForm(forms.ModelForm):
                                         forms.DateInput, forms.TimeInput)):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+        about_field = self.fields.get('about')
+        if about_field:
+            about_field.label = 'Bio'
+
                   # hide logo input to use dropzone preview
         logo_widget = self.fields.get('logo')
         if logo_widget:
