@@ -1,1523 +1,1268 @@
-{% extends 'base.html' %} {% load static utils_filters %} {% block content %}
-
-<div class="d-flex mt-5 mb-5 container-fluid col-12">
-  <div class="profile-tabs">
-    <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
-    <div class="profile-tab" data-target="tab-gallery">Galería</div>
-    <div class="profile-tab" data-target="tab-schedule">Horarios</div>
-    <div class="profile-tab" data-target="tab-clase">Servicios</div>
-    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
-    <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
-    <div class="profile-tab" data-target="tab-competitors">Competidores</div>
-    <div class="profile-tab" data-target="tab-members">Miembros</div> 
-    <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
-  </div>
-  <div class="profile-content">
-    <div id="tab-profile" class="profile-section active">
-      <h1 class="h3 mb-4">Administrar {{ club.name }}</h1>
-      <form
-        method="post"
-        action="{% url 'club_edit' club.slug %}"
-        enctype="multipart/form-data"
-        class="profile-form"
-      >
-        {% csrf_token %}
-        <div class="form-field">
-          <div class="avatar-dropzone mx-auto">
-            {{ form.logo }}
-            <div
-              class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
-              {%
-              if
-              club.logo|safe_url
-              %}
-              style="background-image:url('{{ club.logo|safe_url }}')"
-              {%
-              endif
-              %}
-            >
-              <div class="avatar-dropzone-msg">
-                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                <span>Sube tu logo</span>
-              </div>
-            </div>
-          </div>
-          <label for="{{ form.logo.id_for_label }}"
-            >{{ form.logo.label }}</label
-          >
-          {% if form.logo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.logo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
+{% extends 'base.html' %}
+{% load static utils_filters %}
+{% block content %}
+    <div class="d-flex mt-5 mb-5 container-fluid col-12">
+        <div class="profile-tabs col-2">
+            <div class="profile-tab active" data-target="tab-profile">Mi perfil</div>
+            <div class="profile-tab" data-target="tab-gallery">Galería</div>
+            <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+            <div class="profile-tab" data-target="tab-clase">Servicios</div>
+            <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+            <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
+            <div class="profile-tab" data-target="tab-competitors">Competidores</div>
+            <div class="profile-tab" data-target="tab-members">Miembros</div>
+            <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
         </div>
-        <div class="form-field">
-          {{ form.owner }}
-          <label for="{{ form.owner.id_for_label }}"
-            >{{ form.owner.label }}</label
-          >
-          {% if form.owner.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.owner.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.name }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.name.id_for_label }}"
-            >{{ form.name.label }}</label
-          >
-          {% if form.name.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.name.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.about }}
-          <label for="{{ form.about.id_for_label }}"
-            >{{ form.about.label }}</label
-          >
-          {% if form.about.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.about.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.city }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.city.id_for_label }}"
-            >{{ form.city.label }}</label
-          >
-          {% if form.city.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.city.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.address }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.address.id_for_label }}"
-            >{{ form.address.label }}</label
-          >
-          {% if form.address.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.address.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.phone }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.phone.id_for_label }}"
-            >{{ form.phone.label }}</label
-          >
-          {% if form.phone.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.phone.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.whatsapp_link }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.whatsapp_link.id_for_label }}"
-            >{{ form.whatsapp_link.label }}</label
-          >
-          {% if form.whatsapp_link.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.whatsapp_link.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.email }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.email.id_for_label }}"
-            >{{ form.email.label }}</label
-          >
-          {% if form.email.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.email.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          <h5 class="d-block mb-2">{{ form.features.label }}</h5>
-          <div class="d-flex flex-wrap gap-3" id="features-container">
-            {% for feature in form.features.field.queryset %}
-            <div
-              class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
-              style="padding: 8px 16px"
-            >
-              <input
-                type="checkbox"
-                name="features"
-                value="{{ feature.id }}"
-                class="d-none"
-                {%
-                if
-                feature
-                in
-                club.features.all
-                %}
-                checked{%
-                endif
-                %}
-              />
-              {% if feature.icon %}
-              <img
-                src="{{ feature.icon.url }}"
-                alt="{{ feature.name }}"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  object-fit: contain;
-                  user-select: none;
-                "
-                class="me-2"
-              />
-              {% endif %}
-              <div class="text-wrap" style="font-size: 14px; user-select: none">
-                {{ feature.name }}
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-          {% if form.features.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.features.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.category }}
-          <label for="{{ form.category.id_for_label }}"
-            >{{ form.category.label }}</label
-          >
-          {% if form.category.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.category.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <button type="submit" class="btn btn-dark">Guardar</button>
-      </form>
-    </div>
-    <div id="tab-gallery" class="profile-section">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Col izquierda: Añadir fotos -->
-        <div>
-          <form
-            id="upload-form"
-            method="post"
-            enctype="multipart/form-data"
-            action="{% url 'clubphoto_upload' club.slug %}"
-            class="mb-0"
-          >
-            {% csrf_token %}
-            <input
-              type="file"
-              name="image"
-              id="id_gallery_image"
-              multiple
-              class="d-none"
-            />
-            <button
-              type="button"
-              id="add-photos-btn"
-              class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
-            >
-              <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
-            </button>
-          </form>
-        </div>
-
-        <!-- Col derecha: botones de acciones -->
-        <div class="d-flex align-items-center gap-3">
-          <button
-            type="button"
-            id="select-all"
-            class="bg-transparent border-0 fw-medium text-black"
-          >
-            Seleccionar todas
-          </button>
-
-          <button
-            type="button"
-            id="deselect-all"
-            class="bg-transparent border-0 fw-medium text-secondary"
-          >
-            Desmarcar todas
-          </button>
-
-          <form
-            id="bulk-delete-form"
-            method="post"
-            action="{% url 'clubphoto_bulk_delete' club.slug %}"
-            class="d-inline mb-0"
-          >
-            {% csrf_token %}
-            <input type="hidden" name="ids" id="delete-ids" />
-            <button
-              type="submit"
-              id="delete-selected"
-              class="bg-transparent border-0 fw-medium text-secondary"
-            >
-              Eliminar
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <div id="gallery-grid" class="gallery-grid">
-        {% for photo in club.photos.all %}
-        <div
-          class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
-          draggable="true"
-          data-id="{{ photo.id }}"
-        >
-          <img
-            src="{{ photo.image.url }}"
-            alt="foto"
-            class="w-100 h-100 object-fit-cover rounded"
-          />
-          <div class="small photo-dimensions">
-            {{ photo.image.width }}x{{ photo.image.height }}px
-          </div>
-          <input
-            type="checkbox"
-            class="photo-checkbox"
-            value="{{ photo.id }}"
-          />
-          <div class="gallery-hover-actions">
-            <span class="drag-handle bi bi-arrows-move"></span>
-            <div class="dropdown">
-              <button
-                class="btn btn-light btn-sm dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Opciones
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <form
-                    method="post"
-                    action="{% url 'clubphoto_set_main' photo.id %}"
-                  >
+        <div class="profile-content">
+            <div id="tab-profile" class="profile-section active">
+                <h1 class="h3 mb-4">Administrar Perfil</h1>
+                <form method="post"
+                      action="{% url 'club_edit' club.slug %}"
+                      enctype="multipart/form-data"
+                      class="profile-form">
                     {% csrf_token %}
-                    <button type="submit" class="dropdown-item">
-                      Destacar
-                    </button>
-                  </form>
-                </li>
-                <li>
-                  <form
-                    method="post"
-                    action="{% url 'clubphoto_delete' photo.id %}"
-                  >
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-item text-danger">
-                      Eliminar
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-          </div>
-          {% if photo.is_main %}
-          <span class="bi bi-pin-angle-fill main-pin"></span>
-          {% endif %}
-        </div>
-        {% empty %}
-        <p>No hay fotos.</p>
-        {% endfor %}
-      </div>
-    </div>
-
-    <div id="tab-clase" class="profile-section">
-            <h5 class="mt-4">Administrar clases</h5>
-      <div class="mb-2">
-        <button
-          type="button"
-          class="btn btn-sm btn-dark add-booking-class-btn"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir clase
-        </button>
-      </div>
-      <table class="table table-sm"  >
-        <thead>
-          <tr>
-            <th></th>
-            <th class="booking-class-title-col">Título</th>
-            <th class="booking-class-detail-col">Detalle</th>
-            <th>Precio</th>
-            <th>Duración</th>
-            <th>Destacada</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in booking_classes %}
-          <tr>
-            <td class="d-flex gap-1 actions-column">
-              <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
-              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
-              </form>
-            </td>
-            <td class="booking-class-title">{{ c.titulo|upper }}</td>
-            <td class="booking-class-detail">{{ c.detalle }}</td>
-            <td>{% if c.precio == 0 %}Gratis{% else %}{{ c.precio }} €{% endif %}</td>
-            <td>{{ c.duracion }} min</td>
-            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
-          </tr>
-          {% empty %}
-          <tr><td colspan="6" class="text-muted">No hay clases.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <div id="tab-schedule" class="profile-section">
-      <h2 class="h5 mt-4">Horarios</h2>
-      <div class="table-responsive">
-        <table
-          class="table table-bordered text-center align-middle"
-          style="min-width: 700px"
-        >
-          <thead class="table-dark">
-            <tr>
-              {% for dia, nombre in dias_semana %}
-              <th scope="col">{{ nombre }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {% for dia, nombre in dias_semana %}
-              <td style="vertical-align: top">
-                <!-- Botón añadir -->
-                <div class="mb-3">
-                  <button
-                    class="btn btn-sm btn-outline-dark w-100 h-50"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#add-{{ dia }}"
-                    aria-expanded="false"
-                    aria-controls="add-{{ dia }}"
-                  >
-                    <i class="bi bi-plus-circle"></i> Añadir
-                  </button>
-
-                  <div class="collapse mt-2" id="add-{{ dia }}">
-                    <form
-                      method="post"
-                      action="{% url 'horario_create' club.slug %}"
-                    >
-                      {% csrf_token %}
-                      <input type="hidden" name="dia" value="{{ dia }}" />
-                      <div class="row g-2">
-                        <div class="col">
-                          <input
-                            type="time"
-                            name="hora_inicio"
-                            class="form-control form-control-sm"
-                            required
-                          />
+                    <div class="form-field col-4 ">
+                        <div class="avatar-dropzone mx-auto">
+                            {{ form.logo }}
+                            <div class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}" {%
+                                if
+                                club.logo|safe_url
+                                %} style="background-image:url('{{ club.logo|safe_url }}')" {%
+                                endif
+                                %}>
+                                <div class="avatar-dropzone-msg">
+                                    <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                                    <span>Sube tu logo</span>
+                                </div>
+                            </div>
+                        </div> 
+                        {% if form.logo.errors %}
+                            <div class="invalid-feedback d-block">{{ form.logo.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.owner }}
+                        <label for="{{ form.owner.id_for_label }}">{{ form.owner.label }}</label>
+                        {% if form.owner.errors %}
+                            <div class="invalid-feedback d-block">{{ form.owner.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                            {{ form.category }}
+                            <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+                            {% if form.category.errors %}
+                                <div class="invalid-feedback d-block">{{ form.category.errors.as_text|striptags }}</div>
+                            {% endif %}
                         </div>
-                        <div class="col">
-                          <input
-                            type="time"
-                            name="hora_fin"
-                            class="form-control form-control-sm"
-                            required
-                          />
+                    <div class="form-field col-6">
+                        {{ form.name }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                        {% if form.name.errors %}
+                            <div class="invalid-feedback d-block">{{ form.name.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.about }}
+                        <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
+                        {% if form.about.errors %}
+                            <div class="invalid-feedback d-block">{{ form.about.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.city }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                        {% if form.city.errors %}
+                            <div class="invalid-feedback d-block">{{ form.city.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.address }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+                        {% if form.address.errors %}
+                            <div class="invalid-feedback d-block">{{ form.address.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.phone }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                        {% if form.phone.errors %}
+                            <div class="invalid-feedback d-block">{{ form.phone.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.whatsapp_link }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.whatsapp_link.id_for_label }}">{{ form.whatsapp_link.label }}</label>
+                        {% if form.whatsapp_link.errors %}
+                            <div class="invalid-feedback d-block">{{ form.whatsapp_link.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-6">
+                        {{ form.email }}
+                        <button type="button" class="clear-btn">×</button>
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {% if form.email.errors %}
+                            <div class="invalid-feedback d-block">{{ form.email.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field  ">
+                        <h5 class="d-block mb-2">{{ form.features.label }}</h5>
+                        <div class="d-flex flex-wrap gap-3" id="features-container">
+                            {% for feature in form.features.field.queryset %}
+                                <div class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
+                                     style="padding: 8px 16px">
+                                    <input type="checkbox" name="features" value="{{ feature.id }}" class="d-none" {%
+                                        if
+                                        feature
+                                        in
+                                        club.features.all
+                                        %} checked{%
+                                        endif
+                                        %} />
+                                        {% if feature.icon %}
+                                            <img src="{{ feature.icon.url }}"
+                                                 alt="{{ feature.name }}"
+                                                 style="width: 50px;
+                                                        height: 50px;
+                                                        object-fit: contain;
+                                                        user-select: none"
+                                                 class="me-2" />
+                                        {% endif %}
+                                        <div class="text-wrap" style="font-size: 14px; user-select: none">{{ feature.name }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if form.features.errors %}
+                                <div class="invalid-feedback d-block">{{ form.features.errors.as_text|striptags }}</div>
+                            {% endif %}
                         </div>
-                        <div class="col">
-                          <select
-                            name="estado"
-                            class="form-select form-select-sm"
-                          >
-                            <option value="abierto">Abierto</option>
-                            <option value="cerrado">Cerrado</option>
-                            <option value="otro">Otro</option>
-                          </select>
-                        </div>
-                        <div class="col" style="display: none">
-                          <input
-                            type="text"
-                            name="estado_otro"
-                            class="form-control form-control-sm"
-                            maxlength="30"
-                            placeholder="Especificar"
-                          />
-                        </div>
-                        <div class="col-auto">
-                          <button type="submit" class="btn btn-sm btn-dark">
-                            Guardar
-                          </button>
-                        </div>
-                      </div>
+                        
+                        <button type="submit" class="btn btn-dark">Guardar</button>
                     </form>
-                  </div>
                 </div>
-
-                {% for bloque in horarios_por_dia|get_item:dia %}
-                <div
-                  class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1"
-                >
-                  {% if bloque.estado == 'abierto' %}
-                  <div
-                    class="schedule-item"
-                    data-start="{{ bloque.hora_inicio|time:'H:i' }}"
-                    data-end="{{ bloque.hora_fin|time:'H:i' }}"
-                  >
-                    {{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}
-                  </div>
-                  {% elif bloque.estado == 'cerrado' %}
-                  <div class="text-danger">Cerrado</div>
-                  {% else %}
-                  <div class="text-muted">{{ bloque.estado_otro }}</div>
-                  {% endif %}
-                  <span>
-                    <!-- Editar -->
-                    <a
-                      data-bs-toggle="collapse"
-                      href="#edit-{{ bloque.id }}"
-                      role="button"
-                      aria-expanded="false"
-                      aria-controls="edit-{{ bloque.id }}"
-                      class="btn btn-sm btn-link"
-                    >
-                      <i class="bi bi-pencil-square icon-large"></i>
-                    </a>
-                    <!-- Borrar -->
-                    <form
-                      method="post"
-                      action="{% url 'horario_delete' bloque.id %}"
-                      class="d-inline"
-                    >
-                      {% csrf_token %}
-                      <button
-                        type="submit"
-                        class="btn btn-sm btn-link text-danger"
-                      >
-                        <i class="bi bi-dash-circle icon-large"></i>
-                      </button>
-                    </form>
-                  </span>
+                <div id="tab-gallery" class="profile-section">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <!-- Col izquierda: Añadir fotos -->
+                        <div>
+                            <form id="upload-form"
+                                  method="post"
+                                  enctype="multipart/form-data"
+                                  action="{% url 'clubphoto_upload' club.slug %}"
+                                  class="mb-0">
+                                {% csrf_token %}
+                                <input type="file"
+                                       name="image"
+                                       id="id_gallery_image"
+                                       multiple
+                                       class="d-none" />
+                                <button type="button"
+                                        id="add-photos-btn"
+                                        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2">
+                                    <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
+                                </button>
+                            </form>
+                        </div>
+                        <!-- Col derecha: botones de acciones -->
+                        <div class="d-flex align-items-center gap-3">
+                            <button type="button"
+                                    id="select-all"
+                                    class="bg-transparent border-0 fw-medium text-black">Seleccionar todas</button>
+                            <button type="button"
+                                    id="deselect-all"
+                                    class="bg-transparent border-0 fw-medium text-secondary">Desmarcar todas</button>
+                            <form id="bulk-delete-form"
+                                  method="post"
+                                  action="{% url 'clubphoto_bulk_delete' club.slug %}"
+                                  class="d-inline mb-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="ids" id="delete-ids" />
+                                <button type="submit"
+                                        id="delete-selected"
+                                        class="bg-transparent border-0 fw-medium text-secondary">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="gallery-grid" class="gallery-grid">
+                        {% for photo in club.photos.all %}
+                            <div class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
+                                 draggable="true"
+                                 data-id="{{ photo.id }}">
+                                <img src="{{ photo.image.url }}"
+                                     alt="foto"
+                                     class="w-100 h-100 object-fit-cover rounded" />
+                                <div class="small photo-dimensions">{{ photo.image.width }}x{{ photo.image.height }}px</div>
+                                <input type="checkbox" class="photo-checkbox" value="{{ photo.id }}" />
+                                <div class="gallery-hover-actions">
+                                    <span class="drag-handle bi bi-arrows-move"></span>
+                                    <div class="dropdown">
+                                        <button class="btn btn-light btn-sm dropdown-toggle"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">Opciones</button>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <form method="post" action="{% url 'clubphoto_set_main' photo.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item">Destacar</button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="post" action="{% url 'clubphoto_delete' photo.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% if photo.is_main %}<span class="bi bi-pin-angle-fill main-pin"></span>{% endif %}
+                            </div>
+                        {% empty %}
+                            <p>No hay fotos.</p>
+                        {% endfor %}
+                    </div>
                 </div>
-                <!-- Collapse para editar -->
-                <div class="collapse" id="edit-{{ bloque.id }}">
-                  <form
-                    method="post"
-                    action="{% url 'horario_update' bloque.id %}"
-                  >
-                    {% csrf_token %}
-                    <input type="hidden" name="dia" value="{{ bloque.dia }}" />
-                    <div class="row g-2 mt-2">
-                      <div class="col">
-                        <input
-                          type="time"
-                          name="hora_inicio"
-                          value="{{ bloque.hora_inicio|time:'H:i' }}"
-                          class="form-control form-control-sm"
-                          required
-                        />
-                      </div>
-                      <div class="col">
-                        <input
-                          type="time"
-                          name="hora_fin"
-                          value="{{ bloque.hora_fin|time:'H:i' }}"
-                          class="form-control form-control-sm"
-                          required
-                        />
-                      </div>
-                      <div class="col">
-                        <select
-                          name="estado"
-                          class="form-select form-select-sm"
-                        >
-                          <option
-                            value="abierto"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="abierto"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Abierto
-                          </option>
-                          <option
-                            value="cerrado"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="cerrado"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Cerrado
-                          </option>
-                          <option
-                            value="otro"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="otro"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Otro
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col" style="display: none">
-                        <input
-                          type="text"
-                          name="estado_otro"
-                          value="{{ bloque.estado_otro }}"
-                          class="form-control form-control-sm"
-                          maxlength="30"
-                          placeholder="Especificar"
-                        />
-                      </div>
-                      <div class="col-auto">
-                        <button type="submit" class="btn btn-sm btn-dark">
-                          Guardar
+                <div id="tab-clase" class="profile-section">
+                    <h5 class="mt-4">Administrar clases</h5>
+                    <div class="mb-2">
+                        <button type="button"
+                                class="btn btn-sm btn-dark add-booking-class-btn"
+                                data-club-slug="{{ club.slug }}">
+                            <i class="bi bi-plus-circle icon-large"></i> Añadir clase
                         </button>
-                      </div>
                     </div>
-                  </form>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th class="booking-class-title-col">Título</th>
+                                <th class="booking-class-detail-col">Detalle</th>
+                                <th>Precio</th>
+                                <th>Duración</th>
+                                <th>Destacada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in booking_classes %}
+                                <tr>
+                                    <td class="d-flex gap-1 actions-column">
+                                        <button type="button"
+                                                class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark"
+                                                data-class-id="{{ c.id }}"></button>
+                                        <form method="post"
+                                              action="{% url 'booking_class_delete' c.id %}"
+                                              class="m-0 p-0 delete-profile-form">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    class="bi bi-dash-circle icon-large btn btn-link text-danger p-0">
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td class="booking-class-title">{{ c.titulo|upper }}</td>
+                                    <td class="booking-class-detail">{{ c.detalle }}</td>
+                                    <td>
+                                        {% if c.precio == 0 %}
+                                            Gratis
+                                        {% else %}
+                                            {{ c.precio }} €
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ c.duracion }} min</td>
+                                    <td>
+                                        {% if c.destacado %}
+                                            Sí
+                                        {% else %}
+                                            No
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-muted">No hay clases.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                {% empty %}
-                <small class="text-muted">Sin horarios</small>
-                {% endfor %}
-              </td>
-              {% endfor %}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-           <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
-        <h5 class="mb-3">Administrar disponibilidad</h5>
-        <div id="schedule-manager" class="mb-3">
-          <!-- Removed legacy day and time pickers -->
-          {{ horarios_json|json_script:"schedule-data" }}
-        </div>
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <button id="availability-prev" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
-            {% for idx, label in months %}
-              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-          <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
-            <option value="{{ today.year }}" selected>{{ today.year }}</option>
-          </select>
-          <button id="availability-next" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <div class="table-responsive">
-          <table id="availability-table" class="table table-bordered table-sm text-center">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div class="d-flex gap-2">
-          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
-          <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
-        </div>
-      </div>
-
-
-    </div>
-    <div id="tab-coaches" class="profile-section">
-      <button
-        type="button"
-        class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn"
-        data-club-slug="{{ club.slug }}"
-      >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir entrenador
-      </button>
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for coach in club.entrenadores.all %}
-        <div class="col">
-          <div class="card h-100 text-center">
-            {% if coach.avatar %}
-            <img
-              src="{{ coach.avatar.url }}"
-              class="card-img-top object-fit-cover"
-              style="height: 250px"
-              alt="{{ coach.nombre }}"
-            />
-            {% else %}
-            <div
-              class="card-img-top d-flex align-items-center justify-content-center bg-light"
-              style="height: 250px"
-            >
-              <span class="text-muted">{{ coach.nombre|first|upper }}</span>
-            </div>
-            {% endif %}
-
-            <div class="card-body p-2">
-              <!-- Nombre centrado -->
-              <span class="fw-medium text-center mb-2"
-                >{{ coach.nombre }} {{ coach.apellidos }}</span
-              >
-
-              <!-- Iconos debajo del nombre, centrados -->
-              <div class="mt-2 d-flex justify-content-center gap-2">
-                <a
-                  href="{% url 'entrenador_update' coach.id %}"
-                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
-                ></a>
-
-                <form
-                  method="post"
-                  action="{% url 'entrenador_delete' coach.id %}"
-                  class="m-0 p-0 delete-profile-form"
-                >
-                  {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"
-                  ></button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% empty %}
-        <p>No hay entrenadores.</p>
-        {% endfor %}
-      </div>
-    </div>
-    <div id="tab-competitors" class="profile-section">
-      <button
-        type="button"
-        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
-        data-club-slug="{{ club.slug }}"
-      >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
-      </button>
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for comp in club.competidores.all %}
-        <div class="col">
-          <div class="card text-center">
-            {% if comp.avatar %}
-            <img
-              src="{{ comp.avatar.url }}"
-              class="card-img-top object-fit-cover"
-              style="height: 200px"
-              alt="{{ comp.nombre }} {{ comp.apellidos }}"
-            />
-            {% else %}
-            <div
-              class="card-img-top d-flex align-items-center justify-content-center bg-light"
-              style="height: 200px"
-            >
-              <span class="text-muted">{{ comp.nombre|add:' '|add:comp.apellidos|initials }}</span>
-            </div>
-            {% endif %}
-            <div
-              class="card-body p-2 d-flex flex-column justify-content-between"
-            >
-              <!-- Nombre centrado -->
-              <div
-                class="d-flex justify-content-center align-items-center mb-2"
-              >
-                <span class="fw-medium text-center">{{ comp.nombre }} {{ comp.apellidos }}</span>
-              </div>
-
-              <!-- Información del competidor -->
-              <small class="text-center mb-2">
-                {% with rec=comp.record_tuple %}
-                <span class="fw-bold text-success">{{ rec.0 }}</span>-
-                <span class="fw-bold text-danger">{{ rec.1 }}</span>-
-                <span class="fw-bold text-primary">{{ rec.2 }}</span>
-                {% endwith %}
-                <br />
-                <span>{{ comp.categoria }}</span>
-              </small>
-
-              <!-- Iconos abajo, centrados -->
-              <div class="mt-1 d-flex justify-content-center gap-2">
-                <a
-                  href="{% url 'competidor_update' comp.id %}"
-                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
-                ></a>
-
-                <form
-                  method="post"
-                  action="{% url 'competidor_delete' comp.id %}"
-                  class="d-flex align-items-center p-0 m-0 delete-profile-form"
-                >
-                  {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center"
-                  ></button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% empty %}
-        <p>No hay competidores.</p>
-        {% endfor %}
-      </div>
-    </div>
-    <div id="tab-members" class="profile-section">
-      <div class="d-flex align-items-center gap-2 mb-3">
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
-        </button>
-        <div class="member-search">
-          <form method="get" id="member-search-form" class="member-search-form">
-            <button type="submit" class="search-icon">
-              <i class="bi bi-search"></i>
-            </button>
-            <input
-              type="text"
-              name="q"
-              id="member-search-input"
-              placeholder="Buscar miembro"
-              value="{{ request.GET.q }}"
-              autocomplete="off"
-            />
-            <button type="button" class="close-icon">&times;</button>
-          </form>
-        </div>
-        <div class="ms-auto d-flex align-items-center">
-          {% include 'partials/_member-sort.html' %}
-        </div>
-      </div>
-      <div class="row g-3">
-        <div class="col-12">
-          <div class="members-table-responsive">
-            <table
-              class="table table-bordered text-center align-middle"
-              style="min-width: 600px"
-            >
-              <thead class="table-dark">
-                <tr>
-                  <th>Miembro</th>
-                  <th class="text-nowrap phone-column">Teléfono</th>
-                  <th>Email</th>
-                  <th>Inscrito</th>
-                  <th class="text-nowrap" style="width: 1%">
-                    <div class="dropdown d-inline">
-                      <span>Estado</span>
-                      <button
-                        class="btn btn-link p-0 ms-1"
-                        type="button"
-                        id="estado-filter-btn"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-funnel-fill text-white"></i>
-                      </button>
-                      <form
-                        class="dropdown-menu p-3"
-                        aria-labelledby="estado-filter-btn"
-                        id="estado-filter-menu"
-                      >
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="estado-filter"
-                            id="estado-dd-activo"
-                            value="activo"
-                          />
-                          <label class="form-check-label" for="estado-dd-activo"
-                            >Activo</label
-                          >
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="estado-filter"
-                            id="estado-dd-inactivo"
-                            value="inactivo"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="estado-dd-inactivo"
-                            >Inactivo</label
-                          >
-                        </div>
-                        <div class="d-flex justify-content-end gap-2 mt-2">
-                          <button
-                            type="button"
-                            class="btn btn-light btn-sm cancel-filter"
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="submit"
-                            class="btn btn-dark btn-sm apply-filter"
-                          >
-                            Filtrar
-                          </button>
-                        </div>
-                      </form>
+                <div id="tab-schedule" class="profile-section">
+                    <h2 class="h5 mt-4">Horarios</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle"
+                               style="min-width: 700px">
+                            <thead class="table-dark">
+                                <tr>
+                                    {% for dia, nombre in dias_semana %}<th scope="col">{{ nombre }}</th>{% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    {% for dia, nombre in dias_semana %}
+                                        <td style="vertical-align: top">
+                                            <!-- Botón añadir -->
+                                            <div class="mb-3">
+                                                <button class="btn btn-sm btn-outline-dark w-100 h-50"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#add-{{ dia }}"
+                                                        aria-expanded="false"
+                                                        aria-controls="add-{{ dia }}">
+                                                    <i class="bi bi-plus-circle"></i> Añadir
+                                                </button>
+                                                <div class="collapse mt-2" id="add-{{ dia }}">
+                                                    <form method="post" action="{% url 'horario_create' club.slug %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="dia" value="{{ dia }}" />
+                                                        <div class="row g-2">
+                                                            <div class="col">
+                                                                <input type="time"
+                                                                       name="hora_inicio"
+                                                                       class="form-control form-control-sm"
+                                                                       required />
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time"
+                                                                       name="hora_fin"
+                                                                       class="form-control form-control-sm"
+                                                                       required />
+                                                            </div>
+                                                            <div class="col">
+                                                                <select name="estado" class="form-select form-select-sm">
+                                                                    <option value="abierto">Abierto</option>
+                                                                    <option value="cerrado">Cerrado</option>
+                                                                    <option value="otro">Otro</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col" style="display: none">
+                                                                <input type="text"
+                                                                       name="estado_otro"
+                                                                       class="form-control form-control-sm"
+                                                                       maxlength="30"
+                                                                       placeholder="Especificar" />
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            {% for bloque in horarios_por_dia|get_item:dia %}
+                                                <div class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1">
+                                                    {% if bloque.estado == 'abierto' %}
+                                                        <div class="schedule-item"
+                                                             data-start="{{ bloque.hora_inicio|time:'H:i' }}"
+                                                             data-end="{{ bloque.hora_fin|time:'H:i' }}">
+                                                            {{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}
+                                                        </div>
+                                                    {% elif bloque.estado == 'cerrado' %}
+                                                        <div class="text-danger">Cerrado</div>
+                                                    {% else %}
+                                                        <div class="text-muted">{{ bloque.estado_otro }}</div>
+                                                    {% endif %}
+                                                    <span>
+                                                        <!-- Editar -->
+                                                        <a data-bs-toggle="collapse"
+                                                           href="#edit-{{ bloque.id }}"
+                                                           role="button"
+                                                           aria-expanded="false"
+                                                           aria-controls="edit-{{ bloque.id }}"
+                                                           class="btn btn-sm btn-link">
+                                                            <i class="bi bi-pencil-square icon-large"></i>
+                                                        </a>
+                                                        <!-- Borrar -->
+                                                        <form method="post"
+                                                              action="{% url 'horario_delete' bloque.id %}"
+                                                              class="d-inline">
+                                                            {% csrf_token %}
+                                                            <button type="submit" class="btn btn-sm btn-link text-danger">
+                                                                <i class="bi bi-dash-circle icon-large"></i>
+                                                            </button>
+                                                        </form>
+                                                    </span>
+                                                </div>
+                                                <!-- Collapse para editar -->
+                                                <div class="collapse" id="edit-{{ bloque.id }}">
+                                                    <form method="post" action="{% url 'horario_update' bloque.id %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="dia" value="{{ bloque.dia }}" />
+                                                        <div class="row g-2 mt-2">
+                                                            <div class="col">
+                                                                <input type="time"
+                                                                       name="hora_inicio"
+                                                                       value="{{ bloque.hora_inicio|time:'H:i' }}"
+                                                                       class="form-control form-control-sm"
+                                                                       required />
+                                                            </div>
+                                                            <div class="col">
+                                                                <input type="time"
+                                                                       name="hora_fin"
+                                                                       value="{{ bloque.hora_fin|time:'H:i' }}"
+                                                                       class="form-control form-control-sm"
+                                                                       required />
+                                                            </div>
+                                                            <div class="col">
+                                                                <select name="estado" class="form-select form-select-sm">
+                                                                    <option value="abierto" {%
+                                                                        if
+                                                                        bloque.estado=""
+                                                                        ="abierto"
+                                                                        %}selected{%
+                                                                        endif
+                                                                        %}>Abierto</option>
+                                                                    <option value="cerrado" {%
+                                                                        if
+                                                                        bloque.estado=""
+                                                                        ="cerrado"
+                                                                        %}selected{%
+                                                                        endif
+                                                                        %}>Cerrado</option>
+                                                                    <option value="otro" {%
+                                                                        if
+                                                                        bloque.estado=""
+                                                                        ="otro"
+                                                                        %}selected{%
+                                                                        endif
+                                                                        %}>Otro</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col" style="display: none">
+                                                                <input type="text"
+                                                                       name="estado_otro"
+                                                                       value="{{ bloque.estado_otro }}"
+                                                                       class="form-control form-control-sm"
+                                                                       maxlength="30"
+                                                                       placeholder="Especificar" />
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            {% empty %}
+                                                <small class="text-muted">Sin horarios</small>
+                                            {% endfor %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </th>
-                  <th class="text-nowrap" style="width: 1%">
-                    <div class="dropdown d-inline">
-                      <span>Pagos</span>
-                      <button
-                        class="btn btn-link p-0 ms-1"
-                        type="button"
-                        id="pago-filter-btn"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-funnel-fill text-white"></i>
-                      </button>
-                      <form
-                        class="dropdown-menu p-3"
-                        aria-labelledby="pago-filter-btn"
-                        id="pago-filter-menu"
-                      >
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="pago-filter"
-                            id="pago-dd-completo"
-                            value="completo"
-                          />
-                          <label class="form-check-label" for="pago-dd-completo"
-                            >Completo</label
-                          >
+                    <div id="availability-manager"
+                         class="mb-4"
+                         data-club-slug="{{ club.slug }}">
+                        <h5 class="mb-3">Administrar disponibilidad</h5>
+                        <div id="schedule-manager" class="mb-3">
+                            <!-- Removed legacy day and time pickers -->
+                            {{ horarios_json|json_script:"schedule-data" }}
                         </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="pago-filter"
-                            id="pago-dd-pendiente"
-                            value="pendiente"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="pago-dd-pendiente"
-                            >Pendiente</label
-                          >
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <button id="availability-prev" class="btn btn-light btn-sm">
+                                <i class="bi bi-chevron-left"></i>
+                            </button>
+                            <select id="availability-month"
+                                    class="form-select form-select-sm"
+                                    style="width:auto">
+                                {% for idx, label in months %}
+                                    <option value="{{ idx }}"
+                                            {% if idx == today.month|add:'-1' %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <select id="availability-year"
+                                    class="form-select form-select-sm"
+                                    style="width:auto">
+                                <option value="{{ today.year }}" selected>{{ today.year }}</option>
+                            </select>
+                            <button id="availability-next" class="btn btn-light btn-sm">
+                                <i class="bi bi-chevron-right"></i>
+                            </button>
                         </div>
-                        <div class="d-flex justify-content-end gap-2 mt-2">
-                          <button
-                            type="button"
-                            class="btn btn-light btn-sm cancel-filter"
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="submit"
-                            class="btn btn-dark btn-sm apply-filter"
-                          >
-                            Filtrar
-                          </button>
+                        <div class="table-responsive">
+                            <table id="availability-table"
+                                   class="table table-bordered table-sm text-center">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                      </form>
+                        <div class="d-flex gap-2">
+                            <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
+                            <button type="button"
+                                    id="availability-clear"
+                                    class="btn btn-outline-danger btn-sm">Limpiar</button>
+                        </div>
                     </div>
-                  </th>
-                  <th class="actions-column"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for m in members %}
-                <tr
-                  data-estado="{{ m.estado }}"
-                  data-pago="{{ m.pago_mes_actual }}"
-                >
-                  <td>
-                    {{ m.nombre }} {{ m.apellidos }}
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link view-member-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-person-bounding-box"></i>
-                    </button>
-                  </td>
-                  <td class="phone-column">{{ m.telefono }}</td>
-                  <td>{{ m.email }}</td>
-                  <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
-                  <td class="text-nowrap">
-                    {% if m.estado == 'activo' %}
-                    <span class="badge p-2 bg-success">Activo</span>
-                    {% else %}
-                    <span class="badge p-2 bg-secondary">Inactivo</span>
-                    {% endif %}
-                  </td>
-                  <td class="text-nowrap">
-                    {% if m.pago_mes_actual == 'completo' %}
-                    <span class="badge p-2 bg-primary">Completo</span>
-                    {% else %}
-                    <span class="badge p-2 bg-warning text-dark"
-                      >Pendiente</span
-                    >
-                    {% endif %}
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link view-payments-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-kanban"></i>
-                    </button>
-                  </td>
-                  <td class="actions-column">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link edit-member-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-pencil-square icon-large text-dark"></i>
-                    </button>
-                    <form
-                      method="post"
-                      action="{% url 'miembro_delete' m.id %}"
-                      class="d-inline delete-profile-form"
-                    >
-                      {% csrf_token %}
-                      <button
-                        type="submit"
-                        class="btn btn-sm btn-link text-danger"
-                      >
-                        <i class="bi bi-dash-circle icon-large"></i>
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-                {% empty %}
-                <tr class="no-members-row">
-                  <td colspan="7" class="text-muted">No hay miembros.</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="tab-bookings" class="profile-section">
-      <h4 class="h4">Reservas</h4>
-      <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-          {% include 'partials/_booking-filter.html' %}
-        </div>
-      </div>
-       <div class="table-responsive">
-      <table class="table table-sm mb-0" style="min-width:600px">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Tipo de reserva</th>
-            <th>Reserva</th>
-            <th>Estado</th>
-            <th class="actions-column">Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for b in bookings %}
-          <tr>
-            <td>{{ b.user.username }}</td>
-            <td>{{ b.class_type.titulo }}</td>
-            <td>{{ b.fecha|date:"d/m/y" }} {{ b.hora|time:"H:i"|default:'' }}</td>
-            <td>{{ b.get_status_display }}</td>
-            <td class="d-flex gap-1">
-              <form method="post" action="{% url 'booking_confirm' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-check-circle icon-large btn btn-link p-0 text-success"></button>
-              </form>
-              <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-x-circle icon-large btn btn-link p-0 text-danger"></button>
-              </form>
-              <form method="post" action="{% url 'booking_delete' b.id %}" class="delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
-              </form>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="5" class="text-muted">No hay reservas.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      </div>
-    </div>
-    <div id="tab-matchmaker" class="profile-section">
-      <div class="row mb-3">
-        <div class="col-12 col-lg-4">
-          <form
-            method="get"
-            id="matchmaker-filter-form"
-            class="d-grid gap-3 mb-3"
-          >
-            <div>
-              <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input
-                  class="form-check-input custom-check"
-                  type="radio"
-              name="mm_sexo"
-              id="mm-sexo-m"
-              value="M"
-              {% if request.GET.mm_sexo == 'M' %}checked{% endif %}
-            />
-            <label class="form-check-label" for="mm-sexo-m">Masculino</label>
-          </div>
-          <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-            <input
-              class="form-check-input custom-check"
-              type="radio"
-              name="mm_sexo"
-              id="mm-sexo-f"
-              value="F"
-              {% if request.GET.mm_sexo == 'F' %}checked{% endif %}
-            />
-                <label class="form-check-label" for="mm-sexo-f">Femenino</label>
-              </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Peso</span>
-              <div class="range-slider ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-            </div>
-            <div class="slider-wrapper mt-2">
-              <div class="slider-track"></div>
-              <input
-                type="range"
-                name="mm_peso_min"
-                min="30"
-                max="160"
-                step="1"
-                value="{{ request.GET.mm_peso_min|default:30 }}"
-              />
-              <input
-                type="range"
-                name="mm_peso_max"
-                min="30"
-                max="160"
-                step="1"
-                value="{{ request.GET.mm_peso_max|default:160 }}"
-              />
-            </div>
-          </div>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Ciudad</span>
-              <select name="mm_ciudad" class="form-select form-select-sm">
-                <option value="">Todas</option>
-                {% for city in cities %}
-                <option value="{{ city }}" {% if request.GET.mm_ciudad == city %}selected{% endif %}>{{ city }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div>
-              <span class="d-block small fw-bold">Edad</span>
-              <div class="range-slider ms-2 me-2">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-            </div>
-            <div class="slider-wrapper mt-2">
-              <div class="slider-track"></div>
-              <input
-                type="range"
-                name="mm_edad_min"
-                min="10"
-                max="60"
-                step="1"
-                value="{{ request.GET.mm_edad_min|default:10 }}"
-              />
-              <input
-                type="range"
-                name="mm_edad_max"
-                min="10"
-                max="60"
-                step="1"
-                value="{{ request.GET.mm_edad_max|default:60 }}"
-              />
-            </div>
-          </div>
-            </div>
-            <div class="text-end">
-              <button
-                type="button"
-                id="clear-matchmaker-filter-btn"
-                class="btn btn-outline-dark btn-sm ms-2"
-              >
-                Limpiar
-              </button>
-              <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for c in match_results %}
-        <div class="col">
-          <div class="card-flip">
-            <div class="card-flip-inner">
-              <div class="card text-center card-flip-front">
-                {% if c.avatar %}
-                <img src="{{ c.avatar.url }}" class="card-img-top object-fit-cover" style="height: 200px" alt="{{ c.nombre }}" />
-                {% else %}
-                <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px">
-                  <span class="text-muted">{{ c.nombre|initials }}</span>
                 </div>
-                {% endif %}
-                <div class="card-body p-2">
-                  <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
-                  <small class="text-muted d-block">{{ c.club.name }} - {{ c.club.city }}</small>
-                  <small class="d-block">
-                    {{ c.peso|default:'—' }}
-                    {% if c.edad %}| {{ c.edad }}{% else %}| —{% endif %}
-                  </small>
+                <div id="tab-coaches" class="profile-section">
+                    <button type="button"
+                            class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn"
+                            data-club-slug="{{ club.slug }}">
+                        <i class="bi bi-plus-circle icon-large"></i> Añadir entrenador
+                    </button>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+                        {% for coach in club.entrenadores.all %}
+                            <div class="col">
+                                <div class="card h-100 text-center">
+                                    {% if coach.avatar %}
+                                        <img src="{{ coach.avatar.url }}"
+                                             class="card-img-top object-fit-cover"
+                                             style="height: 250px"
+                                             alt="{{ coach.nombre }}" />
+                                    {% else %}
+                                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                                             style="height: 250px">
+                                            <span class="text-muted">{{ coach.nombre|first|upper }}</span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body p-2">
+                                        <!-- Nombre centrado -->
+                                        <span class="fw-medium text-center mb-2">{{ coach.nombre }} {{ coach.apellidos }}</span>
+                                        <!-- Iconos debajo del nombre, centrados -->
+                                        <div class="mt-2 d-flex justify-content-center gap-2">
+                                            <a href="{% url 'entrenador_update' coach.id %}"
+                                               class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+                                            <form method="post"
+                                                  action="{% url 'entrenador_delete' coach.id %}"
+                                                  class="m-0 p-0 delete-profile-form">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center">
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay entrenadores.</p>
+                        {% endfor %}
+                    </div>
                 </div>
-              </div>
-              <div class="card card-flip-back text-center bg-dark text-white">
-                <div class="p-2 d-flex flex-column justify-content-center align-items-center h-100">
-                  <small class="d-block">Sexo: {{ c.get_sexo_display|default:'—' }}</small>
-                  <small class="d-block">Edad: {{ c.edad|default:'—' }}</small>
-                  <small class="d-block">Peso: {{ c.peso|default:'—' }}</small>
+                <div id="tab-competitors" class="profile-section">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
+                            data-club-slug="{{ club.slug }}">
+                        <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
+                    </button>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+                        {% for comp in club.competidores.all %}
+                            <div class="col">
+                                <div class="card text-center">
+                                    {% if comp.avatar %}
+                                        <img src="{{ comp.avatar.url }}"
+                                             class="card-img-top object-fit-cover"
+                                             style="height: 200px"
+                                             alt="{{ comp.nombre }} {{ comp.apellidos }}" />
+                                    {% else %}
+                                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                                             style="height: 200px">
+                                            <span class="text-muted">{{ comp.nombre|add:' '|add:comp.apellidos|initials }}</span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="card-body p-2 d-flex flex-column justify-content-between">
+                                        <!-- Nombre centrado -->
+                                        <div class="d-flex justify-content-center align-items-center mb-2">
+                                            <span class="fw-medium text-center">{{ comp.nombre }} {{ comp.apellidos }}</span>
+                                        </div>
+                                        <!-- Información del competidor -->
+                                        <small class="text-center mb-2">
+                                            {% with rec=comp.record_tuple %}
+                                                <span class="fw-bold text-success">{{ rec.0 }}</span>-
+                                                <span class="fw-bold text-danger">{{ rec.1 }}</span>-
+                                                <span class="fw-bold text-primary">{{ rec.2 }}</span>
+                                            {% endwith %}
+                                            <br />
+                                            <span>{{ comp.categoria }}</span>
+                                        </small>
+                                        <!-- Iconos abajo, centrados -->
+                                        <div class="mt-1 d-flex justify-content-center gap-2">
+                                            <a href="{% url 'competidor_update' comp.id %}"
+                                               class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+                                            <form method="post"
+                                                  action="{% url 'competidor_delete' comp.id %}"
+                                                  class="d-flex align-items-center p-0 m-0 delete-profile-form">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center">
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay competidores.</p>
+                        {% endfor %}
+                    </div>
                 </div>
-              </div>
+                <div id="tab-members" class="profile-section">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <button type="button"
+                                class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn"
+                                data-club-slug="{{ club.slug }}">
+                            <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
+                        </button>
+                        <div class="member-search">
+                            <form method="get" id="member-search-form" class="member-search-form">
+                                <button type="submit" class="search-icon">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                                <input type="text"
+                                       name="q"
+                                       id="member-search-input"
+                                       placeholder="Buscar miembro"
+                                       value="{{ request.GET.q }}"
+                                       autocomplete="off" />
+                                <button type="button" class="close-icon">&times;</button>
+                            </form>
+                        </div>
+                        <div class="ms-auto d-flex align-items-center">{% include 'partials/_member-sort.html' %}</div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="members-table-responsive">
+                                <table class="table table-bordered text-center align-middle"
+                                       style="min-width: 600px">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Miembro</th>
+                                            <th class="text-nowrap phone-column">Teléfono</th>
+                                            <th>Email</th>
+                                            <th>Inscrito</th>
+                                            <th class="text-nowrap" style="width: 1%">
+                                                <div class="dropdown d-inline">
+                                                    <span>Estado</span>
+                                                    <button class="btn btn-link p-0 ms-1"
+                                                            type="button"
+                                                            id="estado-filter-btn"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        <i class="bi bi-funnel-fill text-white"></i>
+                                                    </button>
+                                                    <form class="dropdown-menu p-3"
+                                                          aria-labelledby="estado-filter-btn"
+                                                          id="estado-filter-menu">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                   type="radio"
+                                                                   name="estado-filter"
+                                                                   id="estado-dd-activo"
+                                                                   value="activo" />
+                                                            <label class="form-check-label" for="estado-dd-activo">Activo</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                   type="radio"
+                                                                   name="estado-filter"
+                                                                   id="estado-dd-inactivo"
+                                                                   value="inactivo" />
+                                                            <label class="form-check-label" for="estado-dd-inactivo">Inactivo</label>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end gap-2 mt-2">
+                                                            <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
+                                                            <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </th>
+                                            <th class="text-nowrap" style="width: 1%">
+                                                <div class="dropdown d-inline">
+                                                    <span>Pagos</span>
+                                                    <button class="btn btn-link p-0 ms-1"
+                                                            type="button"
+                                                            id="pago-filter-btn"
+                                                            data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        <i class="bi bi-funnel-fill text-white"></i>
+                                                    </button>
+                                                    <form class="dropdown-menu p-3"
+                                                          aria-labelledby="pago-filter-btn"
+                                                          id="pago-filter-menu">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                   type="radio"
+                                                                   name="pago-filter"
+                                                                   id="pago-dd-completo"
+                                                                   value="completo" />
+                                                            <label class="form-check-label" for="pago-dd-completo">Completo</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"
+                                                                   type="radio"
+                                                                   name="pago-filter"
+                                                                   id="pago-dd-pendiente"
+                                                                   value="pendiente" />
+                                                            <label class="form-check-label" for="pago-dd-pendiente">Pendiente</label>
+                                                        </div>
+                                                        <div class="d-flex justify-content-end gap-2 mt-2">
+                                                            <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
+                                                            <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </th>
+                                            <th class="actions-column"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in members %}
+                                            <tr data-estado="{{ m.estado }}" data-pago="{{ m.pago_mes_actual }}">
+                                                <td>
+                                                    {{ m.nombre }} {{ m.apellidos }}
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-link view-member-btn text-dark"
+                                                            data-member-id="{{ m.id }}">
+                                                        <i class="bi bi-person-bounding-box"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="phone-column">{{ m.telefono }}</td>
+                                                <td>{{ m.email }}</td>
+                                                <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
+                                                <td class="text-nowrap">
+                                                    {% if m.estado == 'activo' %}
+                                                        <span class="badge p-2 bg-success">Activo</span>
+                                                    {% else %}
+                                                        <span class="badge p-2 bg-secondary">Inactivo</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    {% if m.pago_mes_actual == 'completo' %}
+                                                        <span class="badge p-2 bg-primary">Completo</span>
+                                                    {% else %}
+                                                        <span class="badge p-2 bg-warning text-dark">Pendiente</span>
+                                                    {% endif %}
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-link view-payments-btn text-dark"
+                                                            data-member-id="{{ m.id }}">
+                                                        <i class="bi bi-kanban"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="actions-column">
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-link edit-member-btn text-dark"
+                                                            data-member-id="{{ m.id }}">
+                                                        <i class="bi bi-pencil-square icon-large text-dark"></i>
+                                                    </button>
+                                                    <form method="post"
+                                                          action="{% url 'miembro_delete' m.id %}"
+                                                          class="d-inline delete-profile-form">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-sm btn-link text-danger">
+                                                            <i class="bi bi-dash-circle icon-large"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr class="no-members-row">
+                                                <td colspan="7" class="text-muted">No hay miembros.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab-bookings" class="profile-section">
+                    <h4 class="h4">Reservas</h4>
+                    <div class="row mb-3">
+                        <div class="col-12 d-flex justify-content-end">{% include 'partials/_booking-filter.html' %}</div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm mb-0" style="min-width:600px">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Tipo de reserva</th>
+                                    <th>Reserva</th>
+                                    <th>Estado</th>
+                                    <th class="actions-column">Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for b in bookings %}
+                                    <tr>
+                                        <td>{{ b.user.username }}</td>
+                                        <td>{{ b.class_type.titulo }}</td>
+                                        <td>{{ b.fecha|date:"d/m/y" }} {{ b.hora|time:"H:i"|default:'' }}</td>
+                                        <td>{{ b.get_status_display }}</td>
+                                        <td class="d-flex gap-1">
+                                            <form method="post" action="{% url 'booking_confirm' b.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bi bi-check-circle icon-large btn btn-link p-0 text-success">
+                                                </button>
+                                            </form>
+                                            <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bi bi-x-circle icon-large btn btn-link p-0 text-danger">
+                                                </button>
+                                            </form>
+                                            <form method="post"
+                                                  action="{% url 'booking_delete' b.id %}"
+                                                  class="delete-profile-form">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="bi bi-dash-circle icon-large btn btn-link text-danger p-0">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="text-muted">No hay reservas.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="tab-matchmaker" class="profile-section">
+                    <div class="row mb-3">
+                        <div class="col-12 col-lg-4">
+                            <form method="get" id="matchmaker-filter-form" class="d-grid gap-3 mb-3">
+                                <div>
+                                    <span class="d-block small fw-bold">Sexo</span>
+                                    <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                                        <input class="form-check-input custom-check"
+                                               type="radio"
+                                               name="mm_sexo"
+                                               id="mm-sexo-m"
+                                               value="M"
+                                               {% if request.GET.mm_sexo == 'M' %}checked{% endif %} />
+                                        <label class="form-check-label" for="mm-sexo-m">Masculino</label>
+                                    </div>
+                                    <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                                        <input class="form-check-input custom-check"
+                                               type="radio"
+                                               name="mm_sexo"
+                                               id="mm-sexo-f"
+                                               value="F"
+                                               {% if request.GET.mm_sexo == 'F' %}checked{% endif %} />
+                                        <label class="form-check-label" for="mm-sexo-f">Femenino</label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block small fw-bold">Peso</span>
+                                    <div class="range-slider ms-2 me-2">
+                                        <div class="range-values">
+                                            <span class="min-value"></span>
+                                            <span class="max-value"></span>
+                                        </div>
+                                        <div class="slider-wrapper mt-2">
+                                            <div class="slider-track"></div>
+                                            <input type="range"
+                                                   name="mm_peso_min"
+                                                   min="30"
+                                                   max="160"
+                                                   step="1"
+                                                   value="{{ request.GET.mm_peso_min|default:30 }}" />
+                                            <input type="range"
+                                                   name="mm_peso_max"
+                                                   min="30"
+                                                   max="160"
+                                                   step="1"
+                                                   value="{{ request.GET.mm_peso_max|default:160 }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block small fw-bold">Ciudad</span>
+                                    <select name="mm_ciudad" class="form-select form-select-sm">
+                                        <option value="">Todas</option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"
+                                                    {% if request.GET.mm_ciudad == city %}selected{% endif %}>
+                                                {{ city }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div>
+                                    <span class="d-block small fw-bold">Edad</span>
+                                    <div class="range-slider ms-2 me-2">
+                                        <div class="range-values">
+                                            <span class="min-value"></span>
+                                            <span class="max-value"></span>
+                                        </div>
+                                        <div class="slider-wrapper mt-2">
+                                            <div class="slider-track"></div>
+                                            <input type="range"
+                                                   name="mm_edad_min"
+                                                   min="10"
+                                                   max="60"
+                                                   step="1"
+                                                   value="{{ request.GET.mm_edad_min|default:10 }}" />
+                                            <input type="range"
+                                                   name="mm_edad_max"
+                                                   min="10"
+                                                   max="60"
+                                                   step="1"
+                                                   value="{{ request.GET.mm_edad_max|default:60 }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <button type="button"
+                                            id="clear-matchmaker-filter-btn"
+                                            class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
+                                    <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+                        {% for c in match_results %}
+                            <div class="col">
+                                <div class="card-flip">
+                                    <div class="card-flip-inner">
+                                        <div class="card text-center card-flip-front">
+                                            {% if c.avatar %}
+                                                <img src="{{ c.avatar.url }}"
+                                                     class="card-img-top object-fit-cover"
+                                                     style="height: 200px"
+                                                     alt="{{ c.nombre }}" />
+                                            {% else %}
+                                                <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                                                     style="height: 200px">
+                                                    <span class="text-muted">{{ c.nombre|initials }}</span>
+                                                </div>
+                                            {% endif %}
+                                            <div class="card-body p-2">
+                                                <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
+                                                <small class="text-muted d-block">{{ c.club.name }} - {{ c.club.city }}</small>
+                                                <small class="d-block">
+                                                    {{ c.peso|default:'—' }}
+                                                    {% if c.edad %}
+                                                        | {{ c.edad }}
+                                                    {% else %}
+                                                        | —
+                                                    {% endif %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div class="card card-flip-back text-center bg-dark text-white">
+                                            <div class="p-2 d-flex flex-column justify-content-center align-items-center h-100">
+                                                <small class="d-block">Sexo: {{ c.get_sexo_display|default:'—' }}</small>
+                                                <small class="d-block">Edad: {{ c.edad|default:'—' }}</small>
+                                                <small class="d-block">Peso: {{ c.peso|default:'—' }}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay competidores.</p>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        {% empty %}
-        <p>No hay competidores.</p>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Confirm Delete Modal -->
-<div
-  class="modal fade"
-  id="confirmDeleteModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar eliminación</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">¿Seguro que deseas eliminar?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
-        <button type="button" class="btn btn-danger confirm-delete">
-          Eliminar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Edit Modal -->
-<div class="modal fade" id="confirmEditModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Confirmar cambios</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">¿Seguro que deseas guardar los cambios?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
-        <button type="button" class="btn btn-primary confirm-edit">
-          Guardar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Time Delete Modal -->
-<div class="modal fade" id="confirmTimeDeleteModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Eliminar hora</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">¿Seguro que deseas eliminar este rango horario?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger confirm-time-delete">Eliminar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Copy Modal -->
-<div class="modal fade" id="confirmCopyModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Copiar disponibilidad</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">¿Copiar esta disponibilidad a todas las fechas?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-dark confirm-copy">Copiar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Save Modal -->
-<div class="modal fade" id="confirmSaveModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Guardar disponibilidad</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">¿Seguro que deseas guardar la disponibilidad?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-dark confirm-save">Guardar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Confirm Clear Modal -->
-<div class="modal fade" id="confirmClearModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Limpiar disponibilidad</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">¿Seguro que deseas limpiar la disponibilidad?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger confirm-clear">Limpiar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Payment History Modal -->
-<div
-  class="modal fade"
-  id="paymentHistoryModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Historial de Pagos</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Member Profile Modal -->
-<div
-  class="modal fade"
-  id="memberProfileModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Perfil de Miembro</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body text-center"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Member Modal -->
-<div class="modal fade" id="editMemberModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Editar miembro</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body p-5"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Member Modal -->
-<div class="modal fade" id="addMemberModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Nuevo miembro</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Coach Modal -->
-<div class="modal fade" id="addCoachModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Nuevo entrenador</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Competitor Modal -->
-<div
-  class="modal fade"
-  id="addCompetitorModal"
-  tabindex="-1"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Nuevo competidor</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Booking Class Modal -->
-<div class="modal fade" id="editBookingClassModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Editar clase</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Booking Class Modal -->
-<div class="modal fade" id="addBookingClassModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Nueva clase</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body"></div>
-    </div>
-  </div>
-</div>
-
-{% endblock %} {% block extra_js %}
-<script src="{% static 'js/profile-tabs.js' %}"></script>
-<script src="{% static 'js/feature-select.js' %}"></script>
-<script src="{% static 'js/avatar-dropzone.js' %}"></script>
-<script src="{% static 'js/schedule-form.js' %}"></script>
-<script src="{% static 'js/gallery-manager.js' %}"></script>
-<script src="{% static 'js/delete-confirm.js' %}"></script>
-<script src="{% static 'js/payment-history.js' %}"></script>
-<script src="{% static 'js/member-modal.js' %}"></script>
-<script src="{% static 'js/coach-modal.js' %}"></script>
-<script src="{% static 'js/competitor-modal.js' %}"></script>
-<script src="{% static 'js/booking-class-modal.js' %}"></script>
-<script src="{% static 'js/age-category.js' %}"></script>
-<script src="{% static 'js/member-search.js' %}"></script>
-<script src="{% static 'js/sort.js' %}"></script>
-<script src="{% static 'js/range-slider.js' %}"></script>
-<script src="{% static 'js/matchmaker-filter.js' %}"></script>
-<script src="{% static 'js/member-table-filters.js' %}"></script>
-<script src="{% static 'js/booking-filter.js' %}"></script>
-<script src="{% static 'js/availability-manager.js' %}"></script>
-<script src="{% static 'js/schedule-manager.js' %}"></script>
-{% endblock %}
+        <!-- Confirm Delete Modal -->
+        <div class="modal fade"
+             id="confirmDeleteModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar eliminación</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Seguro que deseas eliminar?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger confirm-delete">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirm Edit Modal -->
+        <div class="modal fade"
+             id="confirmEditModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmar cambios</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Seguro que deseas guardar los cambios?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary confirm-edit">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirm Time Delete Modal -->
+        <div class="modal fade"
+             id="confirmTimeDeleteModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Eliminar hora</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Seguro que deseas eliminar este rango horario?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger confirm-time-delete">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirm Copy Modal -->
+        <div class="modal fade"
+             id="confirmCopyModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Copiar disponibilidad</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Copiar esta disponibilidad a todas las fechas?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-dark confirm-copy">Copiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirm Save Modal -->
+        <div class="modal fade"
+             id="confirmSaveModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Guardar disponibilidad</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Seguro que deseas guardar la disponibilidad?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-dark confirm-save">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Confirm Clear Modal -->
+        <div class="modal fade"
+             id="confirmClearModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Limpiar disponibilidad</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">¿Seguro que deseas limpiar la disponibilidad?</div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger confirm-clear">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Payment History Modal -->
+        <div class="modal fade"
+             id="paymentHistoryModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Historial de Pagos</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Member Profile Modal -->
+        <div class="modal fade"
+             id="memberProfileModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Perfil de Miembro</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Member Modal -->
+        <div class="modal fade"
+             id="editMemberModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar miembro</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-5"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Member Modal -->
+        <div class="modal fade"
+             id="addMemberModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo miembro</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Coach Modal -->
+        <div class="modal fade"
+             id="addCoachModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo entrenador</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Competitor Modal -->
+        <div class="modal fade"
+             id="addCompetitorModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nuevo competidor</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Booking Class Modal -->
+        <div class="modal fade"
+             id="editBookingClassModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Editar clase</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Booking Class Modal -->
+        <div class="modal fade"
+             id="addBookingClassModal"
+             tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nueva clase</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block extra_js %}
+        <script src="{% static 'js/profile-tabs.js' %}"></script>
+        <script src="{% static 'js/feature-select.js' %}"></script>
+        <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+        <script src="{% static 'js/schedule-form.js' %}"></script>
+        <script src="{% static 'js/gallery-manager.js' %}"></script>
+        <script src="{% static 'js/delete-confirm.js' %}"></script>
+        <script src="{% static 'js/payment-history.js' %}"></script>
+        <script src="{% static 'js/member-modal.js' %}"></script>
+        <script src="{% static 'js/coach-modal.js' %}"></script>
+        <script src="{% static 'js/competitor-modal.js' %}"></script>
+        <script src="{% static 'js/booking-class-modal.js' %}"></script>
+        <script src="{% static 'js/age-category.js' %}"></script>
+        <script src="{% static 'js/member-search.js' %}"></script>
+        <script src="{% static 'js/sort.js' %}"></script>
+        <script src="{% static 'js/range-slider.js' %}"></script>
+        <script src="{% static 'js/matchmaker-filter.js' %}"></script>
+        <script src="{% static 'js/member-table-filters.js' %}"></script>
+        <script src="{% static 'js/booking-filter.js' %}"></script>
+        <script src="{% static 'js/availability-manager.js' %}"></script>
+        <script src="{% static 'js/schedule-manager.js' %}"></script>
+    {% endblock %}
