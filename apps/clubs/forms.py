@@ -183,6 +183,23 @@ class ClubForm(forms.ModelForm):
             css = logo_widget.widget.attrs.get('class', '')
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
+        # Translate field labels to Spanish
+        label_map = {
+            'owner': 'Propietario',
+            'category': 'Categoría',
+            'name': 'Nombre',
+            'about': 'Bio',
+            'city': 'Ciudad',
+            'address': 'Dirección',
+            'phone': 'Teléfono',
+            'whatsapp_link': 'WhatsApp',
+            'email': 'Correo electrónico',
+            'features': 'Características',
+        }
+        for field_name, label in label_map.items():
+            if field_name in self.fields:
+                self.fields[field_name].label = label
+
 
 class CancelBookingForm(forms.Form):
     """Simple form used to confirm cancellation."""
