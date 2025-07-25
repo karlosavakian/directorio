@@ -142,10 +142,11 @@ textarea.form-control {
  
  
 .review-slide {
-  height:200px; 
-  position: absolute; 
-  opacity: 0; 
-  transition: opacity 0.5s ease, transform 0.5s ease; 
+  height:200px;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
 }
 
 .review-slide.active {
