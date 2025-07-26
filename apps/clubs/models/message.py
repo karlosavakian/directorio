@@ -10,6 +10,11 @@ class ClubMessage(TimeStampedModel):
     user = models.ForeignKey(User, related_name='club_messages', on_delete=models.CASCADE)
     content = models.TextField()
     sender_is_club = models.BooleanField(default=False)
+    likes = models.ManyToManyField(
+        User,
+        related_name='liked_messages',
+        blank=True,
+    )
 
     class Meta:
         ordering = ['created_at']

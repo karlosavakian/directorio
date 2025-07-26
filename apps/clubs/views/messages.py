@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Max, Q
+from django.http import JsonResponse
 
 from ..models import Club, ClubMessage
 from ..forms import ClubMessageForm
@@ -89,3 +90,19 @@ def conversation(request, slug, user_id=None):
         'conversations': conversations,
     }
     return render(request, 'clubs/conversation.html', context)
+
+
+@login_required
+def message_toggle_like(request, pk):
+    msg = get_object_or_404(ClubMessage, pk=pk)
+    if request.user in msg.likes.all():
+        msg.likes.remove(request.user)
+        liked = False
+    else:
+        msg.likes.add(request.user)
+        liked = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'liked': liked, 'count': msg.likes.count()})
+
+    return redirect(request.META.get('HTTP_REFERER', '/'))

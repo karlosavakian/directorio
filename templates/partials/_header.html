@@ -86,11 +86,12 @@
                                 class="dropdown-item text-light"
                                 >Mi perfil</a
                             >
+                            {% if user.owned_clubs.exists %}
                             <a
-                                href="{% url 'feed' %}"
+                                href="{% url 'club_dashboard' user.owned_clubs.first.slug %}"
                                 class="dropdown-item text-light"
-                                >Feed</a
-                            >
+                                >Administrar</a>
+                            {% endif %}
                             <a
                                 href="{% url 'message_inbox' %}"
                                 class="dropdown-item text-light"
