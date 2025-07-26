@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container my-4">
-  <h2 class="mb-4">Mensajes</h2>
+<div class="container col-5 my-4">
+  <h6 class="mb-4">Mensaje Privados</h6>
   <div class="list-group">
     {% for m in conversations %}
       {% if user == m.club.owner %}

@@ -36,8 +36,7 @@
         {% endfor %}
       </div>
     </div>
-    <div class="col-md-8">
-      <h5 class="mb-3">Conversación con {{ club.name }}</h5>
+    <div class="col-md-8"> 
       <div class="mb-3">
         {% for m in messages %}
           <div class="d-flex {% if m.sender_is_club %}justify-content-start{% else %}justify-content-end{% endif %} mb-2">
