@@ -233,3 +233,20 @@ class DashboardMatchmakerTests(TestCase):
         res = self.client.get(url, {'mm_sexo': 'M'})
         self.assertContains(res, 'Bob')
         self.assertNotContains(res, 'Alice')
+
+
+class MessageInboxTests(TestCase):
+    def setUp(self):
+        Group.objects.get_or_create(name='ClubOwner')
+        self.owner = User.objects.create_user(username='owner', password='pass')
+        self.user = User.objects.create_user(username='user', password='pass')
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='1', email='e@e.com', owner=self.owner
+        )
+        ClubMessage.objects.create(club=self.club, user=self.user, content='hola')
+
+    def test_user_message_appears_in_owner_inbox(self):
+        self.client.login(username='owner', password='pass')
+        url = reverse('message_inbox')
+        res = self.client.get(url)
+        self.assertContains(res, 'hola')

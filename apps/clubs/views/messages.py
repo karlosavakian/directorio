@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Max
+from django.db.models import Max, Q
 
 from ..models import Club, ClubMessage
 from ..forms import ClubMessageForm
@@ -11,14 +11,16 @@ from ..forms import ClubMessageForm
 def message_inbox(request):
     """Display the latest message of each conversation."""
     latest_ids = (
-        ClubMessage.objects.filter(user=request.user)
-        .values('club')
+        ClubMessage.objects.filter(
+            Q(user=request.user) | Q(club__owner=request.user)
+        )
+        .values('club', 'user')
         .annotate(last_id=Max('id'))
         .values_list('last_id', flat=True)
     )
     conversations = (
         ClubMessage.objects.filter(id__in=latest_ids)
-        .select_related('club')
+        .select_related('club', 'user')
         .order_by('-created_at')
     )
     return render(request, 'clubs/message_inbox.html', {'conversations': conversations})
