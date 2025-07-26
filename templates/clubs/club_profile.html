@@ -1,7 +1,9 @@
+ 
 {% extends 'base.html' %}
-{% block body_class %}club-profile-page{% endblock %}
+{% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
 {% load static star_rating utils_filters %}
-{% block content %}
+{% block content %} 
+<main class="flex-grow-1">
 
     <div class="container-fluid col-12 px-3 my-3" id="profile-container">
         
@@ -635,6 +637,7 @@
             </div>
             
         </div>
+        </main>
                {% include 'partials/_review_modal.html' %}
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
