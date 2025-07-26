@@ -101,6 +101,11 @@
                             <a href="mailto:{{ club.email }}"
                                class="text-decoration-none text-reset">{{ club.email }}</a>
                         </p>
+                        <p>
+                            <button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#clubMessageModal">
+                                Mensaje privado
+                            </button>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -642,6 +647,7 @@
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
     {% include 'partials/_member_signup_modal.html' %}
+    {% include 'partials/_club_message_modal.html' %}
     {% include 'partials/_booking_modal.html' %}
     </div>
 

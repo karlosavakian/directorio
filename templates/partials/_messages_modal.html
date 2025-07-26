@@ -1,0 +1,27 @@
+<div class="modal fade" id="messagesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Mensajes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          {% for m in user_messages %}
+          <div class="row mb-3">
+            <div class="col-12 d-flex {% if m.sender_is_club %}justify-content-start{% else %}justify-content-end{% endif %}">
+              <div class="p-2 rounded {% if m.sender_is_club %}bg-light{% else %}bg-dark text-white{% endif %}">
+                <div><strong>{% if m.sender_is_club %}{{ m.club.name }}{% else %}Tú{% endif %}</strong></div>
+                <div>{{ m.content }}</div>
+                <div><small class="text-muted">{{ m.created_at|date:'d/m/Y H:i' }}</small></div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <p>No hay mensajes.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

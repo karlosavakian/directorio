@@ -2,7 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from ..models import Club, Entrenador
 from django.contrib import messages
-from apps.clubs.forms import ReseñaForm, ClubPostForm, ClubPostReplyForm, MiembroForm
+from django.contrib.auth.decorators import login_required
+from apps.clubs.forms import (
+    ReseñaForm,
+    ClubPostForm,
+    ClubPostReplyForm,
+    MiembroForm,
+    ClubMessageForm,
+)
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
@@ -43,6 +50,7 @@ def club_profile(request, slug):
     form = ReseñaForm()
     post_form = ClubPostForm()
     reply_form = ClubPostReplyForm()
+    message_form = ClubMessageForm()
     register_form = RegistroUsuarioForm()
     if request.method == 'POST' and not reseña_existente:
         form = ReseñaForm(request.POST)
@@ -93,6 +101,7 @@ def club_profile(request, slug):
         'form': form,
         'post_form': post_form,
         'reply_form': reply_form,
+        'message_form': message_form,
         'reseña_existente': reseña_existente,
         'detallado': detallado,
         'competidores': competidores,
@@ -168,3 +177,18 @@ def booking_form(request, slug):
     """Display a simple booking form modal."""
     club = get_object_or_404(Club, slug=slug)
     return render(request, 'partials/_booking_modal.html', {'club': club})
+
+
+@login_required
+def send_message(request, slug):
+    club = get_object_or_404(Club, slug=slug)
+    form = ClubMessageForm(request.POST)
+    if form.is_valid():
+        msg = form.save(commit=False)
+        msg.club = club
+        msg.user = request.user
+        msg.save()
+        messages.success(request, 'Mensaje enviado correctamente.')
+    else:
+        messages.error(request, 'No se pudo enviar el mensaje.')
+    return redirect('club_profile', slug=slug)
