@@ -15,17 +15,11 @@
           {% for m in user_messages %}
           <div class="row mb-3">
             <div
-              class="col-12 d-flex {% if m.sender_is_club %}justify-content-start{% else %}justify-content-end{% endif %}"
+              class="col-12 d-flex {% if user == m.club.owner and m.sender_is_club or user != m.club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %}"
             >
               <div
-                class="p-2 rounded {% if m.sender_is_club %}bg-light{% else %}bg-dark text-white{% endif %}"
+                class="p-1 rounded {% if user == m.club.owner and m.sender_is_club or user != m.club.owner and not m.sender_is_club %}bg-primary text-white{% else %}bg-light{% endif %}"
               >
-                <div>
-                  <strong
-                    >{% if m.sender_is_club %}{{ m.club.name }}{% else %}Tú{%
-                    endif %}</strong
-                  >
-                </div>
                 <div>{{ m.content }}</div>
                 <div class="d-flex align-items-center gap-1 mt-1">
                   <button
