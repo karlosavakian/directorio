@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container my-4">
+  <h2 class="mb-4">Conversación con {{ club.name }}</h2>
+  <div class="mb-3">
+    {% for m in messages %}
+      <div class="d-flex {% if m.sender_is_club %}justify-content-start{% else %}justify-content-end{% endif %} mb-2">
+        <div class="p-2 rounded {% if m.sender_is_club %}bg-light{% else %}bg-dark text-white{% endif %}">
+          <div class="fw-bold">{% if m.sender_is_club %}{{ club.name }}{% else %}{{ m.user.username }}{% endif %}</div>
+          <div>{{ m.content }}</div>
+          <div class="text-muted small">{{ m.created_at|timesince }} atrás</div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No hay mensajes.</p>
+    {% endfor %}
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.content }}
+    <button type="submit" class="btn btn-dark btn-sm mt-2">Enviar</button>
+  </form>
+</div>
+{% endblock %}

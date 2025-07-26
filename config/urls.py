@@ -6,6 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.clubs.views import public as club_public
+from apps.clubs.views import messages as club_messages
 from apps.clubs.views.dashboard import dashboard
 from apps.users.views import profile as user_profile
   
@@ -26,6 +27,11 @@ urlpatterns = [
 
     # Perfil público de usuarios
     path('profile/<str:username>/', user_profile.profile_detail, name='user_profile'),
+
+    # Bandeja y conversaciones de mensajes
+    path('mensajes/', club_messages.message_inbox, name='message_inbox'),
+    path('mensajes/<slug:slug>/', club_messages.conversation, name='conversation'),
+    path('@<slug:slug>/mensajes/<int:user_id>/', club_messages.conversation, name='club_conversation'),
 
     # Clubs: Gestión de Clubs y búsqueda
     path('clubs/', include('apps.clubs.urls')),
