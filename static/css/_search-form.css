@@ -24,7 +24,9 @@
     box-shadow: none;
 }
 
-.custom-dropdown {
+ 
+
+.custom-dropdown { 
     position: relative;
     user-select: none;
     font-family: 'Inter', sans-serif;
@@ -37,7 +39,7 @@
     font-size: 1rem;
 }
 
-.selected {
+.selected { 
     position: relative;
     display: flex;
     align-items: center;
