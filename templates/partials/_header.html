@@ -33,6 +33,11 @@
                 {% endif %}
                 {% endif %}
                 {% if user.is_authenticated %}
+                    <li class="nav-item ms-2">
+                        <button class="btn nav-link text-dark p-0" data-bs-toggle="modal" data-bs-target="#messagesModal" title="Mensajes">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </li>
                     <li class="nav-item ">
                         <div class="custom-dropdown small" id="user-dropdown">
                            <div class="selected d-flex align-items-center">
@@ -45,6 +50,7 @@
                            <div class="dropdown-menu" id="user-menu">
                             <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a> 
                             <a href="{% url 'feed' %}" class="dropdown-item text-light">Feed</a>
+                            <a href="#" class="dropdown-item text-light" data-bs-toggle="modal" data-bs-target="#messagesModal">Mensajes</a>
 
                             <a href="#" class="dropdown-item text-light" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Cerrar sesión

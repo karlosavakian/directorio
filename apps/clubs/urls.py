@@ -85,6 +85,8 @@ urlpatterns = [
     path('posts/<int:pk>/responder/', post_reply, name='clubpost_reply'),
     path('posts/<int:pk>/like/', post_toggle_like, name='clubpost_like'),
 
+    path('<slug:slug>/mensaje/', public.send_message, name='club_send_message'),
+
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),
     path('<slug:slug>/reservar/crear/', create_booking, name='create_booking'),
     path('booking/<int:pk>/confirmar/', booking_confirm, name='booking_confirm'),

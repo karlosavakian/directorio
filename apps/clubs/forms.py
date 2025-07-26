@@ -438,3 +438,12 @@ class PagoForm(forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+
+class ClubMessageForm(forms.ModelForm):
+    class Meta:
+        model = models.ClubMessage
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4})
+        }
+
