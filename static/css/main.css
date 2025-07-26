@@ -172,3 +172,13 @@
   padding-bottom: 0.125rem;
   font-size: 0.75rem;
 }
+
+/* Message likes */
+.message-like.liked svg path {
+  fill: #e63946;
+  stroke: #e63946;
+}
+
+.message-like svg path {
+  stroke: #000;
+}

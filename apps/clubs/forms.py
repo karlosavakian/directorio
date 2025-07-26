@@ -445,6 +445,13 @@ class ClubMessageForm(forms.ModelForm):
         model = models.ClubMessage
         fields = ['content']
         widgets = {
-            'content': EmojiPickerTextarea(attrs={'class': 'form-control', 'rows': 4})
+            'content': EmojiPickerTextarea(
+                attrs={
+                    'class': 'form-control form-control-sm w-100',
+                    'rows': 1,
+                    'style': 'height:30px;',
+                    'placeholder': 'Mensaje...'
+                }
+            )
         }
 

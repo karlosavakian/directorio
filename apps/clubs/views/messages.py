@@ -60,11 +60,6 @@ def conversation(request, slug, user_id=None):
 
     if request.method == 'POST':
         form = ClubMessageForm(request.POST)
-        form.fields['content'].widget.attrs.update({
-            'rows': 1,
-            'class': 'form-control form-control-sm',
-            'placeholder': 'Escribe un mensaje...'
-        })
         if form.is_valid():
             msg = form.save(commit=False)
             msg.club = club
@@ -76,11 +71,6 @@ def conversation(request, slug, user_id=None):
             return redirect('conversation', slug=club.slug)
     else:
         form = ClubMessageForm()
-        form.fields['content'].widget.attrs.update({
-            'rows': 1,
-            'class': 'form-control form-control-sm',
-            'placeholder': 'Escribe un mensaje...'
-        })
 
     context = {
         'club': club,
