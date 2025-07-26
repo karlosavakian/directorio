@@ -188,7 +188,4 @@ def send_message(request, slug):
         msg.club = club
         msg.user = request.user
         msg.save()
-        messages.success(request, 'Mensaje enviado correctamente.')
-    else:
-        messages.error(request, 'No se pudo enviar el mensaje.')
     return redirect('club_profile', slug=slug)

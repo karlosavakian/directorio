@@ -32,6 +32,7 @@ urlpatterns = [
     path('mensajes/', club_messages.message_inbox, name='message_inbox'),
     path('mensajes/<slug:slug>/', club_messages.conversation, name='conversation'),
     path('@<slug:slug>/mensajes/<int:user_id>/', club_messages.conversation, name='club_conversation'),
+    path('mensaje/<int:pk>/like/', club_messages.message_toggle_like, name='message_like'),
 
     # Clubs: Gestión de Clubs y búsqueda
     path('clubs/', include('apps.clubs.urls')),

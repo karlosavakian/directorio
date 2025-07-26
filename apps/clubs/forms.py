@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reseña
 from . import models
+from emoji_picker.widgets import EmojiPickerTextarea
 from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 
@@ -444,6 +445,6 @@ class ClubMessageForm(forms.ModelForm):
         model = models.ClubMessage
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4})
+            'content': EmojiPickerTextarea(attrs={'class': 'form-control', 'rows': 4})
         }
 
