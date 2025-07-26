@@ -1,0 +1,19 @@
+<div class="modal fade" id="clubMessageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'club_send_message' club.slug %}">
+        <div class="modal-header">
+          <h5 class="modal-title">Enviar mensaje a {{ club.name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          {% csrf_token %}
+          {{ message_form.content }}
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-dark btn-sm">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

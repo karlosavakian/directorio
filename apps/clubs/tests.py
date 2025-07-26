@@ -233,3 +233,53 @@ class DashboardMatchmakerTests(TestCase):
         res = self.client.get(url, {'mm_sexo': 'M'})
         self.assertContains(res, 'Bob')
         self.assertNotContains(res, 'Alice')
+
+
+class MessageInboxTests(TestCase):
+    def setUp(self):
+        Group.objects.get_or_create(name='ClubOwner')
+        self.owner = User.objects.create_user(username='owner', password='pass')
+        self.user = User.objects.create_user(username='user', password='pass')
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='1', email='e@e.com', owner=self.owner
+        )
+        ClubMessage.objects.create(club=self.club, user=self.user, content='hola')
+
+    def test_user_message_appears_in_owner_inbox(self):
+        self.client.login(username='owner', password='pass')
+        url = reverse('message_inbox')
+        res = self.client.get(url)
+        self.assertContains(res, 'hola')
+
+
+class MessageConversationTests(TestCase):
+    def setUp(self):
+        Group.objects.get_or_create(name='ClubOwner')
+        self.owner = User.objects.create_user(username='owner2', password='pass')
+        self.user = User.objects.create_user(username='normal', password='pass')
+        self.club = Club.objects.create(
+            name='Club Test', city='CT', address='Addr', phone='1', email='c@e.com', owner=self.owner
+        )
+
+    def test_non_owner_can_send_message(self):
+        self.client.login(username='normal', password='pass')
+        url = reverse('conversation', args=[self.club.slug])
+        self.client.post(url, {'content': 'hi'})
+        msg = ClubMessage.objects.latest('id')
+        self.assertEqual(msg.user, self.user)
+        self.assertFalse(msg.sender_is_club)
+
+    def test_message_visible_in_inboxes(self):
+        self.client.login(username='normal', password='pass')
+        url = reverse('conversation', args=[self.club.slug])
+        self.client.post(url, {'content': 'hello'})
+        self.client.logout()
+
+        self.client.login(username='owner2', password='pass')
+        owner_inbox = self.client.get(reverse('message_inbox'))
+        self.assertContains(owner_inbox, 'hello')
+
+        self.client.logout()
+        self.client.login(username='normal', password='pass')
+        user_inbox = self.client.get(reverse('message_inbox'))
+        self.assertContains(user_inbox, 'hello')

@@ -33,6 +33,11 @@
                 {% endif %}
                 {% endif %}
                 {% if user.is_authenticated %}
+                    <li class="nav-item ms-2">
+                        <a href="{% url 'message_inbox' %}" class="nav-link text-dark p-0" title="Mensajes">
+                            <i class="bi bi-send-fill"></i>
+                        </a>
+                    </li>
                     <li class="nav-item ">
                         <div class="custom-dropdown small" id="user-dropdown">
                            <div class="selected d-flex align-items-center">
@@ -45,6 +50,7 @@
                            <div class="dropdown-menu" id="user-menu">
                             <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a> 
                             <a href="{% url 'feed' %}" class="dropdown-item text-light">Feed</a>
+                            <a href="{% url 'message_inbox' %}" class="dropdown-item text-light">Mensajes</a>
 
                             <a href="#" class="dropdown-item text-light" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Cerrar sesión
