@@ -42,8 +42,28 @@ def conversation(request, slug, user_id=None):
         .order_by('created_at')
     )
 
+    latest_ids = (
+        ClubMessage.objects.filter(
+            Q(user=request.user) | Q(club__owner=request.user)
+        )
+        .values('club', 'user')
+        .annotate(last_id=Max('id'))
+        .values_list('last_id', flat=True)
+    )
+
+    conversations = (
+        ClubMessage.objects.filter(id__in=latest_ids)
+        .select_related('club', 'user')
+        .order_by('-created_at')
+    )
+
     if request.method == 'POST':
         form = ClubMessageForm(request.POST)
+        form.fields['content'].widget.attrs.update({
+            'rows': 1,
+            'class': 'form-control form-control-sm',
+            'placeholder': 'Escribe un mensaje...'
+        })
         if form.is_valid():
             msg = form.save(commit=False)
             msg.club = club
@@ -55,11 +75,17 @@ def conversation(request, slug, user_id=None):
             return redirect('conversation', slug=club.slug)
     else:
         form = ClubMessageForm()
+        form.fields['content'].widget.attrs.update({
+            'rows': 1,
+            'class': 'form-control form-control-sm',
+            'placeholder': 'Escribe un mensaje...'
+        })
 
     context = {
         'club': club,
         'messages': messages_qs,
         'form': form,
         'conversant': conversant,
+        'conversations': conversations,
     }
     return render(request, 'clubs/conversation.html', context)
