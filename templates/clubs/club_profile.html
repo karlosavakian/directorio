@@ -2,9 +2,12 @@
 {% block body_class %}club-profile-page{% endblock %}
 {% load static star_rating utils_filters %}
 {% block content %}
+
     <div class="container-fluid col-12 px-3 my-3" id="profile-container">
+        
         <!-- Flecha volver arriba -->
-        {% include 'partials/_back-btn.html' %}
+    {% include 'partials/_back-btn.html' %}
+ 
         <div class="row">
             <!-- Columna Izquierda: Info del Club -->
             <div class="col-lg-2 ">
@@ -630,92 +633,15 @@
                     <p class="mt-4">Este club aún no tiene reseñas.</p>
                 {% endif %}
             </div>
+            
         </div>
-    </div>
+               {% include 'partials/_review_modal.html' %}
     {% include 'partials/_share_profile_modal.html' %}
     {% include 'partials/_register_modal.html' %}
     {% include 'partials/_member_signup_modal.html' %}
     {% include 'partials/_booking_modal.html' %}
-    <div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3">
-                <div class="modal-header">
-                    <h5 class="modal-title">Dejar reseña</h5>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-lg-6 mb-4">
-                        {% if user.is_authenticated %}
-                            {% if not reseña_existente %}
-                                <form method="POST" id="reseña-form">
-                                    {% csrf_token %}
-                                    {% if form.errors %}<div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>{% endif %}
-                                    <div class="mb-3">
-                                        <input type="text"
-                                               name="titulo"
-                                               class="form-control"
-                                               placeholder="Título de la reseña"
-                                               required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Instalaciones:</label>
-                                        <div class="star-rating mb-2" data-name="instalaciones"></div>
-                                        <input type="hidden" name="instalaciones" required id="input-instalaciones">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Entrenadores:</label>
-                                        <div class="star-rating mb-2" data-name="entrenadores"></div>
-                                        <input type="hidden" name="entrenadores" required id="input-entrenadores">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Ambiente:</label>
-                                        <div class="star-rating mb-2" data-name="ambiente"></div>
-                                        <input type="hidden" name="ambiente" required id="input-ambiente">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Calidad-precio:</label>
-                                        <div class="star-rating mb-2" data-name="calidad_precio"></div>
-                                        <input type="hidden"
-                                               name="calidad_precio"
-                                               required
-                                               id="input-calidad_precio">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label d-block mb-1">Variedad de clases:</label>
-                                        <div class="star-rating mb-2" data-name="variedad_clases"></div>
-                                        <input type="hidden"
-                                               name="variedad_clases"
-                                               required
-                                               id="input-variedad_clases">
-                                    </div>
-                                    <div class="mb-3">
-                                        <textarea name="comentario"
-                                                  class="form-control"
-                                                  rows="4"
-                                                  minlength="200"
-                                                  placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-dark">Enviar Reseña</button>
-                                </form>
-                                <div id="mensaje-gracias"
-                                     class="alert alert-success mt-3"
-                                     style="display:none">
-                                    Gracias por valorar el club. Tu reseña será publicada en breve.
-                                </div>
-                            {% else %}
-                                <!-- <p>Ya has dejado una reseña para este club.</p> -->
-                            {% endif %}
-                        {% else %}
-                            <!-- <p><a href="{% url 'login' %}">Inicia sesión</a> para dejar tu reseña.</p> -->
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
+
     <script src="{% static 'js/review-filter.js' %}"></script>
     <script src="{% static 'js/slides.js' %}"></script>
     <script src="{% static 'js/rating.js' %}"></script>
@@ -728,4 +654,5 @@
     <script src="{% static 'js/booking-modal.js' %}"></script>
     <script src="{% static 'js/club-tabs.js' %}"></script>
     <script src="{% static 'js/post-media-preview.js' %}"></script>
+    
 {% endblock %}
