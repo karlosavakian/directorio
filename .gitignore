@@ -1,7 +1,5 @@
 __pycache__/
 *.pyc
-db.sqlite4
-config/db.sqlite4
 staticfiles/
 media/
 
