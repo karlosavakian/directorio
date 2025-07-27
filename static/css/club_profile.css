@@ -341,10 +341,32 @@
     stroke: #e63946 !important;
  }
 
- #club-share path,
- #club-heart path {
+#club-share path,
+#club-heart path {
     stroke: #000000 !important;
- }
+}
+
+/* Acciones del club */
+.club-actions .club-action {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    color: #000;
+}
+
+.club-actions .club-action svg,
+.club-actions .club-action i {
+    width: 20px;
+    height: 20px;
+}
+
+.club-actions .club-action i {
+    font-size: 20px;
+}
 
 
 
