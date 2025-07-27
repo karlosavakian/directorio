@@ -1,6 +1,6 @@
  body.club-profile-page {
 
-    background-color: #ffffff;
+      background-color: #ffffff;
 
  }
 
@@ -8,440 +8,428 @@
 
  /* Cards / Boxes */
  .bg-light {
-    background-color: #f5f5f5 !important;
-    border: 1px solid #ddd;
+      background-color: #f5f5f5 !important;
+      border: 1px solid #ddd;
  }
 
  .border {
-    border: 1px solid #e5e5e5 !important;
+      border: 1px solid #e5e5e5 !important;
  }
 
  /* Badges */
  .badge {
-    font-size: 0.75rem;
-    background-color: #000000;
-    color: #ffffff;
-    border-radius: 6px;
+      font-size: 0.75rem;
+      background-color: #000000;
+      color: #ffffff;
+      border-radius: 6px;
  }
 
  /* List groups */
  .list-group-item {
-    background: none;
-    border: none;
-    padding: 0.4rem 0;
-    color: #333;
+      background: none;
+      border: none;
+      padding: 0.4rem 0;
+      color: #333;
  }
 
  .list-group-item.fw-bold {
-    margin-top: 0.75rem;
-    color: #000;
+      margin-top: 0.75rem;
+      color: #000;
  }
 
  /* Stars */
  .star-rating {
-    display: inline-flex;
-    height: 20px;
+      display: inline-flex;
+      height: 20px;
  }
 
  .star-rating svg {
-    fill: #ccc;
-    stroke: #666;
-    cursor: pointer;
-    transition: fill 0.2s;
+      fill: #ccc;
+      stroke: #666;
+      cursor: pointer;
+      transition: fill 0.2s;
  }
 
  .star-rating svg.active,
  .star-rating svg:hover {
-    fill: #111;
+      fill: #111;
  }
 
 
  /* Gallery Slideshow */
  .gallery-slideshow {
-    position: relative;
+      position: relative;
  }
 
  .gallery-slide {
-    display: none;
+      display: none;
  }
 
  .gallery-slide.active {
-    display: block;
+      display: block;
  }
 
  .slide-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #fff;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    cursor: pointer;
-    opacity: 0.7;
-    z-index: 10;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      cursor: pointer;
+      opacity: 0.7;
+      z-index: 10;
  }
 
  .slide-arrow.left {
-    left: 10px;
+      left: 10px;
  }
 
  .slide-arrow.right {
-    right: 10px;
+      right: 10px;
  }
 
  .slide-arrow:hover {
-    opacity: 1;
+      opacity: 1;
  }
 
  .slide-arrow svg {
-    width: 20px;
-    height: 20px;
-    fill: #000;
+      width: 20px;
+      height: 20px;
+      fill: #000;
  }
 
  .gallery-dots {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 0.5rem;
-    z-index: 5;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 0.5rem;
+      z-index: 5;
  }
 
  .gallery-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: transparent;
-    cursor: pointer;
-    border: 1px solid #ffffff;
-    transition: width 0.3s, height 0.3s, background 0.3s;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      border: 1px solid #ffffff;
+      transition: width 0.3s, height 0.3s, background 0.3s;
  }
 
  .gallery-dot.active {
-    width: 10px;
-    height: 10px;
-    background: #ffffff;
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
  }
 
  /* Forms */
  textarea.form-control {
-    font-size: 0.9rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
  }
 
 
  /* Reviews */
  .club-reviews .border {
-    background-color: #fff;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      background-color: #fff;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
  }
 
  /* Alerts */
  .alert-success {
-    background-color: #d1e7dd;
-    color: #0f5132;
-    border-left: 4px solid #0f5132;
-    border-radius: 4px;
-    font-weight: 500;
+      background-color: #d1e7dd;
+      color: #0f5132;
+      border-left: 4px solid #0f5132;
+      border-radius: 4px;
+      font-weight: 500;
  }
 
 
  .review-carousel {
-    position: relative;
-    max-width: 700px;
-    margin: auto;
-    background: #ffffff;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+      position: relative;
+      max-width: 700px;
+      margin: auto;
+      background: #ffffff;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
  }
 
 
 
 
  .review-slide {
-    height: 200px;
-    position: absolute;
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    pointer-events: none;
+      height: 200px;
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
  }
 
  .review-slide.active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-    position: relative;
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      position: relative;
  }
 
  .review-text {
-    font-size: 14px;
-    font-style: italic;
-    color: #333;
-    word-break: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 5;
-    -webkit-box-orient: vertical;
+      font-size: 14px;
+      font-style: italic;
+      color: #333;
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      -webkit-box-orient: vertical;
  }
 
  .review-user {
-    display: flex;
-    align-items: center;
-    margin-top: auto;
-    padding-top: 1rem;
+      display: flex;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 1rem;
  }
 
  .review-avatar {
-    min-width: 35px;
-    min-height: 35px;
-    width: 35px;
-    height: 35px;
-    background-color: #000000;
-    border-radius: 50%;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(255, 255, 255);
+      min-width: 35px;
+      min-height: 35px;
+      width: 35px;
+      height: 35px;
+      background-color: #000000;
+      border-radius: 50%;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(255, 255, 255);
  }
 
  .review-avatar-img {
-    min-width: 35px;
-    min-height: 35px;
-    width: 35px;
-    height: 35px;
-    object-fit: cover;
+      min-width: 35px;
+      min-height: 35px;
+      width: 35px;
+      height: 35px;
+      object-fit: cover;
  }
 
  .review-username {
 
-    font-size: 14px;
+      font-size: 14px;
  }
 
  .review-user .fw-medium {
-    font-size: 0.8rem;
-    color: #555;
-    margin-left: 0.5rem;
+      font-size: 0.8rem;
+      color: #555;
+      margin-left: 0.5rem;
  }
 
 
  .review-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    /* no molesta cuando oculto */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      /* no molesta cuando oculto */
  }
 
  .review-arrow svg {
-    fill: #000000;
-    pointer-events: auto;
-    /* permite clickar en el svg */
+      fill: #000000;
+      pointer-events: auto;
+      /* permite clickar en el svg */
  }
 
  /* Alineación izquierda y derecha */
  .review-arrow.left {
-    left: 0;
+      left: 0;
  }
 
  .review-arrow.right {
-    right: 0;
+      right: 0;
  }
 
  /* Mostrar en hover */
  .review-carousel:hover .review-arrow {
-    opacity: 0.7;
-    pointer-events: auto;
+      opacity: 0.7;
+      pointer-events: auto;
  }
 
  .review-arrow:hover {
-    opacity: 1;
+      opacity: 1;
  }
 
 
  .feature-review-icon {
-    width: 45px;
-    height: 45px;
+      width: 45px;
+      height: 45px;
  }
+
+ .booking-btn {
+      background: #000 !important;
+
+ }
+
+ .booking-btn:hover {
+      background: #212121 !important;
+ }
+
+
+
 
  /* Estilo de los tabs */
  .custom-tab-menu .nav-link {
-    color: #000 !important;
-    padding: 0.75rem 1rem;
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid transparent;
-    margin-right: 1rem;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+      color: #000 !important;
+      padding: 0.75rem 1rem;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid transparent;
+      margin-right: 1rem;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
  }
 
  /* Hover: fondo gris claro */
  .custom-tab-menu .nav-link:hover {
-    background-color: #f5f5f5;
-    color: #000000 !important;
+      background-color: #f5f5f5;
+      color: #000000 !important;
  }
 
  /* Activo: borde inferior negro bien alineado */
  .custom-tab-menu .nav-link.active {
-    border-bottom: 3px solid #000;
-    font-weight: 600;
+      border-bottom: 3px solid #000;
+      font-weight: 600;
  }
 
  /* Acciones en la galería */
  .gallery-actions {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 0.5rem;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 0.5rem;
  }
 
  .gallery-actions button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
  }
 
  .gallery-actions svg {
-    width: 24px;
-    height: 24px;
-    stroke: #fff;
-    stroke-width: 2;
-    fill: none;
+      width: 24px;
+      height: 24px;
+      stroke: #fff;
+      stroke-width: 2;
+      fill: none;
  }
 
  .gallery-actions svg path {
-    transition: fill 0.3s ease, stroke 0.3s ease;
+      transition: fill 0.3s ease, stroke 0.3s ease;
  }
 
  #club-heart.liked path {
-    fill: #e63946 !important;
-    stroke: #e63946 !important;
+      fill: #e63946 !important;
+      stroke: #e63946 !important;
  }
 
-#club-share path,
-#club-heart path {
-    stroke: #000000 !important;
-}
-
-/* Acciones del club */
-.club-actions .club-action {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-    color: #000;
-}
-
-.club-actions .club-action svg,
-.club-actions .club-action i {
-    width: 20px;
-    height: 20px;
-}
-
-.club-actions .club-action i {
-    font-size: 20px;
-}
-
-
+ #club-share path,
+ #club-heart path {
+      stroke: #000000 !important;
+ }
 
 
  /* Avatar para competidores en tablas */
  .competitor-avatar {
-    width: 40px;
-    height: 40px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.75rem;
+      width: 40px;
+      height: 40px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.75rem;
  }
 
  .competitor-avatar-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 50%;
  }
 
  /* Estilos para la tabla de competidores */
  .competitors-table,
  .competitors-table th,
  .competitors-table td {
-    border: none !important;
-    background-color: transparent !important;
+      border: none !important;
+      background-color: transparent !important;
  }
 
  .competitors-table th,
  .competitors-table td {
-    vertical-align: middle;
-    text-align: center;
+      vertical-align: middle;
+      text-align: center;
  }
 
  .competitors-table {
-    border-collapse: collapse;
+      border-collapse: collapse;
  }
 
  /* Post avatars */
  .post-avatar {
-    width: 32px;
-    height: 32px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+      width: 32px;
+      height: 32px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
  }
 
  .post-avatar-img {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 50%;
  }
 
  .post-like.liked svg path {
-    fill: #e63946;
-    stroke: #e63946;
+      fill: #e63946;
+      stroke: #e63946;
  }
 
  .post-like svg path,
  .post-share svg path {
-    stroke: #000;
+      stroke: #000;
  }
 
 
  .review-filter-dropdown .selected-text {
-    display: inline-flex;
-    align-items: center;
+      display: inline-flex;
+      align-items: center;
  }
