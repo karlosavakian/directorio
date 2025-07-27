@@ -3,38 +3,29 @@
 {% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
 {% load static star_rating utils_filters %}
 {% block content %} 
+<button type="button"
+        class="btn   rounded-circle position-fixed fs-2"
+        style="bottom: 30px; left: 30px; z-index: 1050; background:#000; color:#fff;"
+        onclick="location.href='{% url 'conversation' club.slug %}'">
+  <i class="bi bi-chat-left-text"></i>
+</button>
 <main class="flex-grow-1">
 
     <div class="container-fluid col-12 px-3 my-3" id="profile-container">
+        
          
         <div class="profile-header  mb-3  d-flex align-items-center">
-             {% include 'partials/_back-btn.html' %} 
- 
-            <div class=" ms-auto d-flex align-items-center  profile-actions ">
-                <!-- Heart and Share buttons -->
-                <button id="club-heart"
-                        aria-label="Seguir"
-                        data-url="{% url 'toggle_follow' 'club' club.id %}"
-                        class="{% if club_followed %}liked{% endif %} ">
-                    <svg aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg"
-                         width="20"
-                         height="20"
-                         fill="none"
-                         viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                    </svg> 
+             {% include 'partials/_back-btn.html' %}  
+
+            <div class="d-flex ms-auto justify-content-end gap-2 mb-2">
+                <button type="button" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">
+                  Inscribirse
                 </button>
-                <button class="ms-2" id="club-share" aria-label="Compartir">
-                    <svg aria-hidden="true"
-                         xmlns="http://www.w3.org/2000/svg"
-                         width="20"
-                         height="20"
-                         fill="none"
-                         viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                    </svg>
+
+                <button type="button" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">
+                  Reservar clase
                 </button>
+
             </div>
         </div>
         
@@ -64,56 +55,77 @@
                 </div>
             {% endif %}
             </div>
+               
                 <div class="d-flex align-items-start mt-4 mb-4 gap-3 ">
                     <div>
-                        <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
+                        
+                         <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
                         <div class="d-flex align-items-center mb-3">
-                            <span class="badge ">{{ club.get_category_display }}</span>
-                            {% if club.verified %}
-                                <span class="ms-2" title="Verificado">
-                                    <svg style="width:20px;" data-name="Layer 1" id="Layer_1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M22.41,10.59,20.36,8.54V5.63a2,2,0,0,0-2-2H15.46l-2.05-2a2,2,0,0,0-2.82,0L8.54,3.64H5.63a2,2,0,0,0-2,2V8.54l-2,2.05A2,2,0,0,0,1,12a2,2,0,0,0,.58,1.41l2.06,2.05v2.91a2,2,0,0,0,2,2H8.54l2.05,2.05A2,2,0,0,0,12,23a2,2,0,0,0,1.41-.58l2.05-2.06h2.91a2,2,0,0,0,2-2V15.46l2.05-2.05a2,2,0,0,0,0-2.82Zm-4.05,4.05v3.72H14.64L12,21,9.36,18.36H5.64V14.64L3,12,5.64,9.36V5.64H9.36L12,3l2.64,2.64h3.72V9.36L21,12Z"/><polygon points="11 12.73 8.71 10.44 7.29 11.85 11 15.56 16.71 9.85 15.29 8.44 11 12.73"/></svg>
-                                </span>
-                            {% endif %}
-                        </div>
-                  
-                        <p class="mb-2  d-flex ">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white me-2 "
-                                 aria-hidden="true"
-                                 xmlns="http://www.w3.org/2000/svg"
-                                 width="30"
-                                 height="30"
-                                 fill="none"
-                                 viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
-                            </svg>
+                             <span class="badge ">{{ club.get_category_display }}</span>
+                             {% if club.verified %}
+                                 <span class="ms-2" title="Verificado">
+                                     <svg style="width:20px;" data-name="Layer 1" id="Layer_1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M22.41,10.59,20.36,8.54V5.63a2,2,0,0,0-2-2H15.46l-2.05-2a2,2,0,0,0-2.82,0L8.54,3.64H5.63a2,2,0,0,0-2,2V8.54l-2,2.05A2,2,0,0,0,1,12a2,2,0,0,0,.58,1.41l2.06,2.05v2.91a2,2,0,0,0,2,2H8.54l2.05,2.05A2,2,0,0,0,12,23a2,2,0,0,0,1.41-.58l2.05-2.06h2.91a2,2,0,0,0,2-2V15.46l2.05-2.05a2,2,0,0,0,0-2.82Zm-4.05,4.05v3.72H14.64L12,21,9.36,18.36H5.64V14.64L3,12,5.64,9.36V5.64H9.36L12,3l2.64,2.64h3.72V9.36L21,12Z"/><polygon points="11 12.73 8.71 10.44 7.29 11.85 11 15.56 16.71 9.85 15.29 8.44 11 12.73"/></svg>
+                                 </span>
+                             {% endif %}
+                         </div> 
+
+                            <span class="d-flex align-items-start mb-2">
+                                <svg aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     width="35"
+                                     height="35"
+                                     fill="none"
+                                     viewBox="0 0 24 24">
+                                  <path stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10Z" />
+                                  <circle cx="12" cy="11" r="2" stroke="currentColor" stroke-width="2" />
+                                </svg>
+
+
                             <a href="https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}"
-                               target="_blank"
-                               class="text-decoration-none text-reset">{{ club.city }} - {{ club.address }}</a>
-                        </p>
-                         
-                        <p class="mb-2 d-flex align-items-center">
-                          <button type="button" class="btn btn-outline-dark btn-sm" onclick="location.href='{% url 'conversation' club.slug %}'">
-                            Mensaje privado
-                          </button>
-                         
+                                   target="_blank"
+                                   class="ms-1 d-flex text-decoration-none  ">{{ club.address }} - {{ club.city }}
 
-                        </p>
-                            <div class="d-flex   mb-2">
+                            </a>
+                        </span>
+                       
 
+                        <div class=" ms-auto d-flex align-items-center  profile-actions ">
+ 
+                            <button id="club-heart"
+                                    aria-label="Seguir"
+                                    data-url="{% url 'toggle_follow' 'club' club.id %}"
+                                class="{% if club_followed %}liked{% endif %} d-inline-flex align-items-center gap-1">
 
-                            <button type="button" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">
-                              Inscribirse
+                                <svg aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     width="20"
+                                     height="20"
+                                     fill="none"
+                                     viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                                </svg> 
+
+                                Seguir 
+                            </button>
+                            <button  class="ms-2 d-inline-flex align-items-center gap-1" id="club-share" aria-label="Compartir">
+                                <svg aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     width="20"
+                                     height="20"
+                                     fill="none"
+                                     viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                </svg>
+                                Compartir
                             </button>
                         </div>
 
-                        <div class="d-flex   mb-2">
-                           
-
-                            <button type="button" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">
-                              Reservar clase
-                            </button>
-                        </div>
+                          
+                       
                     </div>
                 </div>
             </div>
