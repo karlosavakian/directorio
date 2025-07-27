@@ -10,21 +10,15 @@
         <div class="profile-header d-flex align-items-center mb-4 mt-4">
              {% include 'partials/_back-btn.html' %}   
             <div class="d-flex ms-auto justify-content-end gap-2 ">   
-  
-
+   
                 <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 mb-1 ms-2 btn btn-dark " data-club-slug="{{ club.slug }}"> 
                     <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
                     </svg> 
                   Reservar clase
-                </button>
-
-
+                </button> 
             </div>
-        </div>
- 
-
-        
+        </div> 
         <div class="row">
             <!-- Columna Izquierda: Info del Club -->
             <div class="col-lg-2 ">
@@ -37,8 +31,7 @@
             {% else %}
                 <div class="d-flex align-items-center justify-content-center w-100 h-100 bg-dark">
   <span class="d-flex flex-column align-items-center text-white">
-                    <svg fill="#fff" width="50px" height="50px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"> <g data-name="Layer 28" id="Layer_28">
-
+                    <svg fill="#fff" width="50px" height="50px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"> <g data-name="Layer 28" id="Layer_28"> 
                         <path d="M32,3A29,29,0,1,0,61,32,29,29,0,0,0,32,3Zm0,56A27,27,0,1,1,59,32,27,27,0,0,1,32,59ZM43,37a1,1,0,0,1-1,1H22a1,1,0,0,1,0-2H42A1,1,0,0,1,43,37Zm5.71-19.29L44.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0L43,23.41l-4.29,4.3a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L41.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L43,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42ZM23,23.41l-4.29,4.3a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.42L21.59,22l-4.3-4.29a1,1,0,0,1,1.42-1.42L23,20.59l4.29-4.3a1,1,0,0,1,1.42,1.42L24.41,22l4.3,4.29a1,1,0,0,1,0,1.42,1,1,0,0,1-1.42,0Z"/>
 
                         </g>
@@ -49,9 +42,8 @@
             {% endif %}
             </div>
                
-                <div class="p-4 d-flex align-items-start mt-4 mb-4 gap-3 ">
-                    <div>
-                        
+                <div class="p-4 d-flex align-items-start mt-2 mb-4 gap-3 ">
+                    <div> 
                          <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
                         <div class="d-flex align-items-start mb-3">
                              <span class="badge ">{{ club.get_category_display }}</span>
@@ -562,8 +554,7 @@
                 </div>
             </div>
             <!-- Columna Derecha: Valoraciones y Reseñas -->
-            <div class="col-lg-2">
-
+            <div class="col-lg-2"> 
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">
@@ -607,11 +598,11 @@
                             <div class="d-flex flex-wrap   rounded   p-4 col-12">
                                 <!-- Rating promedio a la izquierda -->
                                 <div class="d-flex flex-column align-items-start col-6">
-                                    <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font-size:12px">/ 5</small></span>
+                                    <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font size:12px">/ 5</small></span>
                                     <span class="  fw-light" style="font-size:12px">({{ club.reviews_count }} reseñas)</span>
                                 </div>
                                 <!-- Valoraciones detalladas a la derecha -->
-                                <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-6">
+                                <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-12">
                                     <span>Instalaciones</span>
                                     <span class="d-flex mb-2">{% render_stars detallado.instalaciones %}</span>
                                     <span>Entrenadores</span>
