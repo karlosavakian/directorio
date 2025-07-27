@@ -424,10 +424,17 @@
    align-items: center;
  }
 
- .review-filter-dropdown .select-arrow {
-   position: relative;
-   top: auto;
-   right: auto;
-   margin-left: 5px;
-   pointer-events: auto;
- }
+.review-filter-dropdown .select-arrow {
+  position: relative;
+  top: auto;
+  right: auto;
+  margin-left: 5px;
+  pointer-events: auto;
+}
+
+/* Action buttons in the reviews column */
+.club-actions > * {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
