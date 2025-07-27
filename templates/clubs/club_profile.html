@@ -6,9 +6,40 @@
 <main class="flex-grow-1">
 
     <div class="container-fluid col-12 px-3 my-3" id="profile-container">
+         
+        <div class="profile-header  mb-3  d-flex align-items-center">
+             {% include 'partials/_back-btn.html' %} 
+ 
+            <div class=" ms-auto d-flex align-items-center  profile-actions ">
+                <!-- Heart and Share buttons -->
+                <button id="club-heart"
+                        aria-label="Seguir"
+                        data-url="{% url 'toggle_follow' 'club' club.id %}"
+                        class="{% if club_followed %}liked{% endif %} ">
+                    <svg aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="20"
+                         height="20"
+                         fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                    </svg> 
+                </button>
+                <button class="ms-2" id="club-share" aria-label="Compartir">
+                    <svg aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="20"
+                         height="20"
+                         fill="none"
+                         viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
         
-        <!-- Flecha volver arriba -->
-    {% include 'partials/_back-btn.html' %}
+            
+        
  
         <div class="row">
             <!-- Columna Izquierda: Info del Club -->
@@ -44,6 +75,7 @@
                                 </span>
                             {% endif %}
                         </div>
+                  
                         <p class="mb-2  d-flex ">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white me-2 "
                                  aria-hidden="true"
@@ -64,7 +96,24 @@
                           <button type="button" class="btn btn-outline-dark btn-sm" onclick="location.href='{% url 'conversation' club.slug %}'">
                             Mensaje privado
                           </button>
+                         
+
                         </p>
+                            <div class="d-flex   mb-2">
+
+
+                            <button type="button" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">
+                              Inscribirse
+                            </button>
+                        </div>
+
+                        <div class="d-flex   mb-2">
+                           
+
+                            <button type="button" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">
+                              Reservar clase
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -74,32 +123,7 @@
                     {% if club.photos.all %}
                         <!-- Botones de inscripción y reserva moved to reviews column -->
                         <div class="mb-4 gallery-slideshow position-relative">
-                            <div class="gallery-actions">
-                                <!-- Heart and Share buttons -->
-                                <button id="club-heart"
-                                        aria-label="Seguir"
-                                        data-url="{% url 'toggle_follow' 'club' club.id %}"
-                                        class="{% if club_followed %}liked{% endif %}">
-                                    <svg aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         width="24"
-                                         height="24"
-                                         fill="none"
-                                         viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                    </svg>
-                                </button>
-                                <button id="club-share" aria-label="Compartir">
-                                    <svg aria-hidden="true"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         width="24"
-                                         height="24"
-                                         fill="none"
-                                         viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                    </svg>
-                                </button>
-                            </div>
+                          
                             {% for photo in club.photos.all %}
                                 <div class="gallery-slide{% if forloop.first %} active{% endif %}">
                                     <img src="{{ photo.image.url }}"
@@ -255,11 +279,13 @@
                         </div>
                     </div>
                     <!-- Horarios -->
-                    <div class=" p-3 tab-pane fade" id="schedule" role="tabpanel">
-                        <p id="open-status" class="fw-bold"></p>
+                    <div class="p-3 tab-pane fade" id="schedule" role="tabpanel">
+                        <div class="table-actions">  
+                            <small class=" " id="open-status" > </small>
+                        </div>
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered text-center align-middle mb-0"
-                                   style="min-width: 700px">
+                                   style="min-width: 700px; font-size:14px;">
                                 <thead class="table-dark">
                                     <tr>
                                         {% for dia, nombre in club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
@@ -529,16 +555,7 @@
             </div>
             <!-- Columna Derecha: Valoraciones y Reseñas -->
             <div class="col-lg-2">
-                <div class="d-flex justify-content-end gap-2 mb-2">
-                    <button type="button" class="btn btn-dark btn-sm signup-member-btn" data-club-slug="{{ club.slug }}">
-                      Inscribirse
-                    </button>
-
-                    <button type="button" class="btn btn-outline-dark btn-sm booking-btn" data-club-slug="{{ club.slug }}">
-                      Reservar clase
-                    </button>
-
-                </div>
+              
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">

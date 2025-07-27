@@ -73,7 +73,7 @@ button,
 a {
     transition: all 0.2s ease-in-out;
 }
- 
+
 
 
 ul,
@@ -82,7 +82,7 @@ ol {
 }
 
 
-/* 4. Responsive Typography */
+/* 4. Responsive Typography (20% smaller) */
 h1,
 h2,
 h3,
@@ -95,36 +95,42 @@ h6 {
 }
 
 h1 {
-    font-size: 3.5rem;
+    font-size: 2.8rem;
+    /* 3.5 * 0.8 */
     font-weight: 900;
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 2.4rem;
+    /* 3.0 * 0.8 */
     font-weight: 900;
 }
 
 h3 {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    /* 2.0 * 0.8 */
     font-weight: 700;
 }
 
 h4 {
-    font-size: 1.6rem;
+    font-size: 1.28rem;
+    /* 1.6 * 0.8 */
 }
 
 h5 {
-    font-size: 1.3rem;
+    font-size: 1.04rem;
+    /* 1.3 * 0.8 */
 }
 
 h6 {
-    font-size: 1.1rem;
+    font-size: 0.88rem;
+    /* 1.1 * 0.8 */
 }
 
 p {
     margin-bottom: 1rem;
+    font-size: .88rem;
 }
-
 
 
 /* ========================================
@@ -132,22 +138,32 @@ p {
    ======================================== */
 
 /* Hover en enlaces principales: gris */
- 
+
 /* Hover en enlaces del aux footer: subrayado */
 .hover-underline:hover {
     text-decoration: underline !important;
 }
 
+.svg-arrow-left {
+    width: 25px;
+    height: 25px;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.svg-arrow-left:hover {
+    transform: scaleX(1.3);
+    /* alarga horizontalmente un 30% */
+}
 
 
 .back-button {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    /* espacio entre icono y texto */
     text-decoration: none;
     font-weight: 600;
     color: inherit;
+    padding: 0;
 }
 
 .back-button svg {
@@ -210,4 +226,26 @@ p {
 /* Estilo para checkboxes en negro y blanco */
 input[type="checkbox"] {
     accent-color: #000;
+}
+
+
+
+.button-dark-outline {
+    background: #ffffff;
+    color: black !important;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.button-dark-outline:hover {
+    background: black;
+    color: white !important;
+    transition: all 280ms ease-in-out;
+
+
+}
+
+.nav-link {
+    font-size: 14px;
+
 }
