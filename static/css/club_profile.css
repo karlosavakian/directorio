@@ -24,14 +24,20 @@
        border-radius: 6px;
  }
 
- .badge-outline {
+.badge-outline {
        font-size: 0.75rem;
        background-color: transparent;
        color: #000000;
        border-radius: 6px;
        padding: 0px 2px 0 2px;
        border: 1px solid black;
- }
+}
+
+/* Verified label next to club name */
+.verificado-badge {
+       font-size: 0.75rem;
+       font-weight: 600;
+}
 
 
  /* List groups */
