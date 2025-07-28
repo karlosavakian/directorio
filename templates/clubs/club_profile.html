@@ -570,7 +570,7 @@
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">
-                        <div class="review-carousel border rounded"
+                        <div class="review-carousel border rounded mb-2"
                              id="review-carousel"
                              onmouseenter="pauseAutoplay()"
                              onmouseleave="startAutoplay()">
@@ -607,26 +607,48 @@
                             </button>
                         </div>
                         <ul class="list-group  ">
-                            <div class="d-flex flex-wrap   rounded   p-4 col-12">
+                            <div class="d-flex flex-wrap rounded p-2">
                                 <!-- Rating promedio a la izquierda -->
-                                <div class="d-flex flex-column align-items-start col-6">
-                                    <span class="fs-4 fw-bold">{{ club.average_rating }} <small style="font size:12px">/ 5</small></span>
-                                    <span class="  fw-light" style="font-size:12px">({{ club.reviews_count }} reseñas)</span>
+                                <div class="mb-3 d-flex align-items-center col-12">
+                                    <!-- Icono alineado a la izquierda -->
+                                     
+
+                                    <!-- Texto -->
+                                    <div class="d-flex flex-column align-items-end w-100">
+                                        <span class="fs-4 fw-bold">
+                                            {{ club.average_rating }}
+                                            <small style="font-size:12px">/ 5</small>
+                                        </span>
+                                        <span class="fw-light" style="font-size:12px">
+                                            ({{ club.reviews_count }} reseñas)
+                                        </span>
+                                    </div>
                                 </div>
+
                                 <!-- Valoraciones detalladas a la derecha -->
-                                <div class="d-flex flex-column align-items-start  small rounded flex-grow-1 col-12">
+                            <div class="d-flex flex-column small rounded gap-1 w-100" style="font-size:1rem;">
+                                <div class="d-flex justify-content-between" >
                                     <span>Instalaciones</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.instalaciones %}</span>
+                                    <span class="d-flex">{% render_stars detallado.instalaciones %}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
                                     <span>Entrenadores</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.entrenadores %}</span>
+                                    <span class="d-flex">{% render_stars detallado.entrenadores %}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
                                     <span>Calidad/precio</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.calidad_precio %}</span>
+                                    <span class="d-flex">{% render_stars detallado.calidad_precio %}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
                                     <span>Ambiente</span>
-                                    <span class="d-flex mb-2">{% render_stars detallado.ambiente %}</span>
+                                    <span class="d-flex">{% render_stars detallado.ambiente %}</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
                                     <span>Variedad clases</span>
                                     <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
                                 </div>
                             </div>
+
                         </ul>
                     </div>
                 {% else %}
