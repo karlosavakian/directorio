@@ -104,7 +104,6 @@
     left: 49px;
     width: 0;
     height: 100%;
-    border-bottom: 1px solid #cfcfcf !important;
     border: none;
     outline: none;
     padding: 0;
@@ -120,4 +119,15 @@
 .searchbox-input:focus+.searchbox-button {
     background-color: white;
     color: black;
+}
+
+/* Hide dropdown and button until the input expands */
+.header-search-form #category-dropdown,
+.header-search-form #search-button {
+    display: none;
+}
+
+.header-search-form .searchbox-input:focus ~ #category-dropdown,
+.header-search-form .searchbox-input:focus ~ #search-button {
+    display: flex;
 }

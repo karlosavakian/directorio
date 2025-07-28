@@ -4,6 +4,7 @@
     const hiddenInput = document.getElementById("category-input");
     const menu = document.getElementById("category-menu");
     const items = menu.querySelectorAll(".dropdown-item");
+    const searchInput = document.getElementById("header-search");
 
     // Mostrar u ocultar menú
     dropdown.addEventListener("click", function (e) {
@@ -11,6 +12,13 @@
         dropdown.classList.toggle("active");
         menu.style.display = menu.style.display === "block" ? "none" : "block";
     });
+
+    if (searchInput) {
+        searchInput.addEventListener("input", function () {
+            dropdown.classList.add("active");
+            menu.style.display = "block";
+        });
+    }
 
     // Seleccionar opción
     items.forEach(item => {

@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //geolocator
-    const input = document.getElementById('search-input');
+    const input = document.getElementById('search-input') || document.getElementById('header-search');
     const wrapper = document.querySelector('.autocomplete-wrapper');
     const locationOption = document.getElementById('use-location-option');
     const list = document.getElementById('autocomplete-list');
