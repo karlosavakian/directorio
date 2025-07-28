@@ -46,7 +46,7 @@
                     <div> 
                          <h1 class="h3 mb-2" style="font-weight:900;">{{ club.name }}</h1>
                         <div class="d-flex align-items-start mb-3">
-                             <span class="badge ">{{ club.get_category_display }}</span>
+                             <span class="badge-outline  ">{{ club.get_category_display }}</span>
                              {% if club.verified %}
                                  <span class="ms-2" title="Verificado">
                                      <svg style="width:20px;" data-name="Layer 1" id="Layer_1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M22.41,10.59,20.36,8.54V5.63a2,2,0,0,0-2-2H15.46l-2.05-2a2,2,0,0,0-2.82,0L8.54,3.64H5.63a2,2,0,0,0-2,2V8.54l-2,2.05A2,2,0,0,0,1,12a2,2,0,0,0,.58,1.41l2.06,2.05v2.91a2,2,0,0,0,2,2H8.54l2.05,2.05A2,2,0,0,0,12,23a2,2,0,0,0,1.41-.58l2.05-2.06h2.91a2,2,0,0,0,2-2V15.46l2.05-2.05a2,2,0,0,0,0-2.82Zm-4.05,4.05v3.72H14.64L12,21,9.36,18.36H5.64V14.64L3,12,5.64,9.36V5.64H9.36L12,3l2.64,2.64h3.72V9.36L21,12Z"/><polygon points="11 12.73 8.71 10.44 7.29 11.85 11 15.56 16.71 9.85 15.29 8.44 11 12.73"/></svg>
@@ -58,7 +58,7 @@
                              
 
                             <button type="button" class=" signup-member-btn fw-medium d-flex align-items-center gap-1 mb-1  " data-club-slug="{{ club.slug }}">
-                                <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                                 </svg> 
                             Dárse de alta
@@ -70,7 +70,7 @@
                                 onclick="window.open('https://www.google.com/maps/search/?api=1&query={{ club.address|urlencode }}', '_blank')"
                             >
 
-                                <svg class="w-[100px] h-[100px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                <svg class="w-[100px] h-[100px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
                                 </svg>
@@ -80,7 +80,7 @@
                             <button type="button"
                                     onclick="location.href='{% url 'conversation' club.slug %}'"
                                     class="fw-medium d-flex align-items-center gap-1 mb-1">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
                                 </svg> 
                                 Enviar un mensaje
@@ -91,8 +91,8 @@
                                     class="fw-medium {% if club_followed %}liked{% endif %} d-flex align-items-center gap-1 mb-1">
                                 <svg aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg"
-                                     width="30"
-                                     height="30"
+                                     width="26"
+                                     height="26"
                                      fill="none"
                                      viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
@@ -102,8 +102,8 @@
                             <button class="fw-medium d-flex align-items-center gap-1 mb-1" id="club-share" aria-label="Compartir">
                                 <svg aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg"
-                                     width="30"
-                                     height="30"
+                                     width="26"
+                                     height="26"
                                      fill="none"
                                      viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
