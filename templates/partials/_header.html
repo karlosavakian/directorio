@@ -3,39 +3,33 @@
     class="navbar navbar-expand-lg bg-white {% if request.path != '/' %}border-bottom{% endif %}"
 >
     <div class="container-fluid px-3">
-        {% include 'partials/_header-logo.html' %} {% if request.path != '/' %}
-        <span class="vr mx-3 d-none d-lg-block"></span>
-        <div class="searchbox-expandable d-none d-lg-block me-3">
-            <form action="{% url 'search_results' %}" method="get">
-                <input
-                    id="header-search"
-                    class="searchbox-input"
-                    type="search"
-                    name="q"
-                    placeholder="Buscar"
-                />
-                <label for="header-search" class="searchbox-button">
-                    <svg
-                        class="w-6 h-6 text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-width="2"
-                            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                        />
-                    </svg>
-                </label>
-            </form>
+        {% include 'partials/_header-logo.html' %}
+        <span class="vr mx-3 d-none d-lg-block m-4"></span>
+        <div class="d-none d-lg-block me-3">
+            <button
+                class="btn nav-link text-dark me-5"
+                data-bs-toggle="modal"
+                data-bs-target="#searchModal"
+            >
+                <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="#000"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                    />
+                </svg>
+            </button>
         </div>
 
-        {% endif %}
         <button
             class="navbar-toggler"
             type="button"
@@ -52,31 +46,6 @@
             id="navbarNav"
         >
             <ul class="navbar-nav align-items-center">
-                {% if request.path != '/' %}
-                <li class="nav-item">
-                    <button
-                        class="btn nav-link text-dark me-5"
-                        data-bs-toggle="modal"
-                        data-bs-target="#searchModal"
-                    >
-                        <svg
-                            class="w-6 h-6 text-gray-800 dark:text-white"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke="currentColor"
-                                stroke-linecap="round"
-                                stroke-width="2"
-                                d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                            />
-                        </svg>
-                    </button>
-                </li>
                 {% if request.resolver_match.url_name == 'club_dashboard' %}
                 <li class="nav-item d-flex align-items-center ms-2">
                     <a
@@ -87,7 +56,7 @@
                         <i class="bi bi-eye-fill"></i>
                     </a>
                 </li>
-                {% endif %} {% endif %} {% if user.is_authenticated %}
+                {% endif %} {% if user.is_authenticated %}
                 <li class="nav-item">
                     <div
                         class="custom-dropdown p-0 small ms-4"
