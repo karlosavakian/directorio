@@ -153,3 +153,7 @@
 
 
  
+#searchModal .modal-body {
+    overflow-y: visible;
+    min-height: 220px;
+}
