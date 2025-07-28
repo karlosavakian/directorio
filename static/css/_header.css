@@ -17,3 +17,36 @@
     justify-content: center;
     font-weight: 600;
 }
+
+/* Búsqueda en el header */
+.header-vr {
+    height: 25px;
+    opacity: 1;
+    background-color: #ccc;
+}
+
+.header-search-form {
+    border: none;
+    height: 40px;
+}
+
+.header-search-form .search-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    color: #000;
+}
+
+.header-search-form .search-input:focus {
+    box-shadow: none;
+}
+
+.header-search-form .search-button {
+    background: transparent;
+    color: #000;
+    width: 40px;
+}
+
+.header-search-form .search-button svg {
+    color: currentColor;
+}

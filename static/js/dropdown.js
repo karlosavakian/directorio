@@ -1,9 +1,13 @@
  document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.getElementById("category-dropdown");
-    const selectedText = dropdown.querySelector(".selected-text");
-    const hiddenInput = document.getElementById("category-input");
-    const menu = document.getElementById("category-menu");
-    const items = menu.querySelectorAll(".dropdown-item");
+    const forms = document.querySelectorAll('#main-search-form');
+
+    forms.forEach(form => {
+        const dropdown = form.querySelector("#category-dropdown");
+        if (!dropdown) return;
+        const selectedText = dropdown.querySelector(".selected-text");
+        const hiddenInput = form.querySelector("#category-input");
+        const menu = form.querySelector("#category-menu");
+        const items = menu.querySelectorAll(".dropdown-item");
 
     // Mostrar u ocultar menú
     dropdown.addEventListener("click", function (e) {
@@ -24,11 +28,12 @@
     });
 
     // Cerrar menú al hacer click fuera
-    document.addEventListener("click", function (e) {
-        if (!dropdown.contains(e.target)) {
-            menu.style.display = "none";
-            dropdown.classList.remove("active");
-        }
+        document.addEventListener("click", function (e) {
+            if (!dropdown.contains(e.target)) {
+                menu.style.display = "none";
+                dropdown.classList.remove("active");
+            }
+        });
     });
 
 
