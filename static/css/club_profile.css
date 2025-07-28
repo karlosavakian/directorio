@@ -16,28 +16,34 @@
        border: 1px solid #e5e5e5 !important;
  }
 
+
  /* Badges */
  .badge {
        font-size: 0.75rem;
        background-color: #000000;
        color: #ffffff;
        border-radius: 6px;
+       font-weight: 600;
  }
 
-.badge-outline {
+ .badge-outline {
+       font-weight: 600;
        font-size: 0.75rem;
        background-color: transparent;
        color: #000000;
        border-radius: 6px;
        padding: 0px 2px 0 2px;
        border: 1px solid black;
-}
+ }
 
-/* Verified label next to club name */
-.verificado-badge {
-       font-size: 0.75rem;
-       font-weight: 600;
-}
+ /* Verified label next to club name */
+ .badge-verified {
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       position: relative;
+       top: 3px;
+ }
 
 
  /* List groups */

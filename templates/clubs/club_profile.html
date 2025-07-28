@@ -42,21 +42,31 @@
             {% endif %}
             </div>
                
-                <div class="p-4 d-flex align-items-start mt-2 mb-4 gap-3 ">
-                    <div>
-                        <h1 class="h3 mb-2 d-flex align-items-center" style="font-weight:900;">
+                <div class="p-2 d-flex align-items-start mt-2 mb-4 gap-3 ">
+                    <ul class="p-0 club-info-links"> 
+                        <div class="d-flex align-items-start mb-1">
+                            <span class="badge  fw-medium">{{ club.get_category_display }}</span>
+                        </div>
+                        <h1 class="mb-2" style="font-size:24px !important; font-weight:900;">
+
                             {{ club.name }}
                             {% if club.verified %}
-                                <span class="ms-2 verificado-badge d-flex align-items-center" title="Verificado">
-                                    Verificado<svg class="ms-1" style="width:20px;" data-name="Layer 1" id="Layer_1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title/><path d="M22.41,10.59,20.36,8.54V5.63a2,2,0,0,0-2-2H15.46l-2.05-2a2,2,0,0,0-2.82,0L8.54,3.64H5.63a2,2,0,0,0-2,2V8.54l-2,2.05A2,2,0,0,0,1,12a2,2,0,0,0,.58,1.41l2.06,2.05v2.91a2,2,0,0,0,2,2H8.54l2.05,2.05A2,2,0,0,0,12,23a2,2,0,0,0,1.41-.58l2.05-2.06h2.91a2,2,0,0,0,2-2V15.46l2.05-2.05a2,2,0,0,0,0-2.82Zm-4.05,4.05v3.72H14.64L12,21,9.36,18.36H5.64V14.64L3,12,5.64,9.36V5.64H9.36L12,3l2.64,2.64h3.72V9.36L21,12Z"/><polygon points="11 12.73 8.71 10.44 7.29 11.85 11 15.56 16.71 9.85 15.29 8.44 11 12.73"/></svg>
-                                </span>
+                            <span class="badge-verified" title="Verificado">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="24" height="24"
+                                     fill="none" viewBox="0 0 24 24"
+                                     style="display: block;">
+                                    <path stroke="currentColor"
+                                          stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          stroke-width="2"
+                                          d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
+                                </svg>
+                            </span>
                             {% endif %}
                         </h1>
-                        <div class="d-flex align-items-start mb-3">
-                            <span class="badge-outline">{{ club.get_category_display }}</span>
-                        </div>
-
-                        <div class="club-actions d-flex flex-column align-items-start gap-2 mb-4">
+ 
+                        <li class="club-actions d-flex flex-column align-items-start gap-2 mb-4">
                              
 
                             <button type="button" class=" signup-member-btn fw-medium d-flex align-items-center gap-1 mb-1  " data-club-slug="{{ club.slug }}">
@@ -112,8 +122,8 @@
                                 </svg>
                                 Compartir
                             </button>
-                        </div>  
-                    </div> 
+                        </li>  
+                    </ul> 
                 </div>
             </div>
             <!-- Columna Central: Galería y Features -->

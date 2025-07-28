@@ -58,6 +58,7 @@ button {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    font-size: 1rem;
 }
 
 
@@ -129,7 +130,7 @@ h6 {
 
 p {
     margin-bottom: 1rem;
-    font-size: .95rem;
+    font-size: 1rem;
 }
 
 
@@ -246,6 +247,6 @@ input[type="checkbox"] {
 }
 
 .nav-link {
-    font-size: 16px;
+    font-size: 14px;
 
 }
