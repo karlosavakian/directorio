@@ -4,9 +4,11 @@
 >
     <div class="container-fluid px-3">
         {% include 'partials/_header-logo.html' %} {% if request.path != '/' %}
-        <span class="vr mx-3 d-none d-lg-block"></span>
+        <span class="vr mx-3 d-none d-lg-block m-4"></span>
         <div class="searchbox-expandable d-none d-lg-block me-3">
-            <form action="{% url 'search_results' %}" method="get">
+            {% include 'partials/_search_form_mini.html' %}
+
+            <!-- <form action="{% url 'search_results' %}" method="get">
                 <input
                     id="header-search"
                     class="searchbox-input"
@@ -14,9 +16,10 @@
                     name="q"
                     placeholder="Buscar"
                 />
+
                 <label for="header-search" class="searchbox-button">
                     <svg
-                        class="w-6 h-6 text-gray-800 dark:text-white"
+                        class="mt-3 w-6 h-6 text-gray-800 dark:text-white"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
                         width="24"
@@ -32,7 +35,7 @@
                         />
                     </svg>
                 </label>
-            </form>
+            </form> -->
         </div>
 
         {% endif %}
