@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     'apps.clubs',
     'apps.users',
     'apps.blog',
-    'emoji_picker',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

@@ -4,5 +4,4 @@ django-allauth
 cryptography
 PyJWT
 Faker
-django-emoji-picker
 
