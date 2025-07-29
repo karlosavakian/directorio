@@ -449,7 +449,7 @@ class ClubMessageForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control form-control-sm w-100',
                     'rows': 1,
-                    'style': 'height:30px;',
+                    'style': 'height:30px; max-height:30px;',
                     'placeholder': 'Mensaje...'
                 }
             )

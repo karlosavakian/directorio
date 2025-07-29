@@ -57,10 +57,12 @@
           <p>No hay mensajes.</p>
         {% endfor %}
       </div>
-      <form method="post" class="d-flex gap-2">
+      <form method="post" id="message-form" class="d-flex gap-2 align-items-end bg-light p-2 rounded">
         {% csrf_token %}
         {{ form.content }}
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <button type="submit" class="btn btn-primary d-flex align-items-center">
+          <i class="bi bi-send-fill"></i>
+        </button>
       </form>
     </div>
   </div>
