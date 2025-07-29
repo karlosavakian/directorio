@@ -1,8 +1,34 @@
 #message-form {
+  position: relative;
   background-color: #f8f9fa;
   padding: 0.25rem;
   border-radius: 0.25rem;
 }
 #message-form textarea {
   max-height: 30px;
+  padding-right: 2rem;
+}
+#message-form button[type="submit"] {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+}
+
+.message-bubble {
+  position: relative;
+  padding-right: 2rem;
+}
+
+.message-bubble .message-actions {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  display: none;
+  gap: 0.25rem;
+}
+
+.message-bubble:hover .message-actions {
+  display: flex;
 }
