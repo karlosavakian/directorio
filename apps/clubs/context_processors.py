@@ -9,7 +9,11 @@ def user_messages(request):
 
     msgs = (
         ClubMessage.objects.filter(
-            Q(user=request.user) | Q(club__owner=request.user)
+            (
+                Q(user=request.user, sender_is_club=True)
+                | Q(club__owner=request.user, sender_is_club=False)
+            )
+            & Q(is_read=False)
         )
         .select_related("club", "user")
     )

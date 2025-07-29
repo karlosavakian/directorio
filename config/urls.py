@@ -29,9 +29,7 @@ urlpatterns = [
     path('profile/<str:username>/', user_profile.profile_detail, name='user_profile'),
 
     # Bandeja y conversaciones de mensajes
-    path('mensajes/', club_messages.message_inbox, name='message_inbox'),
-    path('mensajes/<slug:slug>/', club_messages.conversation, name='conversation'),
-    path('@<slug:slug>/mensajes/<int:user_id>/', club_messages.conversation, name='club_conversation'),
+    path('mensajes/', club_messages.conversation, name='conversation'),
     path('mensaje/<int:pk>/like/', club_messages.message_toggle_like, name='message_like'),
 
     # Clubs: Gestión de Clubs y búsqueda

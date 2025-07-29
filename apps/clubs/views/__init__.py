@@ -6,4 +6,4 @@ from .dashboard import (
     dashboard,
     club_edit,
 )
-from .messages import message_inbox, conversation, message_toggle_like
+from .messages import conversation, message_toggle_like

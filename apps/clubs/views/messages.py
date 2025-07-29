@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Max, Q
@@ -9,8 +10,11 @@ from ..forms import ClubMessageForm
 
 
 @login_required
-def message_inbox(request):
-    """Display the latest message of each conversation."""
+def conversation(request):
+    """Display inbox or a conversation based on query params."""
+    slug = request.GET.get('club')
+    user_id = request.GET.get('user')
+
     latest_ids = (
         ClubMessage.objects.filter(
             Q(user=request.user) | Q(club__owner=request.user)
@@ -24,12 +28,17 @@ def message_inbox(request):
         .select_related('club', 'user')
         .order_by('-created_at')
     )
-    return render(request, 'clubs/message_inbox.html', {'conversations': conversations})
 
+    if not slug:
+        ClubMessage.objects.filter(
+            (
+                Q(user=request.user, sender_is_club=True)
+                | Q(club__owner=request.user, sender_is_club=False)
+            )
+            & Q(is_read=False)
+        ).update(is_read=True)
+        return render(request, 'clubs/message_inbox.html', {'conversations': conversations})
 
-@login_required
-def conversation(request, slug, user_id=None):
-    """Conversation between a user and a club."""
     club = get_object_or_404(Club, slug=slug)
 
     if request.user == club.owner and user_id is not None:
@@ -42,21 +51,12 @@ def conversation(request, slug, user_id=None):
         .select_related('user')
         .order_by('created_at')
     )
-
-    latest_ids = (
-        ClubMessage.objects.filter(
-            Q(user=request.user) | Q(club__owner=request.user)
-        )
-        .values('club', 'user')
-        .annotate(last_id=Max('id'))
-        .values_list('last_id', flat=True)
-    )
-
-    conversations = (
-        ClubMessage.objects.filter(id__in=latest_ids)
-        .select_related('club', 'user')
-        .order_by('-created_at')
-    )
+    unread_filter = Q(is_read=False)
+    if request.user == club.owner:
+        unread_filter &= Q(sender_is_club=False)
+    else:
+        unread_filter &= Q(sender_is_club=True)
+    messages_qs.filter(unread_filter).update(is_read=True)
 
     if request.method == 'POST':
         form = ClubMessageForm(request.POST)
@@ -65,10 +65,12 @@ def conversation(request, slug, user_id=None):
             msg.club = club
             msg.user = conversant
             msg.sender_is_club = request.user == club.owner
+            msg.is_read = True
             msg.save()
+            url = reverse('conversation') + f'?club={club.slug}'
             if request.user == club.owner:
-                return redirect('club_conversation', slug=club.slug, user_id=conversant.id)
-            return redirect('conversation', slug=club.slug)
+                url += f'&user={conversant.id}'
+            return redirect(url)
     else:
         form = ClubMessageForm()
 

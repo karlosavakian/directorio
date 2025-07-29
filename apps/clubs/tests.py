@@ -247,7 +247,7 @@ class MessageInboxTests(TestCase):
 
     def test_user_message_appears_in_owner_inbox(self):
         self.client.login(username='owner', password='pass')
-        url = reverse('message_inbox')
+        url = reverse('conversation')
         res = self.client.get(url)
         self.assertContains(res, 'hola')
 
@@ -263,7 +263,7 @@ class MessageConversationTests(TestCase):
 
     def test_non_owner_can_send_message(self):
         self.client.login(username='normal', password='pass')
-        url = reverse('conversation', args=[self.club.slug])
+        url = reverse('conversation') + f'?club={self.club.slug}'
         self.client.post(url, {'content': 'hi'})
         msg = ClubMessage.objects.latest('id')
         self.assertEqual(msg.user, self.user)
@@ -271,15 +271,15 @@ class MessageConversationTests(TestCase):
 
     def test_message_visible_in_inboxes(self):
         self.client.login(username='normal', password='pass')
-        url = reverse('conversation', args=[self.club.slug])
+        url = reverse('conversation') + f'?club={self.club.slug}'
         self.client.post(url, {'content': 'hello'})
         self.client.logout()
 
         self.client.login(username='owner2', password='pass')
-        owner_inbox = self.client.get(reverse('message_inbox'))
+        owner_inbox = self.client.get(reverse('conversation'))
         self.assertContains(owner_inbox, 'hello')
 
         self.client.logout()
         self.client.login(username='normal', password='pass')
-        user_inbox = self.client.get(reverse('message_inbox'))
+        user_inbox = self.client.get(reverse('conversation'))
         self.assertContains(user_inbox, 'hello')

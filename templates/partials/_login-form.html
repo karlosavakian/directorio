@@ -1,7 +1,7 @@
  {% load socialaccount %}
  
             <form method="post" action="{% url 'login' %}" class="profile-form">
-                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <input type="hidden" name="next" value="{{ next_url }}">
                 {% csrf_token %}
 
                 <div class="form-field">
