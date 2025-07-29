@@ -15,20 +15,17 @@
   transform: translateY(-50%);
 }
 
-.message-bubble {
-  position: relative;
-  padding-right: 2rem;
+.message-row {
+  display: flex;
+  align-items: center;
 }
 
-.message-bubble .message-actions {
-  position: absolute;
-  top: 50%;
-  right: 0.25rem;
-  transform: translateY(-50%);
+.message-actions {
   display: none;
+  margin-left: 0.25rem;
   gap: 0.25rem;
 }
 
-.message-bubble:hover .message-actions {
+.message-row:hover .message-actions {
   display: flex;
 }
