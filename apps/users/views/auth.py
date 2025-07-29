@@ -48,3 +48,13 @@ class LoginView(DjangoLoginView):
         else:
             self.request.session.set_expiry(settings.SESSION_COOKIE_AGE)
         return response
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        next_url = self.request.GET.get(self.redirect_field_name)
+        if not next_url:
+            ref = self.request.META.get('HTTP_REFERER')
+            if ref and ref != self.request.build_absolute_uri():
+                next_url = ref
+        context['next_url'] = next_url or '/'
+        return context
