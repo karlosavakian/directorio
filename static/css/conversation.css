@@ -1,0 +1,11 @@
+#message-form {
+  background-color: #f8f9fa;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+}
+#message-form textarea {
+  max-height: 30px;
+}
+#emoji-button {
+  margin-left: auto;
+}
