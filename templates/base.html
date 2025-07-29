@@ -18,7 +18,9 @@
     </div>
 
     {% include 'partials/_header.html' %}
+    {% if request.path != '/mensajes/' %}
     {% include 'partials/_messages.html' %}
+    {% endif %}
  
       {% if request.path != '/' %}
         {% include 'partials/_search_modal.html' %}
