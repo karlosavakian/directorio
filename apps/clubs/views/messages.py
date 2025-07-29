@@ -15,6 +15,14 @@ def conversation(request):
     slug = request.GET.get('club')
     user_id = request.GET.get('user')
 
+    ClubMessage.objects.filter(
+        (
+            Q(user=request.user, sender_is_club=True)
+            | Q(club__owner=request.user, sender_is_club=False)
+        )
+        & Q(is_read=False)
+    ).update(is_read=True)
+
     latest_ids = (
         ClubMessage.objects.filter(
             Q(user=request.user) | Q(club__owner=request.user)
@@ -30,13 +38,6 @@ def conversation(request):
     )
 
     if not slug:
-        ClubMessage.objects.filter(
-            (
-                Q(user=request.user, sender_is_club=True)
-                | Q(club__owner=request.user, sender_is_club=False)
-            )
-            & Q(is_read=False)
-        ).update(is_read=True)
         return render(request, 'clubs/message_inbox.html', {'conversations': conversations})
 
     club = get_object_or_404(Club, slug=slug)

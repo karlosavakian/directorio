@@ -1,3 +1,4 @@
+{% load utils_filters %}
 <div class="modal fade" id="messagesModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
@@ -44,7 +45,7 @@
                     </svg>
                   </button>
                   <small class="text-muted"
-                    >{{ m.created_at|date:'d/m/Y H:i' }}</small
+                    >{{ m.created_at|message_timestamp }}</small
                   >
                 </div>
               </div>
