@@ -37,8 +37,20 @@ def conversation(request):
         .order_by('-created_at')
     )
 
+    club = None
+    conversant = None
+    messages_qs = ClubMessage.objects.none()
+    form = None
+
     if not slug:
-        return render(request, 'clubs/message_inbox.html', {'conversations': conversations})
+        context = {
+            'club': club,
+            'conversant': conversant,
+            'messages': messages_qs,
+            'form': form,
+            'conversations': conversations,
+        }
+        return render(request, 'clubs/conversation.html', context)
 
     club = get_object_or_404(Club, slug=slug)
 

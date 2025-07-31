@@ -38,37 +38,39 @@
         {% endfor %}
       </div>
     </div>
-    <div class="col-md-8"> 
-      <div class="mb-3">
-        {% for m in messages %}
-          <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row">
-            <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}">
-              <div>{{ m.content }}</div>
+      {% if club %}
+      <div class="col-md-8">
+        <div class="mb-3">
+          {% for m in messages %}
+            <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row">
+              <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}">
+                <div>{{ m.content }}</div>
+              </div>
+              <div class="message-actions ms-1">
+                <button class="btn p-0 reply-btn">
+                  <i class="bi bi-reply"></i>
+                </button>
+                <button class="btn p-0 message-like {% if user.is_authenticated and user in m.likes.all %}liked{% endif %}" data-url="{% url 'message_like' m.pk %}">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                  </svg>
+                </button>
+              </div>
             </div>
-            <div class="message-actions ms-1">
-              <button class="btn p-0 reply-btn">
-                <i class="bi bi-reply"></i>
-              </button>
-              <button class="btn p-0 message-like {% if user.is_authenticated and user in m.likes.all %}liked{% endif %}" data-url="{% url 'message_like' m.pk %}">
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="text-center text-muted small">{{ m.created_at|message_timestamp }}</div>
-        {% empty %}
-          <p>No hay mensajes.</p>
-        {% endfor %}
+            <div class="text-center text-muted small">{{ m.created_at|message_timestamp }}</div>
+          {% empty %}
+            <p>No hay mensajes.</p>
+          {% endfor %}
+        </div>
+        <form method="post" id="message-form" class="bg-light p-2 rounded">
+          {% csrf_token %}
+          {{ form.content }}
+          <button type="submit" class="btn btn-primary d-flex align-items-center">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </form>
       </div>
-      <form method="post" id="message-form" class="bg-light p-2 rounded">
-        {% csrf_token %}
-        {{ form.content }}
-        <button type="submit" class="btn btn-primary d-flex align-items-center">
-          <i class="bi bi-send-fill"></i>
-        </button>
-      </form>
-    </div>
+      {% endif %}
   </div>
 </div>
 {% endblock %}
