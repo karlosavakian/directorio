@@ -21,3 +21,23 @@
 .burger-icon {
     font-size: 32px;
 }
+
+/* Separator between logo and search icon */
+.header-separator {
+    width: 1px;
+    height: 30px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+/* Style for mobile user dropdown trigger */
+#user-dropdown {
+    background-color: #000;
+    color: #fff;
+    padding: 0 12px;
+    border-radius: 8px;
+}
+
+#user-dropdown .burger-icon {
+    color: #fff;
+}
