@@ -17,10 +17,3 @@
     justify-content: center;
     font-weight: 600;
 }
-
-/* Divider next to header logo */
-.header-divider {
-    height: 30px;
-    margin: 0 10px;
-    border-left: 1px solid #dee2e6;
-}
