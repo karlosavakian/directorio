@@ -17,3 +17,9 @@
     justify-content: center;
     font-weight: 600;
 }
+
+/* Remove borders and background from burger button */
+.navbar-toggler {
+    border: none;
+    background-color: transparent;
+}
