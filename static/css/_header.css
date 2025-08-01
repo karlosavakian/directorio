@@ -41,3 +41,16 @@
 #user-dropdown .burger-icon {
     color: #fff;
 }
+
+/* Overlay for dropdown menu */
+#dropdown-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 90;
+}
+
+#dropdown-overlay.show {
+    display: block;
+}
