@@ -3,8 +3,12 @@
     class="navbar navbar-expand-lg bg-white {% if request.path != '/' %}border-bottom{% endif %}"
 >
     <div class="container-fluid px-3">
-        {% include 'partials/_header-logo.html' %} {% if request.path != '/' %}
-        <span class="vr mx-3 d-none d-lg-block m-4"></span>
+        {% include 'partials/_header-logo.html' %}
+        {% if request.path != '/' %}
+        <span
+            class="vr d-none d-lg-block"
+            style="margin-left: 15px; margin-right: 15px;"
+        ></span>
         <div class="d-none d-lg-block me-3">
             <button
                 class="btn nav-link text-dark me-5"
