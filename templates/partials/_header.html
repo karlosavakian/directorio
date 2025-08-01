@@ -42,11 +42,7 @@
         >
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarNav"
-        >
-            <ul class="navbar-nav align-items-center">
+        <ul class="navbar-nav align-items-center ms-auto">
                 {% if request.resolver_match.url_name == 'club_dashboard' %}
                 <li class="nav-item d-flex align-items-center ms-2">
                     <a
@@ -142,6 +138,5 @@
 
                 {% endif %}
             </ul>
-        </div>
     </div>
 </header>
