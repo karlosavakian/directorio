@@ -6,8 +6,9 @@
         <div class="d-flex align-items-center">
             {% include 'partials/_header-logo.html' %}
             {% if request.path != '/' %}
+            <div class="header-separator"></div>
             <button
-                class="btn nav-link text-dark ms-3 d-none d-lg-block"
+                class="btn nav-link text-dark ms-0"
                 data-bs-toggle="modal"
                 data-bs-target="#searchModal"
             >
@@ -57,10 +58,10 @@
                             <img
                                 src="{{ user.profile.avatar.url }}"
                                 alt="{{ user.username }}"
-                                class="nav-avatar-img d-none d-lg-block"
+                                class="nav-avatar-img me-2"
                             />
                             {% else %}
-                            <div class="nav-avatar d-none d-lg-flex">
+                            <div class="nav-avatar me-2">
                                 {{ user.username|first|upper }}
                             </div>
                             {% endif %}
