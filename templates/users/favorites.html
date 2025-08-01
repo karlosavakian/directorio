@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static utils_filters %}
 
 {% block body_class %}search-result-page{% endblock %}
 
@@ -18,8 +18,8 @@
                     {% if club.logo %}
                         <img src="{{ club.logo.url }}" class="card-img-top object-fit-cover" style="height: 200px;" alt="{{ club.name }}">
                     {% else %}
-                        <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px;">
-                            <span class="text-muted">Sin logo</span>
+                        <div class="card-img-top d-flex align-items-center justify-content-center bg-dark" style="height: 200px;">
+                            <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
                         </div>
                     {% endif %}
 
