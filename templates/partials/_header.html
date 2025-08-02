@@ -127,6 +127,7 @@
 
                 {% endif %}
             </ul>
+            {% if user.is_authenticated %}
             <button
                 id="burger-button"
                 class="navbar-toggler border-0 bg-transparent ms-2"
@@ -135,5 +136,6 @@
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
+            {% endif %}
     </div>
 </header>
