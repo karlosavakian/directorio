@@ -22,18 +22,17 @@
 
         <!-- Enlaces legales y copyright -->
         <div class="row mt-1">
-            <div class="col-md-6  text-md-start text-center order-md-1 order-2">
-                <a href="/" class="d-block d-md-inline small ">
-                     <img src="{% static 'img/logo.svg' %}"  alt="Logo" class="mb-1 d-md-inline d-block " style="width:40px;  "> 
-                     
-                © 2025 ClubsDeBoxeo.com | Todos los derechos reservados
-                </a> 
+            <div class="col-md-6 text-center order-md-1 order-2">
+                <a href="/" class="d-inline-flex align-items-center justify-content-center gap-2 text-dark text-decoration-none small">
+                    <img src="{% static 'img/logo.svg' %}" alt="Logo" style="width:40px;">
+                    © 2025 ClubsDeBoxeo.com
+                </a>
             </div>
 
-            <div class="col-md-6 d-flex text-center justify-content-md-end justify-content-center gap-3 order-md-2 order-1 flex-md-row flex-column small" >
-                <a href="{% url 'terminos' %}" class="text-decoration-none  hover-underline">Términos y Condiciones</a>
-                <a href="{% url 'privacidad' %}" class="text-decoration-none  hover-underline">Política de Privacidad</a>
-                <a href="{% url 'cookies' %}" class="text-decoration-none  hover-underline">Política de Cookies</a>
+            <div class="col-md-6 d-flex text-center justify-content-md-end justify-content-center gap-3 order-md-2 order-1 flex-row small">
+                <a href="{% url 'terminos' %}" class="text-decoration-none hover-underline">Términos y Condiciones</a>
+                <a href="{% url 'privacidad' %}" class="text-decoration-none hover-underline">Política de Privacidad</a>
+                <a href="{% url 'cookies' %}" class="text-decoration-none hover-underline">Política de Cookies</a>
             </div>
         </div>
 
