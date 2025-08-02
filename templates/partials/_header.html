@@ -45,56 +45,24 @@
                 {% endif %} {% if user.is_authenticated %}
                 <li class="nav-item">
                     <div
-                        class="custom-dropdown p-0 small ms-4"
-                        id="user-dropdown"
+                        id="user-menu-button"
+                        class="p-0 small ms-4 d-flex align-items-center"
+                        role="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#userSidebar"
+                        aria-controls="userSidebar"
                     >
-                        <div class="selected d-flex align-items-center">
-                            {% if user.profile.avatar %}
-                            <img
-                                src="{{ user.profile.avatar.url }}"
-                                alt="{{ user.username }}"
-                                class="nav-avatar-img"
-                            />
-                            {% else %}
-                            <div class="nav-avatar">
-                                {{ user.username|first|upper }}
-                            </div>
-                            {% endif %}
+                        {% if user.profile.avatar %}
+                        <img
+                            src="{{ user.profile.avatar.url }}"
+                            alt="{{ user.username }}"
+                            class="nav-avatar-img"
+                        />
+                        {% else %}
+                        <div class="nav-avatar">
+                            {{ user.username|first|upper }}
                         </div>
-                        <div class="dropdown-menu" id="user-menu">
-                            <a
-                                href="{% url 'profile' %}"
-                                class="dropdown-item text-light"
-                                >Mi perfil</a
-                            >
-                            {% if user.owned_clubs.exists %}
-                            <a
-                                href="{% url 'club_dashboard' user.owned_clubs.first.slug %}"
-                                class="dropdown-item text-light"
-                                >Administrar</a
-                            >
-                            {% endif %}
-                            <a
-                                href="{% url 'conversation' %}"
-                                class="dropdown-item text-light"
-                                >Mensajes</a
-                            >
-                            <a
-                                href="#"
-                                class="dropdown-item text-light"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            >
-                                Cerrar sesión
-                            </a>
-                            <form
-                                id="logout-form"
-                                method="POST"
-                                action="{% url 'logout' %}"
-                                style="display: none"
-                            >
-                                {% csrf_token %}
-                            </form>
-                        </div>
+                        {% endif %}
                     </div>
                 </li>
                 {% else %}
@@ -133,9 +101,55 @@
                 class="navbar-toggler border-0 bg-transparent ms-2"
                 type="button"
                 aria-label="Toggle user menu"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#userSidebar"
+                aria-controls="userSidebar"
             >
                 <span class="navbar-toggler-icon"></span>
             </button>
             {% endif %}
+        {% if user.is_authenticated %}
+        <div
+            class="offcanvas offcanvas-end text-bg-dark"
+            tabindex="-1"
+            id="userSidebar"
+            aria-labelledby="userSidebarLabel"
+        >
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="userSidebarLabel">Menú</h5>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column gap-2">
+                <a href="{% url 'profile' %}" class="dropdown-item text-light">Mi perfil</a>
+                {% if user.owned_clubs.exists %}
+                <a
+                    href="{% url 'club_dashboard' user.owned_clubs.first.slug %}"
+                    class="dropdown-item text-light"
+                    >Administrar</a
+                >
+                {% endif %}
+                <a href="{% url 'conversation' %}" class="dropdown-item text-light">Mensajes</a>
+                <a
+                    href="#"
+                    class="dropdown-item text-light"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                    >Cerrar sesión</a
+                >
+                <form
+                    id="logout-form"
+                    method="POST"
+                    action="{% url 'logout' %}"
+                    style="display: none"
+                >
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </header>
