@@ -187,6 +187,16 @@
   display: none;
 }
 
+/* Square variant for club logos */
+.avatar-dropzone.avatar-dropzone-square {
+  width: 200px;
+  height: 200px;
+}
+
+.avatar-dropzone.avatar-dropzone-square .avatar-preview {
+  border-radius: 0;
+}
+
 /* Gallery styles */
 .gallery-grid {
   display: grid;
