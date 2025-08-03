@@ -16,9 +16,9 @@ class PlanForm(forms.Form):
     plan = forms.ChoiceField(
         label='Selecciona el tipo de Plan',
         choices=[
-            ('gratis', 'Plan Gratuito'),
-            ('amateur', 'Plan Amateur'),
-            ('pro', 'Plan Pro'),
+            ('bronce', 'Plan Bronce'),
+            ('plata', 'Plan Plata'),
+            ('oro', 'Plan Oro'),
         ],
         widget=forms.RadioSelect
     )
