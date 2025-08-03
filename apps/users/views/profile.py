@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import logout
 
-from ..forms import ProfileForm, AccountForm
+from ..forms import AccountForm
 from ..models import Profile, Follow
 from apps.clubs.models import Booking, Club, Reseña
 from apps.core.forms import PlanForm
@@ -19,16 +19,27 @@ from django.core.paginator import Paginator
 def profile(request):
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
-        form = AccountForm(request.POST, request.FILES, instance=profile_obj, user=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Perfil actualizado exitosamente.')
-            return redirect('profile')
+        if 'plan' in request.POST:
+            form = AccountForm(instance=profile_obj, user=request.user)
+            plan_form = PlanForm(request.POST)
+            if plan_form.is_valid():
+                profile_obj.plan = plan_form.cleaned_data['plan']
+                profile_obj.save()
+                messages.success(request, 'Plan actualizado exitosamente.')
+                return redirect('profile')
         else:
-            for error in form.errors.get('avatar', []):
-                messages.error(request, error)
+            form = AccountForm(request.POST, request.FILES, instance=profile_obj, user=request.user)
+            plan_form = PlanForm(initial={'plan': profile_obj.plan})
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Perfil actualizado exitosamente.')
+                return redirect('profile')
+            else:
+                for error in form.errors.get('avatar', []):
+                    messages.error(request, error)
     else:
         form = AccountForm(instance=profile_obj, user=request.user)
+        plan_form = PlanForm(initial={'plan': profile_obj.plan})
     bookings = Booking.objects.filter(user=request.user).select_related('evento')
 
     follower_ct = ContentType.objects.get_for_model(request.user)
@@ -62,8 +73,45 @@ def profile(request):
     owned_clubs = request.user.owned_clubs.all()
     is_owner = owned_clubs.exists()
 
+    plans = [
+        {
+            'value': 'bronce',
+            'title': 'Plan Bronce',
+            'price': '0€ / mes',
+            'features': [
+                'Presencia básica en el directorio',
+                'Publicación de eventos',
+                'Acceso a valoraciones',
+            ],
+        },
+        {
+            'value': 'plata',
+            'title': 'Plan Plata',
+            'price': '9€ / mes',
+            'features': [
+                'Todos los beneficios del Plan Bronce',
+                'Publicaciones ilimitadas',
+                'Estadísticas básicas',
+            ],
+            'featured': True,
+        },
+        {
+            'value': 'oro',
+            'title': 'Plan Oro',
+            'price': '19€ / mes',
+            'features': [
+                'Todos los beneficios del Plan Plata',
+                'Badge de verificación',
+                'Herramientas de marketing avanzadas',
+            ],
+        },
+    ]
+
     return render(request, 'users/profile.html', {
         'form': form,
+        'plan_form': plan_form,
+        'plans': plans,
+        'current_plan': profile_obj.plan,
         'profile': profile_obj,
         'bookings': bookings,
         'favoritos': favoritos_page,
@@ -106,54 +154,4 @@ def delete_account(request):
     return render(request, 'users/delete_account_confirm.html')
 
 
-@login_required
-def plans(request):
-    profile_obj, _ = Profile.objects.get_or_create(user=request.user)
-    plans = [
-        {
-            'value': 'bronce',
-            'title': 'Plan Bronce',
-            'price': '0€ / mes',
-            'features': [
-                'Presencia básica en el directorio',
-                'Publicación de eventos',
-                'Acceso a valoraciones',
-            ],
-        },
-        {
-            'value': 'plata',
-            'title': 'Plan Plata',
-            'price': '9€ / mes',
-            'features': [
-                'Todos los beneficios del Plan Bronce',
-                'Publicaciones ilimitadas',
-                'Estadísticas básicas',
-            ],
-            'featured': True,
-        },
-        {
-            'value': 'oro',
-            'title': 'Plan Oro',
-            'price': '19€ / mes',
-            'features': [
-                'Todos los beneficios del Plan Plata',
-                'Badge de verificación',
-                'Herramientas de marketing avanzadas',
-            ],
-        },
-    ]
-    if request.method == 'POST':
-        form = PlanForm(request.POST)
-        if form.is_valid():
-            profile_obj.plan = form.cleaned_data['plan']
-            profile_obj.save()
-            messages.success(request, 'Plan actualizado exitosamente.')
-            return redirect('profile_plans')
-    else:
-        form = PlanForm(initial={'plan': profile_obj.plan})
-    return render(request, 'users/profile_plans.html', {
-        'form': form,
-        'plans': plans,
-        'current_plan': profile_obj.plan,
-    })
  

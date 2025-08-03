@@ -66,12 +66,37 @@
                 <button type="submit" class="btn btn-dark">Guardar cambios</button>
             </form>
             <a href="{% url 'delete_account' %}" class="btn btn-danger mt-3">Eliminar cuenta</a>
-            <a href="{% url 'profile_plans' %}" class="btn btn-outline-dark mt-3">Gestionar plan</a>
         </div>
         {% if is_owner %}
         <div id="tab-plans" class="profile-section">
-            <h2 class="h5 mb-3">Planes</h2>
+            <h2 class="h5 text-center mb-3">Gestiona tu plan</h2>
+            <p class="text-center text-muted mb-4">Selecciona el plan que prefieras.</p>
+            <form method="post" class="text-center mb-5">
+                {% csrf_token %}
+                {% if plan_form.plan.errors %}
+                <div class="invalid-feedback d-block mb-3">{{ plan_form.plan.errors.as_text|striptags }}</div>
+                {% endif %}
+                <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+                    {% for p in plans %}
+                    <label class="plan-card {% if p.featured %}featured{% endif %}{% if current_plan == p.value %} active{% endif %}">
+                        <input type="radio" name="plan" value="{{ p.value }}" {% if current_plan == p.value %}checked{% endif %}>
+                        <h3 class="mb-2">{{ p.title }}</h3>
+                        <ul>
+                            {% for f in p.features %}
+                            <li>{{ f }}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="plan-card-price">{{ p.price }}</div>
+                        {% if current_plan == p.value %}
+                        <span class="badge bg-dark position-absolute top-0 end-0 m-2">Actual</span>
+                        {% endif %}
+                    </label>
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-dark">Guardar plan</button>
+            </form>
             {% if owned_clubs %}
+            <h3 class="h6">Tus clubes</h3>
             <ul class="list-group">
                 {% for c in owned_clubs %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -173,4 +198,5 @@
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/clear-input.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+<script src="{% static 'js/plan-cards.js' %}"></script>
 {% endblock %}
