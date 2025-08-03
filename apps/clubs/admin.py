@@ -67,7 +67,7 @@ class ClubAdmin(admin.ModelAdmin):
         'number',
         'door',
         'postal_code',
-        'address',
+        'prefijo',
         'phone',
         'email',
         'about',

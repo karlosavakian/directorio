@@ -150,41 +150,40 @@
           </div>
         </div>
 
-        <div class="form-field mt-3">
-          {{ form.address }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
-          {% if form.address.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.address.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-
-        <!-- Teléfono + Email -->
-        <div class="row g-3 mt-3">
-          <div class="form-field col-md-6">
-            {{ form.phone }}
-            <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
-            {% if form.phone.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.phone.errors.as_text|striptags }}
+          <!-- Teléfono + Email -->
+          <div class="row g-3 mt-3">
+            <div class="form-field col-md-2">
+              {{ form.prefijo }}
+              <button type="button" class="clear-btn">×</button>
+              <label for="{{ form.prefijo.id_for_label }}">{{ form.prefijo.label }}</label>
+              {% if form.prefijo.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.prefijo.errors.as_text|striptags }}
+              </div>
+              {% endif %}
             </div>
-            {% endif %}
-          </div>
-
-          <div class="form-field col-md-6">
-            {{ form.email }}
-            <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-            {% if form.email.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.email.errors.as_text|striptags }}
+            <div class="form-field col-md-4">
+              {{ form.phone }}
+              <button type="button" class="clear-btn">×</button>
+              <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+              {% if form.phone.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.phone.errors.as_text|striptags }}
+              </div>
+              {% endif %}
             </div>
-            {% endif %}
+
+            <div class="form-field col-md-6">
+              {{ form.email }}
+              <button type="button" class="clear-btn">×</button>
+              <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+              {% if form.email.errors %}
+              <div class="invalid-feedback d-block">
+                {{ form.email.errors.as_text|striptags }}
+              </div>
+              {% endif %}
+            </div>
           </div>
-        </div>
         <button type="submit" class="btn btn-dark mt-4">Guardar</button>
       </form>
         </div>
@@ -1025,7 +1024,7 @@
                       <i class="bi bi-person-bounding-box"></i>
                     </button>
                   </td>
-                  <td class="phone-column">{{ m.telefono }}</td>
+                  <td class="phone-column">{{ m.prefijo }} {{ m.telefono }}</td>
                   <td>{{ m.email }}</td>
                   <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
                   <td class="text-nowrap">
