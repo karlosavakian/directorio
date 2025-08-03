@@ -451,7 +451,19 @@
  }
 
 
- .review-filter-dropdown .selected-text {
-       display: inline-flex;
-       align-items: center;
+.review-filter-dropdown .selected-text {
+      display: inline-flex;
+      align-items: center;
  }
+
+@media (max-width: 991.98px) {
+      .club-actions {
+            flex-wrap: nowrap !important;
+      }
+
+      .club-actions button {
+            white-space: normal;
+            word-break: break-word;
+            text-align: center;
+      }
+}
