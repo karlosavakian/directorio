@@ -15,110 +15,116 @@
   <div class="profile-content">
     <div id="tab-profile" class="profile-section active">
       <h4>Administrar Perfil</h4>
-      <div class="col-lg-6">
-        <form
-          method="post"
-          action="{% url 'club_edit' club.slug %}"
-          enctype="multipart/form-data"
-          class="profile-form"
-        >
-          {% csrf_token %}
-          <div class="mb-5 text-center">
-            <div class="avatar-dropzone mx-auto">
-              {{ form.logo }}
-              <div
-                class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
-                {% if club.logo|safe_url %}
-                style="background-image:url('{{ club.logo|safe_url }}')"
-                {% endif %}
-              >
-                <div class="avatar-dropzone-msg">
-                  <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                  <span>Sube tu logo</span>
-                </div>
+      <div class="row">
+        <div class="col-lg-6">
+      <form
+        method="post"
+        action="{% url 'club_edit' club.slug %}"
+        enctype="multipart/form-data"
+        class="profile-form"
+      >
+        {% csrf_token %}
+        <div class="mb-5 text-center">
+          <div class="avatar-dropzone mx-auto">
+            {{ form.logo }}
+            <div
+              class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
+              {% if club.logo|safe_url %}
+              style="background-image:url('{{ club.logo|safe_url }}')"
+              {% endif %}
+            >
+              <div class="avatar-dropzone-msg">
+                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                <span>Sube tu logo</span>
               </div>
             </div>
-            <label class="form-label mt-2" for="{{ form.logo.id_for_label }}"
-              >{{ form.logo.label }}</label
-            >
-            {% if form.logo.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.logo.errors.as_text|striptags }}
-            </div>
-            {% endif %}
           </div>
-          <div class="form-field">
-            {{ form.name }}
-            <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.name.id_for_label }}"
-              >{{ form.name.label }}</label
-            >
-            {% if form.name.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.name.errors.as_text|striptags }}
-            </div>
-            {% endif %}
+          <label class="form-label mt-2" for="{{ form.logo.id_for_label }}">
+            {{ form.logo.label }}
+          </label>
+          {% if form.logo.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.logo.errors.as_text|striptags }}
           </div>
-          <div class="form-field">
-            {{ form.about }}
-            <label for="{{ form.about.id_for_label }}"
-              >{{ form.about.label }}</label
-            >
-            {% if form.about.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.about.errors.as_text|striptags }}
-            </div>
-            {% endif %}
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          {{ form.name }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+          {% if form.name.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.name.errors.as_text|striptags }}
           </div>
-          <div class="form-field">
+          {% endif %}
+        </div>
+
+        <div class="form-field">
+          {{ form.about }}
+          <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
+          {% if form.about.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.about.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Ciudad + Dirección -->
+        <div class="row g-3">
+          <div class="form-field col-md-6">
             {{ form.city }}
             <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.city.id_for_label }}"
-              >{{ form.city.label }}</label
-            >
+            <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
             {% if form.city.errors %}
             <div class="invalid-feedback d-block">
               {{ form.city.errors.as_text|striptags }}
             </div>
             {% endif %}
           </div>
-          <div class="form-field">
+
+          <div class="form-field col-md-6">
             {{ form.address }}
             <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.address.id_for_label }}"
-              >{{ form.address.label }}</label
-            >
+            <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
             {% if form.address.errors %}
             <div class="invalid-feedback d-block">
               {{ form.address.errors.as_text|striptags }}
             </div>
             {% endif %}
           </div>
-          <div class="form-field">
+        </div>
+
+        <!-- Teléfono + Email -->
+        <div class="row g-3 mt-3">
+          <div class="form-field col-md-6">
             {{ form.phone }}
             <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.phone.id_for_label }}"
-              >{{ form.phone.label }}</label
-            >
+            <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
             {% if form.phone.errors %}
             <div class="invalid-feedback d-block">
               {{ form.phone.errors.as_text|striptags }}
             </div>
             {% endif %}
           </div>
-          <div class="form-field">
+
+          <div class="form-field col-md-6">
             {{ form.email }}
             <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.email.id_for_label }}"
-              >{{ form.email.label }}</label
-            >
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
             {% if form.email.errors %}
             <div class="invalid-feedback d-block">
               {{ form.email.errors.as_text|striptags }}
             </div>
             {% endif %}
           </div>
-          <div class="form-field">
+        </div>
+        <button type="submit" class="btn btn-dark mt-4">Guardar</button>
+      </form>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-end">
+          <!-- Features -->
+          <div class="form-field mt-4">
             <h5 class="d-block mb-2">{{ form.features.label }}</h5>
             <div class="d-flex flex-wrap gap-3" id="features-container">
               {% for feature in form.features.field.queryset %}
@@ -131,26 +137,13 @@
                   name="features"
                   value="{{ feature.id }}"
                   class="d-none"
-                  {%
-                  if
-                  feature
-                  in
-                  club.features.all
-                  %}
-                  checked{%
-                  endif
-                  %}
+                  {% if feature in club.features.all %}checked{% endif %}
                 />
                 {% if feature.icon %}
                 <img
                   src="{{ feature.icon.url }}"
                   alt="{{ feature.name }}"
-                  style="
-                    width: 50px;
-                    height: 50px;
-                    object-fit: contain;
-                    user-select: none;
-                  "
+                  style="width: 50px; height: 50px; object-fit: contain; user-select: none"
                   class="me-2"
                 />
                 {% endif %}
@@ -166,9 +159,11 @@
             </div>
             {% endif %}
           </div>
-          <button type="submit" class="btn btn-dark">Guardar</button>
-        </form>
+
+        </div>
+
       </div>
+
     </div>
     <div id="tab-gallery" class="profile-section">
 
