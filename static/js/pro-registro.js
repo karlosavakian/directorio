@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipoRadios = document.querySelectorAll('input[name="tipo"]');
   const tipoCards = document.querySelectorAll('.tipo-card');
   const planCards = document.querySelectorAll('.plan-card');
+  const paymentSection = document.getElementById('payment-section');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -69,8 +70,20 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => {
       input.checked = true;
       planCards.forEach(c => c.classList.toggle('active', c === card));
+      togglePaymentSection();
     });
   });
+
+  function togglePaymentSection() {
+    const selected = document.querySelector('input[name="plan"]:checked');
+    if (selected && (selected.value === 'plata' || selected.value === 'oro')) {
+      paymentSection && paymentSection.classList.remove('d-none');
+    } else {
+      paymentSection && paymentSection.classList.add('d-none');
+    }
+  }
+
+  togglePaymentSection();
 
   toggleTipoFields();
 
