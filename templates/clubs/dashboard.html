@@ -22,19 +22,14 @@
         class="profile-form"
       >
         {% csrf_token %}
-        <div class="form-field">
+        <div class="mb-5 text-center">
           <div class="avatar-dropzone mx-auto">
             {{ form.logo }}
             <div
               class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
-              {%
-              if
-              club.logo|safe_url
-              %}
+              {% if club.logo|safe_url %}
               style="background-image:url('{{ club.logo|safe_url }}')"
-              {%
-              endif
-              %}
+              {% endif %}
             >
               <div class="avatar-dropzone-msg">
                 <i class="bi bi-cloud-upload mb-1 fs-4"></i>
@@ -42,7 +37,7 @@
               </div>
             </div>
           </div>
-          <label for="{{ form.logo.id_for_label }}"
+          <label class="form-label mt-2" for="{{ form.logo.id_for_label }}"
             >{{ form.logo.label }}</label
           >
           {% if form.logo.errors %}
