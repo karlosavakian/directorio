@@ -86,6 +86,33 @@ class SearchResultsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["clubs"]), 1)
 
+    def test_plan_badge_renders_for_each_plan(self):
+        """Clubs should display a plan-colored badge on search results."""
+        Club.objects.create(
+            name="Gold Club",
+            city="NY",
+            address="addr",
+            phone="123",
+            email="gold@example.com",
+            plan="oro",
+        )
+        Club.objects.create(
+            name="Silver Club",
+            city="NY",
+            address="addr",
+            phone="123",
+            email="silver@example.com",
+            plan="plata",
+        )
+
+        url = reverse("search_results")
+        response = self.client.get(url, {"q": "Club"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "badge-verified-gold")
+        self.assertContains(response, "badge-verified-silver")
+        self.assertContains(response, "badge-verified-bronze")
+
 class ClubPhotoResizeTests(TestCase):
     def test_photo_resized_on_save(self):
         with tempfile.TemporaryDirectory() as tmpdir:
