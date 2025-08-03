@@ -185,5 +185,5 @@
 
 input::placeholder,
 textarea::placeholder {
-  text-indent: 1pt;
+  text-indent: 0.5rem;
 }
