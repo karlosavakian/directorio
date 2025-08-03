@@ -172,6 +172,7 @@ class ClubForm(forms.ModelForm):
             'owner',
             'category',
             'plan',
+            'address',
         )
         labels = {
             'name': 'Nombre del club',
@@ -183,7 +184,7 @@ class ClubForm(forms.ModelForm):
             'number': 'Número',
             'door': 'Puerta',
             'postal_code': 'Código Postal',
-            'address': 'Dirección',
+            'prefijo': 'Prefijo',
             'phone': 'Teléfono',
             'email': 'Correo electrónico',
             'features': 'Instalaciones y Equipamiento',

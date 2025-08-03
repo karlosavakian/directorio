@@ -10,7 +10,6 @@
 <ul class="list-unstyled d-block">
   <li><strong>Nombre:</strong> {{ miembro.nombre }} {{ miembro.apellidos }}</li>
   <li><strong>Fecha de nacimiento:</strong> {{ miembro.fecha_nacimiento|default:"-" }}</li>
-  <li><strong>Dirección:</strong> {{ miembro.direccion|default:"-" }}</li>
   <li><strong>Sexo:</strong> {{ miembro.get_sexo_display|default:"-" }}</li>
   <li><strong>Peso (kg):</strong> {{ miembro.peso|default:"-" }}</li>
   <li><strong>Altura (cm):</strong> {{ miembro.altura|default:"-" }}</li>

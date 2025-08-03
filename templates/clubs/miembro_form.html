@@ -50,6 +50,18 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-md-2">
+        <div class="form-field">
+          {{ form.prefijo }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.prefijo.id_for_label }}">{{ form.prefijo.label }}</label>
+          {% if form.prefijo.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.prefijo.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
       <div class="col-md-4">
         <div class="form-field">
           {{ form.telefono }}
@@ -62,7 +74,7 @@
           {% endif %}
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-6">
         <div class="form-field">
           {{ form.email }}
           <button type="button" class="clear-btn">×</button>
@@ -114,18 +126,6 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-field">
-            {{ form.direccion }}
-            <button type="button" class="clear-btn">×</button>
-            <label for="{{ form.direccion.id_for_label }}">{{ form.direccion.label }}</label>
-            {% if form.direccion.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.direccion.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-field">
             {{ form.localidad }}
             <button type="button" class="clear-btn">×</button>
             <label for="{{ form.localidad.id_for_label }}">{{ form.localidad.label }}</label>
@@ -136,7 +136,7 @@
             {% endif %}
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
           <div class="form-field">
             {{ form.codigo_postal }}
             <button type="button" class="clear-btn">×</button>

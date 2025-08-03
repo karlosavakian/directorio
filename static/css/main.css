@@ -182,3 +182,8 @@
 .message-like svg path {
   stroke: #000;
 }
+
+input::placeholder,
+textarea::placeholder {
+  text-indent: 1pt;
+}
