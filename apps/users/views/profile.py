@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from ..forms import ProfileForm, AccountForm
 from ..models import Profile, Follow
 from apps.clubs.models import Booking, Club, Reseña
+from apps.core.forms import PlanForm
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F, FloatField, Avg, Count, ExpressionWrapper
@@ -103,4 +104,56 @@ def delete_account(request):
         return redirect('home')
 
     return render(request, 'users/delete_account_confirm.html')
+
+
+@login_required
+def plans(request):
+    profile_obj, _ = Profile.objects.get_or_create(user=request.user)
+    plans = [
+        {
+            'value': 'bronce',
+            'title': 'Plan Bronce',
+            'price': '0€ / mes',
+            'features': [
+                'Presencia básica en el directorio',
+                'Publicación de eventos',
+                'Acceso a valoraciones',
+            ],
+        },
+        {
+            'value': 'plata',
+            'title': 'Plan Plata',
+            'price': '9€ / mes',
+            'features': [
+                'Todos los beneficios del Plan Bronce',
+                'Publicaciones ilimitadas',
+                'Estadísticas básicas',
+            ],
+            'featured': True,
+        },
+        {
+            'value': 'oro',
+            'title': 'Plan Oro',
+            'price': '19€ / mes',
+            'features': [
+                'Todos los beneficios del Plan Plata',
+                'Badge de verificación',
+                'Herramientas de marketing avanzadas',
+            ],
+        },
+    ]
+    if request.method == 'POST':
+        form = PlanForm(request.POST)
+        if form.is_valid():
+            profile_obj.plan = form.cleaned_data['plan']
+            profile_obj.save()
+            messages.success(request, 'Plan actualizado exitosamente.')
+            return redirect('profile_plans')
+    else:
+        form = PlanForm(initial={'plan': profile_obj.plan})
+    return render(request, 'users/profile_plans.html', {
+        'form': form,
+        'plans': plans,
+        'current_plan': profile_obj.plan,
+    })
  
