@@ -73,19 +73,19 @@
                             <a
                                 href="{% url 'profile' %}"
                                 class="dropdown-item text-light"
-                                >Mi perfil</a
+                                >Mi Cuenta</a
                             >
                             {% if user.owned_clubs.exists %}
                             <a
                                 href="{% url 'club_dashboard' user.owned_clubs.first.slug %}"
                                 class="dropdown-item text-light"
-                                >Administrar</a
+                                >Panel de control</a
                             >
                             {% endif %}
                             <a
                                 href="{% url 'conversation' %}"
                                 class="dropdown-item text-light"
-                                >Mensajes</a
+                                >Mis mensajes</a
                             >
                             <a
                                 href="#"
