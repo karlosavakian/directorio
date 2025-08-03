@@ -43,12 +43,12 @@
                         <h1 class="mb-2" style="font-size:24px !important; font-weight:900;">
 
                             {{ club.name }}
-                            {% if club.verified %}
-
+                            {% if club.plan == 'oro' %}
                               {% include 'partials/_verified-gold.html' %}
-
-
-
+                            {% elif club.plan == 'plata' %}
+                              {% include 'partials/_verified-silver.html' %}
+                            {% elif club.plan == 'bronce' %}
+                              {% include 'partials/_verified-bronze.html' %}
                             {% endif %}
                         </h1>
 
