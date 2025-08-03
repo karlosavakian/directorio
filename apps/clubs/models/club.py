@@ -5,6 +5,7 @@ from django.db.models import Avg, Count
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.utils.image_utils import resize_image
+from ..countries import COUNTRY_CHOICES
 
  
 class Club(models.Model):
@@ -13,10 +14,15 @@ class Club(models.Model):
     name = models.CharField(max_length=255)
     about = models.TextField(blank=True)   
     slug = models.SlugField(unique=True, blank=True)
-    city = models.CharField(max_length=100) 
+    country = models.CharField(max_length=100, blank=True, choices=COUNTRY_CHOICES)
+    region = models.CharField(max_length=100, blank=True)
+    city = models.CharField(max_length=100)
+    street = models.CharField(max_length=255, blank=True)
+    number = models.CharField(max_length=10, blank=True)
+    door = models.CharField(max_length=10, blank=True)
+    postal_code = models.CharField(max_length=20, blank=True)
     address = models.CharField(max_length=255)
     phone = models.CharField(max_length=20)
-    whatsapp_link = models.URLField(blank=True, null=True)
     email = models.EmailField()
     features = models.ManyToManyField('Feature', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

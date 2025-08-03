@@ -30,10 +30,15 @@ class Command(BaseCommand):
         for _ in range(100):
             club = Club.objects.create(
                 name=fake.unique.company(),
+                country=fake.country()[:100],
+                region=fake.state()[:100],
                 city=fake.city(),
+                street=fake.street_name()[:255],
+                number=fake.building_number()[:10],
+                door=str(fake.random_int(min=1, max=50))[:10],
+                postal_code=fake.postcode()[:20],
                 address=fake.address()[:255],
                 phone=fake.phone_number()[:20],
-                whatsapp_link=fake.url(),
                 email=fake.email(),
                 about=fake.paragraph(),
             )
