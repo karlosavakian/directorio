@@ -23,7 +23,11 @@ class Miembro(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True)
     peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    nacionalidad = models.CharField(max_length=100, blank=True)
+    nacionalidad = models.CharField(
+        max_length=100,
+        blank=True,
+        default='España',
+    )
     notas = models.TextField(blank=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150)
