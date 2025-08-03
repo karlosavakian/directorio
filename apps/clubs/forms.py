@@ -164,7 +164,24 @@ class BookingClassForm(forms.ModelForm):
 class ClubForm(forms.ModelForm):
     class Meta:
         model = models.Club
-        exclude = ('slug', 'created_at', 'updated_at', 'verified')
+        exclude = (
+            'slug',
+            'created_at',
+            'updated_at',
+            'verified',
+            'owner',
+            'whatsapp_link',
+            'category',
+            'plan',
+        )
+        labels = {
+            'name': 'Nombre del club',
+            'about': 'Bio',
+            'city': 'Ciudad',
+            'address': 'Dirección',
+            'phone': 'Teléfono',
+            'email': 'Correo electrónico',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
