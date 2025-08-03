@@ -67,9 +67,4 @@
         display: block;
     }
 
-    #user-menu .menu-close-btn {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
 }
