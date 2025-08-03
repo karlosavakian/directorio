@@ -238,19 +238,19 @@ class DashboardMemberFilterTests(TestCase):
         self.client.login(username='owner', password='pass')
 
     def test_filter_by_estado(self):
-        url = reverse('club_dashboard', args=[self.club.slug])
+        url = reverse('club_dashboard')
         res = self.client.get(url, {'estado': 'activo'})
         self.assertContains(res, 'Ana')
         self.assertNotContains(res, 'Luis')
 
     def test_filter_by_pago(self):
-        url = reverse('club_dashboard', args=[self.club.slug])
+        url = reverse('club_dashboard')
         res = self.client.get(url, {'pago': 'completo'})
         self.assertContains(res, 'Ana')
         self.assertNotContains(res, 'Luis')
 
     def test_order_alpha(self):
-        url = reverse('club_dashboard', args=[self.club.slug])
+        url = reverse('club_dashboard')
         res = self.client.get(url, {'orden': 'alpha'})
         members = list(res.context['members'])
         self.assertEqual(members[0], self.member1)
@@ -279,7 +279,7 @@ class DashboardMatchmakerTests(TestCase):
         self.client.login(username='owner1', password='pass')
 
     def test_matchmaker_search_across_clubs(self):
-        url = reverse('club_dashboard', args=[self.club1.slug])
+        url = reverse('club_dashboard')
         res = self.client.get(url, {'mm_sexo': 'M'})
         self.assertContains(res, 'Bob')
         self.assertNotContains(res, 'Alice')

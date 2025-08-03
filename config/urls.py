@@ -13,13 +13,13 @@ from apps.users.views import profile as user_profile
 from apps.users.forms import LoginForm   
  
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('django-admin/', admin.site.urls),
 
     # Core: Página principal
     path('', include('apps.core.urls')),
 
     # Perfil público de clubs
-    path('@<slug:slug>/admin/', dashboard, name='club_dashboard'),
+    path('admin/', dashboard, name='club_dashboard'),
     path('@<slug:slug>/inscribirse/', club_public.member_signup, name='club_member_signup'),
     path('@<slug:slug>/reservar/', club_public.booking_form, name='club_booking'),
     path('@<slug:slug>/', club_public.club_profile, name='club_profile'),
