@@ -66,6 +66,7 @@
                 <button type="submit" class="btn btn-dark">Guardar cambios</button>
             </form>
             <a href="{% url 'delete_account' %}" class="btn btn-danger mt-3">Eliminar cuenta</a>
+            <a href="{% url 'profile_plans' %}" class="btn btn-outline-dark mt-3">Gestionar plan</a>
         </div>
         {% if is_owner %}
         <div id="tab-plans" class="profile-section">
