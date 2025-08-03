@@ -1,0 +1,20 @@
+# List of autonomous communities in Spain for region dropdown.
+SPAIN_REGION_CHOICES = [
+    ("Andalucía", "Andalucía"),
+    ("Aragón", "Aragón"),
+    ("Asturias", "Asturias"),
+    ("Islas Baleares", "Islas Baleares"),
+    ("Canarias", "Canarias"),
+    ("Cantabria", "Cantabria"),
+    ("Castilla-La Mancha", "Castilla-La Mancha"),
+    ("Castilla y León", "Castilla y León"),
+    ("Cataluña", "Cataluña"),
+    ("Comunidad Valenciana", "Comunidad Valenciana"),
+    ("Extremadura", "Extremadura"),
+    ("Galicia", "Galicia"),
+    ("La Rioja", "La Rioja"),
+    ("Comunidad de Madrid", "Comunidad de Madrid"),
+    ("Región de Murcia", "Región de Murcia"),
+    ("Navarra", "Navarra"),
+    ("País Vasco", "País Vasco"),
+]
