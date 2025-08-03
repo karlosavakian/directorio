@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const menu = document.getElementById("user-menu");
     const burger = document.getElementById("burger-button");
     const overlay = document.getElementById("sidebar-overlay");
+    const closeBtn = document.getElementById("sidebar-close");
 
     function toggleMenu(e) {
         e.stopPropagation();
@@ -28,6 +29,12 @@ document.addEventListener("DOMContentLoaded", function () {
             menu.classList.remove("open");
             dropdown.classList.remove("active");
             overlay.classList.remove("show");
+        });
+    if (closeBtn)
+        closeBtn.addEventListener("click", function () {
+            menu.classList.remove("open");
+            dropdown.classList.remove("active");
+            if (overlay) overlay.classList.remove("show");
         });
 
     document.addEventListener("click", function (e) {
