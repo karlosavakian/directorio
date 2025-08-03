@@ -1,24 +1,24 @@
- 
+
 {% extends 'base.html' %}
 {% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
 {% load static star_rating utils_filters %}
-{% block content %} 
+{% block content %}
 
 <main class="flex-grow-1">
 
-    <div class="container-fluid col-12 px-3 my-3" id="profile-container"> 
+    <div class="container-fluid col-12 px-3 my-3" id="profile-container">
         <div class="profile-header d-flex align-items-center mb-4 mt-4">
-             {% include 'partials/_back-btn.html' %}   
-            <div class="d-flex ms-auto justify-content-end gap-2 ">   
-   
-                <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 mb-1 ms-2 btn btn-dark " data-club-slug="{{ club.slug }}"> 
+             {% include 'partials/_back-btn.html' %}
+            <div class="d-flex ms-auto justify-content-end gap-2 ">
+
+                <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 mb-1 ms-2 btn btn-dark " data-club-slug="{{ club.slug }}">
                     <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
-                    </svg> 
+                    </svg>
                   Reservar clase
-                </button> 
+                </button>
             </div>
-        </div> 
+        </div>
         <div class="row">
             <!-- Columna Izquierda: Info del Club -->
             <div class="col-lg-2 ">
@@ -34,41 +34,34 @@
                 </div>
             {% endif %}
             </div>
-               
+
                 <div class="p-2 d-flex align-items-start mt-2 mb-4 gap-3 ">
-                    <ul class="p-0 club-info-links"> 
+                    <ul class="p-0 club-info-links">
                         <div class="d-flex align-items-start mb-1">
                             <span class="badge  fw-medium">{{ club.get_category_display }}</span>
-                        </div>
+                         </div>
                         <h1 class="mb-2" style="font-size:24px !important; font-weight:900;">
 
                             {{ club.name }}
                             {% if club.verified %}
-                            <span class="badge-verified" title="Verificado">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     width="24" height="24"
-                                     fill="none" viewBox="0 0 24 24"
-                                     style="display: block;">
-                                    <path stroke="currentColor"
-                                          stroke-linecap="round"
-                                          stroke-linejoin="round"
-                                          stroke-width="2"
-                                          d="m8.032 12 1.984 1.984 4.96-4.96m4.55 5.272.893-.893a1.984 1.984 0 0 0 0-2.806l-.893-.893a1.984 1.984 0 0 1-.581-1.403V7.04a1.984 1.984 0 0 0-1.984-1.984h-1.262a1.983 1.983 0 0 1-1.403-.581l-.893-.893a1.984 1.984 0 0 0-2.806 0l-.893.893a1.984 1.984 0 0 1-1.403.581H7.04A1.984 1.984 0 0 0 5.055 7.04v1.262c0 .527-.209 1.031-.581 1.403l-.893.893a1.984 1.984 0 0 0 0 2.806l.893.893c.372.372.581.876.581 1.403v1.262a1.984 1.984 0 0 0 1.984 1.984h1.262c.527 0 1.031.209 1.403.581l.893.893a1.984 1.984 0 0 0 2.806 0l.893-.893a1.985 1.985 0 0 1 1.403-.581h1.262a1.984 1.984 0 0 0 1.984-1.984V15.7c0-.527.209-1.031.581-1.403Z"/>
-                                </svg>
-                            </span>
+
+                              {% include 'partials/_verified-gold.html' %}
+
+
+
                             {% endif %}
                         </h1>
- 
+
                         <li class="club-actions d-flex flex-column align-items-start gap-2 mb-4">
-                             
+
 
                             <button type="button" class=" signup-member-btn fw-medium d-flex align-items-center gap-1 mb-1  " data-club-slug="{{ club.slug }}">
                                 <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                </svg> 
+                                </svg>
                             Dárse de alta
-                            </button> 
-                            
+                            </button>
+
                             <button
                                 type="button"
                                 class="fw-medium d-flex align-items-center gap-1 mb-1"
@@ -81,15 +74,15 @@
                                 </svg>
                                 <span class="fw-medium">Cómo llegar</span>
                             </button>
-                            
+
                             <button type="button"
                                     onclick="location.href='{% url 'conversation' %}?club={{ club.slug }}'"
                                     class="fw-medium d-flex align-items-center gap-1 mb-1">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
-                                </svg> 
+                                </svg>
                                 Enviar un mensaje
-                            </button> 
+                            </button>
                             <button id="club-heart"
                                     aria-label="Seguir"
                                     data-url="{% url 'toggle_follow' 'club' club.id %}"
@@ -103,7 +96,7 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
                                 </svg>
                                 Añadir a favoritos
-                            </button> 
+                            </button>
                             <button class="fw-medium d-flex align-items-center gap-1 mb-1" id="club-share" aria-label="Compartir">
                                 <svg aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg"
@@ -115,8 +108,8 @@
                                 </svg>
                                 Compartir
                             </button>
-                        </li>  
-                    </ul> 
+                        </li>
+                    </ul>
                 </div>
             </div>
             <!-- Columna Central: Galería y Features -->
@@ -125,7 +118,7 @@
                     {% if club.photos.all %}
                         <!-- Botones de inscripción y reserva moved to reviews column -->
                         <div class="mb-4 gallery-slideshow position-relative">
-                          
+
                             {% for photo in club.photos.all %}
                                 <div class="gallery-slide{% if forloop.first %} active{% endif %}">
                                     <img src="{{ photo.image.url }}"
@@ -282,7 +275,7 @@
                     </div>
                     <!-- Horarios -->
                     <div class="p-3 tab-pane fade" id="schedule" role="tabpanel">
-                        <div class="table-actions">  
+                        <div class="table-actions">
                             <small class=" " id="open-status" > </small>
                         </div>
                         <div class="table-responsive mt-3">
@@ -322,17 +315,17 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                     </div>
                     <!-- Posts -->
-                    <div class="p-3 tab-pane fade" id="posts" role="tabpanel"> 
+                    <div class="p-3 tab-pane fade" id="posts" role="tabpanel">
                             <div class=" justify-content-center  d-flex flex-column align-items-center">
                                 {% if user.is_authenticated and user == club.owner %}
-                                    {% include 'clubs/_post_form.html' %}  
+                                    {% include 'clubs/_post_form.html' %}
                                 {% endif %}
-                            </div> 
+                            </div>
                         {% for post in posts %}
-                          <div class="mt-3 mb-3 col-8 border rounded p-4 mx-auto"> 
+                          <div class="mt-3 mb-3 col-8 border rounded p-4 mx-auto">
                                 <div class="d-flex mb-2   justify-content-center  ">
                                     {% if post.user.profile.avatar %}
                                         <img src="{{ post.user.profile.avatar.url }}"   alt="{{ post.user.username }}"  class="review-avatar-img rounded-circle">
@@ -343,10 +336,10 @@
                                         <span class="fw-bold ">{{ post.user.username }}</span>
                                         <small class="text-muted ">{{ post.created_at|time_since_short }}</small>
                                         <div class="mt-4 mb-4 col-12" >
-                                                 {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen"  style="max-height:300px;">{% endif %} 
+                                                 {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen"  style="max-height:300px;">{% endif %}
                                                  <div class="">
                                                             {{ post.contenido|youtube_embed }}
-                                                            </div>                    
+                                                            </div>
                                                 </div>
                                         <div class="d-flex ">
                                             <span class="d-flex btn p-0 post-like {% if user.is_authenticated and user in post.likes.all %}liked{% endif %}"
@@ -453,7 +446,7 @@
                                             {% endif %}
                                             <div>
                                                  <span class="fw-bold me-1">{{ post.user.username }}</span>
-                                                  <small class="text-muted ">{{ post.created_at|time_since_short }}</small>  
+                                                  <small class="text-muted ">{{ post.created_at|time_since_short }}</small>
                                                   <div class="mt-2 mb-2">
                                                     {{ reply.contenido }}
                                                  </div>
@@ -484,10 +477,10 @@
                             </div>
                             {% include 'clubs/_post_edit_modal.html' with post=post %}
                         {% empty %}
-                        
+
                             <p  class="m-3 justify-content-center d-flex flex-column align-items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m198.24 62.63l15.68-17.25a8 8 0 0 0-11.84-10.76L186.4 51.86A95.95 95.95 0 0 0 57.76 193.37l-15.68 17.25a8 8 0 1 0 11.84 10.76l15.68-17.24A95.95 95.95 0 0 0 198.24 62.63M48 128a80 80 0 0 1 127.6-64.25l-107 117.73A79.63 79.63 0 0 1 48 128m80 80a79.55 79.55 0 0 1-47.6-15.75l107-117.73A79.95 79.95 0 0 1 128 208"/></svg>
-                                
+
                                 No hay publicaciones.</p>
                         {% endfor %}
                     </div>
@@ -559,7 +552,7 @@
                 </div>
             </div>
             <!-- Columna Derecha: Valoraciones y Reseñas -->
-            <div class="col-lg-2"> 
+            <div class="col-lg-2">
                 <!-- Carrusel de reseñas -->
                 {% if reseñas %}
                     <div class="club-reviews">
@@ -604,7 +597,7 @@
                                 <!-- Rating promedio a la izquierda -->
                                 <div class="mb-3 d-flex align-items-center col-12">
                                     <!-- Icono alineado a la izquierda -->
-                                     
+
 
                                     <!-- Texto -->
                                     <div class="d-flex flex-column align-items-end w-100">
@@ -648,7 +641,7 @@
                     <p class="mt-4">Este club aún no tiene reseñas.</p>
                 {% endif %}
             </div>
-            
+
         </div>
         </main>
                {% include 'partials/_review_modal.html' %}
@@ -670,5 +663,5 @@
     <script src="{% static 'js/booking-modal.js' %}"></script>
     <script src="{% static 'js/club-tabs.js' %}"></script>
     <script src="{% static 'js/post-media-preview.js' %}"></script>
-    
+
 {% endblock %}

@@ -1,0 +1,45 @@
+
+                            <span class="badge-verified badge-verified-bronze" title="Verificado">
+   <svg class="w-6 h-6 text-gray-800 dark:text-white" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+     <defs>
+       <!-- Gradiente bronce -->
+       <linearGradient id="bronze-base" x1="0" y1="0" x2="1" y2="1">
+         <stop offset="0%" stop-color="#F0CAB2" />
+         <stop offset="50%" stop-color="#A47C6C" />
+         <stop offset="100%" stop-color="#7F5B4A" />
+       </linearGradient>
+
+       <!-- Gradiente de brillo blanco -->
+       <linearGradient id="shine-gradient" x1="0" y1="0" x2="1" y2="0">
+         <stop offset="0%" stop-color="white" stop-opacity="0" />
+         <stop offset="40%" stop-color="white" stop-opacity="0.2" />
+         <stop offset="50%" stop-color="white" stop-opacity="0.6" />
+         <stop offset="60%" stop-color="white" stop-opacity="0.2" />
+         <stop offset="100%" stop-color="white" stop-opacity="0" />
+       </linearGradient>
+
+       <!-- Blur -->
+       <filter id="blur" x="-100%" y="-100%" width="300%" height="300%">
+         <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" />
+       </filter>
+
+       <!-- Clip con forma del escudo -->
+       <clipPath id="clip-shield">
+         <path d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Z"/>
+       </clipPath>
+     </defs>
+
+     <!-- Base bronce -->
+     <path fill="url(#bronze-base)" d="M12 2c-.791 0-1.55.314-2.11.874l-.893.893a.985.985 0 0 1-.696.288H7.04A2.984 2.984 0 0 0 4.055 7.04v1.262a.986.986 0 0 1-.288.696l-.893.893a2.984 2.984 0 0 0 0 4.22l.893.893a.985.985 0 0 1 .288.696v1.262a2.984 2.984 0 0 0 2.984 2.984h1.262c.261 0 .512.104.696.288l.893.893a2.984 2.984 0 0 0 4.22 0l.893-.893a.985.985 0 0 1 .696-.288h1.262a2.984 2.984 0 0 0 2.984-2.984V15.7c0-.261.104-.512.288-.696l.893-.893a2.984 2.984 0 0 0 0-4.22l-.893-.893a.985.985 0 0 1-.288-.696V7.04a2.984 2.984 0 0 0-2.984-2.984h-1.262a.985.985 0 0 1-.696-.288l-.893-.893A2.984 2.984 0 0 0 12 2Z"/>
+
+     <!-- Brillo animado dentro del escudo -->
+     <g clip-path="url(#clip-shield)" filter="url(#blur)" transform="rotate(45 12 12)">
+       <rect x="-72" y="0" width="144" height="24" fill="url(#shine-gradient)">
+         <animate attributeName="x" from="-72" to="0" dur="2.5s" repeatCount="indefinite" calcMode="linear"/>
+       </rect>
+     </g>
+
+     <!-- Check blanco -->
+     <path fill="white" d="M15.683 9.73a1 1 0 0 0-1.414-1.413l-4.253 4.253-1.277-1.277a1 1 0 0 0-1.415 1.414l1.985 1.984a1 1 0 0 0 1.414 0l4.96-4.96Z"/>
+   </svg>
+ </span>
