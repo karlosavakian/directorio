@@ -54,7 +54,7 @@ def booking_set_status(request, pk, status):
     if request.method == 'POST':
         booking.status = status
         booking.save()
-    return redirect('club_dashboard', slug=booking.club.slug)
+    return redirect('club_dashboard')
 
 
 def booking_confirm(request, pk):
@@ -71,8 +71,7 @@ def booking_delete(request, pk):
     if booking.club and booking.club.owner != request.user:
         return redirect('home')
     if request.method == 'POST':
-        slug = booking.club.slug
         booking.delete()
         messages.success(request, 'Reserva eliminada correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/booking_confirm_delete.html', {'booking': booking})

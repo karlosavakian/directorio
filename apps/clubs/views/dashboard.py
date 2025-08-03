@@ -38,8 +38,10 @@ from ..permissions import has_club_permission
 
 
 @login_required
-def dashboard(request, slug):
-    club = get_object_or_404(Club, slug=slug)
+def dashboard(request):
+    club = request.user.owned_clubs.first()
+    if not club:
+        return redirect('home')
     # Prepara una estructura de horarios por franja horaria para mostrar
     # los días como columnas y las horas como filas
     dias_semana = club.horarios.model.DiasSemana.choices
@@ -233,7 +235,7 @@ def club_edit(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, 'Club actualizado correctamente.')
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = ClubForm(instance=club)
     return render(request, 'clubs/club_form.html', {'form': form, 'club': club})
@@ -256,7 +258,7 @@ def photo_upload(request, slug):
             for img in images:
                 ClubPhoto.objects.create(club=club, image=img)
         messages.success(request, 'Foto añadida correctamente.')
-        return redirect('club_dashboard', slug=club.slug)
+        return redirect('club_dashboard')
     form = ClubPhotoForm()
     return render(request, 'clubs/photo_form.html', {'form': form, 'club': club})
 
@@ -267,10 +269,9 @@ def photo_delete(request, pk):
     if not has_club_permission(request.user, photo.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = photo.club.slug
         photo.delete()
         messages.success(request, 'Foto eliminada correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/photo_confirm_delete.html', {'photo': photo})
 
 
@@ -284,7 +285,7 @@ def photo_bulk_delete(request, slug):
         ids = [int(i) for i in ids_str.split(',') if i]
         ClubPhoto.objects.filter(club=club, id__in=ids).delete()
         messages.success(request, 'Fotos eliminadas correctamente.')
-    return redirect('club_dashboard', slug=club.slug)
+    return redirect('club_dashboard')
 
 
 @login_required
@@ -297,7 +298,7 @@ def photo_set_main(request, pk):
         photo.is_main = True
         photo.save()
         messages.success(request, 'Foto establecida como principal.')
-    return redirect('club_dashboard', slug=photo.club.slug)
+    return redirect('club_dashboard')
 
 
 @login_required
@@ -312,7 +313,7 @@ def horario_create(request, slug):
             horario.club = club
             horario.save()
             messages.success(request, 'Horario añadido correctamente.')
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = HorarioForm()
     return render(request, 'clubs/horario_form.html', {'form': form, 'club': club})
@@ -328,7 +329,7 @@ def horario_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Horario actualizado correctamente.')
-            return redirect('club_dashboard', slug=horario.club.slug)
+            return redirect('club_dashboard')
     else:
         form = HorarioForm(instance=horario)
     return render(request, 'clubs/horario_form.html', {
@@ -344,10 +345,9 @@ def horario_delete(request, pk):
     if not has_club_permission(request.user, horario.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = horario.club.slug
         horario.delete()
         messages.success(request, 'Horario eliminado correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/horario_confirm_delete.html', {'horario': horario})
 
 
@@ -365,7 +365,7 @@ def competidor_create(request, slug):
             messages.success(request, 'Competidor añadido correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = CompetidorForm()
     template = 'clubs/_competidor_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/competidor_form.html'
@@ -386,7 +386,7 @@ def competidor_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Competidor actualizado correctamente.')
-            return redirect('club_dashboard', slug=competidor.club.slug)
+            return redirect('club_dashboard')
     else:
         form = CompetidorForm(instance=competidor)
     return render(request, 'clubs/competidor_form.html', {
@@ -402,10 +402,9 @@ def competidor_delete(request, pk):
     if not has_club_permission(request.user, competidor.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = competidor.club.slug
         competidor.delete()
         messages.success(request, 'Competidor eliminado correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/competidor_confirm_delete.html', {
         'competidor': competidor,
     })
@@ -438,7 +437,7 @@ def entrenador_create(request, slug):
             messages.success(request, 'Entrenador añadido correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = EntrenadorForm()
     template = 'clubs/_entrenador_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/entrenador_form.html'
@@ -455,7 +454,7 @@ def entrenador_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Entrenador actualizado correctamente.')
-            return redirect('club_dashboard', slug=entrenador.club.slug)
+            return redirect('club_dashboard')
     else:
         form = EntrenadorForm(instance=entrenador)
     return render(request, 'clubs/entrenador_form.html', {
@@ -471,10 +470,9 @@ def entrenador_delete(request, pk):
     if not has_club_permission(request.user, entrenador.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = entrenador.club.slug
         entrenador.delete()
         messages.success(request, 'Entrenador eliminado correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/entrenador_confirm_delete.html', {
         'entrenador': entrenador,
     })
@@ -495,7 +493,7 @@ def miembro_create(request, slug):
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 html = render_to_string('clubs/_miembro_row.html', {'m': miembro}, request=request)
                 return HttpResponse(html)
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = MiembroForm()
     template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
@@ -514,7 +512,7 @@ def miembro_update(request, pk):
             messages.success(request, 'Miembro actualizado correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=miembro.club.slug)
+            return redirect('club_dashboard')
     else:
         form = MiembroForm(instance=miembro)
     template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
@@ -539,10 +537,9 @@ def miembro_delete(request, pk):
     if not has_club_permission(request.user, miembro.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = miembro.club.slug
         miembro.delete()
         messages.success(request, 'Miembro eliminado correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/miembro_confirm_delete.html', {
         'miembro': miembro,
     })
@@ -576,7 +573,7 @@ def pago_create(request, miembro_id):
             messages.success(request, 'Pago añadido correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=miembro.club.slug)
+            return redirect('club_dashboard')
     else:
         form = PagoForm()
     return render(request, 'clubs/payment_form.html', {
@@ -597,7 +594,7 @@ def pago_update(request, pk):
             messages.success(request, 'Pago actualizado correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=pago.miembro.club.slug)
+            return redirect('club_dashboard')
     else:
         form = PagoForm(instance=pago)
     return render(request, 'clubs/payment_form.html', {
@@ -613,12 +610,11 @@ def pago_delete(request, pk):
     if not has_club_permission(request.user, pago.miembro.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = pago.miembro.club.slug
         pago.delete()
         messages.success(request, 'Pago eliminado correctamente.')
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             return HttpResponse(status=204)
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/pago_confirm_delete.html', {'pago': pago})
 
 
@@ -671,7 +667,7 @@ def booking_class_create(request, slug):
             messages.success(request, 'Clase añadida correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=club.slug)
+            return redirect('club_dashboard')
     else:
         form = BookingClassForm()
     template = (
@@ -694,7 +690,7 @@ def booking_class_update(request, pk):
             messages.success(request, 'Clase actualizada correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
-            return redirect('club_dashboard', slug=obj.club.slug)
+            return redirect('club_dashboard')
     else:
         form = BookingClassForm(instance=obj)
     template = (
@@ -715,8 +711,7 @@ def booking_class_delete(request, pk):
     if not has_club_permission(request.user, obj.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        slug = obj.club.slug
         obj.delete()
         messages.success(request, 'Clase eliminada correctamente.')
-        return redirect('club_dashboard', slug=slug)
+        return redirect('club_dashboard')
     return render(request, 'clubs/booking_class_confirm_delete.html', {'booking_class': obj})

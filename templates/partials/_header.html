@@ -78,7 +78,7 @@
                             >
                             {% if user.owned_clubs.exists %}
                             <a
-                                href="{% url 'club_dashboard' user.owned_clubs.first.slug %}"
+                                href="{% url 'club_dashboard' %}"
                                 class="dropdown-item text-light"
                                 >Panel de control</a
                             >

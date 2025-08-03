@@ -181,6 +181,7 @@ class ClubForm(forms.ModelForm):
             'address': 'Dirección',
             'phone': 'Teléfono',
             'email': 'Correo electrónico',
+            'features': 'Instalaciones y Equipamiento',
         }
 
     def __init__(self, *args, **kwargs):
