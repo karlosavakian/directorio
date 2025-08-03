@@ -451,7 +451,18 @@
  }
 
 
- .review-filter-dropdown .selected-text {
+.review-filter-dropdown .selected-text {
        display: inline-flex;
        align-items: center;
- }
+}
+
+@media (max-width: 576px) {
+       .club-actions .club-info-text {
+               display: none;
+       }
+
+       .club-actions button svg {
+               width: 35px !important;
+               height: 35px !important;
+       }
+}

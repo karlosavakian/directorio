@@ -58,8 +58,8 @@
                             <button type="button" class="signup-member-btn fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1" data-club-slug="{{ club.slug }}">
                                 <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                </svg>
-                            Dárse de alta
+                                 </svg>
+                                <span class="club-info-text">Dárse de alta</span>
                             </button>
 
                             <button
@@ -71,18 +71,18 @@
                                 <svg class="w-[100px] h-[100px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-                                </svg>
-                                <span class="fw-medium">Cómo llegar</span>
-                            </button>
+                                  </svg>
+                                  <span class="fw-medium club-info-text">Cómo llegar</span>
+                              </button>
 
                             <button type="button"
                                     onclick="location.href='{% url 'conversation' %}?club={{ club.slug }}'"
                                     class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
-                                </svg>
-                                Enviar un mensaje
-                            </button>
+                                  </svg>
+                                  <span class="club-info-text">Enviar un mensaje</span>
+                              </button>
                             <button id="club-heart"
                                     aria-label="Seguir"
                                     data-url="{% url 'toggle_follow' 'club' club.id %}"
@@ -94,9 +94,9 @@
                                      fill="none"
                                      viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                </svg>
-                                Añadir a favoritos
-                            </button>
+                                  </svg>
+                                  <span class="club-info-text">Añadir a favoritos</span>
+                              </button>
                             <button class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1" id="club-share" aria-label="Compartir">
                                 <svg aria-hidden="true"
                                      xmlns="http://www.w3.org/2000/svg"
@@ -105,9 +105,9 @@
                                      fill="none"
                                      viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                </svg>
-                                Compartir
-                            </button>
+                                  </svg>
+                                  <span class="club-info-text">Compartir</span>
+                              </button>
                         </li>
                     </ul>
                 </div>
