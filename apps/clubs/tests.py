@@ -10,6 +10,29 @@ from .models import Club, ClubPhoto, ClubPost, Miembro, Pago
 from datetime import date
 
 
+class ClubPlanTests(TestCase):
+    def test_default_plan_bronce(self):
+        club = Club.objects.create(
+            name="Plan Club",
+            city="C",
+            address="A",
+            phone="1",
+            email="e@example.com",
+        )
+        self.assertEqual(club.plan, "bronce")
+
+    def test_can_set_plan(self):
+        club = Club.objects.create(
+            name="Oro Club",
+            city="C",
+            address="A",
+            phone="1",
+            email="e@example.com",
+            plan="oro",
+        )
+        self.assertEqual(club.plan, "oro")
+
+
 class SearchResultsTests(TestCase):
     """Tests for the ``search_results`` view."""
 

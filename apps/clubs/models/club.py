@@ -28,11 +28,23 @@ class Club(models.Model):
         ('promotor', 'Promotor'),
         ('servicio', 'Servicio'),
     ]
- 
+
+    PLAN_CHOICES = [
+        ('bronce', 'Plan Bronce'),
+        ('plata', 'Plan Plata'),
+        ('oro', 'Plan Oro'),
+    ]
+
     category = models.CharField(
         max_length=20,
         choices=CATEGORY_CHOICES,
         default='club'
+    )
+
+    plan = models.CharField(
+        max_length=20,
+        choices=PLAN_CHOICES,
+        default='bronce',
     )
 
 
