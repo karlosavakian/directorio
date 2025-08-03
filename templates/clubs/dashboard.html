@@ -25,7 +25,7 @@
       >
         {% csrf_token %}
         <div class="mb-5 text-center">
-          <div class="avatar-dropzone mx-auto">
+          <div class="avatar-dropzone avatar-dropzone-square mx-auto">
             {{ form.logo }}
             <div
               class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
