@@ -14,159 +14,161 @@
   </div>
   <div class="profile-content">
     <div id="tab-profile" class="profile-section active">
-      <h1 class="h3 mb-4">Administrar Perfil</h1>
-      <form
-        method="post"
-        action="{% url 'club_edit' club.slug %}"
-        enctype="multipart/form-data"
-        class="profile-form"
-      >
-        {% csrf_token %}
-        <div class="mb-5 text-center">
-          <div class="avatar-dropzone mx-auto">
-            {{ form.logo }}
-            <div
-              class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
-              {% if club.logo|safe_url %}
-              style="background-image:url('{{ club.logo|safe_url }}')"
-              {% endif %}
-            >
-              <div class="avatar-dropzone-msg">
-                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                <span>Sube tu logo</span>
+      <h4>Administrar Perfil</h4>
+      <div class="col-lg-6">
+        <form
+          method="post"
+          action="{% url 'club_edit' club.slug %}"
+          enctype="multipart/form-data"
+          class="profile-form"
+        >
+          {% csrf_token %}
+          <div class="mb-5 text-center">
+            <div class="avatar-dropzone mx-auto">
+              {{ form.logo }}
+              <div
+                class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
+                {% if club.logo|safe_url %}
+                style="background-image:url('{{ club.logo|safe_url }}')"
+                {% endif %}
+              >
+                <div class="avatar-dropzone-msg">
+                  <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                  <span>Sube tu logo</span>
+                </div>
               </div>
             </div>
-          </div>
-          <label class="form-label mt-2" for="{{ form.logo.id_for_label }}"
-            >{{ form.logo.label }}</label
-          >
-          {% if form.logo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.logo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.name }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.name.id_for_label }}"
-            >{{ form.name.label }}</label
-          >
-          {% if form.name.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.name.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.about }}
-          <label for="{{ form.about.id_for_label }}"
-            >{{ form.about.label }}</label
-          >
-          {% if form.about.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.about.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.city }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.city.id_for_label }}"
-            >{{ form.city.label }}</label
-          >
-          {% if form.city.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.city.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.address }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.address.id_for_label }}"
-            >{{ form.address.label }}</label
-          >
-          {% if form.address.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.address.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.phone }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.phone.id_for_label }}"
-            >{{ form.phone.label }}</label
-          >
-          {% if form.phone.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.phone.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.email }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.email.id_for_label }}"
-            >{{ form.email.label }}</label
-          >
-          {% if form.email.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.email.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          <h5 class="d-block mb-2">{{ form.features.label }}</h5>
-          <div class="d-flex flex-wrap gap-3" id="features-container">
-            {% for feature in form.features.field.queryset %}
-            <div
-              class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
-              style="padding: 8px 16px"
+            <label class="form-label mt-2" for="{{ form.logo.id_for_label }}"
+              >{{ form.logo.label }}</label
             >
-              <input
-                type="checkbox"
-                name="features"
-                value="{{ feature.id }}"
-                class="d-none"
-                {%
-                if
-                feature
-                in
-                club.features.all
-                %}
-                checked{%
-                endif
-                %}
-              />
-              {% if feature.icon %}
-              <img
-                src="{{ feature.icon.url }}"
-                alt="{{ feature.name }}"
-                style="
-                  width: 50px;
-                  height: 50px;
-                  object-fit: contain;
-                  user-select: none;
-                "
-                class="me-2"
-              />
-              {% endif %}
-              <div class="text-wrap" style="font-size: 14px; user-select: none">
-                {{ feature.name }}
-              </div>
+            {% if form.logo.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.logo.errors.as_text|striptags }}
             </div>
-            {% endfor %}
+            {% endif %}
           </div>
-          {% if form.features.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.features.errors.as_text|striptags }}
+          <div class="form-field">
+            {{ form.name }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.name.id_for_label }}"
+              >{{ form.name.label }}</label
+            >
+            {% if form.name.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.name.errors.as_text|striptags }}
+            </div>
+            {% endif %}
           </div>
-          {% endif %}
-        </div>
-        <button type="submit" class="btn btn-dark">Guardar</button>
-      </form>
+          <div class="form-field">
+            {{ form.about }}
+            <label for="{{ form.about.id_for_label }}"
+              >{{ form.about.label }}</label
+            >
+            {% if form.about.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.about.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field">
+            {{ form.city }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.city.id_for_label }}"
+              >{{ form.city.label }}</label
+            >
+            {% if form.city.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.city.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field">
+            {{ form.address }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.address.id_for_label }}"
+              >{{ form.address.label }}</label
+            >
+            {% if form.address.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.address.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field">
+            {{ form.phone }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.phone.id_for_label }}"
+              >{{ form.phone.label }}</label
+            >
+            {% if form.phone.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.phone.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field">
+            {{ form.email }}
+            <button type="button" class="clear-btn">×</button>
+            <label for="{{ form.email.id_for_label }}"
+              >{{ form.email.label }}</label
+            >
+            {% if form.email.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.email.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field">
+            <h5 class="d-block mb-2">{{ form.features.label }}</h5>
+            <div class="d-flex flex-wrap gap-3" id="features-container">
+              {% for feature in form.features.field.queryset %}
+              <div
+                class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
+                style="padding: 8px 16px"
+              >
+                <input
+                  type="checkbox"
+                  name="features"
+                  value="{{ feature.id }}"
+                  class="d-none"
+                  {%
+                  if
+                  feature
+                  in
+                  club.features.all
+                  %}
+                  checked{%
+                  endif
+                  %}
+                />
+                {% if feature.icon %}
+                <img
+                  src="{{ feature.icon.url }}"
+                  alt="{{ feature.name }}"
+                  style="
+                    width: 50px;
+                    height: 50px;
+                    object-fit: contain;
+                    user-select: none;
+                  "
+                  class="me-2"
+                />
+                {% endif %}
+                <div class="text-wrap" style="font-size: 14px; user-select: none">
+                  {{ feature.name }}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% if form.features.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.features.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <button type="submit" class="btn btn-dark">Guardar</button>
+        </form>
+      </div>
     </div>
     <div id="tab-gallery" class="profile-section">
 
@@ -614,13 +616,17 @@
     <div id="tab-coaches" class="profile-section">
 
         <h4>Entrenadores</h4>
-      <button
-        type="button"
-        class="btn btn-outline-dark mb-4 d-inline-flex   align-items-center  gap-2 btn-sm add-coach-btn "
-        data-club-slug="{{ club.slug }}"
-      >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-      </button>
+
+        <div class="d-flex justify-content-end mb-2">
+          <button
+            type="button"
+            class="btn btn-outline-dark mb-4 d-inline-flex   align-items-center  gap-2 btn-sm add-coach-btn "
+            data-club-slug="{{ club.slug }}"
+          >
+            <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+          </button>
+
+              </div>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for coach in club.entrenadores.all %}
@@ -638,7 +644,7 @@
               class="card-img-top d-flex align-items-center justify-content-center bg-light"
               style="height: 250px"
             >
-              <span class="text-muted">{{ coach.nombre|first|upper }}</span>
+              <span class="text-muted">{{ coach.nombre|initials}}</span>
             </div>
             {% endif %}
 
@@ -678,13 +684,16 @@
     <div id="tab-competitors" class="profile-section">
       <h4>Competidores</h4>
 
-      <button
-        type="button"
-        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
-        data-club-slug="{{ club.slug }}"
-      >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-      </button>
+      <div class="d-flex justify-content-end mb-2">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
+          data-club-slug="{{ club.slug }}"
+        >
+          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+        </button>
+
+  </div>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
         {% for comp in club.competidores.all %}
@@ -708,7 +717,6 @@
             <div
               class="card-body p-2 d-flex flex-column justify-content-between"
             >
-              <!-- Nombre centrado -->
               <div
                 class="d-flex justify-content-center align-items-center mb-2"
               >
@@ -754,33 +762,53 @@
       </div>
     </div>
     <div id="tab-members" class="profile-section">
-      <h4>Miembros del club</h4>
+      <h4>Miembros</h4>
 
-      <div class="d-flex align-items-center gap-2 mb-3">
+      <div class="d-flex justify-content-end mb-2">
+
         <button
           type="button"
-          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn"
+          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 add-member-btn"
           data-club-slug="{{ club.slug }}"
         >
           <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
         </button>
-        <div class="member-search">
-          <form method="get" id="member-search-form" class="member-search-form">
-            <button type="submit" class="search-icon">
-              <i class="bi bi-search"></i>
-            </button>
-            <input
-              type="text"
-              name="q"
-              id="member-search-input"
-              placeholder="Buscar miembro"
-              value="{{ request.GET.q }}"
-              autocomplete="off"
-            />
-            <button type="button" class="close-icon">&times;</button>
-          </form>
-        </div>
+</div>
+      <div class="d-flex align-items-center gap-2 mb-3">
+
+
         <div class="ms-auto d-flex align-items-center">
+          <div class="member-search">
+            <form method="get" id="member-search-form" class="member-search-form">
+              <button type="submit" class="search-icon">
+                <svg
+                    class="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke="#000"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+                    />
+                </svg>
+              </button>
+              <input
+                type="text"
+                name="q"
+                id="member-search-input"
+                placeholder="Buscar miembro"
+                value="{{ request.GET.q }}"
+                autocomplete="off"
+              />
+              <button type="button" class="close-icon">&times;</button>
+            </form>
+          </div>
           {% include 'partials/_member-sort.html' %}
         </div>
       </div>
@@ -997,7 +1025,7 @@
       </div>
     </div>
     <div id="tab-bookings" class="profile-section">
-      <h4 class="h4">Reservas</h4>
+      <h4>Reservas</h4>
       <div class="row mb-3">
         <div class="col-12 d-flex justify-content-end">
           {% include 'partials/_booking-filter.html' %}
