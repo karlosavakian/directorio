@@ -14,7 +14,12 @@ class Club(models.Model):
     name = models.CharField(max_length=255)
     about = models.TextField(blank=True)   
     slug = models.SlugField(unique=True, blank=True)
-    country = models.CharField(max_length=100, blank=True, choices=COUNTRY_CHOICES)
+    country = models.CharField(
+        max_length=100,
+        blank=True,
+        choices=COUNTRY_CHOICES,
+        default='España',
+    )
     region = models.CharField(max_length=100, blank=True)
     city = models.CharField(max_length=100)
     street = models.CharField(max_length=255, blank=True)

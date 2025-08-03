@@ -193,6 +193,8 @@ class ClubForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Ensure Spain is selected by default
+        self.initial.setdefault('country', 'España')
         country_value = (
             self.data.get('country')
             or self.initial.get('country')
@@ -436,6 +438,7 @@ class MiembroForm(forms.ModelForm):
             nacionalidad_field.choices = [('', 'País'), ('España', 'España')] + other
             nacionalidad_field.label = 'País'
             nacionalidad_field.widget.attrs['placeholder'] = 'País'
+            nacionalidad_field.initial = 'España'
 
         # Set default labels for new fields
         if 'localidad' in self.fields:
