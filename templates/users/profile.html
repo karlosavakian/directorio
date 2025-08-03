@@ -5,9 +5,13 @@
 <div class="d-flex mt-5 container-fluid col-12">
     <div class="profile-tabs">
         <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
+        {% if is_owner %}
+        <div class="profile-tab" data-target="tab-plans">Planes</div>
+        {% else %}
         <div class="profile-tab" data-target="tab-bookings">Reservas</div>
         <div class="profile-tab" data-target="tab-favorites">Favoritos</div>
         <div class="profile-tab" data-target="tab-reviews">Reseñas</div>
+        {% endif %}
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="profile-tab text-start w-100">Cerrar sesión</button>
@@ -63,6 +67,23 @@
             </form>
             <a href="{% url 'delete_account' %}" class="btn btn-danger mt-3">Eliminar cuenta</a>
         </div>
+        {% if is_owner %}
+        <div id="tab-plans" class="profile-section">
+            <h2 class="h5 mb-3">Planes</h2>
+            {% if owned_clubs %}
+            <ul class="list-group">
+                {% for c in owned_clubs %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ c.name }}
+                    <span class="badge bg-primary">{{ c.get_plan_display }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No tienes clubes.</p>
+            {% endif %}
+        </div>
+        {% else %}
         <div id="tab-bookings" class="profile-section">
             <h2 class="h5">Mis Reservas</h2>
             {% if bookings %}
@@ -142,6 +163,7 @@
             <p>No has escrito ninguna reseña todavía.</p>
             {% endif %}
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -57,12 +57,18 @@ def profile(request):
     favoritos_page = clubs
 
     user_reviews = Reseña.objects.filter(usuario=request.user)
+
+    owned_clubs = request.user.owned_clubs.all()
+    is_owner = owned_clubs.exists()
+
     return render(request, 'users/profile.html', {
         'form': form,
         'profile': profile_obj,
         'bookings': bookings,
         'favoritos': favoritos_page,
         'reviews': user_reviews,
+        'owned_clubs': owned_clubs,
+        'is_owner': is_owner,
     })
 
 def profile_detail(request, username):
