@@ -14,7 +14,7 @@
   </div>
   <div class="profile-content">
     <div id="tab-profile" class="profile-section active">
-      <h1 class="h3 mb-4">Panel de control de {{ club.name }}</h1>
+      <h1 class="h3 mb-4">Administrar Perfil</h1>
       <form
         method="post"
         action="{% url 'club_edit' club.slug %}"
@@ -169,35 +169,11 @@
       </form>
     </div>
     <div id="tab-gallery" class="profile-section">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <!-- Col izquierda: Añadir fotos -->
-        <div>
-          <form
-            id="upload-form"
-            method="post"
-            enctype="multipart/form-data"
-            action="{% url 'clubphoto_upload' club.slug %}"
-            class="mb-0"
-          >
-            {% csrf_token %}
-            <input
-              type="file"
-              name="image"
-              id="id_gallery_image"
-              multiple
-              class="d-none"
-            />
-            <button
-              type="button"
-              id="add-photos-btn"
-              class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
-            >
-              <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
-            </button>
-          </form>
-        </div>
 
-        <!-- Col derecha: botones de acciones -->
+      <h4>Galería de fotos</h4>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+
+
         <div class="d-flex align-items-center gap-3">
           <button
             type="button"
@@ -232,6 +208,31 @@
             </button>
           </form>
         </div>
+        <div>
+         <form
+           id="upload-form"
+           method="post"
+           enctype="multipart/form-data"
+           action="{% url 'clubphoto_upload' club.slug %}"
+           class="mb-0"
+         >
+           {% csrf_token %}
+           <input
+             type="file"
+             name="image"
+             id="id_gallery_image"
+             multiple
+             class="d-none"
+           />
+           <button
+             type="button"
+             id="add-photos-btn"
+             class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
+           >
+             <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
+           </button>
+         </form>
+       </div>
       </div>
 
       <div id="gallery-grid" class="gallery-grid">
@@ -302,14 +303,14 @@
     </div>
 
     <div id="tab-clase" class="profile-section">
-            <h5 class="mt-4">Panel de control de clases</h5>
-      <div class="mb-2">
+      <h4>Mis servicios</h4>
+      <div class="mb-4 align-items-end d-flex mx-auto justify-content-end">
         <button
           type="button"
-          class="btn btn-sm btn-dark add-booking-class-btn"
+          class="btn btn-sm btn-outline-dark add-booking-class-btn"
           data-club-slug="{{ club.slug }}"
         >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir clase
+          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
         </button>
       </div>
       <table class="table table-sm"  >
@@ -346,7 +347,8 @@
       </table>
     </div>
     <div id="tab-schedule" class="profile-section">
-      <h2 class="h5 mt-4">Horarios</h2>
+      <h4>Horarios del club</h4>
+
       <div class="table-responsive">
         <table
           class="table table-bordered text-center align-middle"
@@ -573,7 +575,8 @@
       </div>
 
            <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
-        <h5 class="mb-3">Panel de control de disponibilidad</h5>
+        <h4 class="mb-4 mt-4">Administrar disponibilidad</h4>
+
         <div id="schedule-manager" class="mb-3">
           <!-- Removed legacy day and time pickers -->
           {{ horarios_json|json_script:"schedule-data" }}
@@ -609,12 +612,14 @@
 
     </div>
     <div id="tab-coaches" class="profile-section">
+
+        <h4>Entrenadores</h4>
       <button
         type="button"
-        class="btn btn-outline-dark mb-3 d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-coach-btn"
+        class="btn btn-outline-dark mb-4 d-inline-flex   align-items-center  gap-2 btn-sm add-coach-btn "
         data-club-slug="{{ club.slug }}"
       >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir entrenador
+        <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
       </button>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
@@ -671,12 +676,14 @@
       </div>
     </div>
     <div id="tab-competitors" class="profile-section">
+      <h4>Competidores</h4>
+
       <button
         type="button"
         class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
         data-club-slug="{{ club.slug }}"
       >
-        <i class="bi bi-plus-circle icon-large"></i> Añadir competidor
+        <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
       </button>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
@@ -747,13 +754,15 @@
       </div>
     </div>
     <div id="tab-members" class="profile-section">
+      <h4>Miembros del club</h4>
+
       <div class="d-flex align-items-center gap-2 mb-3">
         <button
           type="button"
           class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-member-btn"
           data-club-slug="{{ club.slug }}"
         >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir miembro
+          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
         </button>
         <div class="member-search">
           <form method="get" id="member-search-form" class="member-search-form">
@@ -1037,6 +1046,8 @@
       </div>
     </div>
     <div id="tab-matchmaker" class="profile-section">
+      <h4>Matchmaker</h4>
+
       <div class="row mb-3">
         <div class="col-12 col-lg-4">
           <form
