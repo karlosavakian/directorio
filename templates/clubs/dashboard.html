@@ -47,17 +47,6 @@
           {% endif %}
         </div>
         <div class="form-field">
-          {{ form.owner }}
-          <label for="{{ form.owner.id_for_label }}"
-            >{{ form.owner.label }}</label
-          >
-          {% if form.owner.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.owner.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
           {{ form.name }}
           <button type="button" class="clear-btn">×</button>
           <label for="{{ form.name.id_for_label }}"
@@ -113,18 +102,6 @@
           {% if form.phone.errors %}
           <div class="invalid-feedback d-block">
             {{ form.phone.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.whatsapp_link }}
-          <button type="button" class="clear-btn">×</button>
-          <label for="{{ form.whatsapp_link.id_for_label }}"
-            >{{ form.whatsapp_link.label }}</label
-          >
-          {% if form.whatsapp_link.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.whatsapp_link.errors.as_text|striptags }}
           </div>
           {% endif %}
         </div>
@@ -185,17 +162,6 @@
           {% if form.features.errors %}
           <div class="invalid-feedback d-block">
             {{ form.features.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-        <div class="form-field">
-          {{ form.category }}
-          <label for="{{ form.category.id_for_label }}"
-            >{{ form.category.label }}</label
-          >
-          {% if form.category.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.category.errors.as_text|striptags }}
           </div>
           {% endif %}
         </div>
