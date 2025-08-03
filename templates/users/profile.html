@@ -20,7 +20,7 @@
     <div class="profile-content  ">
         <div id="tab-account" class="profile-section active col-6">
             <h4>Mi Cuenta</h4>
-            <form method="post" enctype="multipart/form-data" class="profile-form mb-5">
+            <form method="post" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
                 <div class="mb-5 text-center">
                     <div class="avatar-dropzone mx-auto">
@@ -80,7 +80,7 @@
         <div id="tab-plans" class="profile-section">
             <h4  class="text-center mb-2">Gestiona tu suscripción</h4>
             <p class="text-center text-muted mb-5">Selecciona el plan que prefieras.</p>
-            <form method="post" class="text-center mt-4 mb-5">
+            <form method="post" class="text-center mt-4">
                 {% csrf_token %}
                 {% if plan_form.plan.errors %}
                 <div class="invalid-feedback d-block mb-3">{{ plan_form.plan.errors.as_text|striptags }}</div>
