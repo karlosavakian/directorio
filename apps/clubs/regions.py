@@ -1,4 +1,3 @@
-# List of autonomous communities in Spain for region dropdown.
 SPAIN_REGION_CHOICES = [
     ("Andalucía", "Andalucía"),
     ("Aragón", "Aragón"),
@@ -17,4 +16,6 @@ SPAIN_REGION_CHOICES = [
     ("Región de Murcia", "Región de Murcia"),
     ("Navarra", "Navarra"),
     ("País Vasco", "País Vasco"),
+    ("Ceuta", "Ceuta"),
+    ("Melilla", "Melilla"),
 ]

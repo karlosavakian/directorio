@@ -16,6 +16,8 @@ const SPANISH_REGIONS = [
   "Región de Murcia",
   "Navarra",
   "País Vasco",
+  "Ceuta",
+  "Melilla"
 ];
 
 function initRegionSelect() {
