@@ -3,6 +3,19 @@ function initAvatarDropzones(root = document) {
     if (zone.dataset.initialized) return;
     const input = zone.querySelector('input[type="file"]');
     const preview = zone.querySelector('.avatar-preview');
+    const clearCheckbox = zone.querySelector('input[type="checkbox"]');
+    const clearLabel = clearCheckbox ? zone.querySelector(`label[for='${clearCheckbox.id}']`) : null;
+
+    // Remove default Django ClearableFileInput elements
+    zone.querySelectorAll('a, br').forEach(el => el.remove());
+    if (clearLabel) clearLabel.remove();
+    Array.from(zone.childNodes).forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+        node.remove();
+      }
+    });
+    if (clearCheckbox) clearCheckbox.classList.add('d-none');
+
     const msg = preview.querySelector('.avatar-dropzone-msg');
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
@@ -27,6 +40,7 @@ function initAvatarDropzones(root = document) {
       input.value = '';
       preview.style.backgroundImage = '';
       preview.classList.remove('has-image');
+      if (clearCheckbox) clearCheckbox.checked = true;
       if (msg) msg.style.visibility = '';
       updateState();
     };
@@ -63,6 +77,7 @@ function initAvatarDropzones(root = document) {
 
     input.addEventListener('change', () => {
       if (input.files.length) {
+        if (clearCheckbox) clearCheckbox.checked = false;
         showFile(input.files[0]);
       }
     });
