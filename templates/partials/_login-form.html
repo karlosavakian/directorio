@@ -24,13 +24,14 @@
 
                 <div class="form-field">
                   <button type="button" class="clear-btn me-4">x</button>
+                  <button type="button" class="toggle-password">👁</button>
                     <input type="password"
                            name="{{ form.password.name }}"
                            class="form-control"
                            id="{{ form.password.id_for_label }}"
                            placeholder=" "
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-                    
+
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
                     {% if form.password.errors %}
                       <div class="invalid-feedback d-block">
