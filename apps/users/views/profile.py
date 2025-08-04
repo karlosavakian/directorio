@@ -31,7 +31,9 @@ def profile(request):
             form = AccountForm(request.POST, request.FILES, instance=profile_obj, user=request.user)
             plan_form = PlanForm(initial={'plan': profile_obj.plan})
             if form.is_valid():
-                form.save()
+                profile_obj = form.save()
+                # Refresh the related user profile to ensure updated avatar is used
+                request.user.profile.refresh_from_db()
                 messages.success(request, 'Perfil actualizado exitosamente.')
                 return redirect('profile')
             else:
