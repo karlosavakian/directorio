@@ -93,9 +93,8 @@
     <div class="col-md-3">
       <div class="form-field">
         {{ form.fecha_nacimiento }}
-        <label for="{{ form.fecha_nacimiento.id_for_label }}"
-          >{{ form.fecha_nacimiento.label }}</label
-        >
+        <button type="button" class="clear-btn">×</button>
+        <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
         {% if form.fecha_nacimiento.errors %}
         <div class="invalid-feedback d-block">
           {{ form.fecha_nacimiento.errors.as_text|striptags }}
@@ -106,6 +105,7 @@
     <div class="col-md-3">
       <div class="form-field">
         {{ form.sexo }}
+        <button type="button" class="clear-btn">×</button>
         <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
         {% if form.sexo.errors %}
         <div class="invalid-feedback d-block">
@@ -159,34 +159,35 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-field">
-        {{ form.altura }}
-        <label for="{{ form.altura.id_for_label }}"
-          >{{ form.altura.label }}</label
-        >
-        {% if form.altura.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.altura.errors.as_text|striptags }}
-        </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.altura }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
+          {% if form.altura.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.altura.errors.as_text|striptags }}
+          </div>
         {% endif %}
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="form-field">
-        {{ form.peso }}
-        <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
-        {% if form.peso.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.peso.errors.as_text|striptags }}
-        </div>
+      <div class="col-md-6">
+        <div class="form-field">
+          {{ form.peso }}
+          <button type="button" class="clear-btn">×</button>
+          <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+          {% if form.peso.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.peso.errors.as_text|striptags }}
+          </div>
         {% endif %}
       </div>
     </div>
   </div>
   <div class="form-field">
     {{ form.edad }}
+    <button type="button" class="clear-btn">×</button>
     <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
     {% if form.edad.errors %}
     <div class="invalid-feedback d-block">
@@ -196,6 +197,7 @@
   </div>
   <div class="form-field">
     {{ form.estado }}
+    <button type="button" class="clear-btn">×</button>
     <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
     {% if form.estado.errors %}
     <div class="invalid-feedback d-block">
@@ -205,6 +207,7 @@
   </div>
   <div class="form-field">
     {{ form.notas }}
+    <button type="button" class="clear-btn">×</button>
     <label for="{{ form.notas.id_for_label }}">{{ form.notas.label }}</label>
     {% if form.notas.errors %}
     <div class="invalid-feedback d-block">
