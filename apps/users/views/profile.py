@@ -74,6 +74,11 @@ def profile(request):
 
     owned_clubs = request.user.owned_clubs.all()
     is_owner = owned_clubs.exists()
+    avatar_url = profile_obj.avatar.url if profile_obj.avatar else None
+    if is_owner:
+        first_club = owned_clubs.first()
+        if first_club and first_club.logo:
+            avatar_url = first_club.logo.url
 
     plans = [
         {
@@ -120,6 +125,7 @@ def profile(request):
         'reviews': user_reviews,
         'owned_clubs': owned_clubs,
         'is_owner': is_owner,
+        'avatar_url': avatar_url,
     })
 
 def profile_detail(request, username):

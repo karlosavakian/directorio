@@ -23,9 +23,10 @@
             <form method="post" enctype="multipart/form-data" class="profile-form">
                 {% csrf_token %}
                 <div class="mb-5 text-center">
+                    {% if not is_owner %}
                     <div class="avatar-dropzone mx-auto">
                         {{ form.avatar }}
-                        <div class="avatar-preview{% if profile.avatar %} has-image{% endif %}"{% if profile.avatar %} style="background-image:url('{{ profile.avatar.url }}')"{% endif %}>
+                        <div class="avatar-preview{% if avatar_url %} has-image{% endif %}"{% if avatar_url %} style="background-image:url('{{ avatar_url }}')"{% endif %}>
                             <div class="avatar-dropzone-msg">
                                 <i class="bi bi-cloud-upload mb-1 fs-4"></i>
                                 <span>Sube tu avatar</span>
@@ -35,6 +36,11 @@
                     {% if form.avatar.errors %}
                     <div class="invalid-feedback d-block">
                         {{ form.avatar.errors.as_text|striptags }}
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="avatar-dropzone mx-auto">
+                        <div class="avatar-preview{% if avatar_url %} has-image{% endif %}"{% if avatar_url %} style="background-image:url('{{ avatar_url }}')"{% endif %}></div>
                     </div>
                     {% endif %}
                 </div>
