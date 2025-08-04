@@ -87,11 +87,10 @@ class RegistroUsuarioForm(UserCreationForm):
 
     def clean_password1(self):
         password = self.cleaned_data.get('password1')
-        if password:
-            if len(password) < 6 or not any(c.islower() for c in password) or not any(c.isupper() for c in password) or not any(c.isdigit() for c in password):
-                raise forms.ValidationError(
-                    'La contraseña debe tener al menos 6 caracteres e incluir mayúsculas, minúsculas y números.'
-                )
+        if password and len(password) < 6:
+            raise forms.ValidationError(
+                'La contraseña debe tener al menos 6 caracteres.'
+            )
         return password
 
 class ProfileForm(forms.ModelForm):

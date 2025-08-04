@@ -8,9 +8,11 @@ from .views.auth import LoginView
 urlpatterns = [
     # Registro de usuarios
     path('signup/', auth.register, name='signup'),
+    path('register/', auth.register, name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
-    path('perfil/', profile_views.profile, name='profile'),
+    path('profile/', profile_views.profile, name='profile'),
+    path('perfil/', profile_views.profile),
     path('reseña/<slug:slug>/', review.dejar_reseña, name='dejar-reseña'),
   
     path('reseña/<int:reseña_id>/editar/', review.editar_reseña, name='editar_reseña'),
