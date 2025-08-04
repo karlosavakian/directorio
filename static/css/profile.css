@@ -184,7 +184,7 @@
   color: transparent;
 }
 .avatar-dropzone .avatar-preview.has-image .avatar-dropzone-msg {
-  display: none;
+  visibility: hidden;
 }
 .avatar-dropzone .avatar-remove-btn {
   position: absolute;

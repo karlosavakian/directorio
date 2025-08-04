@@ -17,7 +17,7 @@ function initAvatarDropzones(root = document) {
       reader.onload = e => {
         preview.style.backgroundImage = `url('${e.target.result}')`;
         preview.classList.add('has-image');
-        if (msg) msg.style.display = 'none';
+        if (msg) msg.style.visibility = 'hidden';
         updateState();
       };
       reader.readAsDataURL(file);
@@ -27,7 +27,7 @@ function initAvatarDropzones(root = document) {
       input.value = '';
       preview.style.backgroundImage = '';
       preview.classList.remove('has-image');
-      if (msg) msg.style.display = '';
+      if (msg) msg.style.visibility = '';
       updateState();
     };
 
