@@ -44,3 +44,12 @@ class ProfileAvatarPersistenceTests(TestCase):
                     f'alt="{self.user.username}" class="nav-avatar-img">'
                 )
                 self.assertInHTML(expected_img, html)
+
+    @override_settings(ALLOWED_HOSTS=["testserver"])
+    def test_header_displays_initial_when_no_avatar(self):
+        """Header should show the first letter of username when no avatar exists."""
+        self.client.login(username="avataruser", password="pass")
+        response = self.client.get(reverse("profile"))
+        html = response.content.decode()
+        expected_div = f'<div class="nav-avatar">{self.user.username[0].upper()}</div>'
+        self.assertInHTML(expected_div, html)
