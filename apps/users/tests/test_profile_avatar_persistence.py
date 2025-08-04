@@ -36,3 +36,11 @@ class ProfileAvatarPersistenceTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertTrue(self.user.profile.avatar.name)
                 self.assertContains(response, self.user.profile.avatar.url)
+
+                # nav avatar in header should display the uploaded image
+                html = response.content.decode()
+                expected_img = (
+                    f'<img src="{self.user.profile.avatar.url}" '
+                    f'alt="{self.user.username}" class="nav-avatar-img">'
+                )
+                self.assertInHTML(expected_img, html)
