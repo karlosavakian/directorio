@@ -16,7 +16,6 @@
           </div>
         </div>
       </div>
-      <label for="{{ form.avatar.id_for_label }}">{{ form.avatar.label }}</label>
       {% if form.avatar.errors %}
       <div class="invalid-feedback d-block">
         {{ form.avatar.errors.as_text|striptags }}
