@@ -10,7 +10,6 @@
         </div>
       </div>
     </div>
-    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
     {% if field.errors %}
     <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
     {% endif %}

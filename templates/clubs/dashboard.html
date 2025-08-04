@@ -39,9 +39,6 @@
               </div>
             </div>
           </div>
-          <label class="form-label mt-2" for="{{ form.logo.id_for_label }}">
-            {{ form.logo.label }}
-          </label>
           {% if form.logo.errors %}
           <div class="invalid-feedback d-block">
             {{ form.logo.errors.as_text|striptags }}

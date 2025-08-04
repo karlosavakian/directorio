@@ -4,6 +4,11 @@ function initAvatarDropzones(root = document) {
     const input = zone.querySelector('input[type="file"]');
     const preview = zone.querySelector('.avatar-preview');
     const msg = preview.querySelector('.avatar-dropzone-msg');
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'avatar-remove-btn';
+    removeBtn.innerHTML = '<i class="bi bi-trash"></i>';
+    zone.appendChild(removeBtn);
     if (!input || !preview) return;
 
     const showFile = file => {
@@ -13,8 +18,26 @@ function initAvatarDropzones(root = document) {
         preview.style.backgroundImage = `url('${e.target.result}')`;
         preview.classList.add('has-image');
         if (msg) msg.style.display = 'none';
+        updateState();
       };
       reader.readAsDataURL(file);
+    };
+
+    const clearFile = () => {
+      input.value = '';
+      preview.style.backgroundImage = '';
+      preview.classList.remove('has-image');
+      if (msg) msg.style.display = '';
+      updateState();
+    };
+
+    removeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      clearFile();
+    });
+
+    const updateState = () => {
+      removeBtn.style.display = preview.classList.contains('has-image') ? 'flex' : 'none';
     };
 
     zone.addEventListener('click', () => input.click());
@@ -44,6 +67,7 @@ function initAvatarDropzones(root = document) {
       }
     });
 
+    updateState();
     zone.dataset.initialized = 'true';
   });
 }
