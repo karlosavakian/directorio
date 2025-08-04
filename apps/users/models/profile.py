@@ -23,7 +23,20 @@ class Profile(models.Model):
         return f"Perfil de {self.user.username}"
 
     def save(self, *args, **kwargs):
+        # When a Profile is automatically created via signals, calling
+        # ``Profile.objects.create`` again for the same user would raise
+        # an ``IntegrityError`` because of the ``OneToOneField``. To make
+        # avatar uploads more robust, detect this situation and update the
+        # existing profile instead of attempting a second insert.
+        if not self.pk:
+            existing = Profile.objects.filter(user=self.user).first()
+            if existing:
+                self.pk = existing.pk
+                # ``Model.save(force_insert=True)`` is used by ``objects.create``.
+                # Remove the flag so we update the existing row instead.
+                kwargs.pop("force_insert", None)
+
         super().save(*args, **kwargs)
-        if self.avatar and hasattr(self.avatar, 'path'):
+        if self.avatar and hasattr(self.avatar, "path"):
             resize_image(self.avatar.path)
 

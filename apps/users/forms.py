@@ -8,6 +8,21 @@ from .models import Profile
 import os
 
 
+def _validate_avatar(avatar):
+    """Validate avatar file size and extension."""
+    max_size = 2 * 1024 * 1024  # 2MB
+    if avatar.size > max_size:
+        raise forms.ValidationError(
+            'El archivo excede el tamaño máximo de 2MB.'
+        )
+    ext = os.path.splitext(avatar.name)[1].lower()
+    if ext not in ['.jpg', '.jpeg', '.png']:
+        raise forms.ValidationError(
+            'Formato de imagen no soportado. Usa JPG o PNG.'
+        )
+    return avatar
+
+
 class LoginForm(AuthenticationForm):
     error_messages = {
         "invalid_login": _("El usuario o la contraseña introducida no es correcta, por favor intente de nuevo"),
@@ -80,6 +95,8 @@ class RegistroUsuarioForm(UserCreationForm):
         return password
 
 class ProfileForm(forms.ModelForm):
+    avatar = forms.FileField(required=False)
+
     class Meta:
         model = Profile
         fields = ['avatar', 'bio', 'location']
@@ -88,23 +105,11 @@ class ProfileForm(forms.ModelForm):
         avatar = self.cleaned_data.get('avatar')
         if not avatar:
             return avatar
-
-        max_size = 2 * 1024 * 1024  # 2MB
-        if avatar.size > max_size:
-            raise forms.ValidationError(
-                'El archivo excede el tamaño máximo de 2MB.'
-            )
-
-        ext = os.path.splitext(avatar.name)[1].lower()
-        if ext not in ['.jpg', '.jpeg', '.png']:
-            raise forms.ValidationError(
-                'Formato de imagen no soportado. Usa JPG o PNG.'
-            )
-
-        return avatar
+        return _validate_avatar(avatar)
 
 
 class AccountForm(forms.ModelForm):
+    avatar = forms.FileField(required=False)
     new_password1 = forms.CharField(
         label='Nueva contraseña', widget=forms.PasswordInput, required=False
     )
@@ -136,6 +141,12 @@ class AccountForm(forms.ModelForm):
         avatar_widget = self.fields['avatar'].widget
         css = avatar_widget.attrs.get('class', '')
         avatar_widget.attrs['class'] = (css + ' d-none').strip()
+
+    def clean_avatar(self):
+        avatar = self.cleaned_data.get('avatar')
+        if not avatar:
+            return avatar
+        return _validate_avatar(avatar)
 
     def clean(self):
         cleaned = super().clean()
