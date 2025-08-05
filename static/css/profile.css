@@ -122,22 +122,22 @@
 }
 
 .feature-option:hover {
-   border: 1px solid rgb(50, 163, 35, 1); 
+   border: 1px solid rgb(50, 163, 35, 1);
    transition: .2s ease-in-out;
 }
- 
-.feature-option.selected { 
-   background-color:rgb(50, 163, 35, .2);  
+
+.feature-option.selected {
+   background-color:rgb(50, 163, 35, .2);
 
 }
 
-.form-control{ 
+.form-control{
   min-height:50px;
 }
 #id_notas{
   height:50px;
 }
- 
+
 /* Avatar dropzone styles */
 .avatar-dropzone {
   width: 150px;
@@ -225,7 +225,7 @@
   overflow: hidden;
 }
 
- 
+
 
 .gallery-item img {
   width: 100%;
@@ -287,9 +287,9 @@
 }
 
 .drag-handle {
-  font-size:2em; 
+  font-size:2em;
   cursor: pointer;
-  color: #fff;   
+  color: #fff;
 }
 
 .photo-dimensions {
@@ -297,7 +297,7 @@
   bottom:0;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #fff; 
+  color: #fff;
   text-shadow: 0 0 2px #000;
   display: none;
   pointer-events: none;
@@ -306,8 +306,8 @@
 .gallery-item:hover .photo-dimensions {
   display: block;
 }
- 
- 
+
+
 .photo-dropzone {
   border: 2px dashed #666;
   padding: 1rem;
@@ -565,7 +565,7 @@ select option[value="España"] {
   min-height: 500px;
 }
 
- 
+
 #tab-members .members-table-responsive {
   overflow-x: visible;
   overflow-y: visible;

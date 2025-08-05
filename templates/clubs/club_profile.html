@@ -40,7 +40,7 @@
                         <div class="d-flex justify-content-center justify-content-lg-start mb-1">
                             <span class="badge  fw-medium">{{ club.get_category_display }}</span>
                          </div>
-                        <h1 class="mb-2 text-center text-lg-start" style="font-size:24px !important; font-weight:900;">
+                        <h3 class="mt-1 mb-1 h5 fw-bold mb-2 text-center text-lg-start">
 
                             {{ club.name }}
                             {% if club.plan == 'oro' %}
@@ -50,7 +50,7 @@
                             {% elif club.plan == 'bronce' %}
                               {% include 'partials/_verified-bronze.html' %}
                             {% endif %}
-                        </h1>
+                        </h3>
 
                         <li class="club-actions d-flex flex-row flex-lg-column flex-wrap justify-content-center align-items-center align-items-lg-start gap-2 mb-4">
 
@@ -276,7 +276,7 @@
                     <!-- Horarios -->
                     <div class="p-3 tab-pane fade" id="schedule" role="tabpanel">
                         <div class="table-actions">
-                            <span class="fst-italic" id="open-status" > </span>   
+                            <span class="fst-italic" id="open-status" > </span>
 
                         </div>
                         <div class="table-responsive mt-3">
@@ -486,10 +486,10 @@
                         {% endfor %}
                     </div>
                     <!-- Competidores -->
-                    <div class="p-1 tab-pane fade" id="competitors">
+                    <div class="p-3 tab-pane fade" id="competitors">
                         {% if competidores %}
                             <div class="d-flex justify-content-center">
-                                <div class="table-responsive col-8">
+                                <div class="table-responsive col-12">
                                     <table class="table table-sm text-center competitors-table">
                                         <tbody>
                                             {% for competidor in competidores %}
@@ -503,7 +503,8 @@
                                                             {% else %}
                                                                 <div class="competitor-avatar me-2">{{ competidor.nombre|initials }}</div>
                                                             {% endif %}
-                                                            <span class="ms-2">{{ competidor.nombre }}</span>
+                                                            <span class="ms-2">{{ competidor.nombre }} {{ competidor.apellidos }}</span>
+
                                                         </div>
                                                     </td>
                                                     <td>
