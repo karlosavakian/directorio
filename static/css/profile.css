@@ -607,3 +607,11 @@ select option[value="España"] {
 .booking-class-detail-col {
   width: 50%;
 }
+
+
+plan-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}

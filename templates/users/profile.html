@@ -80,21 +80,32 @@
         </div>
         {% if is_owner %}
         <div id="tab-plans" class="profile-section">
-            <h4  class="text-center mb-2">Gestiona tu suscripción</h4>
+            <h4  class="text-center mb-4">Gestiona tu suscripción</h4>
             <p class="text-center text-muted mb-5">Selecciona el plan que prefieras.</p>
             <form method="post" class="text-center mt-4">
                 {% csrf_token %}
                 {% if plan_form.plan.errors %}
                 <div class="invalid-feedback d-block mb-3">{{ plan_form.plan.errors.as_text|striptags }}</div>
                 {% endif %}
-                <div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
-                    {% for p in plans %}  
-                    <label class="plan-card {% if p.featured %}featured{% endif %}{% if current_plan == p.value %} active{% endif %}">
+                <div class="d-flex justify-content-center flex-wrap gap-3 mb-4 ">
+                    {% for p in plans %}
+                    <label class="plan-card plan-{{ p.value }} {% if p.featured %}featured{% endif %}{% if current_plan == p.value %} active{% endif %}">
                         <input type="radio" name="plan" value="{{ p.value }}" {% if current_plan == p.value %}checked{% endif %}>
-                        <h3 class="mb-2">{{ p.title }}</h3>
+                        <div class="text-center mb-2">
+                        <h3 class="mt-4">{{ p.title }}</h3>
+                        {% if p.value == 'oro' %}
+                          <div class="mt-1">{% include 'partials/_verified-gold.html' %}</div>
+                        {% elif p.value == 'plata' %}
+                          <div class="mt-1">{% include 'partials/_verified-silver.html' %}</div>
+                        {% elif p.value == 'bronce' %}
+                          <div class="mt-1">{% include 'partials/_verified-bronze.html' %}</div>
+                        {% endif %}
+                      </div>
+
+
                         <ul>
                             {% for f in p.features %}
-                            <li>{{ f }}</li>
+                            <li class="text-center">{{ f }}</li>
                             {% endfor %}
                         </ul>
                         <div class="plan-card-price">{{ p.price }}</div>
