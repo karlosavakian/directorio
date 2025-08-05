@@ -21,7 +21,8 @@
                     {% if club.logo %}
                         <img src="{{ club.logo.url }}" class="card-img-top object-fit-contain" style="height: 200px;" alt="{{ club.name }}">
                     {% else %}
-                        <div class="card-img-top d-flex align-items-center justify-content-center bg-dark" style="height: 200px;">
+                        <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px;        background: rgb(85, 85, 85);
+">
                             <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
                         </div>
                     {% endif %}
