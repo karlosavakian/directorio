@@ -29,7 +29,7 @@
                     style="object-fit:cover;"
                     alt="{{ club.name }}">
             {% else %}
-                <div class="d-flex align-items-center justify-content-center w-100 h-100 bg-dark">
+                <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgb(85, 85, 85);">
                     <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
                 </div>
             {% endif %}
@@ -160,15 +160,16 @@
                             </div>
                         </div>
                     {% else %}
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="gallery-placeholder rounded shadow-sm">
-                                <svg class="text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm16 0-4-5-3 3-2-2-4 4"/>
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.5 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                                </svg>
-                            </div>
-                            <p class="mt-2">No hay fotos todavía.</p>
-                        </div>
+                    <div class="d-flex flex-column align-items-center">
+                      <div class="gallery-placeholder rounded  d-flex flex-column align-items-center">
+                          <svg class="text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm16 0-4-5-3 3-2-2-4 4"/>
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.5 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                          </svg>
+                          <p class="mt-2 text-white text-center">No hay fotos todavía.</p>
+                      </div>
+                      </div>
+
                     {% endif %}
                 </div>
                 <!-- Menú de pestañas -->
