@@ -87,11 +87,21 @@
        display: none;
  }
 
- .gallery-slide.active {
+.gallery-slide.active {
        display: block;
- }
+}
 
- .slide-arrow {
+.gallery-placeholder {
+       width: 100%;
+       max-height: 500px;
+       min-height: 500px;
+       background: rgb(85, 85, 85);
+       display: flex;
+       align-items: center;
+       justify-content: center;
+}
+
+.slide-arrow {
        position: absolute;
        top: 50%;
        transform: translateY(-50%);
