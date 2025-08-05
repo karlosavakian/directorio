@@ -33,10 +33,7 @@
   margin-bottom: 1.5rem;
 }
 
-.profile-form .form-field input[type="text"],
-.profile-form .form-field input[type="email"],
-.profile-form .form-field input[type="password"],
-.profile-form .form-field input[type="file"],
+.profile-form .form-field input:not([type="checkbox"]),
 .profile-form .form-field textarea,
 .profile-form .form-field select {
   width: 100%;
