@@ -37,7 +37,7 @@
         {% else %}
         <div class="form-field">
           {{ field }}
-          <button type="button" class="clear-btn">×</button>
+          <button type="button" class="clear-btn bi bi-x"></button>
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
           {% if field.errors %}
           <div class="invalid-feedback d-block">
