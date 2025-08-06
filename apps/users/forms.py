@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
 from .models import Profile
+from apps.core.mixins import UniformFieldsMixin
 import os
 
 
@@ -23,7 +24,7 @@ def _validate_avatar(avatar):
     return avatar
 
 
-class LoginForm(AuthenticationForm):
+class LoginForm(UniformFieldsMixin, AuthenticationForm):
     error_messages = {
         "invalid_login": _("El usuario o la contraseña introducida no es correcta, por favor intente de nuevo"),
         "inactive": _("Esta cuenta está inactiva."),
@@ -51,7 +52,7 @@ class LoginForm(AuthenticationForm):
         # Mark "recordar contraseña" checked by default
         self.fields["remember_me"].initial = True
  
-class RegistroUsuarioForm(UserCreationForm):
+class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
 
     error_messages = {
@@ -93,7 +94,7 @@ class RegistroUsuarioForm(UserCreationForm):
             )
         return password
 
-class ProfileForm(forms.ModelForm):
+class ProfileForm(UniformFieldsMixin, forms.ModelForm):
     avatar = forms.FileField(required=False)
 
     class Meta:
@@ -107,7 +108,7 @@ class ProfileForm(forms.ModelForm):
         return _validate_avatar(avatar)
 
 
-class AccountForm(forms.ModelForm):
+class AccountForm(UniformFieldsMixin, forms.ModelForm):
     avatar = forms.FileField(required=False)
     new_password1 = forms.CharField(
         label='Nueva contraseña', widget=forms.PasswordInput, required=False
