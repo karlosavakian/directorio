@@ -129,18 +129,16 @@
 
 .profile-form .slug-field .username-prefix {
   position: absolute;
-  left: 0.75rem;
+  left: 1.3rem;
   top: 50%;
   transform: translateY(-50%);
   color: #666;
-  background:red;
-  margin-right: 5px;
 }
 
 .profile-form .slug-field input {
-  margin-right: calc(1.5rem + 5px); 
+  padding-left:30px !important;
+  margin-right: calc(1.5rem + 5px) !important;
 }
-
 
 
 .profile-form .slug-field #slug-status {
@@ -149,6 +147,7 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
 
 .feature-option {
   cursor: pointer;
