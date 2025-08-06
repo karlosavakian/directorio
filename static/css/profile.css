@@ -133,17 +133,15 @@
   top: 50%;
   transform: translateY(-50%);
   color: #666;
+  background:red;
   margin-right: 5px;
 }
 
 .profile-form .slug-field input {
-  padding-left: calc(1.5rem + 5px);
+  margin-right: calc(1.5rem + 5px); 
 }
 
-.profile-form .slug-field label {
-  left: 1.5rem;
-  margin-left: 3px;
-}
+
 
 .profile-form .slug-field #slug-status {
   position: absolute;
