@@ -68,17 +68,24 @@ function initRegionSelect() {
         const input = buildInput('');
         current.replaceWith(input);
         if (clearBtn) {
-          clearBtn.style.display = '';
+          clearBtn.style.display = 'none';
           clearBtn.onclick = () => {
             input.value = '';
             input.dispatchEvent(new Event('input', { bubbles: true }));
             clearBtn.style.display = 'none';
             input.focus();
           };
-          input.addEventListener('input', () => {
-            clearBtn.style.display = input.value ? 'block' : 'none';
-          });
-          clearBtn.style.display = input.value ? 'block' : 'none';
+          const toggle = () => {
+            if (document.activeElement === input && input.value) {
+              clearBtn.style.display = 'block';
+            } else {
+              clearBtn.style.display = 'none';
+            }
+          };
+          input.addEventListener('focus', toggle);
+          input.addEventListener('blur', toggle);
+          input.addEventListener('input', toggle);
+          toggle();
         }
       }
     }
