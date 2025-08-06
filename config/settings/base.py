@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'apps.clubs',
     'apps.users',
     'apps.blog',
+    'cities_light',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

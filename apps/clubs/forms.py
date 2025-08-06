@@ -6,6 +6,7 @@ from . import models
 from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
+from cities_light.models import Region, SubRegion, City
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -163,9 +164,24 @@ class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
 
 
 class ClubForm(UniformFieldsMixin, forms.ModelForm):
-    region = forms.CharField(label="Comunidad Autónoma", required=False)
-    province = forms.CharField(label="Provincia", required=False)
-    city = forms.CharField(label="Ciudad", required=False)
+    region = forms.ModelChoiceField(
+        queryset=Region.objects.filter(country__code2="ES").order_by("name"),
+        label="Comunidad Autónoma",
+        required=False,
+        empty_label="",
+    )
+    province = forms.ModelChoiceField(
+        queryset=SubRegion.objects.filter(country__code2="ES").order_by("name"),
+        label="Provincia",
+        required=False,
+        empty_label="",
+    )
+    city = forms.ModelChoiceField(
+        queryset=City.objects.filter(country__code2="ES").order_by("name"),
+        label="Ciudad",
+        required=False,
+        empty_label="",
+    )
     class Meta:
         model = models.Club
         exclude = (
@@ -209,6 +225,14 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             other_countries = [c for c in COUNTRY_CHOICES if c[0] != 'España']
             country_field.choices = [('', 'País'), ('España', 'España'), ('Otros países', other_countries)]
             country_field.initial = country_value or 'España'
+
+        # set initial plugin values if instance has stored names
+        if self.instance.pk:
+            if self.instance.region:
+                self.fields['region'].initial = Region.objects.filter(name=self.instance.region).first()
+            if self.instance.city:
+                self.fields['city'].initial = City.objects.filter(name=self.instance.city).first()
+
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = (css + ' form-control').strip()
@@ -217,7 +241,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
                 (forms.TextInput, forms.EmailInput,
                  forms.URLInput, forms.NumberInput,
                  forms.PasswordInput, forms.Textarea,
-                 forms.DateInput, forms.TimeInput),
+                 forms.DateInput, forms.TimeInput, forms.Select),
             ):
                 field.widget.attrs.setdefault('placeholder', ' ')
             if name == 'slug':
@@ -238,6 +262,19 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if logo_widget:
             css = logo_widget.widget.attrs.get('class', '')
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        region = self.cleaned_data.get('region')
+        city = self.cleaned_data.get('city')
+        if region:
+            instance.region = region.name
+        if city:
+            instance.city = city.name
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 
 class CancelBookingForm(UniformFieldsMixin, forms.Form):
