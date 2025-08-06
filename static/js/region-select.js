@@ -1,25 +1,26 @@
-const SPANISH_REGIONS = [
-  "Andalucía", "Aragón", "Asturias", "Islas Baleares", "Canarias", "Cantabria",
-  "Castilla-La Mancha", "Castilla y León", "Cataluña", "Comunidad Valenciana",
-  "Extremadura", "Galicia", "La Rioja", "Comunidad de Madrid", "Región de Murcia",
-  "Navarra", "País Vasco", "Ceuta", "Melilla"
-];
-
-let REGION_DATA = {}; // Aquí se cargará el JSON
+let REGION_DATA = {};
+let SPANISH_REGIONS = [];
 
 function initRegionSelect() {
   const country = document.getElementById('id_country');
   const regionFieldWrapper = document.getElementById('id_region')?.closest('.form-field');
-  const provinceSelect = document.getElementById('id_province');
-  const citySelect = document.getElementById('id_city');
+  let provinceSelect = document.getElementById('id_province');
+  let citySelect = document.getElementById('id_city');
+  const provinceWrapper = provinceSelect?.closest('.form-field');
+  const cityWrapper = citySelect?.closest('.form-field');
 
-  if (!country || !regionFieldWrapper) return;
+  if (!country || !regionFieldWrapper || !provinceSelect || !citySelect) return;
 
-  // Paso 1: Carga el JSON con comunidades, provincias y ciudades
-  fetch('/static/data/cp_provincias_poblaciones.json')
+  fetch('/static/data/arbol.json')
     .then(res => res.json())
     .then(data => {
-      REGION_DATA = data;
+      data.forEach(r => {
+        REGION_DATA[r.label] = {};
+        r.provinces.forEach(p => {
+          REGION_DATA[r.label][p.label] = p.towns.map(t => t.label);
+        });
+      });
+      SPANISH_REGIONS = Object.keys(REGION_DATA);
       init();
     });
 
@@ -62,17 +63,38 @@ function initRegionSelect() {
     if (country.value === 'España') {
       if (current.tagName.toLowerCase() !== 'select') {
         const select = buildSelect(SPANISH_REGIONS, 'region', current.value);
+        select.options[0].textContent = 'Selecciona una comunidad autónoma';
         current.replaceWith(select);
         if (clearBtn) clearBtn.style.display = 'none';
         if (window.initSelectLabels) window.initSelectLabels(regionFieldWrapper);
         current = select;
       }
 
+      if (provinceSelect.tagName.toLowerCase() !== 'select') {
+        const select = buildSelect([], 'province', '');
+        select.options[0].textContent = 'Selecciona una provincia';
+        provinceSelect.replaceWith(select);
+        if (window.initSelectLabels && provinceWrapper) window.initSelectLabels(provinceWrapper);
+        provinceSelect = select;
+      } else {
+        provinceSelect.innerHTML = `<option value="">Selecciona una provincia</option>`;
+      }
+
+      if (citySelect.tagName.toLowerCase() !== 'select') {
+        const select = buildSelect([], 'city', '');
+        select.options[0].textContent = 'Selecciona una ciudad';
+        citySelect.replaceWith(select);
+        if (window.initSelectLabels && cityWrapper) window.initSelectLabels(cityWrapper);
+        citySelect = select;
+      } else {
+        citySelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
+      }
+
       current.addEventListener('change', () => {
         updateProvince(current.value);
       });
 
-      updateProvince(current.value); // Inicializa provincias si ya había región seleccionada
+      updateProvince(current.value);
     } else {
       if (current.tagName.toLowerCase() !== 'input') {
         const input = buildInput('');
@@ -97,12 +119,26 @@ function initRegionSelect() {
           input.addEventListener('input', toggle);
           toggle();
         }
+        current = input;
       }
 
-      provinceSelect.innerHTML = `<option value="">Selecciona una provincia</option>`;
-      citySelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
-      provinceSelect.disabled = true;
-      citySelect.disabled = true;
+      if (provinceSelect.tagName.toLowerCase() !== 'input') {
+        const input = buildInput('', 'province');
+        provinceSelect.replaceWith(input);
+        if (window.initSelectLabels && provinceWrapper) window.initSelectLabels(provinceWrapper);
+        provinceSelect = input;
+      } else {
+        provinceSelect.value = '';
+      }
+
+      if (citySelect.tagName.toLowerCase() !== 'input') {
+        const input = buildInput('', 'city');
+        citySelect.replaceWith(input);
+        if (window.initSelectLabels && cityWrapper) window.initSelectLabels(cityWrapper);
+        citySelect = input;
+      } else {
+        citySelect.value = '';
+      }
     }
   }
 
@@ -152,3 +188,4 @@ function initRegionSelect() {
 }
 
 document.addEventListener('DOMContentLoaded', initRegionSelect);
+

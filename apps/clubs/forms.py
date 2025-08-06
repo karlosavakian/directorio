@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from .models import Reseña
 from . import models
 from .countries import COUNTRY_CHOICES
-from .regions import SPAIN_REGION_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
 
@@ -204,12 +203,6 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             or self.initial.get('country')
             or getattr(getattr(self, 'instance', None), 'country', None)
         )
-        if country_value == 'España':
-            self.fields['region'] = forms.ChoiceField(
-                choices=SPAIN_REGION_CHOICES,
-                required=False,
-                label=self.fields['region'].label,
-            )
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = (css + ' form-control').strip()
