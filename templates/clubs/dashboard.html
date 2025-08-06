@@ -58,12 +58,10 @@
             {% endif %}
           </div>
 
-          <div class="form-field col-md-6">
-            <div class="input-group">
-              <span class="input-group-text">@</span>
-              {{ form.slug }}
-              <span class="input-group-text bg-transparent border-0" id="slug-status"></span>
-            </div>
+          <div class="form-field col-md-6 slug-field">
+            <span class="username-prefix">@</span>
+            {{ form.slug }}
+            <span id="slug-status"></span>
             <button type="button" class="clear-btn">×</button>
             <label for="{{ form.slug.id_for_label }}">{{ form.slug.label }}</label>
             {% if form.slug.errors %}
