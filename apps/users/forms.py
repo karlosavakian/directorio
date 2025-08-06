@@ -54,6 +54,15 @@ class LoginForm(UniformFieldsMixin, AuthenticationForm):
  
 class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
+    username = forms.CharField(
+        label='Nombre de usuario',
+        min_length=3,
+        error_messages={
+            'required': 'Rellene este campo',
+            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres'
+        },
+        widget=forms.TextInput(attrs={'minlength': 3})
+    )
 
     error_messages = {
         **UserCreationForm.error_messages,
@@ -117,7 +126,15 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
         label='Confirmar contraseña', widget=forms.PasswordInput, required=False
     )
     email = forms.EmailField(label='Correo electrónico', required=False)
-    username = forms.CharField(label='Nombre de usuario')
+    username = forms.CharField(
+        label='Nombre de usuario',
+        min_length=3,
+        error_messages={
+            'required': 'Rellene este campo',
+            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres'
+        },
+        widget=forms.TextInput(attrs={'minlength': 3})
+    )
     notifications = forms.BooleanField(
         label='Recibir notificaciones', required=False
     )

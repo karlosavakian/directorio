@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Make clear button not tabbable
     btn.setAttribute("tabindex", "-1");
+    btn.addEventListener("mousedown", (e) => e.preventDefault());
 
     const toggle = () => {
       if (document.activeElement === input && input.value) {
