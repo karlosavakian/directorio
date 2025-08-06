@@ -53,7 +53,7 @@
           <!-- Username -->
 <div class="form-field">
     <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default_if_none:'' }}" class="form-control" id="{{ form.username.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-    <button type="button" class="clear-btn">×</button>
+    <button type="button" class="clear-btn bi bi-x"></button>
     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
     {% if form.username.errors %}
       <div class="invalid-feedback d-block">
@@ -65,7 +65,7 @@
 <!-- Email -->
 <div class="form-field">
     <input type="email" name="{{ form.email.name }}" value="{{ form.email.value|default_if_none:'' }}" class="form-control" id="{{ form.email.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-    <button type="button" class="clear-btn">×</button>
+    <button type="button" class="clear-btn bi bi-x"></button>
     <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
     {% if form.email.errors %}
       <div class="invalid-feedback d-block">
@@ -76,7 +76,7 @@
 
 <!-- Password1 -->
 <div class="form-field">
-    <button type="button" class="clear-btn">x</button>
+    <button type="button" class="clear-btn bi bi-x"></button>
     <input type="password" name="{{ form.password1.name }}" class="form-control" id="{{ form.password1.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
     
     <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
@@ -91,7 +91,7 @@
 
 <!-- Password2 -->
 <div class="form-field">
-    <button type="button" class="clear-btn">x</button>
+    <button type="button" class="clear-btn bi bi-x"></button>
     <input type="password" name="{{ form.password2.name }}" class="form-control" id="{{ form.password2.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
     <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
     {% if form.password2.errors %}

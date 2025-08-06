@@ -4,7 +4,7 @@
  
   <div class="form-field">
     {{ form.titulo }}
-    <button type="button" class="clear-btn">×</button>
+    <button type="button" class="clear-btn bi bi-x"></button>
     <label for="{{ form.titulo.id_for_label }}">{{ form.titulo.label }}</label>
     {% if form.titulo.errors %}
     <div class="invalid-feedback d-block">
@@ -16,7 +16,7 @@
   <div class="form-row d-flex gap-3">
     <div class="form-field flex-fill">
       {{ form.precio }}
-      <button type="button" class="clear-btn">×</button>
+      <button type="button" class="clear-btn bi bi-x"></button>
       <label for="{{ form.precio.id_for_label }}">{{ form.precio.label }}</label>
       {% if form.precio.errors %}
       <div class="invalid-feedback d-block">
@@ -27,7 +27,7 @@
 
     <div class="form-field flex-fill">
       {{ form.duracion }}
-      <button type="button" class="clear-btn">×</button>
+      <button type="button" class="clear-btn bi bi-x"></button>
       <label for="{{ form.duracion.id_for_label }}">{{ form.duracion.label }}</label>
       {% if form.duracion.errors %}
       <div class="invalid-feedback d-block">
@@ -52,7 +52,7 @@
       {% else %}
       <div class="form-field">
         {{ field }}
-        <button type="button" class="clear-btn">×</button>
+        <button type="button" class="clear-btn bi bi-x"></button>
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {% if field.errors %}
         <div class="invalid-feedback d-block">
