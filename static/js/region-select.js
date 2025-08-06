@@ -32,7 +32,7 @@ function initRegionSelect() {
 
     const empty = document.createElement('option');
     empty.value = '';
-    empty.textContent = `Selecciona ${name}`;
+    empty.textContent = '';
     select.appendChild(empty);
 
     options.forEach(opt => {
@@ -72,22 +72,22 @@ function initRegionSelect() {
 
       if (provinceSelect.tagName.toLowerCase() !== 'select') {
         const select = buildSelect([], 'province', '');
-        select.options[0].textContent = 'Selecciona una provincia';
         provinceSelect.replaceWith(select);
         if (window.initSelectLabels && provinceWrapper) window.initSelectLabels(provinceWrapper);
         provinceSelect = select;
       } else {
-        provinceSelect.innerHTML = `<option value="">Selecciona una provincia</option>`;
+        provinceSelect.innerHTML = '<option value=""></option>';
+        provinceSelect.options[0].hidden = true;
       }
 
       if (citySelect.tagName.toLowerCase() !== 'select') {
         const select = buildSelect([], 'city', '');
-        select.options[0].textContent = 'Selecciona una ciudad';
         citySelect.replaceWith(select);
         if (window.initSelectLabels && cityWrapper) window.initSelectLabels(cityWrapper);
         citySelect = select;
       } else {
-        citySelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
+        citySelect.innerHTML = '<option value=""></option>';
+        citySelect.options[0].hidden = true;
       }
 
       current.addEventListener('change', () => {
@@ -143,8 +143,10 @@ function initRegionSelect() {
   }
 
   function updateProvince(region) {
-    provinceSelect.innerHTML = `<option value="">Selecciona una provincia</option>`;
-    citySelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
+    provinceSelect.innerHTML = '<option value=""></option>';
+    provinceSelect.options[0].hidden = true;
+    citySelect.innerHTML = '<option value=""></option>';
+    citySelect.options[0].hidden = true;
     citySelect.disabled = true;
 
     if (!region || !REGION_DATA[region]) {
@@ -166,7 +168,8 @@ function initRegionSelect() {
   }
 
   function updateCity(region, provincia) {
-    citySelect.innerHTML = `<option value="">Selecciona una ciudad</option>`;
+    citySelect.innerHTML = '<option value=""></option>';
+    citySelect.options[0].hidden = true;
     if (!region || !provincia || !REGION_DATA[region][provincia]) {
       citySelect.disabled = true;
       return;
