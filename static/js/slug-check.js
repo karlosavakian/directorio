@@ -9,8 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(timer);
     if (!value) {
       status.innerHTML = '';
+      status.classList.remove('text-danger');
       return;
     }
+    if (value.length < 3) {
+      status.textContent = 'Introduce un nombre con al menos 3 carácteres';
+      status.classList.add('text-danger');
+      return;
+    }
+    status.classList.remove('text-danger');
     timer = setTimeout(() => {
       fetch(`/clubs/slug-disponible/?slug=${encodeURIComponent(value)}&current=${encodeURIComponent(current)}`)
         .then(res => res.json())
