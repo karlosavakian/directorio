@@ -44,11 +44,13 @@ from apps.clubs.views.dashboard import (
     booking_class_create,
     booking_class_update,
     booking_class_delete,
+    check_slug,
 )
 
 urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
+    path('slug-disponible/', check_slug, name='club_slug_check'),
 
     path('<slug:slug>/editar/', club_edit, name='club_edit'),
 

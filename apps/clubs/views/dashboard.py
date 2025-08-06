@@ -225,6 +225,14 @@ def dashboard(request):
             'today': today,
         },
     )
+
+
+@login_required
+def check_slug(request):
+    slug = request.GET.get('slug', '').strip()
+    current = request.GET.get('current', '')
+    exists = Club.objects.filter(slug=slug).exclude(slug=current).exists()
+    return JsonResponse({'available': not exists})
 @login_required
 def club_edit(request, slug):
     club = get_object_or_404(Club, slug=slug)

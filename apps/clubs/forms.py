@@ -166,7 +166,6 @@ class ClubForm(forms.ModelForm):
     class Meta:
         model = models.Club
         exclude = (
-            'slug',
             'created_at',
             'updated_at',
             'verified',
@@ -177,6 +176,7 @@ class ClubForm(forms.ModelForm):
         )
         labels = {
             'name': 'Nombre del club',
+            'slug': 'Usuario',
             'about': 'Bio',
             'country': 'País',
             'region': 'Comunidad Autónoma',
@@ -209,11 +209,22 @@ class ClubForm(forms.ModelForm):
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = (css + ' form-control').strip()
-            if isinstance(field.widget, (forms.TextInput, forms.EmailInput,
-                                        forms.URLInput, forms.NumberInput,
-                                        forms.PasswordInput, forms.Textarea,
-                                        forms.DateInput, forms.TimeInput)):
+            if isinstance(
+                field.widget,
+                (forms.TextInput, forms.EmailInput,
+                 forms.URLInput, forms.NumberInput,
+                 forms.PasswordInput, forms.Textarea,
+                 forms.DateInput, forms.TimeInput),
+            ):
                 field.widget.attrs.setdefault('placeholder', ' ')
+            if name == 'slug':
+                field.widget.attrs['data-current'] = getattr(self.instance, 'slug', '')
+
+    def clean_slug(self):
+        slug = self.cleaned_data.get('slug', '').lstrip('@')
+        if models.Club.objects.exclude(pk=self.instance.pk).filter(slug=slug).exists():
+            raise forms.ValidationError('Este usuario ya está en uso.')
+        return slug
 
         # hide logo input to use dropzone preview
         logo_widget = self.fields.get('logo')
