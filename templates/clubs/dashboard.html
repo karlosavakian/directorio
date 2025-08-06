@@ -62,7 +62,7 @@
             <span class="username-prefix">@</span>
             {{ form.slug }}
             <span id="slug-status"></span>
-            <button type="button" class="clear-btn">×</button>
+            <button type="button" class="clear-btn bi bi-x"></button>
             <label for="{{ form.slug.id_for_label }}">{{ form.slug.label }}</label>
             {% if form.slug.errors %}
             <div class="invalid-feedback d-block">
@@ -87,7 +87,6 @@
         <div class="row g-3">
           <div class="form-field col-md-6">
             {{ form.country }}
-            <button type="button" class="clear-btn">×</button>
             <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
             {% if form.country.errors %}
             <div class="invalid-feedback d-block">
@@ -97,7 +96,6 @@
           </div>
           <div class="form-field col-md-6">
             {{ form.region }}
-            <button type="button" class="clear-btn">×</button>
             <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
             {% if form.region.errors %}
             <div class="invalid-feedback d-block">
