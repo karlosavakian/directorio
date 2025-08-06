@@ -6,7 +6,7 @@ from . import models
 from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
-from cities_light.models import Region, SubRegion, City
+from .spain import REGION_CHOICES, PROVINCE_CHOICES, CITY_CHOICES
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -164,23 +164,20 @@ class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
 
 
 class ClubForm(UniformFieldsMixin, forms.ModelForm):
-    region = forms.ModelChoiceField(
-        queryset=Region.objects.filter(country__code2="ES").order_by("name"),
+    region = forms.ChoiceField(
+        choices=[("", "")] + REGION_CHOICES,
         label="Comunidad Autónoma",
         required=False,
-        empty_label="",
     )
-    province = forms.ModelChoiceField(
-        queryset=SubRegion.objects.filter(country__code2="ES").order_by("name"),
+    province = forms.ChoiceField(
+        choices=[("", "")] + PROVINCE_CHOICES,
         label="Provincia",
         required=False,
-        empty_label="",
     )
-    city = forms.ModelChoiceField(
-        queryset=City.objects.filter(country__code2="ES").order_by("name"),
+    city = forms.ChoiceField(
+        choices=[("", "")] + CITY_CHOICES,
         label="Ciudad",
         required=False,
-        empty_label="",
     )
     class Meta:
         model = models.Club
@@ -226,12 +223,12 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             country_field.choices = [('', 'País'), ('España', 'España'), ('Otros países', other_countries)]
             country_field.initial = country_value or 'España'
 
-        # set initial plugin values if instance has stored names
+        # set initial values from stored names
         if self.instance.pk:
             if self.instance.region:
-                self.fields['region'].initial = Region.objects.filter(name=self.instance.region).first()
+                self.fields['region'].initial = self.instance.region
             if self.instance.city:
-                self.fields['city'].initial = City.objects.filter(name=self.instance.city).first()
+                self.fields['city'].initial = self.instance.city
 
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
@@ -268,9 +265,9 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         region = self.cleaned_data.get('region')
         city = self.cleaned_data.get('city')
         if region:
-            instance.region = region.name
+            instance.region = region
         if city:
-            instance.city = city.name
+            instance.city = city
         if commit:
             instance.save()
             self.save_m2m()
