@@ -18,7 +18,7 @@ class LoginForm(UniformFieldsMixin, AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
- 
+
 class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True)
 
@@ -40,7 +40,7 @@ class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
         self.fields['password1'].label = 'Contraseña'
         self.fields['password2'].label = 'Confirmar contraseña'
 
- 
+
 
 class ReseñaForm(UniformFieldsMixin, forms.ModelForm):
     titulo = forms.CharField(
@@ -86,7 +86,7 @@ class ReseñaForm(UniformFieldsMixin, forms.ModelForm):
             'variedad_clases': 'Variedad de clases (boxeo, técnico, físico, etc.)',
             'comentario': '¿Qué te ha gustado o qué mejorarías del club?'
         }
-        
+
         widgets = {
             'instalaciones': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
             'entrenadores': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
@@ -130,7 +130,7 @@ class BookingForm(UniformFieldsMixin, forms.ModelForm):
         model = models.Booking
         fields = []
 
- 
+
 
 class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
@@ -164,6 +164,9 @@ class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
 
 
 class ClubForm(UniformFieldsMixin, forms.ModelForm):
+    region = forms.CharField(label="Comunidad Autónoma", required=False)
+    province = forms.CharField(label="Provincia", required=False)
+    city = forms.CharField(label="Ciudad", required=False)
     class Meta:
         model = models.Club
         exclude = (
@@ -508,4 +511,3 @@ class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
                 }
             )
         }
-
