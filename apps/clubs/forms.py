@@ -6,8 +6,9 @@ from . import models
 from .countries import COUNTRY_CHOICES
 from .regions import SPAIN_REGION_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
+from apps.core.mixins import UniformFieldsMixin
 
-class LoginForm(AuthenticationForm):
+class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
         label="Usuario",
         widget=forms.TextInput(attrs={'class': 'form-control'})
@@ -18,7 +19,7 @@ class LoginForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
  
-class RegistroUsuarioForm(UserCreationForm):
+class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True)
 
     class Meta:
@@ -41,7 +42,7 @@ class RegistroUsuarioForm(UserCreationForm):
 
  
 
-class ReseñaForm(forms.ModelForm):
+class ReseñaForm(UniformFieldsMixin, forms.ModelForm):
     titulo = forms.CharField(
         label='Título',
         max_length=100,
@@ -93,7 +94,7 @@ class ReseñaForm(forms.ModelForm):
             'calidad_precio': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
             'variedad_clases': forms.NumberInput(attrs={'min': 1, 'max': 5, 'class': 'star-input', 'required': 'required'}),
         }
-class ClubPostForm(forms.ModelForm):
+class ClubPostForm(UniformFieldsMixin, forms.ModelForm):
     """Formulario para crear publicaciones de club."""
 
     class Meta:
@@ -112,7 +113,7 @@ class ClubPostForm(forms.ModelForm):
             'image': forms.ClearableFileInput(attrs={'class': 'd-none'})
         }
 
-class ClubPostReplyForm(forms.ModelForm):
+class ClubPostReplyForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.ClubPost
         fields = ['contenido']
@@ -124,14 +125,14 @@ class ClubPostReplyForm(forms.ModelForm):
         }
 
 
-class BookingForm(forms.ModelForm):
+class BookingForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Booking
         fields = []
 
  
 
-class BookingClassForm(forms.ModelForm):
+class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.BookingClass
         fields = ['titulo', 'precio', 'duracion', 'detalle', 'destacado']
@@ -162,7 +163,7 @@ class BookingClassForm(forms.ModelForm):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
 
-class ClubForm(forms.ModelForm):
+class ClubForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Club
         exclude = (
@@ -233,18 +234,18 @@ class ClubForm(forms.ModelForm):
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
 
-class CancelBookingForm(forms.Form):
+class CancelBookingForm(UniformFieldsMixin, forms.Form):
     """Simple form used to confirm cancellation."""
     pass
 
 
-class ClubPhotoForm(forms.ModelForm):
+class ClubPhotoForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.ClubPhoto
         fields = ['image']
 
 
-class HorarioForm(forms.ModelForm):
+class HorarioForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Horario
         fields = ['dia', 'hora_inicio', 'hora_fin', 'estado', 'estado_otro']
@@ -256,7 +257,7 @@ class HorarioForm(forms.ModelForm):
         }
 
 
-class CompetidorForm(forms.ModelForm):
+class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
     victorias = forms.IntegerField(required=False, min_value=0, label='Victorias')
     derrotas = forms.IntegerField(required=False, min_value=0, label='Derrotas')
     empates = forms.IntegerField(required=False, min_value=0, label='Empates')
@@ -360,7 +361,7 @@ class CompetidorForm(forms.ModelForm):
         return super().save(commit)
 
 
-class EntrenadorForm(forms.ModelForm):
+class EntrenadorForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Entrenador
         exclude = ['slug', 'club']
@@ -396,7 +397,7 @@ class EntrenadorForm(forms.ModelForm):
             avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
 
-class MiembroForm(forms.ModelForm):
+class MiembroForm(UniformFieldsMixin, forms.ModelForm):
     edad = forms.IntegerField(required=False, min_value=0, label='Edad')
     nacionalidad = forms.ChoiceField(
         choices=[('', 'País')] + COUNTRY_CHOICES,
@@ -458,7 +459,7 @@ class MiembroForm(forms.ModelForm):
             self.fields['codigo_postal'].label = 'Código postal'
 
 
-class PagoForm(forms.ModelForm):
+class PagoForm(UniformFieldsMixin, forms.ModelForm):
     fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     monto = forms.DecimalField(
         max_digits=8,
@@ -489,7 +490,7 @@ class PagoForm(forms.ModelForm):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
 
-class ClubMessageForm(forms.ModelForm):
+class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.ClubMessage
         fields = ['content']
