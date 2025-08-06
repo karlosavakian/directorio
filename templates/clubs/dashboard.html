@@ -85,7 +85,7 @@
 
         <!-- Ubicación -->
         <div class="row g-3">
-          <div class="form-field col-md-6">
+          <div class="form-field col-md-4">
             {{ form.country }}
             <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
             {% if form.country.errors %}
@@ -94,15 +94,24 @@
             </div>
             {% endif %}
           </div>
-          <div class="form-field col-md-6">
-           {{ form.province }}
-           <label for="{{ form.province.id_for_label }}">{{ form.province.label }}</label>
-           {% if form.province.errors %}
-           <div class="invalid-feedback d-block">
-             {{ form.province.errors.as_text|striptags }}
-           </div>
-           {% endif %}
-         </div>
+          <div class="form-field col-md-4">
+            {{ form.region }}
+            <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
+            {% if form.region.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.region.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
+          <div class="form-field col-md-4">
+            {{ form.province }}
+            <label for="{{ form.province.id_for_label }}">{{ form.province.label }}</label>
+            {% if form.province.errors %}
+            <div class="invalid-feedback d-block">
+              {{ form.province.errors.as_text|striptags }}
+            </div>
+            {% endif %}
+          </div>
         </div>
 
         <div class="row g-3">
