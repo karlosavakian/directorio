@@ -220,9 +220,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
                 field.widget.attrs.setdefault('placeholder', ' ')
             if name == 'slug':
                 field.widget.attrs['data-current'] = getattr(self.instance, 'slug', '')
+                field.widget.attrs['minlength'] = 3
+                field.required = True
 
     def clean_slug(self):
         slug = self.cleaned_data.get('slug', '').lstrip('@')
+        if len(slug) < 3:
+            raise forms.ValidationError('Introduce un nombre con al menos 3 carácteres')
         if models.Club.objects.exclude(pk=self.instance.pk).filter(slug=slug).exists():
             raise forms.ValidationError('Este usuario ya está en uso.')
         return slug
