@@ -203,6 +203,12 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             or self.initial.get('country')
             or getattr(getattr(self, 'instance', None), 'country', None)
         )
+
+        country_field = self.fields.get('country')
+        if country_field:
+            other_countries = [c for c in COUNTRY_CHOICES if c[0] != 'España']
+            country_field.choices = [('', 'País'), ('España', 'España'), ('Otros países', other_countries)]
+            country_field.initial = country_value or 'España'
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             field.widget.attrs['class'] = (css + ' form-control').strip()

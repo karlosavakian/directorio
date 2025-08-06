@@ -7672,7 +7672,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Asturias, Principado de",
+    "label": "Principado de Asturias",
     "code": "03",
     "provinces": [
       {
@@ -8076,13 +8076,13 @@
   },
   {
     "parent_code": "0",
-    "label": "Balears, Illes",
+    "label": "Islas Baleares",
     "code": "04",
     "provinces": [
       {
         "parent_code": "04",
         "code": "07",
-        "label": "Balears, Illes",
+        "label": "Islas Baleares",
         "towns": [
           {
             "parent_code": "07",
@@ -20720,7 +20720,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Castilla - La Mancha",
+    "label": "Castilla-La Mancha",
     "code": "08",
     "provinces": [
       {
@@ -25357,7 +25357,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Cataluńa",
+    "label": "Cataluña",
     "code": "09",
     "provinces": [
       {
@@ -30127,7 +30127,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Comunitat Valenciana",
+    "label": "Comunidad Valenciana",
     "code": "10",
     "provinces": [
       {
@@ -36426,7 +36426,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Madrid, Comunidad de",
+    "label": "Comunidad de Madrid",
     "code": "13",
     "provinces": [
       {
@@ -37335,7 +37335,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Murcia, Región de",
+    "label": "Región de Murcia",
     "code": "14",
     "provinces": [
       {
@@ -37574,7 +37574,7 @@
   },
   {
     "parent_code": "0",
-    "label": "Navarra, Comunidad Foral de",
+    "label": "Comunidad Foral de Navarra",
     "code": "15",
     "provinces": [
       {
@@ -40231,13 +40231,13 @@
   },
   {
     "parent_code": "0",
-    "label": "Rioja, La",
+    "label": "La Rioja",
     "code": "17",
     "provinces": [
       {
         "parent_code": "17",
         "code": "26",
-        "label": "Rioja, La",
+        "label": "La Rioja",
         "towns": [
           {
             "parent_code": "26",
