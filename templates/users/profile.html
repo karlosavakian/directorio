@@ -44,7 +44,8 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="form-field">
+                <div class="form-field slug-field always-active">
+                    <span class="username-prefix">@</span>
                     {{ form.username }}
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>

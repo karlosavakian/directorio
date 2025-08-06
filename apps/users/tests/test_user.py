@@ -33,6 +33,18 @@ class RegistrationTests(TestCase):
             self.client.post(url, data)
             mock_send.assert_called_once_with("email@example.com")
 
+    def test_username_too_short(self):
+        data = {
+            "username": "ab",
+            "email": "short@example.com",
+            "password1": "secretpass123",
+            "password2": "secretpass123",
+        }
+        url = reverse("register")
+        response = self.client.post(url, data)
+        self.assertContains(response, "El nombre de usuario debe tener al menos 3 caracteres")
+        self.assertFalse(User.objects.filter(username="ab").exists())
+
 
 class LoginRememberMeTests(TestCase):
     def setUp(self):

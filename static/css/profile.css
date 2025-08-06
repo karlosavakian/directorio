@@ -65,7 +65,7 @@
 .profile-form .form-field select:focus {
   outline: none;
   border-color: #000;
-  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+  box-shadow: none;
 }
 
 .profile-form .form-field label {
@@ -138,6 +138,13 @@
 .profile-form .slug-field input {
   padding-left:30px !important;
   margin-right: calc(1.5rem + 5px) !important;
+}
+
+.profile-form .slug-field.always-active label {
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  color: #000;
 }
 
 
