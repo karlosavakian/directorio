@@ -4,11 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = field.querySelector(".clear-btn");
     if (!input || !btn) return;
 
+    // Remove clear button for textareas
+    if (input.tagName === "TEXTAREA") {
+      btn.remove();
+      return;
+    }
+
     // Make clear button not tabbable
     btn.setAttribute("tabindex", "-1");
 
     const toggle = () => {
-      if (input.value) {
+      if (document.activeElement === input && input.value) {
         btn.style.display = "block";
       } else {
         btn.style.display = "none";
@@ -27,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
       input.focus();
     });
 
+    input.addEventListener("focus", toggle);
+    input.addEventListener("blur", toggle);
     const eventName = input.tagName === "SELECT" ? "change" : "input";
     input.addEventListener(eventName, toggle);
     toggle();

@@ -33,15 +33,26 @@
   margin-bottom: 1.5rem;
 }
 
-.profile-form .form-field input:not([type="checkbox"]),
-.profile-form .form-field textarea,
-.profile-form .form-field select {
+ .profile-form .form-field input:not([type="checkbox"]),
+ .profile-form .form-field textarea,
+ .profile-form .form-field select {
   width: 100%;
   padding: 0.75rem 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   background: none;
   transition: border-color 0.3s, box-shadow 0.3s;
+ }
+
+.profile-form .form-field select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PScwIDAgMTAgNicgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48cG9seWdvbiBwb2ludHM9JzAgMCA1IDYgMTAgMCcgZmlsbD0nIzY2NicvPjwvc3ZnPg==");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 6px;
+  padding-right: 1.5rem;
 }
 
 .profile-form .form-field input[type="checkbox"] {
@@ -59,10 +70,11 @@
 
 .profile-form .form-field label {
   position: absolute;
-  left: 0.5rem;
+  left: 0;
+  margin-left: 3px;
   top: 50%;
   transform: translateY(-50%);
-  background: #fff;
+  background: none;
   padding: 0 0.25rem;
   color: #666;
   pointer-events: none;
@@ -100,7 +112,7 @@
 
 .profile-form .clear-btn {
   position: absolute;
-  right: 0.75rem;
+  right: 3px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
@@ -108,10 +120,11 @@
   cursor: pointer;
   font-size: 1rem;
   display: none;
+  margin-right: 3px;
 }
 
-.profile-form input:not(:placeholder-shown) + .clear-btn {
-  display: block;
+.profile-form textarea + .clear-btn {
+  display: none !important;
 }
 
 .profile-form .slug-field .username-prefix {
@@ -120,14 +133,16 @@
   top: 50%;
   transform: translateY(-50%);
   color: #666;
+  margin-right: 5px;
 }
 
 .profile-form .slug-field input {
-  padding-left: 1.5rem;
+  padding-left: calc(1.5rem + 5px);
 }
 
 .profile-form .slug-field label {
   left: 1.5rem;
+  margin-left: 3px;
 }
 
 .profile-form .slug-field #slug-status {
@@ -471,7 +486,7 @@ select option[value="España"] {
 
 .search-field .clear-btn {
   position: absolute;
-  right: 2.25rem;
+  right: calc(1.5rem + 3px);
   top: 50%;
   transform: translateY(-50%);
   border: none;
@@ -479,16 +494,13 @@ select option[value="España"] {
   cursor: pointer;
   font-size: 1rem;
   display: none;
-}
-
-.search-field input:not(:placeholder-shown) + .clear-btn {
-  display: block;
+  margin-right: 3px;
 }
 
 /* Search button inside input */
 .search-field .search-btn {
   position: absolute;
-  right: 0.75rem;
+  right: 3px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
