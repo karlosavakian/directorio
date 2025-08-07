@@ -7,6 +7,18 @@ document.addEventListener('DOMContentLoaded', function () {
       separateDialCode: true,
       utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js'
     });
+
+    const itiContainer = input.closest('.iti');
+    const cleanCountryNames = () => {
+      itiContainer
+        ?.querySelectorAll('.iti__country-name')
+        .forEach(el => {
+          el.textContent = el.textContent.replace(/\s*\([^)]*\)/, '');
+        });
+    };
+    cleanCountryNames();
+    input.addEventListener('open:countrydropdown', cleanCountryNames);
+
     const prefijoInput = input.closest('.form-field')?.querySelector('input.prefijo-input');
     if (prefijoInput) {
       if (prefijoInput.value) {

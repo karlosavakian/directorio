@@ -157,6 +157,15 @@
   margin-left: 90px;
 }
 
+.profile-form .phone-field input.phone-input {
+  margin-left: 3px;
+}
+
+.profile-form .phone-field input:not(:placeholder-shown) ~ label,
+.profile-form .phone-field input:focus ~ label {
+  margin-left: 15px;
+}
+
 .profile-form .slug-field .username-prefix {
   position: absolute;
   left: 1.3rem;
