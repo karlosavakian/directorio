@@ -151,11 +151,13 @@
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container {
   padding: 0 2px;
+  margin: 0 2px;
 }
 
 .profile-form .phone-field .iti--separate-dial-code .iti__selected-flag {
   border-right: 1px solid #ddd;
   padding: 0 2px;
+  margin: 0 2px;
 }
 
 .profile-form .phone-field label {
@@ -167,7 +169,7 @@
 }
 
 .profile-form .phone-field input.phone-input {
-  margin-left: 0;
+  margin: 2px;
 }
 
 .profile-form .phone-field input:placeholder-shown ~ label {
