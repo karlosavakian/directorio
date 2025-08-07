@@ -68,6 +68,16 @@
   box-shadow: none;
 }
 
+/* Override browser autofill styles to keep background white */
+.profile-form input:-webkit-autofill,
+.profile-form input:-webkit-autofill:hover,
+.profile-form input:-webkit-autofill:focus,
+.profile-form input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  box-shadow: 0 0 0px 1000px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+
 .profile-form .form-field label {
   position: absolute;
   left: 0;
