@@ -78,7 +78,7 @@
 <!-- Password1 -->
 <div class="form-field with-toggle">
     <button type="button" class="clear-btn bi bi-x"></button>
-    <button type="button" class="toggle-password">👁</button>
+    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
     <input type="password" name="{{ form.password1.name }}" class="form-control" id="{{ form.password1.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
 
     <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
@@ -94,7 +94,7 @@
 <!-- Password2 -->
 <div class="form-field with-toggle">
     <button type="button" class="clear-btn bi bi-x"></button>
-    <button type="button" class="toggle-password">👁</button>
+    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
     <input type="password" name="{{ form.password2.name }}" class="form-control" id="{{ form.password2.id_for_label }}" placeholder=" " required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
     <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
     {% if form.password2.errors %}
