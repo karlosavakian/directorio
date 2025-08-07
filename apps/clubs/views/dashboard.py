@@ -252,7 +252,10 @@ def club_edit(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = ClubForm(request.POST, request.FILES, instance=club)
+        data = request.POST.copy()
+        for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
+            data.setdefault(field, getattr(club, field))
+        form = ClubForm(data, request.FILES, instance=club)
         if form.is_valid():
             form.save()
             messages.success(request, 'Club actualizado correctamente.')

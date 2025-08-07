@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from ..forms import AccountForm
 from ..models import Profile, Follow
 from apps.clubs.models import Booking, Club, Reseña
+from apps.clubs.forms import ClubForm
 from apps.core.forms import PlanForm
 
 from django.contrib.contenttypes.models import ContentType
@@ -18,10 +19,13 @@ from django.core.paginator import Paginator
 @login_required
 def profile(request):
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
+    owned_clubs = request.user.owned_clubs.all()
+    club = owned_clubs.first() if owned_clubs.exists() else None
     if request.method == 'POST':
         if 'plan' in request.POST:
             form = AccountForm(instance=profile_obj, user=request.user)
             plan_form = PlanForm(request.POST)
+            club_form = ClubForm(instance=club) if club else None
             if plan_form.is_valid():
                 profile_obj.plan = plan_form.cleaned_data['plan']
                 profile_obj.save()
@@ -30,9 +34,19 @@ def profile(request):
         else:
             form = AccountForm(request.POST, request.FILES, instance=profile_obj, user=request.user)
             plan_form = PlanForm(initial={'plan': profile_obj.plan})
+            if club:
+                data = request.POST.copy()
+                for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
+                    data.setdefault(field, getattr(club, field))
+                club_form = ClubForm(data, request.FILES, instance=club)
+                club_valid = club_form.is_valid()
+            else:
+                club_form = None
+                club_valid = True
             if form.is_valid():
                 profile_obj = form.save()
-                # Refresh the related user profile to ensure updated avatar is used
+                if club_form and club_valid:
+                    club_form.save()
                 request.user.profile.refresh_from_db()
                 messages.success(request, 'Perfil actualizado exitosamente.')
                 return redirect('profile')
@@ -42,6 +56,7 @@ def profile(request):
     else:
         form = AccountForm(instance=profile_obj, user=request.user)
         plan_form = PlanForm(initial={'plan': profile_obj.plan})
+        club_form = ClubForm(instance=club) if club else None
     bookings = Booking.objects.filter(user=request.user).select_related('evento')
 
     follower_ct = ContentType.objects.get_for_model(request.user)
@@ -72,7 +87,6 @@ def profile(request):
 
     user_reviews = Reseña.objects.filter(usuario=request.user)
 
-    owned_clubs = request.user.owned_clubs.all()
     is_owner = owned_clubs.exists()
     avatar_url = profile_obj.avatar.url if profile_obj.avatar else None
     if is_owner:
@@ -116,6 +130,7 @@ def profile(request):
 
     return render(request, 'users/profile.html', {
         'form': form,
+        'club_form': club_form,
         'plan_form': plan_form,
         'plans': plans,
         'current_plan': profile_obj.plan,

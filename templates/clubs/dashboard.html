@@ -57,20 +57,6 @@
             </div>
             {% endif %}
           </div>
-
-          <div class="form-field col-md-6 slug-field">
-            <span class="username-prefix">@</span>
-            {{ form.slug }}
-            <span id="slug-status"></span>
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.slug.id_for_label }}">{{ form.slug.label }}</label>
-            <div id="slug-error" class="invalid-feedback {% if form.slug.errors %}d-block{% else %}d-none{% endif %}">
-              {% if form.slug.errors %}
-              {{ form.slug.errors.as_text|striptags }}
-              {% endif %}
-            </div>
-          </div>
-
         </div>
 
         <div class="form-field">
@@ -83,117 +69,6 @@
           {% endif %}
         </div>
 
-        <!-- Ubicación -->
-        <div class="row g-3">
-          <div class="form-field col-md-6">
-            {{ form.country }}
-            <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
-            {% if form.country.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.country.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-6">
-            {{ form.region }}
-            <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
-            {% if form.region.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.region.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="row g-3">
-          <div class="form-field col-md-6">
-            {{ form.city }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
-            {% if form.city.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.city.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-6">
-            {{ form.postal_code }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.postal_code.id_for_label }}">{{ form.postal_code.label }}</label>
-            {% if form.postal_code.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.postal_code.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="row g-3">
-          <div class="form-field col-md-6">
-            {{ form.street }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
-            {% if form.street.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.street.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-3">
-            {{ form.number }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.number.id_for_label }}">{{ form.number.label }}</label>
-            {% if form.number.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.number.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-3">
-            {{ form.door }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.door.id_for_label }}">{{ form.door.label }}</label>
-            {% if form.door.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.door.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-
-          <div class="row g-3">
-            <div class="form-field col-md-2">
-              {{ form.prefijo }}
-              <button type="button" class="clear-btn bi bi-x"></button>
-              <label for="{{ form.prefijo.id_for_label }}">{{ form.prefijo.label }}</label>
-              {% if form.prefijo.errors %}
-              <div class="invalid-feedback d-block">
-                {{ form.prefijo.errors.as_text|striptags }}
-              </div>
-              {% endif %}
-            </div>
-            <div class="form-field col-md-4">
-              {{ form.phone }}
-              <button type="button" class="clear-btn bi bi-x"></button>
-              <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
-              {% if form.phone.errors %}
-              <div class="invalid-feedback d-block">
-                {{ form.phone.errors.as_text|striptags }}
-              </div>
-              {% endif %}
-            </div>
-
-            <div class="form-field col-md-6">
-              {{ form.email }}
-              <button type="button" class="clear-btn bi bi-x"></button>
-              <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-              {% if form.email.errors %}
-              <div class="invalid-feedback d-block">
-                {{ form.email.errors.as_text|striptags }}
-              </div>
-              {% endif %}
-            </div>
-          </div>
         <button type="submit" class="btn btn-dark mt-4">Guardar</button>
       </form>
 
@@ -1580,8 +1455,6 @@
 <script src="{% static 'js/profile-tabs.js' %}"></script>
 <script src="{% static 'js/feature-select.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
-<script src="{% static 'js/slug-check.js' %}"></script>
-<script src="{% static 'js/location-select.js' %}"></script>
 <script src="{% static 'js/schedule-form.js' %}"></script>
 <script src="{% static 'js/gallery-manager.js' %}"></script>
 <script src="{% static 'js/delete-confirm.js' %}"></script>
