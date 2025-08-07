@@ -169,11 +169,6 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         label="Comunidad Autónoma",
         required=False,
     )
-    province = forms.ChoiceField(
-        choices=[("", "")],
-        label="Provincia",
-        required=False,
-    )
     city = forms.CharField(
         label="Ciudad",
         required=False,
@@ -231,33 +226,29 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
 
         # Dynamic location fields based on country selection
         if country_value == 'España':
-            from .spain import REGION_PROVINCES, PROVINCE_CITIES, CITY_TO_PROVINCE
+            from .spain import REGION_CITIES
 
             # Convert city to a choice field for Spanish clubs
             self.fields['city'] = forms.ChoiceField(
                 choices=[("", "")], label="Ciudad", required=False
             )
 
-            # Populate provinces if region known
             region_val = self.data.get('region') or self.initial.get('region') or getattr(self.instance, 'region', '')
             if region_val:
-                self.fields['province'].choices += [
-                    (p, p) for p in REGION_PROVINCES.get(region_val, [])
-                ]
-
-            # Determine province from data or existing city and populate cities
-            province_val = self.data.get('province') or CITY_TO_PROVINCE.get(self.instance.city, '')
-            if province_val:
-                self.fields['province'].initial = province_val
                 self.fields['city'].choices += [
-                    (c, c) for c in PROVINCE_CITIES.get(province_val, [])
+                    (c, c) for c in REGION_CITIES.get(region_val, [])
                 ]
-                if self.instance.city:
-                    self.fields['city'].initial = self.instance.city
+            if self.instance.city:
+                self.fields['city'].initial = self.instance.city
         else:
-            # Hide region and province fields for non-Spanish countries
+            # Hide region field for non-Spanish countries and prepare city choices
             self.fields['region'].widget = forms.HiddenInput()
-            self.fields['province'].widget = forms.HiddenInput()
+            self.fields['city'] = forms.ChoiceField(
+                choices=[("", "")], label="Ciudad", required=False
+            )
+            if self.instance.city:
+                self.fields['city'].choices += [(self.instance.city, self.instance.city)]
+                self.fields['city'].initial = self.instance.city
 
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
