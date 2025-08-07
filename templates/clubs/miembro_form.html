@@ -51,17 +51,10 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-field phone-field">
-          <div class="d-flex gap-2">
-            {{ form.prefijo }}
-            {{ form.telefono }}
-          </div>
+          {{ form.prefijo }}
+          {{ form.telefono }}
           <button type="button" class="clear-btn bi bi-x"></button>
           <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>
-          {% if form.prefijo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.prefijo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
           {% if form.telefono.errors %}
           <div class="invalid-feedback d-block">
             {{ form.telefono.errors.as_text|striptags }}

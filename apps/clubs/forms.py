@@ -269,8 +269,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         prefijo_field = self.fields.get('prefijo')
         if prefijo_field:
             self.initial.setdefault('prefijo', '+34')
-            css = prefijo_field.widget.attrs.get('class', '')
-            prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
+            prefijo_field.widget = forms.HiddenInput(attrs={'class': 'prefijo-input'})
 
         telefono_field = self.fields.get('telefono')
         if telefono_field:
@@ -513,8 +512,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         prefijo_field = self.fields.get('prefijo')
         if prefijo_field:
             self.initial.setdefault('prefijo', '+34')
-            css = prefijo_field.widget.attrs.get('class', '')
-            prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
+            prefijo_field.widget = forms.HiddenInput(attrs={'class': 'prefijo-input'})
 
         # Custom placeholders
         if 'peso' in self.fields:

@@ -1,25 +1,33 @@
-// Initialize intl-tel-input for prefix fields
-// Applies to inputs with class 'prefijo-input'
+// Initialize intl-tel-input on phone fields
 document.addEventListener('DOMContentLoaded', function () {
-  const inputs = document.querySelectorAll('input.prefijo-input');
-  inputs.forEach(function (input) {
+  const phoneInputs = document.querySelectorAll('input.phone-input');
+  phoneInputs.forEach(function (input) {
     const iti = window.intlTelInput(input, {
       initialCountry: 'es',
       separateDialCode: true,
       utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@17.0.19/build/js/utils.js'
     });
-    input.setAttribute('readonly', true);
-    input.value = '+' + iti.getSelectedCountryData().dialCode;
-    input.addEventListener('countrychange', function () {
-      input.value = '+' + iti.getSelectedCountryData().dialCode;
-      const phoneInput = input.closest('.form-field').querySelector('input.phone-input');
-      if (phoneInput) {
-        phoneInput.dispatchEvent(new Event('input', { bubbles: true }));
+    const prefijoInput = input.closest('.form-field')?.querySelector('input.prefijo-input');
+    if (prefijoInput) {
+      if (prefijoInput.value) {
+        const code = prefijoInput.value.replace('+', '');
+        const country = window.intlTelInputGlobals
+          .getCountryData()
+          .find(c => c.dialCode === code);
+        if (country) {
+          iti.setCountry(country.iso2);
+        }
       }
+      prefijoInput.value = '+' + iti.getSelectedCountryData().dialCode;
+    }
+    input.addEventListener('countrychange', function () {
+      if (prefijoInput) {
+        prefijoInput.value = '+' + iti.getSelectedCountryData().dialCode;
+      }
+      input.dispatchEvent(new Event('input', { bubbles: true }));
     });
   });
 
-  const phoneInputs = document.querySelectorAll('input.phone-input');
   const format = (input) => {
     const prefijo = input.closest('.form-field')?.querySelector('input.prefijo-input')?.value || '';
     let digits = input.value.replace(/\D/g, '');
@@ -44,3 +52,4 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+

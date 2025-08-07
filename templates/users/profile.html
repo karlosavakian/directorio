@@ -70,17 +70,10 @@
                         <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                     </div>
                     <div class="form-field col-md-6 phone-field">
-                        <div class="d-flex gap-2">
-                            {{ club_form.prefijo }}
-                            {{ club_form.phone }}
-                        </div>
+                        {{ club_form.prefijo }}
+                        {{ club_form.phone }}
                         <button type="button" class="clear-btn bi bi-x"></button>
                         <label for="{{ club_form.phone.id_for_label }}">{{ club_form.phone.label }}</label>
-                        {% if club_form.prefijo.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.prefijo.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
                         {% if club_form.phone.errors %}
                         <div class="invalid-feedback d-block">
                             {{ club_form.phone.errors.as_text|striptags }}
