@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const msg = zone.querySelector('.photo-dropzone-msg');
     const text = msg && msg.querySelector('span');
     if (!input || !msg || !text) return;
+    const loader = document.createElement('div');
+    loader.className = 'dropzone-loader d-none';
+    loader.innerHTML =
+      '<div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div>';
+    zone.appendChild(loader);
     const showCount = () => {
       if (input.files.length) {
         text.textContent = `${input.files.length} archivo(s) seleccionado(s)`;
@@ -12,7 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     zone.addEventListener('click', () => input.click());
-    input.addEventListener('change', showCount);
+    input.addEventListener('change', () => {
+      showCount();
+      if (input.files.length) {
+        loader.classList.remove('d-none');
+      }
+    });
+    const form = zone.closest('form');
+    if (form) {
+      form.addEventListener('submit', () => {
+        if (input.files.length) {
+          loader.classList.remove('d-none');
+        }
+      });
+    }
   });
 
   const uploadForm = document.getElementById('upload-form');
@@ -20,9 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const uploadBtn = document.getElementById('add-photos-btn');
 
   if (uploadForm && uploadInput && uploadBtn) {
+    uploadForm.style.position = 'relative';
+    const loader = document.createElement('div');
+    loader.className = 'dropzone-loader d-none';
+    loader.innerHTML =
+      '<div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div>';
+    uploadForm.appendChild(loader);
     uploadBtn.addEventListener('click', () => uploadInput.click());
     uploadInput.addEventListener('change', () => {
       if (uploadInput.files.length) {
+        loader.classList.remove('d-none');
         uploadForm.submit();
       }
     });

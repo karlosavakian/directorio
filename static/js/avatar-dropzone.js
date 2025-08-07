@@ -22,17 +22,26 @@ function initAvatarDropzones(root = document) {
     removeBtn.className = 'avatar-remove-btn';
     removeBtn.innerHTML = '<i class="bi bi-trash"></i>';
     zone.appendChild(removeBtn);
+    const loader = document.createElement('div');
+    loader.className = 'dropzone-loader d-none';
+    loader.innerHTML =
+      '<div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div>';
+    preview.appendChild(loader);
+
     if (!input || !preview) return;
 
     const showFile = file => {
       if (!file) return;
+      loader.classList.remove('d-none');
       const reader = new FileReader();
       reader.onload = e => {
         preview.style.backgroundImage = `url('${e.target.result}')`;
         preview.classList.add('has-image');
         if (msg) msg.style.visibility = 'hidden';
         updateState();
+        loader.classList.add('d-none');
       };
+      reader.onerror = () => loader.classList.add('d-none');
       reader.readAsDataURL(file);
     };
 
@@ -42,6 +51,7 @@ function initAvatarDropzones(root = document) {
       preview.classList.remove('has-image');
       if (clearCheckbox) clearCheckbox.checked = true;
       if (msg) msg.style.visibility = '';
+      loader.classList.add('d-none');
       updateState();
     };
 
@@ -83,6 +93,14 @@ function initAvatarDropzones(root = document) {
     });
 
     updateState();
+    const form = zone.closest('form');
+    if (form) {
+      form.addEventListener('submit', () => {
+        if (input.files.length) {
+          loader.classList.remove('d-none');
+        }
+      });
+    }
     zone.dataset.initialized = 'true';
   });
 }
