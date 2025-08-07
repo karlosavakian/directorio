@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Format phone fields as xxx.xx.xx.xx
+  // Format phone fields as xxx xx xx xx
   const phoneInputs = document.querySelectorAll('input.telefono-input');
   phoneInputs.forEach(function (input) {
     input.addEventListener('input', function () {
@@ -30,13 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
         formatted = digits.substring(0, 3);
       }
       if (digits.length >= 4) {
-        formatted += '.' + digits.substring(3, 5);
+        formatted += ' ' + digits.substring(3, 5);
       }
       if (digits.length >= 6) {
-        formatted += '.' + digits.substring(5, 7);
+        formatted += ' ' + digits.substring(5, 7);
       }
       if (digits.length >= 8) {
-        formatted += '.' + digits.substring(7, 9);
+        formatted += ' ' + digits.substring(7, 9);
       }
       input.value = formatted;
     });

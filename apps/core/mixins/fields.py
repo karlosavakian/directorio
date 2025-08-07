@@ -6,7 +6,7 @@ class UniformFieldsMixin:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for field in self.fields.values():
+        for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
             if isinstance(field.widget, forms.CheckboxInput):
                 field.widget.attrs['class'] = (css + ' form-check-input').strip()
@@ -25,4 +25,5 @@ class UniformFieldsMixin:
                     forms.TimeInput,
                 ),
             ):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)

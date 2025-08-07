@@ -152,7 +152,7 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
             self.user = user
         placeholder_fields = ['username', 'email', 'new_password1', 'new_password2']
         for f in placeholder_fields:
-            self.fields[f].widget.attrs.setdefault('placeholder', ' ')
+            self.fields[f].widget.attrs.setdefault('placeholder', self.fields[f].label)
 
          # hide avatar input (preview handled via JS)
         avatar_widget = self.fields['avatar'].widget

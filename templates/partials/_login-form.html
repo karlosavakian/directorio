@@ -10,7 +10,7 @@
                            value="{{ form.username.value|default_if_none:'' }}"
                            class="form-control"
                            id="{{ form.username.id_for_label }}"
-                           placeholder=" "
+                           placeholder="{{ form.username.label }}"
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
@@ -29,7 +29,7 @@
                            name="{{ form.password.name }}"
                            class="form-control"
                            id="{{ form.password.id_for_label }}"
-                           placeholder=" "
+                           placeholder="{{ form.password.label }}"
                            required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
 
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>

@@ -102,6 +102,14 @@ def get_list(querydict, key):
 
 
 @register.filter
+def phone_spaces(value):
+    """Replace dots with spaces in phone numbers."""
+    if not value:
+        return ""
+    return str(value).replace('.', ' ')
+
+
+@register.filter
 def message_timestamp(value):
     """Return a friendly timestamp for chat messages."""
     if not value:

@@ -160,7 +160,8 @@ class BookingClassForm(UniformFieldsMixin, forms.ModelForm):
                 forms.DateInput,
                 forms.TimeInput,
             )):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
 
 
 class ClubForm(UniformFieldsMixin, forms.ModelForm):
@@ -259,7 +260,8 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
                  forms.PasswordInput, forms.Textarea,
                  forms.DateInput, forms.TimeInput, forms.Select),
             ):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
             if name == 'slug':
                 field.widget.attrs['data-current'] = getattr(self.instance, 'slug', '')
                 field.widget.attrs['minlength'] = 3
@@ -275,7 +277,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if phone_field:
             css = phone_field.widget.attrs.get('class', '')
             phone_field.widget.attrs['class'] = (css + ' telefono-input').strip()
-            phone_field.widget.attrs['pattern'] = '\\d{3}\\.\\d{2}\\.\\d{2}\\.\\d{2}'
+            phone_field.widget.attrs['pattern'] = '\\d{3}\\s\\d{2}\\s\\d{2}\\s\\d{2}'
             phone_field.widget.attrs['maxlength'] = '12'
 
     def clean_slug(self):
@@ -381,7 +383,8 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
                 forms.DateInput,
                 forms.TimeInput,
             )):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
 
         palmares_field = self.fields.get('palmares')
         if palmares_field:
@@ -455,7 +458,8 @@ class EntrenadorForm(UniformFieldsMixin, forms.ModelForm):
                 forms.DateInput,
                 forms.TimeInput,
             )):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
 
         # Custom labels with units
         if 'peso' in self.fields:
@@ -495,7 +499,8 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
                 forms.DateInput,
                 forms.TimeInput,
             )):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
 
         prefijo_field = self.fields.get('prefijo')
         if prefijo_field:
@@ -507,7 +512,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         if telefono_field:
             css = telefono_field.widget.attrs.get('class', '')
             telefono_field.widget.attrs['class'] = (css + ' telefono-input').strip()
-            telefono_field.widget.attrs['pattern'] = '\\d{3}\\.\\d{2}\\.\\d{2}\\.\\d{2}'
+            telefono_field.widget.attrs['pattern'] = '\\d{3}\\s\\d{2}\\s\\d{2}\\s\\d{2}'
             telefono_field.widget.attrs['maxlength'] = '12'
 
         # Custom placeholders
@@ -571,7 +576,8 @@ class PagoForm(UniformFieldsMixin, forms.ModelForm):
                 forms.DateInput,
                 forms.TimeInput,
             )):
-                field.widget.attrs.setdefault('placeholder', ' ')
+                if name != 'prefijo':
+                    field.widget.attrs.setdefault('placeholder', field.label)
 
 
 class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
