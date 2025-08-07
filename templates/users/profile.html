@@ -22,9 +22,9 @@
             <h4>Mi Cuenta</h4>
             <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                 {% csrf_token %}
-               
+
                 <div class="row g-3">
-                    
+
                 {% if is_owner %}
                     <div class="form-field col-md-12 slug-field always-active">
                     <span class="username-prefix">@</span>
@@ -39,15 +39,15 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="form-field slug-field always-active">  
+                <div class="form-field slug-field always-active">
                     {{ form.username }}
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
-                
+
                 {% endif %}
                 </div>
-                
+
                 <div class="row g-3">
                     <div class="form-field col-md-6">
                     {{ form.new_password1 }}
@@ -61,7 +61,7 @@
                     </div>
 
                 </div>
-               
+
 
                 <div class="row g-3">
                     <div class="form-field col-md-6">
@@ -81,7 +81,7 @@
                         {% endif %}
                     </div>
 
-                </div> 
+                </div>
 
                 {% if is_owner and club_form %}
 
@@ -114,7 +114,7 @@
                         </div>
                         {% endif %}
                     </div>
-                </div> 
+                </div>
                 <div class="row g-3">
                     <div class="form-field col-md-6">
                         {{ club_form.street }}
@@ -157,7 +157,7 @@
                         {% endif %}
                     </div>
                 </div>
- 
+
                 {% endif %}
 
                 <div class="form-field checkbox-field">
@@ -166,7 +166,7 @@
                 </div>
 
                 <div class="d-flex gap-3 mb-4">
-                    
+
                     <button type="submit" class="btn btn-dark">Guardar cambios</button>
                     {% if not is_owner %}
                     <button type="submit" class="btn btn-danger" form="delete-account-form">Eliminar cuenta</button>

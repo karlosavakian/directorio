@@ -150,14 +150,13 @@
 }
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container {
-  padding: 0 2px;
-  margin: 0 2px;
+  padding: 0 10px;
 }
 
 .profile-form .phone-field .iti--separate-dial-code .iti__selected-flag {
   border-right: 1px solid #ddd;
-  padding: 0 2px;
-  margin: 0 2px;
+  padding: 0 15px 0 15px;
+  right:10px;
 }
 
 .profile-form .phone-field label {
@@ -169,7 +168,7 @@
 }
 
 .profile-form .phone-field input.phone-input {
-  margin: 2px;
+  margin:2px;
 }
 
 .profile-form .phone-field input:placeholder-shown ~ label {
@@ -194,7 +193,7 @@
   margin-right: calc(1.5rem + 5px) !important;
 }
 
- 
+
 
 
 .profile-form .slug-field #slug-status {
@@ -302,13 +301,13 @@
 }
 
 /* Square variant for club logos */
-.avatar-dropzone.avatar-dropzone-square { 
+.avatar-dropzone.avatar-dropzone-square {
       width: 200px;
   height: 200px;
 }
 
 .avatar-dropzone.avatar-dropzone-square .avatar-preview {
-  border-radius: 0;   
+  border-radius: 0;
 }
 
 /* Gallery styles */
