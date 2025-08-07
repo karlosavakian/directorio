@@ -20,28 +20,13 @@
     <div class="profile-content  ">
         <div id="tab-account" class="profile-section active col-6">
             <h4>Mi Cuenta</h4>
-            <form method="post" enctype="multipart/form-data" class="profile-form">
+            <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                 {% csrf_token %}
-                <div class="mb-5 text-center">
-                    {% if not is_owner %}
-                    <div class="avatar-dropzone mx-auto">
-                        {{ form.avatar }}
-                        <div class="avatar-preview{% if avatar_url %} has-image{% endif %}"{% if avatar_url %} style="background-image:url('{{ avatar_url }}')"{% endif %}>
-                            <div class="avatar-dropzone-msg">
-                                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                                <span>Sube tu avatar</span>
-                            </div>
-                        </div>
-                    </div>
-                    {% if form.avatar.errors %}
-                    <div class="invalid-feedback d-block">
-                        {{ form.avatar.errors.as_text|striptags }}
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                </div>
+               
+                <div class="row g-3">
+                    
                 {% if is_owner %}
-                <div class="form-field slug-field always-active">
+                    <div class="form-field col-md-12 slug-field always-active">
                     <span class="username-prefix">@</span>
                     {{ club_form.slug }}
                     <span id="slug-status"></span>
@@ -54,114 +39,37 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="form-field slug-field always-active">
-                    <span class="username-prefix">@</span>
+                <div class="form-field slug-field always-active"> 
+                    <span class="username-prefix">/</span>
                     {{ form.username }}
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
                 {% endif %}
-                <div class="form-field">
-                    {{ form.email }}
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                 </div>
-                <div class="form-field">
+                
+                <div class="row g-3">
+                    <div class="form-field col-md-6">
                     {{ form.new_password1 }}
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
-                </div>
-                <div class="form-field">
-                    {{ form.new_password2 }}
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
-                </div>
-                <div class="form-field checkbox-field">
-                    {{ form.notifications }}
-                    <label for="{{ form.notifications.id_for_label }}">{{ form.notifications.label }}</label>
-                </div>
+                    </div>
+                    <div class="form-field col-md-6">
+                        {{ form.new_password2 }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
+                    </div>
 
-                {% if is_owner and club_form %}
+                </div>
+               
 
                 <div class="row g-3">
                     <div class="form-field col-md-6">
-                        {{ club_form.country }}
-                        <label for="{{ club_form.country.id_for_label }}">{{ club_form.country.label }}</label>
-                        {% if club_form.country.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.country.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-6">
-                        {{ club_form.region }}
-                        <label for="{{ club_form.region.id_for_label }}">{{ club_form.region.label }}</label>
-                        {% if club_form.region.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.region.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="form-field col-md-6">
-                        {{ club_form.city }}
+                        {{ form.email }}
                         <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.city.id_for_label }}">{{ club_form.city.label }}</label>
-                        {% if club_form.city.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.city.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
                     </div>
-                    <div class="form-field col-md-6">
-                        {{ club_form.postal_code }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.postal_code.id_for_label }}">{{ club_form.postal_code.label }}</label>
-                        {% if club_form.postal_code.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.postal_code.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="form-field col-md-6">
-                        {{ club_form.street }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.street.id_for_label }}">{{ club_form.street.label }}</label>
-                        {% if club_form.street.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.street.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-3">
-                        {{ club_form.number }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.number.id_for_label }}">{{ club_form.number.label }}</label>
-                        {% if club_form.number.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.number.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-3">
-                        {{ club_form.door }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.door.id_for_label }}">{{ club_form.door.label }}</label>
-                        {% if club_form.door.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.door.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="form-field col-md-2">
+                      <div class="form-field col-md-2">
                         {{ club_form.prefijo }}
                         <button type="button" class="clear-btn bi bi-x"></button>
                         <label for="{{ club_form.prefijo.id_for_label }}">{{ club_form.prefijo.label }}</label>
@@ -181,20 +89,93 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="form-field col-md-6">
-                        {{ club_form.email }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.email.id_for_label }}">{{ club_form.email.label }}</label>
-                        {% if club_form.email.errors %}
+
+                </div> 
+
+                {% if is_owner and club_form %}
+
+                <div class="row g-3">
+                    <div class="form-field col-md-4">
+                        {{ club_form.country }}
+                        <label for="{{ club_form.country.id_for_label }}">{{ club_form.country.label }}</label>
+                        {% if club_form.country.errors %}
                         <div class="invalid-feedback d-block">
-                            {{ club_form.email.errors.as_text|striptags }}
+                            {{ club_form.country.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-md-4">
+                        {{ club_form.region }}
+                        <label for="{{ club_form.region.id_for_label }}">{{ club_form.region.label }}</label>
+                        {% if club_form.region.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.region.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                     <div class="form-field col-md-4">
+                        {{ club_form.city }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ club_form.city.id_for_label }}">{{ club_form.city.label }}</label>
+                        {% if club_form.city.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.city.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div> 
+                <div class="row g-3">
+                    <div class="form-field col-md-6">
+                        {{ club_form.street }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ club_form.street.id_for_label }}">{{ club_form.street.label }}</label>
+                        {% if club_form.street.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.street.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-md-2">
+                        {{ club_form.number }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ club_form.number.id_for_label }}">{{ club_form.number.label }}</label>
+                        {% if club_form.number.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.number.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-md-2">
+                        {{ club_form.door }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ club_form.door.id_for_label }}">{{ club_form.door.label }}</label>
+                        {% if club_form.door.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.door.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-field col-md-2">
+                        {{ club_form.postal_code }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <label for="{{ club_form.postal_code.id_for_label }}">{{ club_form.postal_code.label }}</label>
+                        {% if club_form.postal_code.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ club_form.postal_code.errors.as_text|striptags }}
                         </div>
                         {% endif %}
                     </div>
                 </div>
+ 
                 {% endif %}
 
+                <div class="form-field checkbox-field">
+                    {{ form.notifications }}
+                    <label for="{{ form.notifications.id_for_label }}">{{ form.notifications.label }}</label>
+                </div>
+
                 <div class="d-flex gap-3 mb-4">
+                    
                     <button type="submit" class="btn btn-dark">Guardar cambios</button>
                     {% if not is_owner %}
                     <button type="submit" class="btn btn-danger" form="delete-account-form">Eliminar cuenta</button>
