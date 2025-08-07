@@ -26,7 +26,7 @@
                 <div class="row g-3">
 
                 {% if is_owner %}
-                    <div class="form-field col-md-12 slug-field always-active">
+                    <div class="form-field col-md-6 slug-field always-active">
                     <span class="username-prefix">@</span>
                     {{ club_form.slug }}
                     <span id="slug-status"></span>
@@ -84,8 +84,8 @@
                 </div>
 
                 {% if is_owner and club_form %}
-
-                <div class="row g-3">
+               <h4>Dirección del club</h4>   
+                <div class="mt-2 row g-3">
                     <div class="form-field col-md-4">
                         {{ club_form.country }}
                         <label for="{{ club_form.country.id_for_label }}">{{ club_form.country.label }}</label>

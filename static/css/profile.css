@@ -26,11 +26,11 @@
 .profile-section.active {
   display: block;
   opacity: 1;
-}
-/* Form styles inspired by Zellwk CodePen */
+} 
 .profile-form .form-field {
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.3rem;
+  
 }
 
  .profile-form .form-field input:not([type="checkbox"]),
@@ -79,6 +79,7 @@
 }
 
 .profile-form .form-field label {
+  font-size: 12px;
   position: absolute;
   left: 0;
   margin-left:15px;
