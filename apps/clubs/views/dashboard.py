@@ -116,7 +116,7 @@ def dashboard(request):
 
     # --- Matchmaker ---
     # Search competitors across all registered clubs
-    match_qs = Miembro.objects.select_related('club').all()
+    match_qs = Competidor.objects.select_related('club').all()
     club_cities = set(Club.objects.values_list('city', flat=True).distinct())
     cities = sorted(club_cities | {city for _, city in CITY_CHOICES})
 
@@ -126,32 +126,21 @@ def dashboard(request):
 
     mm_peso_min = request.GET.get('mm_peso_min')
     if mm_peso_min:
-        match_qs = match_qs.filter(peso__gte=mm_peso_min)
+        match_qs = match_qs.filter(peso_kg__gte=mm_peso_min)
     mm_peso_max = request.GET.get('mm_peso_max')
     if mm_peso_max:
-        match_qs = match_qs.filter(peso__lte=mm_peso_max)
+        match_qs = match_qs.filter(peso_kg__lte=mm_peso_max)
 
     mm_ciudad = request.GET.get('mm_ciudad')
     if mm_ciudad:
         match_qs = match_qs.filter(club__city=mm_ciudad)
 
-    current_year = timezone.now().year
-    match_qs = match_qs.annotate(
-        birth_year=ExtractYear('fecha_nacimiento')
-    )
-
     mm_edad_min = request.GET.get('mm_edad_min')
     if mm_edad_min:
-        year_max = current_year - int(mm_edad_min)
-        match_qs = match_qs.filter(birth_year__lte=year_max)
+        match_qs = match_qs.filter(edad__gte=mm_edad_min)
     mm_edad_max = request.GET.get('mm_edad_max')
     if mm_edad_max:
-        year_min = current_year - int(mm_edad_max)
-        match_qs = match_qs.filter(birth_year__gte=year_min)
-
-    match_qs = match_qs.annotate(
-        edad=current_year - ExtractYear('fecha_nacimiento')
-    )
+        match_qs = match_qs.filter(edad__lte=mm_edad_max)
 
     # Filtros para los miembros
     estado = request.GET.get('estado')
