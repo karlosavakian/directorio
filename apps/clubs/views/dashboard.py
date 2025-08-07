@@ -36,6 +36,7 @@ from ..forms import (
     BookingClassForm,
 )
 from ..permissions import has_club_permission
+from ..spain import CITY_CHOICES
 
 
 @login_required
@@ -116,7 +117,8 @@ def dashboard(request):
     # --- Matchmaker ---
     # Search competitors across all registered clubs
     match_qs = Miembro.objects.select_related('club').all()
-    cities = Club.objects.values_list('city', flat=True).distinct()
+    club_cities = set(Club.objects.values_list('city', flat=True).distinct())
+    cities = sorted(club_cities | {city for _, city in CITY_CHOICES})
 
     mm_sexo = request.GET.get('mm_sexo')
     if mm_sexo in ['M', 'F']:

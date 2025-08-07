@@ -284,6 +284,12 @@ class DashboardMatchmakerTests(TestCase):
         self.assertContains(res, 'Bob')
         self.assertNotContains(res, 'Alice')
 
+    def test_matchmaker_city_dropdown_lists_all_cities(self):
+        """City options should include cities beyond those with clubs."""
+        url = reverse('club_dashboard')
+        res = self.client.get(url)
+        self.assertIn('Madrid', res.context['cities'])
+
 
 class MessageInboxTests(TestCase):
     def setUp(self):
