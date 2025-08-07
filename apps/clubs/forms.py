@@ -3,10 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reseña
 from . import models
-from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
 from .spain import REGION_CHOICES
+from .countries import COUNTRY_CHOICES
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -213,8 +213,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
 
         country_field = self.fields.get('country')
         if country_field:
-            other_countries = [c for c in COUNTRY_CHOICES if c[0] != 'España']
-            country_field.choices = [('', 'País'), ('España', 'España'), ('Otros países', other_countries)]
+            country_field.choices = [('', 'País'), ('España', 'España')]
             country_field.initial = country_value or 'España'
 
         # Set initial values from stored names
@@ -506,8 +505,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
         nacionalidad_field = self.fields.get('nacionalidad')
         if nacionalidad_field:
-            other = [c for c in COUNTRY_CHOICES if c[0] != 'España']
-            nacionalidad_field.choices = [('', 'País'), ('España', 'España')] + other
+            nacionalidad_field.choices = [('', 'País'), ('España', 'España')]
             nacionalidad_field.label = 'País'
             nacionalidad_field.widget.attrs['placeholder'] = 'País'
             nacionalidad_field.initial = 'España'
