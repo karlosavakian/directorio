@@ -265,6 +265,12 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
                 field.widget.attrs['minlength'] = 3
                 field.required = True
 
+        prefijo_field = self.fields.get('prefijo')
+        if prefijo_field:
+            self.initial.setdefault('prefijo', '+34')
+            css = prefijo_field.widget.attrs.get('class', '')
+            prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
+
     def clean_slug(self):
         slug = self.cleaned_data.get('slug', '').lstrip('@')
         if len(slug) < 3:
@@ -483,6 +489,12 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
                 forms.TimeInput,
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
+
+        prefijo_field = self.fields.get('prefijo')
+        if prefijo_field:
+            self.initial.setdefault('prefijo', '+34')
+            css = prefijo_field.widget.attrs.get('class', '')
+            prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
 
         # Custom placeholders
         if 'peso' in self.fields:
