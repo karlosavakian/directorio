@@ -158,8 +158,27 @@
           <!-- Features -->
           <div class="form-field">
             <h5 class="d-block mb-2">{{ form.features.label }}</h5>
-            <p class="text-muted mb-3">
-              Selecciona las instalaciones y equipamiento disponible en tu club.
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="text-muted mb-0">
+                Selecciona las instalaciones y equipamiento disponible en tu club.
+              </p>
+              <div class="d-flex align-items-center gap-3">
+                <button
+                  type="button"
+                  id="features-select-all"
+                  class="bg-transparent border-0 fw-medium text-black"
+                >
+                  Seleccionar todas
+                </button>
+                <button
+                  type="button"
+                  id="features-deselect-all"
+                  class="bg-transparent border-0 fw-medium text-secondary"
+                >
+                  Desmarcar todas
+                </button>
+              </div>
+            </div>
             <div class="d-flex flex-wrap gap-3" id="features-container">
               {% for feature in form.features.field.queryset %}
               <div
