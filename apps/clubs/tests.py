@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User, Group
 from PIL import Image
 
-from .models import Club, ClubPhoto, ClubPost, Miembro, Pago
+from .models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor
 from datetime import date
 
 
@@ -266,15 +266,13 @@ class DashboardMatchmakerTests(TestCase):
         self.club2 = Club.objects.create(
             name='Club Two', city='City2', address='A2', phone='2', email='2@e.com', owner=self.owner2
         )
-        self.member1 = Miembro.objects.create(
+        self.comp1 = Competidor.objects.create(
             club=self.club1,
-            nombre='Alice', apellidos='A', sexo='F', peso=55,
-            fecha_nacimiento=date(2000, 1, 1)
+            nombre='Alice', apellidos='A', sexo='F', peso_kg=55, edad=24
         )
-        self.member2 = Miembro.objects.create(
+        self.comp2 = Competidor.objects.create(
             club=self.club2,
-            nombre='Bob', apellidos='B', sexo='M', peso=70,
-            fecha_nacimiento=date(1995, 1, 1)
+            nombre='Bob', apellidos='B', sexo='M', peso_kg=70, edad=29
         )
         self.client.login(username='owner1', password='pass')
 
