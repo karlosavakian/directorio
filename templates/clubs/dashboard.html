@@ -15,7 +15,7 @@
   <div class="profile-content">
     <div id="tab-profile" class="profile-section active">
       <h4>Administrar Perfil</h4>
-      <div class="row">
+      <div class="row g-3 mt-3">
         <div class="col-lg-6">
       <form
         method="post"
@@ -24,8 +24,11 @@
         class="profile-form "
       >
         {% csrf_token %}
-        <div class="mb-5 text-center">
-          <div class="avatar-dropzone avatar-dropzone-square mx-auto">
+        <h5 class="mb-3  ">Logotipo</h5>
+        <div class="mb-5 text-center bg-light p-3">
+           
+          <div class="avatar-dropzone avatar-dropzone-square mx-auto p-3">
+      
             {{ form.logo }}
             <div
               class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
@@ -33,9 +36,9 @@
               style="background-image:url('{{ club.logo|safe_url }}')"
               {% endif %}
             >
-              <div class="avatar-dropzone-msg">
+              <div class="avatar-dropzone-msg p-3">
                 <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                <span>Sube tu logo</span>
+                <span>Arrastra una imagen o haz click </span>
               </div>
             </div>
           </div>
@@ -47,7 +50,7 @@
         </div>
 
         <div class="row g-3">
-          <div class="form-field col-md-6">
+          <div class="form-field col-md-12 ">
             {{ form.name }}
             <button type="button" class="clear-btn bi bi-x"></button>
             <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -57,9 +60,7 @@
             </div>
             {% endif %}
           </div>
-        </div>
-
-        <div class="form-field">
+           <div class="form-field">
           {{ form.about }}
           <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
           {% if form.about.errors %}
@@ -68,21 +69,20 @@
           </div>
           {% endif %}
         </div>
+        </div>
+
+       
 
         <button type="submit" class="btn btn-dark mt-4">Guardar</button>
-      </form>
-
-
-
-
-
-
+      </form> 
 
         </div>
-        <div class="col-lg-6 d-flex justify-content-end">
+        <div class="col-lg-6 d-flex justify-content-end ps-5">
           <!-- Features -->
-          <div class="form-field mt-4">
+          <div class="form-field">
             <h5 class="d-block mb-2">{{ form.features.label }}</h5>
+            <p class="text-muted mb-3">
+              Selecciona las instalaciones y equipamiento disponible en tu club.
             <div class="d-flex flex-wrap gap-3" id="features-container">
               {% for feature in form.features.field.queryset %}
               <div

@@ -140,12 +140,7 @@
   margin-right: calc(1.5rem + 5px) !important;
 }
 
-.profile-form .slug-field.always-active label {
-  top: 0;
-  transform: translateY(-50%);
-  font-size: 0.7rem;
-  color: #000;
-}
+ 
 
 
 .profile-form .slug-field #slug-status {
@@ -253,13 +248,13 @@
 }
 
 /* Square variant for club logos */
-.avatar-dropzone.avatar-dropzone-square {
-  width: 200px;
+.avatar-dropzone.avatar-dropzone-square { 
+      width: 200px;
   height: 200px;
 }
 
 .avatar-dropzone.avatar-dropzone-square .avatar-preview {
-  border-radius: 0;
+  border-radius: 0;   
 }
 
 /* Gallery styles */
