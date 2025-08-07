@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
 from .spain import REGION_CHOICES
 from .countries import COUNTRY_CHOICES
+import re
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -271,6 +272,23 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             css = prefijo_field.widget.attrs.get('class', '')
             prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
 
+        telefono_field = self.fields.get('telefono')
+        if telefono_field:
+            css = telefono_field.widget.attrs.get('class', '')
+            telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
+            telefono_field.widget.attrs['placeholder'] = 'Teléfono'
+
+        phone_field = self.fields.get('phone')
+        if phone_field:
+            css = phone_field.widget.attrs.get('class', '')
+            phone_field.widget.attrs['class'] = (css + ' phone-input').strip()
+            phone_field.widget.attrs['placeholder'] = 'Teléfono'
+
+        logo_widget = self.fields.get('logo')
+        if logo_widget:
+            css = logo_widget.widget.attrs.get('class', '')
+            logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
     def clean_slug(self):
         slug = self.cleaned_data.get('slug', '').lstrip('@')
         if len(slug) < 3:
@@ -279,11 +297,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             raise forms.ValidationError('Este usuario ya está en uso.')
         return slug
 
-        # hide logo input to use dropzone preview
-        logo_widget = self.fields.get('logo')
-        if logo_widget:
-            css = logo_widget.widget.attrs.get('class', '')
-            logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone', '')
+        prefijo = self.cleaned_data.get('prefijo', '')
+        digits = re.sub(r'\D', '', phone)
+        if prefijo == '+34' and len(digits) > 9:
+            raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+        return digits
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -527,6 +547,14 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             self.fields['localidad'].label = 'Localidad'
         if 'codigo_postal' in self.fields:
             self.fields['codigo_postal'].label = 'Código postal'
+
+    def clean_telefono(self):
+        telefono = self.cleaned_data.get('telefono', '')
+        prefijo = self.cleaned_data.get('prefijo', '')
+        digits = re.sub(r'\D', '', telefono)
+        if prefijo == '+34' and len(digits) > 9:
+            raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+        return digits
 
 
 class PagoForm(UniformFieldsMixin, forms.ModelForm):

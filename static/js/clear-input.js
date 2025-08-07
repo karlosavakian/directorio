@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".form-field").forEach((field) => {
-    const input = field.querySelector("input, textarea, select");
+    const input = field.querySelector("input:not(.prefijo-input), textarea, select");
     const btn = field.querySelector(".clear-btn");
     if (!input || !btn) return;
 
