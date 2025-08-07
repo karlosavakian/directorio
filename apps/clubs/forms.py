@@ -271,6 +271,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             css = prefijo_field.widget.attrs.get('class', '')
             prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
 
+        phone_field = self.fields.get('phone')
+        if phone_field:
+            css = phone_field.widget.attrs.get('class', '')
+            phone_field.widget.attrs['class'] = (css + ' telefono-input').strip()
+            phone_field.widget.attrs['pattern'] = '\\d{3}\\.\\d{2}\\.\\d{2}\\.\\d{2}'
+            phone_field.widget.attrs['maxlength'] = '12'
+
     def clean_slug(self):
         slug = self.cleaned_data.get('slug', '').lstrip('@')
         if len(slug) < 3:
@@ -495,6 +502,13 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             self.initial.setdefault('prefijo', '+34')
             css = prefijo_field.widget.attrs.get('class', '')
             prefijo_field.widget.attrs['class'] = (css + ' prefijo-input').strip()
+
+        telefono_field = self.fields.get('telefono')
+        if telefono_field:
+            css = telefono_field.widget.attrs.get('class', '')
+            telefono_field.widget.attrs['class'] = (css + ' telefono-input').strip()
+            telefono_field.widget.attrs['pattern'] = '\\d{3}\\.\\d{2}\\.\\d{2}\\.\\d{2}'
+            telefono_field.widget.attrs['maxlength'] = '12'
 
         # Custom placeholders
         if 'peso' in self.fields:
