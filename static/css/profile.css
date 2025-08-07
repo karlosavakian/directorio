@@ -71,14 +71,14 @@
 .profile-form .form-field label {
   position: absolute;
   left: 0;
-  margin-left:15px;
-  top: 50%;
+  margin-left: 15px;
+  top: 0;
   transform: translateY(-50%);
   background: white;
   padding: 0 0.25rem;
-  color: #666;
+  color: #000;
   pointer-events: none;
-  transition: transform 0.2s, font-size 0.2s, color 0.2s;
+  font-size: 0.7rem;
 }
 
 .profile-form .checkbox-field label {
@@ -98,17 +98,7 @@
   padding: 0;
 }
 
-.profile-form .form-field input:not(:placeholder-shown) ~ label,
-.profile-form .form-field input:focus ~ label,
-.profile-form .form-field textarea:not(:placeholder-shown) ~ label,
-.profile-form .form-field textarea:focus ~ label,
-.profile-form .form-field select.has-value ~ label,
-.profile-form .form-field select:focus ~ label {
-  top: 0;
-  transform: translateY(-50%);
-  font-size: 0.7rem;
-  color: #000;
-}
+
 
 .profile-form .clear-btn {
   position: absolute;
@@ -185,6 +175,11 @@
 }
 #id_notas{
   height:50px;
+}
+
+/* Remove background color from phone prefix flag */
+.iti__selected-flag {
+  background-color: transparent !important;
 }
 
 /* Avatar dropzone styles */
