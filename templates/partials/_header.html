@@ -33,24 +33,33 @@
         {% endif %}
 
         <ul class="navbar-nav align-items-center ms-auto">
-                {% if request.resolver_match.url_name == 'club_dashboard' %}
+                {% if user.is_authenticated and user.owned_clubs.first %}
+                {% with owner_club=user.owned_clubs.first %}
                 <li class="nav-item d-flex align-items-center ms-2">
                     <a
-                        href="{% url 'club_profile' club.slug %}"
+                        href="{% url 'club_profile' owner_club.slug %}"
                         class="fw-bold"
                     >
-                        <span class="me-1 text-dark">{{ club.name }}</span>
+                        <span class="me-1 text-dark">{{ owner_club.name }}</span>
                         <i class="bi bi-eye-fill"></i>
                     </a>
                 </li>
-                {% endif %} {% if user.is_authenticated %}
+                {% endwith %}
+                {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <div
                         class="custom-dropdown p-0 small ms-4"
                         id="user-dropdown"
                     >
                         <div class="selected d-flex align-items-center">
-                            {% if user.profile.avatar %}
+                            {% if user.owned_clubs.first and user.owned_clubs.first.logo %}
+                            <img
+                                src="{{ user.owned_clubs.first.logo.url }}"
+                                alt="{{ user.username }}"
+                                class="nav-avatar-img"
+                            />
+                            {% elif user.profile.avatar %}
                             <img
                                 src="{{ user.profile.avatar.url }}"
                                 alt="{{ user.username }}"
