@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
@@ -35,6 +36,18 @@ from ..forms import (
     BookingClassForm,
 )
 from ..permissions import has_club_permission
+
+
+@login_required
+def cities_by_country(request):
+    """Return a JSON list of city names for the given country."""
+    country_name = request.GET.get('country')
+    if not country_name:
+        return JsonResponse([], safe=False)
+    from cities_light.models import City
+
+    qs = City.objects.filter(country__name=country_name).order_by('name').values_list('name', flat=True)
+    return JsonResponse(list(qs), safe=False)
 
 
 @login_required

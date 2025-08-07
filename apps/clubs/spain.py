@@ -229,6 +229,12 @@ PROVINCE_CITIES = {
     "Melilla": ["Melilla"],
 }
 
+# Mapping of regions directly to their major cities, bypassing provinces
+REGION_CITIES = {
+    region: [city for province in provinces for city in PROVINCE_CITIES.get(province, [])]
+    for region, provinces in REGION_PROVINCES.items()
+}
+
 # Reverse lookup from city to province, useful when an existing city
 # is stored but its province needs to be inferred.
 CITY_TO_PROVINCE = {
