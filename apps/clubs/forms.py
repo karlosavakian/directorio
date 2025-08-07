@@ -6,7 +6,7 @@ from . import models
 from .countries import COUNTRY_CHOICES
 from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
-from .spain import REGION_CHOICES, PROVINCE_CHOICES, CITY_CHOICES
+from .spain import REGION_CHOICES
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -170,12 +170,11 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         required=False,
     )
     province = forms.ChoiceField(
-        choices=[("", "")] + PROVINCE_CHOICES,
+        choices=[("", "")],
         label="Provincia",
         required=False,
     )
-    city = forms.ChoiceField(
-        choices=[("", "")] + CITY_CHOICES,
+    city = forms.CharField(
         label="Ciudad",
         required=False,
     )
@@ -223,12 +222,42 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             country_field.choices = [('', 'País'), ('España', 'España'), ('Otros países', other_countries)]
             country_field.initial = country_value or 'España'
 
-        # set initial values from stored names
+        # Set initial values from stored names
         if self.instance.pk:
             if self.instance.region:
                 self.fields['region'].initial = self.instance.region
             if self.instance.city:
                 self.fields['city'].initial = self.instance.city
+
+        # Dynamic location fields based on country selection
+        if country_value == 'España':
+            from .spain import REGION_PROVINCES, PROVINCE_CITIES, CITY_TO_PROVINCE
+
+            # Convert city to a choice field for Spanish clubs
+            self.fields['city'] = forms.ChoiceField(
+                choices=[("", "")], label="Ciudad", required=False
+            )
+
+            # Populate provinces if region known
+            region_val = self.data.get('region') or self.initial.get('region') or getattr(self.instance, 'region', '')
+            if region_val:
+                self.fields['province'].choices += [
+                    (p, p) for p in REGION_PROVINCES.get(region_val, [])
+                ]
+
+            # Determine province from data or existing city and populate cities
+            province_val = self.data.get('province') or CITY_TO_PROVINCE.get(self.instance.city, '')
+            if province_val:
+                self.fields['province'].initial = province_val
+                self.fields['city'].choices += [
+                    (c, c) for c in PROVINCE_CITIES.get(province_val, [])
+                ]
+                if self.instance.city:
+                    self.fields['city'].initial = self.instance.city
+        else:
+            # Hide region and province fields for non-Spanish countries
+            self.fields['region'].widget = forms.HiddenInput()
+            self.fields['province'].widget = forms.HiddenInput()
 
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')

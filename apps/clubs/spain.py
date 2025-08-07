@@ -137,3 +137,103 @@ CITY_CHOICES = [
     ("Ceuta", "Ceuta"),
     ("Melilla", "Melilla"),
 ]
+
+# Mapping of regions to their provinces. Used for dynamically loading
+# province choices when a Spanish "Comunidad Autónoma" is selected.
+REGION_PROVINCES = {
+    "Andalucía": [
+        "Almería", "Cádiz", "Córdoba", "Granada",
+        "Huelva", "Jaén", "Málaga", "Sevilla",
+    ],
+    "Aragón": ["Huesca", "Teruel", "Zaragoza"],
+    "Asturias": ["Asturias"],
+    "Islas Baleares": ["Islas Baleares"],
+    "Canarias": ["Las Palmas", "Santa Cruz de Tenerife"],
+    "Cantabria": ["Cantabria"],
+    "Castilla-La Mancha": [
+        "Albacete", "Ciudad Real", "Cuenca",
+        "Guadalajara", "Toledo",
+    ],
+    "Castilla y León": [
+        "Ávila", "Burgos", "León", "Palencia",
+        "Salamanca", "Segovia", "Soria",
+        "Valladolid", "Zamora",
+    ],
+    "Cataluña": ["Barcelona", "Girona", "Lérida", "Tarragona"],
+    "Comunidad Valenciana": ["Alicante", "Castellón", "Valencia"],
+    "Extremadura": ["Badajoz", "Cáceres"],
+    "Galicia": ["La Coruña", "Lugo", "Orense", "Pontevedra"],
+    "Madrid": ["Madrid"],
+    "Murcia": ["Murcia"],
+    "Navarra": ["Navarra"],
+    "País Vasco": ["Álava", "Guipúzcoa", "Vizcaya"],
+    "La Rioja": ["La Rioja"],
+    "Ceuta": ["Ceuta"],
+    "Melilla": ["Melilla"],
+}
+
+# Mapping of provinces to their major cities. This allows loading
+# city options only after a province has been chosen.
+PROVINCE_CITIES = {
+    "Álava": ["Vitoria-Gasteiz"],
+    "Albacete": ["Albacete"],
+    "Alicante": ["Alicante"],
+    "Almería": ["Almería"],
+    "Asturias": ["Oviedo"],
+    "Ávila": ["Ávila"],
+    "Badajoz": ["Badajoz"],
+    "Barcelona": ["Barcelona"],
+    "Burgos": ["Burgos"],
+    "Cáceres": ["Cáceres"],
+    "Cádiz": ["Cádiz"],
+    "Cantabria": ["Santander"],
+    "Castellón": ["Castellón de la Plana"],
+    "Ciudad Real": ["Ciudad Real"],
+    "Córdoba": ["Córdoba"],
+    "Cuenca": ["Cuenca"],
+    "Girona": ["Girona"],
+    "Granada": ["Granada"],
+    "Guadalajara": ["Guadalajara"],
+    "Guipúzcoa": ["San Sebastián"],
+    "Huelva": ["Huelva"],
+    "Huesca": ["Huesca"],
+    "Islas Baleares": ["Palma de Mallorca"],
+    "Jaén": ["Jaén"],
+    "La Coruña": ["A Coruña"],
+    "La Rioja": ["Logroño"],
+    "Las Palmas": ["Las Palmas de Gran Canaria"],
+    "León": ["León"],
+    "Lérida": ["Lleida"],
+    "Lugo": ["Lugo"],
+    "Madrid": ["Madrid"],
+    "Málaga": ["Málaga"],
+    "Murcia": ["Murcia"],
+    "Navarra": ["Pamplona"],
+    "Orense": ["Ourense"],
+    "Palencia": ["Palencia"],
+    "Pontevedra": ["Pontevedra"],
+    "Salamanca": ["Salamanca"],
+    "Santa Cruz de Tenerife": ["Santa Cruz de Tenerife"],
+    "Segovia": ["Segovia"],
+    "Sevilla": ["Sevilla"],
+    "Soria": ["Soria"],
+    "Tarragona": ["Tarragona"],
+    "Teruel": ["Teruel"],
+    "Toledo": ["Toledo"],
+    "Valencia": ["Valencia"],
+    "Valladolid": ["Valladolid"],
+    "Vizcaya": ["Bilbao"],
+    "Zamora": ["Zamora"],
+    "Zaragoza": ["Zaragoza"],
+    "Ceuta": ["Ceuta"],
+    "Melilla": ["Melilla"],
+}
+
+# Reverse lookup from city to province, useful when an existing city
+# is stored but its province needs to be inferred.
+CITY_TO_PROVINCE = {
+    city: province
+    for province, cities in PROVINCE_CITIES.items()
+    for city in cities
+}
+
