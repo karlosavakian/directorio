@@ -138,10 +138,12 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
     notifications = forms.BooleanField(
         label='Recibir notificaciones', required=False
     )
+    bio = forms.CharField(label='Bio', widget=forms.Textarea, required=False)
+    location = forms.CharField(label='Ubicación', required=False)
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'notifications']
+        fields = ['avatar', 'bio', 'location', 'notifications']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
@@ -150,7 +152,7 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
             self.fields['username'].initial = user.username
             self.fields['email'].initial = user.email
             self.user = user
-        placeholder_fields = ['username', 'email', 'new_password1', 'new_password2']
+        placeholder_fields = ['username', 'email', 'bio', 'location', 'new_password1', 'new_password2']
         for f in placeholder_fields:
             self.fields[f].widget.attrs.setdefault('placeholder', ' ')
 

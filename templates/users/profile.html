@@ -83,8 +83,19 @@
 
                 </div>
 
+                <div class="form-field">
+                    {{ form.bio }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.bio.id_for_label }}">{{ form.bio.label }}</label>
+                </div>
+                <div class="form-field">
+                    {{ form.location }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.location.id_for_label }}">{{ form.location.label }}</label>
+                </div>
+
                 {% if is_owner and club_form %}
-               <h4>Dirección del club</h4>   
+               <h4>Dirección del club</h4>
                 <div class="mt-2 row g-3">
                     <div class="form-field col-md-4">
                         {{ club_form.country }}
