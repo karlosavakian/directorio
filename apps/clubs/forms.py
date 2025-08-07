@@ -275,13 +275,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if telefono_field:
             css = telefono_field.widget.attrs.get('class', '')
             telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
-            telefono_field.widget.attrs['placeholder'] = 'Teléfono'
+            telefono_field.widget.attrs['placeholder'] = ' '
 
         phone_field = self.fields.get('phone')
         if phone_field:
             css = phone_field.widget.attrs.get('class', '')
             phone_field.widget.attrs['class'] = (css + ' phone-input').strip()
-            phone_field.widget.attrs['placeholder'] = 'Teléfono'
+            phone_field.widget.attrs['placeholder'] = ' '
 
         logo_widget = self.fields.get('logo')
         if logo_widget:
