@@ -83,82 +83,6 @@
 
                 </div>
 
-                {% if is_owner and club_form %}
-               <h4>Dirección del club</h4>   
-                <div class="mt-2 row g-3">
-                    <div class="form-field col-md-4">
-                        {{ club_form.country }}
-                        <label for="{{ club_form.country.id_for_label }}">{{ club_form.country.label }}</label>
-                        {% if club_form.country.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.country.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-4">
-                        {{ club_form.region }}
-                        <label for="{{ club_form.region.id_for_label }}">{{ club_form.region.label }}</label>
-                        {% if club_form.region.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.region.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                     <div class="form-field col-md-4">
-                        {{ club_form.city }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.city.id_for_label }}">{{ club_form.city.label }}</label>
-                        {% if club_form.city.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.city.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="row g-3">
-                    <div class="form-field col-md-6">
-                        {{ club_form.street }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.street.id_for_label }}">{{ club_form.street.label }}</label>
-                        {% if club_form.street.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.street.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-2">
-                        {{ club_form.number }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.number.id_for_label }}">{{ club_form.number.label }}</label>
-                        {% if club_form.number.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.number.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-2">
-                        {{ club_form.door }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.door.id_for_label }}">{{ club_form.door.label }}</label>
-                        {% if club_form.door.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.door.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-2">
-                        {{ club_form.postal_code }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.postal_code.id_for_label }}">{{ club_form.postal_code.label }}</label>
-                        {% if club_form.postal_code.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.postal_code.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                {% endif %}
 
                 <div class="form-field checkbox-field">
                     {{ form.notifications }}
@@ -312,6 +236,5 @@
 <script src="{% static 'js/plan-cards.js' %}"></script>
 {% if is_owner %}
 <script src="{% static 'js/slug-check.js' %}"></script>
-<script src="{% static 'js/location-select.js' %}"></script>
 {% endif %}
 {% endblock %}
