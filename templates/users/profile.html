@@ -38,10 +38,6 @@
                         {{ form.avatar.errors.as_text|striptags }}
                     </div>
                     {% endif %}
-                    {% else %}
-                    <div class="avatar-dropzone mx-auto">
-                        <div class="avatar-preview{% if avatar_url %} has-image{% endif %}"{% if avatar_url %} style="background-image:url('{{ avatar_url }}')"{% endif %}></div>
-                    </div>
                     {% endif %}
                 </div>
                 {% if is_owner %}
@@ -200,12 +196,16 @@
 
                 <div class="d-flex gap-3 mb-4">
                     <button type="submit" class="btn btn-dark">Guardar cambios</button>
+                    {% if not is_owner %}
                     <button type="submit" class="btn btn-danger" form="delete-account-form">Eliminar cuenta</button>
+                    {% endif %}
                 </div>
             </form>
+            {% if not is_owner %}
             <form id="delete-account-form" action="{% url 'delete_account' %}" method="post" class="d-none">
                 {% csrf_token %}
             </form>
+            {% endif %}
         </div>
         {% if is_owner %}
         <div id="tab-plans" class="profile-section">
