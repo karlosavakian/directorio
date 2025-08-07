@@ -1,46 +1,9 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from .models import Reseña
 from . import models
-from django.contrib.auth.forms import AuthenticationForm
 from apps.core.mixins import UniformFieldsMixin
 from .spain import REGION_CHOICES
 from .countries import COUNTRY_CHOICES
-
-class LoginForm(UniformFieldsMixin, AuthenticationForm):
-    username = forms.CharField(
-        label="Usuario",
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    password = forms.CharField(
-        label="Contraseña",
-        strip=False,
-        widget=forms.PasswordInput(attrs={'class': 'form-control'})
-    )
-
-class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
-    email = forms.EmailField(label='Correo electrónico', required=True)
-
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'password1', 'password2']
-        labels = {
-            'username': 'Nombre de usuario',
-            'email': 'Correo electrónico',
-        }
-        help_texts = {
-            'username': None,
-            'password1': None,
-            'password2': None,
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['password1'].label = 'Contraseña'
-        self.fields['password2'].label = 'Confirmar contraseña'
-
-
 
 class ReseñaForm(UniformFieldsMixin, forms.ModelForm):
     titulo = forms.CharField(
