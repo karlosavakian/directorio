@@ -63,5 +63,23 @@ document.addEventListener('DOMContentLoaded', function () {
       format(input);
     });
   });
+
+  const isValidSpanishPhone = (input) => {
+    const prefijo = input.closest('.form-field')?.querySelector('input.prefijo-input')?.value || '';
+    const digits = input.value.replace(/\D/g, '');
+    if (prefijo === '+34' && digits && !['6', '7', '9'].includes(digits.charAt(0))) {
+      alert('Introduce un número de teléfono válido');
+      return false;
+    }
+    return true;
+  };
+
+  phoneInputs.forEach(function (input) {
+    input.form?.addEventListener('submit', function (e) {
+      if (!isValidSpanishPhone(input)) {
+        e.preventDefault();
+      }
+    });
+  });
 });
 

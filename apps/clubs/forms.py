@@ -275,13 +275,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if telefono_field:
             css = telefono_field.widget.attrs.get('class', '')
             telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
-            telefono_field.widget.attrs['placeholder'] = ' '
+            telefono_field.widget.attrs['placeholder'] = 'Telefono'
 
         phone_field = self.fields.get('phone')
         if phone_field:
             css = phone_field.widget.attrs.get('class', '')
             phone_field.widget.attrs['class'] = (css + ' phone-input').strip()
-            phone_field.widget.attrs['placeholder'] = ' '
+            phone_field.widget.attrs['placeholder'] = 'Telefono'
 
         logo_widget = self.fields.get('logo')
         if logo_widget:
@@ -300,8 +300,11 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         phone = self.cleaned_data.get('phone', '')
         prefijo = self.cleaned_data.get('prefijo', '')
         digits = re.sub(r'\D', '', phone)
-        if prefijo == '+34' and len(digits) > 9:
-            raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+        if prefijo == '+34':
+            if len(digits) > 9:
+                raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+            if digits and digits[0] not in '679':
+                raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
 
     def save(self, commit=True):
@@ -514,6 +517,12 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             self.initial.setdefault('prefijo', '+34')
             prefijo_field.widget = forms.HiddenInput(attrs={'class': 'prefijo-input'})
 
+        telefono_field = self.fields.get('telefono')
+        if telefono_field:
+            css = telefono_field.widget.attrs.get('class', '')
+            telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
+            telefono_field.widget.attrs['placeholder'] = 'Telefono'
+
         # Custom placeholders
         if 'peso' in self.fields:
             self.fields['peso'].widget.attrs['placeholder'] = 'peso (kg)'
@@ -550,8 +559,11 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         telefono = self.cleaned_data.get('telefono', '')
         prefijo = self.cleaned_data.get('prefijo', '')
         digits = re.sub(r'\D', '', telefono)
-        if prefijo == '+34' and len(digits) > 9:
-            raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+        if prefijo == '+34':
+            if len(digits) > 9:
+                raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
+            if digits and digits[0] not in '679':
+                raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
 
 
