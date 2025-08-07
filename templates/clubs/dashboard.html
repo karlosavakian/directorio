@@ -1138,7 +1138,7 @@
           </form>
         </div>
         <div class="col-12 col-md-6">
-          <div class="row row-cols-1 row-cols-sm-2 g-4">
+          <div class="row row-cols-2 row-cols-md-3 g-4">
             {% for c in match_results %}
             <div class="col">
               <div class="card-flip">
@@ -1174,6 +1174,41 @@
             <p>No hay competidores.</p>
             {% endfor %}
           </div>
+          {% if match_results.paginator.num_pages > 1 %}
+          <nav aria-label="Matchmaker pagination" class="mt-3">
+            <ul class="pagination justify-content-center">
+              {% if match_results.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ match_results.previous_page_number }}{% if current_query %}&{{ current_query }}{% endif %}" aria-label="Anterior">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&laquo;</span>
+              </li>
+              {% endif %}
+              {% for num in match_results.paginator.page_range %}
+              {% if num == match_results.number %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+              {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}{% if current_query %}&{{ current_query }}{% endif %}">{{ num }}</a></li>
+              {% endif %}
+              {% endfor %}
+              {% if match_results.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ match_results.next_page_number }}{% if current_query %}&{{ current_query }}{% endif %}" aria-label="Siguiente">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;</span>
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+          {% endif %}
         </div>
       </div>
     </div>

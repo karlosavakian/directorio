@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
 from django.db.models.functions import ExtractYear
 from django.utils import timezone
+from django.core.paginator import Paginator
 import json
 from collections import defaultdict
 
@@ -142,6 +143,14 @@ def dashboard(request):
     if mm_edad_max:
         match_qs = match_qs.filter(edad__lte=mm_edad_max)
 
+    paginator = Paginator(match_qs, 18)
+    page_number = request.GET.get('page')
+    match_results = paginator.get_page(page_number)
+    query_params = request.GET.copy()
+    if 'page' in query_params:
+        query_params.pop('page')
+    current_query = query_params.urlencode()
+
     # Filtros para los miembros
     estado = request.GET.get('estado')
     if estado in ['activo', 'inactivo']:
@@ -219,7 +228,8 @@ def dashboard(request):
             'form': form,
             'coaches': coaches,
             'members': members,
-            'match_results': match_qs,
+            'match_results': match_results,
+            'current_query': current_query,
             'cities': cities,
             'estado_counts': estado_counts,
             'sexo_counts': sexo_counts,
