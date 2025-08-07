@@ -21,6 +21,7 @@ def profile(request):
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
     owned_clubs = request.user.owned_clubs.all()
     club = owned_clubs.first() if owned_clubs.exists() else None
+    is_owner = owned_clubs.exists()
     if request.method == 'POST':
         if 'plan' in request.POST:
             form = AccountForm(instance=profile_obj, user=request.user)
@@ -32,10 +33,12 @@ def profile(request):
                 messages.success(request, 'Plan actualizado exitosamente.')
                 return redirect('profile')
         else:
-            form = AccountForm(request.POST, request.FILES, instance=profile_obj, user=request.user)
+            data = request.POST.copy()
+            if is_owner:
+                data['username'] = data.get('slug', request.user.username).lstrip('@')
+            form = AccountForm(data, request.FILES, instance=profile_obj, user=request.user)
             plan_form = PlanForm(initial={'plan': profile_obj.plan})
             if club:
-                data = request.POST.copy()
                 for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
                     data.setdefault(field, getattr(club, field))
                 club_form = ClubForm(data, request.FILES, instance=club)
@@ -87,7 +90,6 @@ def profile(request):
 
     user_reviews = Reseña.objects.filter(usuario=request.user)
 
-    is_owner = owned_clubs.exists()
     avatar_url = profile_obj.avatar.url if profile_obj.avatar else None
     if is_owner:
         first_club = owned_clubs.first()
