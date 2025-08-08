@@ -1,6 +1,11 @@
-{% extends 'base.html' %} {% load static utils_filters %} {% block content %}
+{% extends 'base.html' %}
+{% load static utils_filters %}
 
-<div class="d-flex mt-5 mb-5 container-fluid col-12">
+{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+
+{% block content %}
+<main class="flex-grow-1">
+<div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
   <div class="profile-tabs">
     <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
@@ -1572,6 +1577,7 @@
     </div>
   </div>
 </div>
+</main>
 
 <!-- Add Booking Class Modal -->
 <div class="modal fade" id="addBookingClassModal" tabindex="-1" aria-hidden="true">
