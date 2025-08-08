@@ -172,6 +172,13 @@ p {
     height: 25px;
 }
 
+@media (max-width: 767.98px) {
+    .back-button,
+    .front-button {
+        display: none !important;
+    }
+}
+
 
 .container-fluid {
     max-width: 1600px;
