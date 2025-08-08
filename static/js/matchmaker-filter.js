@@ -29,12 +29,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const showSavedBtn = document.getElementById('show-saved');
+  const cards = document.querySelectorAll('.matchmaker-card');
+
+  if (showSavedBtn) {
+    showSavedBtn.dataset.mode = 'all';
+    showSavedBtn.addEventListener('click', () => {
+      const showingSaved = showSavedBtn.dataset.mode === 'saved';
+      if (showingSaved) {
+        cards.forEach(card => {
+          const col = card.closest('.col');
+          if (col) col.style.display = '';
+        });
+        showSavedBtn.dataset.mode = 'all';
+        showSavedBtn.textContent = 'Mostrar guardados';
+        showSavedBtn.classList.add('text-secondary');
+        showSavedBtn.classList.remove('text-black');
+      } else {
+        cards.forEach(card => {
+          const col = card.closest('.col');
+          if (col) {
+            col.style.display = card.classList.contains('bookmarked') ? '' : 'none';
+          }
+        });
+        showSavedBtn.dataset.mode = 'saved';
+        showSavedBtn.textContent = 'Mostrar todos';
+        showSavedBtn.classList.add('text-black');
+        showSavedBtn.classList.remove('text-secondary');
+      }
+    });
+  }
+
   document.querySelectorAll('.bookmark-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const icon = btn.querySelector('i');
       if (!icon) return;
       icon.classList.toggle('bi-bookmark');
       icon.classList.toggle('bi-bookmark-fill');
+      const card = btn.closest('.matchmaker-card');
+      if (card) {
+        card.classList.toggle('bookmarked');
+        const showSavedBtn = document.getElementById('show-saved');
+        if (
+          showSavedBtn &&
+          showSavedBtn.dataset.mode === 'saved' &&
+          !card.classList.contains('bookmarked')
+        ) {
+          const col = card.closest('.col');
+          if (col) col.style.display = 'none';
+        }
+      }
     });
   });
 });
