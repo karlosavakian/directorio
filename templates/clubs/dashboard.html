@@ -1244,32 +1244,29 @@
           <div class="row row-cols-2 row-cols-md-3 g-4">
             {% for c in match_results %}
             <div class="col">
-              <div class="card-flip">
-                <div class="card-flip-inner">
-                  <div class="card text-center card-flip-front">
-                    {% if c.avatar %}
-                    <img src="{{ c.avatar.url }}" class="card-img-top object-fit-cover" style="height: 200px" alt="{{ c.nombre }}" />
-                    {% else %}
-                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light" style="height: 200px">
-                      <span class="text-muted">{{ c.nombre|initials }}</span>
-                    </div>
-                    {% endif %}
-                    <div class="card-body p-2">
-                      <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
-                      <small class="text-muted d-block">{{ c.club.name }} - {{ c.club.city }}</small>
-                      <small class="d-block">
-                        {{ c.peso|default:'—' }}
-                        {% if c.edad %}| {{ c.edad }}{% else %}| —{% endif %}
-                      </small>
-                    </div>
-                  </div>
-                  <div class="card card-flip-back text-center bg-dark text-white">
-                    <div class="p-2 d-flex flex-column justify-content-center align-items-center h-100">
-                      <small class="d-block">Sexo: {{ c.get_sexo_display|default:'—' }}</small>
-                      <small class="d-block">Edad: {{ c.edad|default:'—' }}</small>
-                      <small class="d-block">Peso: {{ c.peso|default:'—' }}</small>
-                    </div>
-                  </div>
+              <div class="card text-center">
+                {% if c.avatar %}
+                <img
+                  src="{{ c.avatar.url }}"
+                  class="card-img-top object-fit-cover"
+                  style="height: 200px"
+                  alt="{{ c.nombre }} {{ c.apellidos }}"
+                />
+                {% else %}
+                <div
+                  class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                  style="height: 200px"
+                >
+                  <span class="text-muted">{{ c.nombre|initials }}</span>
+                </div>
+                {% endif %}
+                <div class="card-body p-2">
+                  <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
+                  <small class="text-muted d-block">{{ c.club.name }} - {{ c.club.city }}</small>
+                  <small class="d-block">
+                    {{ c.peso|default:'—' }}
+                    {% if c.edad %}| {{ c.edad }}{% else %}| —{% endif %}
+                  </small>
                 </div>
               </div>
             </div>
