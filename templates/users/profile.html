@@ -7,10 +7,12 @@
         <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
         {% if is_owner %}
         <div class="profile-tab" data-target="tab-plans">Planes</div>
+        <div class="profile-tab" data-target="tab-support">Soporte</div>
         {% else %}
         <div class="profile-tab" data-target="tab-bookings">Reservas</div>
         <div class="profile-tab" data-target="tab-favorites">Favoritos</div>
         <div class="profile-tab" data-target="tab-reviews">Reseñas</div>
+        <div class="profile-tab" data-target="tab-support">Soporte</div>
         {% endif %}
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -225,6 +227,23 @@
             {% endif %}
         </div>
         {% endif %}
+        <div id="tab-support" class="profile-section">
+            <h4 class="mb-3">Soporte</h4>
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <select class="form-select" name="support_option" id="support_option">
+                        <option value="problema">Notificar de un problema</option>
+                        <option value="eliminar">Eliminar mi perfil</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <textarea class="form-control" name="support_message" id="support_message" placeholder="Explica en detalle el problema"></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark">Enviar</button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
