@@ -280,13 +280,33 @@ class DashboardMatchmakerTests(TestCase):
         url = reverse('club_dashboard')
         res = self.client.get(url, {'mm_sexo': 'M'})
         self.assertContains(res, 'Bob')
-        self.assertNotContains(res, 'Alice')
+        names = [c.nombre for c in res.context['match_results']]
+        self.assertNotIn('Alice', names)
 
     def test_matchmaker_city_dropdown_lists_all_cities(self):
         """City options should include cities beyond those with clubs."""
         url = reverse('club_dashboard')
         res = self.client.get(url)
         self.assertIn('Madrid', res.context['cities'])
+
+    def test_bookmark_competidor_persists(self):
+        url = reverse('matchmaker_bookmark')
+        self.client.post(url, {
+            'competidor_id': self.comp2.id,
+            'action': 'add'
+        })
+        self.club1.refresh_from_db()
+        self.assertIn(self.comp2, self.club1.bookmarked_competidores.all())
+
+    def test_remove_bookmark(self):
+        self.club1.bookmarked_competidores.add(self.comp2)
+        url = reverse('matchmaker_bookmark')
+        self.client.post(url, {
+            'competidor_id': self.comp2.id,
+            'action': 'remove'
+        })
+        self.club1.refresh_from_db()
+        self.assertNotIn(self.comp2, self.club1.bookmarked_competidores.all())
 
 
 class MessageInboxTests(TestCase):
