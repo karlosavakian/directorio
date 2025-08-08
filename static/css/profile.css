@@ -1,9 +1,14 @@
 .profile-wrapper {
-  display: flex;
-  gap: 2rem;
+    display: flex;
+    gap: 2rem;
+}
+.profile-tabs-select {
+    background-color: #000;
+    color: #fff;
 }
 .profile-tabs {
-  min-width: 200px;
+    min-width: 200px;
+    overflow-x: auto;
 }
 .profile-tab {
   padding: 0.5rem 1rem;
@@ -16,12 +21,13 @@
   font-weight: 600;
 }
 .profile-content {
-  flex: 1;
+    flex: 1;
+    overflow-x: auto;
 }
 .profile-section {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 .profile-section.active {
   display: block;
