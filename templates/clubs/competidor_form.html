@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container py-4">
   {% include 'partials/_back-btn.html' %}
+  {% include 'partials/_front-btn.html' %}
   <h1 class="h5">{% if competidor %}Editar{% else %}Nuevo{% endif %} competidor</h1>
   {% include 'clubs/_competidor_form.html' %}
 </div>
