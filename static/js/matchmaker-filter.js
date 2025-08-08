@@ -31,6 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const showSavedBtn = document.getElementById('show-saved');
   const cards = document.querySelectorAll('.matchmaker-card');
+  const noSavedMsg = document.getElementById('no-saved-msg');
+
+  const updateNoSavedMessage = () => {
+    if (!noSavedMsg || !showSavedBtn) return;
+    if (showSavedBtn.dataset.mode === 'saved') {
+      const any = document.querySelectorAll('.matchmaker-card.bookmarked').length > 0;
+      noSavedMsg.classList.toggle('d-none', any);
+    } else {
+      noSavedMsg.classList.add('d-none');
+    }
+  };
 
   if (showSavedBtn) {
     showSavedBtn.dataset.mode = 'all';
@@ -57,29 +68,47 @@ document.addEventListener('DOMContentLoaded', () => {
         showSavedBtn.classList.add('text-black');
         showSavedBtn.classList.remove('text-secondary');
       }
+      updateNoSavedMessage();
     });
   }
 
   document.querySelectorAll('.bookmark-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const icon = btn.querySelector('i');
-      if (!icon) return;
-      icon.classList.toggle('bi-bookmark');
-      icon.classList.toggle('bi-bookmark-fill');
+    btn.addEventListener('click', async () => {
       const card = btn.closest('.matchmaker-card');
-      if (card) {
-        card.classList.toggle('bookmarked');
-        const showSavedBtn = document.getElementById('show-saved');
-        if (
-          showSavedBtn &&
-          showSavedBtn.dataset.mode === 'saved' &&
-          !card.classList.contains('bookmarked')
-        ) {
-          const col = card.closest('.col');
-          if (col) col.style.display = 'none';
+      const icon = btn.querySelector('i');
+      const url = btn.dataset.url;
+      if (!card || !icon || !url) return;
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+      const isBookmarked = card.classList.contains('bookmarked');
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'X-CSRFToken': csrftoken },
+          body: new URLSearchParams({
+            competidor_id: card.dataset.id,
+            action: isBookmarked ? 'remove' : 'add',
+          }),
+        });
+        if (res.ok) {
+          icon.classList.toggle('bi-bookmark');
+          icon.classList.toggle('bi-bookmark-fill');
+          card.classList.toggle('bookmarked');
+          if (
+            showSavedBtn &&
+            showSavedBtn.dataset.mode === 'saved' &&
+            !card.classList.contains('bookmarked')
+          ) {
+            const col = card.closest('.col');
+            if (col) col.style.display = 'none';
+          }
+          updateNoSavedMessage();
         }
+      } catch (err) {
+        console.error(err);
       }
     });
   });
+
+  updateNoSavedMessage();
 });
 

@@ -53,10 +53,33 @@ def cities_by_country(request):
 
 
 @login_required
+def matchmaker_toggle_bookmark(request):
+    if request.method != 'POST':
+        return HttpResponseForbidden()
+    club = request.user.owned_clubs.first()
+    if not club:
+        return HttpResponseForbidden()
+    comp_id = request.POST.get('competidor_id')
+    action = request.POST.get('action')
+    try:
+        competitor = Competidor.objects.get(id=comp_id)
+    except Competidor.DoesNotExist:
+        return JsonResponse({'success': False}, status=404)
+    if action == 'add':
+        club.bookmarked_competidores.add(competitor)
+    else:
+        club.bookmarked_competidores.remove(competitor)
+    return JsonResponse({'success': True})
+
+
+@login_required
 def dashboard(request):
     club = request.user.owned_clubs.first()
     if not club:
         return redirect('home')
+    bookmarked_ids = set(
+        club.bookmarked_competidores.values_list('id', flat=True)
+    )
     # Prepara una estructura de horarios por franja horaria para mostrar
     # los días como columnas y las horas como filas
     dias_semana = club.horarios.model.DiasSemana.choices
@@ -231,6 +254,7 @@ def dashboard(request):
             'match_results': match_results,
             'current_query': current_query,
             'cities': cities,
+            'bookmarked_ids': bookmarked_ids,
             'estado_counts': estado_counts,
             'sexo_counts': sexo_counts,
             'pago_counts': pago_counts,

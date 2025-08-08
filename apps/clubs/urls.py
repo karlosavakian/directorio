@@ -46,6 +46,7 @@ from apps.clubs.views.dashboard import (
     booking_class_delete,
     check_slug,
     cities_by_country,
+    matchmaker_toggle_bookmark,
 )
 
 urlpatterns = [
@@ -90,6 +91,8 @@ urlpatterns = [
     path('posts/<int:pk>/like/', post_toggle_like, name='clubpost_like'),
 
     path('<slug:slug>/mensaje/', public.send_message, name='club_send_message'),
+
+    path('matchmaker/bookmark/', matchmaker_toggle_bookmark, name='matchmaker_bookmark'),
 
     path('reserva/<int:pk>/cancelar/', cancel_booking, name='cancel_booking'),
     path('<slug:slug>/reservar/crear/', create_booking, name='create_booking'),
