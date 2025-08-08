@@ -5,6 +5,20 @@
 
 {% block content %}
 <div class="container-fluid px-3 my-5 col-10">
+    {% if breadcrumbs %}
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Inicio</a></li>
+            {% for crumb in breadcrumbs %}
+                {% if forloop.last %}
+                <li class="breadcrumb-item active" aria-current="page">{{ crumb.name }}</li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="{{ crumb.url }}">{{ crumb.name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+    {% endif %}
 
     <div class="d-flex justify-content-end align-items-center mb-3">
         {% include 'partials/_filter-options.html' %}
@@ -40,7 +54,7 @@
         <ul class="pagination justify-content-center">
             {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}{% if country %}&country={{ country }}{% endif %}{% if region %}&region={{ region }}{% endif %}{% if city %}&city={{ city }}{% endif %}&page={{ page_obj.previous_page_number }}" aria-label="Anterior">
                     &laquo;
                 </a>
             </li>
@@ -51,12 +65,12 @@
             {% if page_obj.number == num %}
             <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% else %}
-            <li class="page-item"><a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ num }}">{{ num }}</a></li>
+            <li class="page-item"><a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}{% if country %}&country={{ country }}{% endif %}{% if region %}&region={{ region }}{% endif %}{% if city %}&city={{ city }}{% endif %}&page={{ num }}">{{ num }}</a></li>
             {% endif %}
             {% endfor %}
             {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}&page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+                <a class="page-link" href="?q={{ search_query }}{% if selected_category %}&category={{ selected_category }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}{% if country %}&country={{ country }}{% endif %}{% if region %}&region={{ region }}{% endif %}{% if city %}&city={{ city }}{% endif %}&page={{ page_obj.next_page_number }}" aria-label="Siguiente">
                     &raquo;
                 </a>
             </li>

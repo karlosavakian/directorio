@@ -7,14 +7,29 @@ document.addEventListener('DOMContentLoaded', function () {
     const locationOption = document.getElementById('use-location-option');
     const list = document.getElementById('autocomplete-list');
 
-    const suggestions = [
-        "A Coruña", "Álava", "Albacete", "Alicante", "Almería", "Asturias", "Ávila", "Badajoz", "Baleares", "Barcelona",
-        "Burgos", "Cáceres", "Cádiz", "Cantabria", "Castellón", "Ciudad Real", "Córdoba", "Cuenca", "Girona", "Granada",
-        "Guadalajara", "Gipuzkoa", "Huelva", "Huesca", "Jaén", "La Rioja", "Las Palmas", "León", "Lérida", "Lugo", "Madrid",
-        "Málaga", "Murcia", "Navarra", "Ourense", "Palencia", "Pontevedra", "Salamanca", "Segovia", "Sevilla", "Soria",
-        "Tarragona", "Santa Cruz de Tenerife", "Teruel", "Toledo", "Valencia", "Valladolid", "Vizcaya", "Zamora", "Zaragoza",
-        "Ceuta", "Melilla"
-    ];
+    const citiesByRegion = {
+        'Andalucía': ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
+        'Aragón': ['Huesca', 'Teruel', 'Zaragoza'],
+        'Asturias': ['Oviedo'],
+        'Islas Baleares': ['Palma de Mallorca'],
+        'Canarias': ['Las Palmas de Gran Canaria', 'Santa Cruz de Tenerife'],
+        'Cantabria': ['Santander'],
+        'Castilla-La Mancha': ['Albacete', 'Ciudad Real', 'Cuenca', 'Guadalajara', 'Toledo'],
+        'Castilla y León': ['Ávila', 'Burgos', 'León', 'Palencia', 'Salamanca', 'Segovia', 'Soria', 'Valladolid', 'Zamora'],
+        'Cataluña': ['Barcelona', 'Girona', 'Lleida', 'Tarragona'],
+        'Comunidad Valenciana': ['Alicante', 'Castellón de la Plana', 'Valencia'],
+        'Extremadura': ['Badajoz', 'Cáceres'],
+        'Galicia': ['A Coruña', 'Lugo', 'Ourense', 'Pontevedra'],
+        'Madrid': ['Madrid'],
+        'Murcia': ['Murcia'],
+        'Navarra': ['Pamplona'],
+        'País Vasco': ['Vitoria-Gasteiz', 'San Sebastián', 'Bilbao'],
+        'La Rioja': ['Logroño'],
+        'Ceuta': ['Ceuta'],
+        'Melilla': ['Melilla']
+    };
+
+    const suggestions = Object.values(citiesByRegion).flat();
 
     function showSuggestions(query) {
         list.innerHTML = ''; // Limpiar lista
