@@ -2,8 +2,6 @@
 {% load static %}
 {% block content %}
 <div class="container py-4">
-  {% include 'partials/_back-btn.html' %}
-  {% include 'partials/_front-btn.html' %}
   <h1 class="h5">{% if entrenador %}Editar{% else %}Nuevo{% endif %} entrenador</h1>
   <form method="post" enctype="multipart/form-data" class="profile-form">
     {% csrf_token %}
