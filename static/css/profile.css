@@ -9,6 +9,8 @@
 .profile-tabs {
     min-width: 200px;
     overflow-x: auto;
+    margin:10px;
+
 }
 .profile-tab {
   padding: 0.5rem 1rem;
@@ -32,11 +34,11 @@
 .profile-section.active {
   display: block;
   opacity: 1;
-} 
+}
 .profile-form .form-field {
   position: relative;
   margin-bottom: 1.3rem;
-  
+
 }
 
  .profile-form .form-field input:not([type="checkbox"]),

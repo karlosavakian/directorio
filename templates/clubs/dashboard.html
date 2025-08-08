@@ -5,19 +5,20 @@
 
 {% block content %}
 <main class="flex-grow-1">
-<div class="d-lg-none mb-3">
-  <select id="mobile-dashboard-tabs" class="profile-tabs-select form-select bg-dark text-white">
-    <option value="tab-profile">Mi Perfil</option>
-    <option value="tab-gallery">Galería</option>
-    <option value="tab-schedule">Horarios</option>
-    <option value="tab-clase">Servicios</option>
-    <option value="tab-bookings">Reservas</option>
-    <option value="tab-coaches">Entrenadores</option>
-    <option value="tab-competitors">Competidores</option>
-    <option value="tab-members">Miembros</option>
-    <option value="tab-matchmaker">Matchmaker</option>
-  </select>
-</div>
+  <div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
+    <select id="mobile-dashboard-tabs"
+            class="profile-tabs-select form-select  w-auto text-end">
+      <option value="tab-profile">Mi Perfil</option>
+      <option value="tab-gallery">Galería</option>
+      <option value="tab-schedule">Horarios</option>
+      <option value="tab-clase">Servicios</option>
+      <option value="tab-bookings">Reservas</option>
+      <option value="tab-coaches">Entrenadores</option>
+      <option value="tab-competitors">Competidores</option>
+      <option value="tab-members">Miembros</option>
+      <option value="tab-matchmaker">Matchmaker</option>
+    </select>
+  </div>
 <div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
   <div class="profile-tabs d-none d-lg-block">
     <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
@@ -43,9 +44,9 @@
       >
         {% csrf_token %}
         <h5 class="mb-3  ">Logotipo</h5>
-        <div class="mb-5 text-center bg-dark p-3   rounded"> 
+        <div class="mb-5 text-center bg-dark p-3   rounded">
           <div class="avatar-dropzone avatar-dropzone-square mx-auto p-3">
-      
+
             {{ form.logo }}
             <div
               class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
@@ -168,14 +169,14 @@
 
 
         <button type="submit" class="btn btn-dark mt-4">Guardar</button>
-      </form> 
-      
+      </form>
+
 
         </div>
         <div class="col-lg-6 d-flex justify-content-end ps-5">
           <!-- Features -->
           <div class="form-field">
-           
+
             <div class="d-flex justify-content-end align-items-end gap-3 mb-3">
                 <button
                   type="button"
@@ -197,7 +198,7 @@
                <div class="d-flex justify-content-between align-items-start mb-3">
               <p class="small text-muted mb-0">
                 Selecciona las instalaciones y equipamiento disponible en tu club.
-              </p> 
+              </p>
             </div>
             <div class="d-flex flex-wrap gap-3" id="features-container">
               {% for feature in form.features.field.queryset %}
@@ -1213,7 +1214,7 @@
             </div>
           </div>
             </div>
-       
+
             <div class="mb-2">
               <span class="d-block small fw-bold mb-2">Edad</span>
               <div class="range-slider ms-2 me-2" data-unit="años">
