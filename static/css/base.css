@@ -5,7 +5,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
 
-
 /* ========================================
    CSS Reset
    ======================================== */
@@ -30,8 +29,6 @@ html {
     color: #000000;
     overflow-x: hidden;
 }
-
-
 
 img,
 picture,
@@ -61,7 +58,6 @@ button {
     font-size: 1rem;
 }
 
-
 a {
     text-decoration: none;
     color: inherit;
@@ -69,19 +65,15 @@ a {
     color: #000000 !important;
 }
 
-
 button,
 a {
     transition: all 0.2s ease-in-out;
 }
 
-
-
 ul,
 ol {
     list-style: none;
 }
-
 
 /* 4. Responsive Typography (20% smaller) */
 h1,
@@ -133,7 +125,6 @@ p {
     font-size: 1rem;
 }
 
-
 /* ========================================
     2. Custom Styles
    ======================================== */
@@ -157,29 +148,6 @@ p {
     /* alarga horizontalmente un 30% */
 }
 
-
-.back-button, .front-button{
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    font-weight: 600;
-    color: inherit;
-    padding: 0;
-}
-
-.back-button, .front-button svg {
-    width: 25px;
-    height: 25px;
-}
-
-@media (max-width: 767.98px) {
-    .back-button,
-    .front-button {
-        display: none !important;
-    }
-}
-
-
 .container-fluid {
     max-width: 1600px;
 }
@@ -199,8 +167,6 @@ p {
     opacity: 0;
     visibility: hidden;
 }
-
-
 
 /* Animación de shake y borde rojo */
 .form-error {
@@ -236,8 +202,6 @@ input[type="checkbox"] {
     accent-color: #000;
 }
 
-
-
 .button-dark-outline {
     background: #ffffff;
     color: black !important;
@@ -249,7 +213,6 @@ input[type="checkbox"] {
     background: black;
     color: white !important;
     transition: all 280ms ease-in-out;
-
 
 }
 
