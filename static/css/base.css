@@ -158,7 +158,7 @@ p {
 }
 
 
-.back-button {
+.back-button, .front-button{
     display: inline-flex;
     align-items: center;
     text-decoration: none;
@@ -167,7 +167,7 @@ p {
     padding: 0;
 }
 
-.back-button svg {
+.back-button, .front-button svg {
     width: 25px;
     height: 25px;
 }
