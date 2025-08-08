@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.querySelectorAll('.profile-tab');
   const sections = document.querySelectorAll('.profile-section');
-  const select = document.querySelector('.profile-tabs-select');
+  const selects = document.querySelectorAll('.profile-tabs-select');
   const storageKey = 'activeTab:' + window.location.pathname;
 
   function activate(tab) {
@@ -12,17 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const sec = document.getElementById(target);
     if (sec) sec.classList.add('active');
     localStorage.setItem(storageKey, target);
-    if (select) select.value = target;
+    selects.forEach(s => (s.value = target));
   }
 
   tabs.forEach(t => {
     t.addEventListener('click', () => activate(t));
   });
 
-  if (select) {
-    select.addEventListener('change', () => {
-      const tab = document.querySelector(`.profile-tab[data-target="${select.value}"]`);
-      if (tab) activate(tab);
+  if (selects.length) {
+    selects.forEach(sel => {
+      sel.addEventListener('change', () => {
+        const tab = document.querySelector(`.profile-tab[data-target="${sel.value}"]`);
+        if (tab) activate(tab);
+      });
     });
   }
 
