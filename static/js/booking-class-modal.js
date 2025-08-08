@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+    new bootstrap.Tooltip(el);
+  });
   const addEl = document.getElementById('addBookingClassModal');
   const editEl = document.getElementById('editBookingClassModal');
   const addModal = addEl ? new bootstrap.Modal(addEl) : null;

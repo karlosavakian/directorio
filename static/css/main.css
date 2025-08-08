@@ -115,26 +115,33 @@
   color: #fff;
 }
 
-/* Booking modal class cards */
-#bookingModal .class-card {
+/* Class cards (booking modal and dashboard services) */
+.class-card {
   cursor: pointer;
-  flex: 0 0 calc((100% - 2rem) / 3);
   position: relative;
 }
-#bookingModal .class-card .form-check-input {
-  display: none;
-}
-#bookingModal .class-card.active {
+
+.class-card.active {
   background-color: #000;
   color: #fff;
 }
-#bookingModal .class-card.highlighted {
+
+.class-card.highlighted {
   /* Highlighted card no longer scaled */
 }
 
 /* Offer badge inside highlighted card */
-#bookingModal .offer-badge {
+.offer-badge {
   font-size: 0.75rem;
+}
+
+/* Booking modal specific class card tweaks */
+#bookingModal .class-card {
+  flex: 0 0 calc((100% - 2rem) / 3);
+}
+
+#bookingModal .class-card .form-check-input {
+  display: none;
 }
 
 /* Hover effect for booking button */
