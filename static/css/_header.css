@@ -67,4 +67,16 @@
         display: block;
     }
 
+    /* Keep nav items side-by-side and centered in the header */
+    .navbar-nav {
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+    }
+
+    .navbar-nav .nav-item {
+        display: flex;
+        align-items: center;
+    }
+
 }
