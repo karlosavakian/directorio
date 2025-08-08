@@ -8,7 +8,6 @@
 }
 .profile-tabs {
     min-width: 200px;
-    overflow-x: auto;
 }
 .profile-tab {
   padding: 0.5rem 1rem;
@@ -22,7 +21,20 @@
 }
 .profile-content {
     flex: 1;
+}
+
+@media (max-width: 991.98px) {
+  .profile-tabs,
+  .profile-content {
     overflow-x: auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .profile-tabs,
+  .profile-content {
+    overflow-x: visible;
+  }
 }
 .profile-section {
     display: none;
@@ -330,13 +342,15 @@
 /* Gallery styles */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
 }
 
 .gallery-item {
   position: relative;
-  height: 150px;
+  min-width: 200px;
+  min-height: 200px;
+  height: 200px;
   overflow: hidden;
 }
 
