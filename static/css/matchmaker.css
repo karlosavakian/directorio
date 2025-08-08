@@ -28,3 +28,12 @@
 .card-flip-back {
   transform: rotateY(180deg);
 }
+
+.avatar-container .bookmark-btn {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.avatar-container:hover .bookmark-btn {
+  opacity: 1;
+}
