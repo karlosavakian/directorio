@@ -32,6 +32,9 @@ def profile(request):
                 profile_obj.save()
                 messages.success(request, 'Plan actualizado exitosamente.')
                 return redirect('profile')
+        elif 'support_option' in request.POST:
+            messages.success(request, 'Solicitud de soporte enviada.')
+            return redirect('profile')
         else:
             data = request.POST.copy()
             if is_owner:
