@@ -5,8 +5,22 @@
 
 {% block content %}
 <main class="flex-grow-1">
+<div class="d-lg-none mb-3">
+    <select id="mobile-profile-tabs" class="profile-tabs-select form-select bg-dark text-white">
+        <option value="tab-account">Mi cuenta</option>
+        {% if is_owner %}
+        <option value="tab-plans">Planes</option>
+        <option value="tab-support">Soporte</option>
+        {% else %}
+        <option value="tab-bookings">Reservas</option>
+        <option value="tab-favorites">Favoritos</option>
+        <option value="tab-reviews">Reseñas</option>
+        <option value="tab-support">Soporte</option>
+        {% endif %}
+    </select>
+</div>
 <div class="d-flex flex-grow-1 mt-5 container-fluid col-12">
-    <div class="profile-tabs">
+    <div class="profile-tabs d-none d-lg-block">
         <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
         {% if is_owner %}
         <div class="profile-tab" data-target="tab-plans">Planes</div>

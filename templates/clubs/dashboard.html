@@ -5,8 +5,21 @@
 
 {% block content %}
 <main class="flex-grow-1">
+<div class="d-lg-none mb-3">
+  <select id="mobile-dashboard-tabs" class="profile-tabs-select form-select bg-dark text-white">
+    <option value="tab-profile">Mi Perfil</option>
+    <option value="tab-gallery">Galería</option>
+    <option value="tab-schedule">Horarios</option>
+    <option value="tab-clase">Servicios</option>
+    <option value="tab-bookings">Reservas</option>
+    <option value="tab-coaches">Entrenadores</option>
+    <option value="tab-competitors">Competidores</option>
+    <option value="tab-members">Miembros</option>
+    <option value="tab-matchmaker">Matchmaker</option>
+  </select>
+</div>
 <div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
-  <div class="profile-tabs">
+  <div class="profile-tabs d-none d-lg-block">
     <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
