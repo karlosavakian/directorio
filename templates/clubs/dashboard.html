@@ -1144,28 +1144,39 @@
                 <input
                   class="form-check-input custom-check"
                   type="radio"
-              name="mm_sexo"
-              id="mm-sexo-m"
-              value="M"
-              {% if request.GET.mm_sexo == 'M' %}checked{% endif %}
-            />
-            <label class="form-check-label" for="mm-sexo-m">Masculino</label>
-          </div>
-          <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-            <input
-              class="form-check-input custom-check"
-              type="radio"
-              name="mm_sexo"
-              id="mm-sexo-f"
-              value="F"
-              {% if request.GET.mm_sexo == 'F' %}checked{% endif %}
-            />
+                  name="mm_sexo"
+                  id="mm-sexo-all"
+                  value=""
+                  {% if not request.GET.mm_sexo %}checked{% endif %}
+                />
+                <label class="form-check-label" for="mm-sexo-all">Todos</label>
+              </div>
+              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                <input
+                  class="form-check-input custom-check"
+                  type="radio"
+                  name="mm_sexo"
+                  id="mm-sexo-m"
+                  value="M"
+                  {% if request.GET.mm_sexo == 'M' %}checked{% endif %}
+                />
+                <label class="form-check-label" for="mm-sexo-m">Masculino</label>
+              </div>
+              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                <input
+                  class="form-check-input custom-check"
+                  type="radio"
+                  name="mm_sexo"
+                  id="mm-sexo-f"
+                  value="F"
+                  {% if request.GET.mm_sexo == 'F' %}checked{% endif %}
+                />
                 <label class="form-check-label" for="mm-sexo-f">Femenino</label>
               </div>
             </div>
             <div>
-              <span class="d-block small fw-bold">Peso</span>
-              <div class="range-slider ms-2 me-2">
+              <span class="d-block small fw-bold">Peso (kg)</span>
+              <div class="range-slider ms-2 me-2" data-unit="kg">
                 <div class="range-values">
                   <span class="min-value"></span>
                   <span class="max-value"></span>
@@ -1201,8 +1212,8 @@
               </select>
             </div>
             <div>
-              <span class="d-block small fw-bold">Edad</span>
-              <div class="range-slider ms-2 me-2">
+              <span class="d-block small fw-bold">Edad (años)</span>
+              <div class="range-slider ms-2 me-2" data-unit="años">
                 <div class="range-values">
                   <span class="min-value"></span>
                   <span class="max-value"></span>
@@ -1280,8 +1291,11 @@
                   <small class="text-muted d-block">{{ c.club.name }}</small>
                   <small>{{ c.club.city }}</small>
                   <small class="d-block">
-                    {{ c.peso|default:'—' }}
-                    {% if c.edad %}| {{ c.edad }}{% else %}| —{% endif %}
+                    {{ c.peso|default:'—' }} | {{ c.peso_kg|default:'—' }} kg
+                  </small>
+                  <small class="d-block">
+                    Edad:
+                    {% if c.edad %}{{ c.edad }} años{% else %}—{% endif %}
                   </small>
                 </div>
               </div>

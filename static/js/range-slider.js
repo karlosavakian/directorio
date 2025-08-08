@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minVal = slider.querySelector('.min-value');
     const maxVal = slider.querySelector('.max-value');
     const track = slider.querySelector('.slider-track');
+    const unit = slider.dataset.unit || '';
 
     const update = () => {
       let min = parseInt(minInput.value);
@@ -20,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const end = ((max - minInput.min) / range) * 100;
       track.style.left = start + '%';
       track.style.right = (100 - end) + '%';
-      if (minVal) minVal.textContent = min;
-      if (maxVal) maxVal.textContent = max;
+      if (minVal) minVal.textContent = unit ? `${min} ${unit}` : min;
+      if (maxVal) maxVal.textContent = unit ? `${max} ${unit}` : max;
     };
 
     minInput.addEventListener('input', update);

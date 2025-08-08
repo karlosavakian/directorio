@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clearBtn.addEventListener('click', () => {
       form.reset();
       form.querySelectorAll('input[name="mm_sexo"]').forEach(r => (r.checked = false));
+      const allRadio = form.querySelector('#mm-sexo-all');
+      if (allRadio) allRadio.checked = true;
       const citySelect = form.querySelector('select[name="mm_ciudad"]');
       if (citySelect) citySelect.value = '';
       const pesoMin = form.querySelector('input[name="mm_peso_min"]');
