@@ -113,6 +113,46 @@ class SearchResultsTests(TestCase):
         self.assertContains(response, "badge-verified-silver")
         self.assertContains(response, "badge-verified-bronze")
 
+    def test_breadcrumbs_for_city(self):
+        Club.objects.create(
+            name="Sevilla Club",
+            city="Sevilla",
+            region="Andalucía",
+            country="España",
+            address="addr",
+            phone="1",
+            email="sev@example.com",
+        )
+        url = reverse("search_results")
+        response = self.client.get(url, {"q": "Sevilla"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual([c["name"] for c in response.context["breadcrumbs"]], ["España", "Andalucía", "Sevilla"])
+
+    def test_filter_by_region_without_query(self):
+        Club.objects.create(
+            name="Sevilla Club",
+            city="Sevilla",
+            region="Andalucía",
+            country="España",
+            address="addr",
+            phone="1",
+            email="sev@example.com",
+        )
+        Club.objects.create(
+            name="Madrid Club",
+            city="Madrid",
+            region="Madrid",
+            country="España",
+            address="addr",
+            phone="1",
+            email="mad@example.com",
+        )
+        url = reverse("search_results")
+        response = self.client.get(url, {"region": "Andalucía"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Sevilla Club")
+        self.assertNotContains(response, "Madrid Club")
+
 class ClubPhotoResizeTests(TestCase):
     def test_photo_resized_on_save(self):
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -1,6 +1,9 @@
      <form method="get" class="d-flex align-items-center" style="gap: 10px;">
     <input type="hidden" name="q" value="{{ search_query }}">
     <input type="hidden" name="sort" id="sort-input" value="{{ request.GET.sort|default:'' }}">
+    {% if country %}<input type="hidden" name="country" value="{{ country }}">{% endif %}
+    {% if region %}<input type="hidden" name="region" value="{{ region }}">{% endif %}
+    {% if city %}<input type="hidden" name="city" value="{{ city }}">{% endif %}
 
     <div class="custom-dropdown small" id="sort-dropdown">
         <div class="selected">
