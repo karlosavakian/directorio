@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% load static utils_filters %}
 
-{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block body_class %}d-flex flex-column min-vh-100 profile-page{% endblock %}
 
 {% block content %}
 <main class="flex-grow-1">
-<div class="d-lg-none mb-3">
-    <select id="mobile-profile-tabs" class="profile-tabs-select form-select bg-dark text-white">
+<div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
+    <select id="mobile-profile-tabs" class="profile-tabs-select form-select w-auto text-end">
         <option value="tab-account">Mi cuenta</option>
         {% if is_owner %}
         <option value="tab-plans">Planes</option>
