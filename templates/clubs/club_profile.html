@@ -7,18 +7,19 @@
 
     <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
         <div class="profile-header d-flex align-items-center mb-4 mt-4">
-            <span class="text-muted small d-flex text-center justify-content-center align-items-center">
-                <a href="{% url 'home' %}" class="text-muted text-decoration-none">Inicio</a>
-                &gt;
-                <a href="{% url 'home' %}" class="text-muted text-decoration-none">Clubs de boxeo</a>
-                &gt;
-                <a href="{% url 'search_results' %}?q={{ club.country|urlencode }}" class="text-muted text-decoration-none">{{ club.country }}</a>
+            <span class="small d-flex text-center justify-content-center align-items-center">
+                <a href="{% url 'home' %}" class="text-muted text-decoration-none  hover-underline">Inicio</a>
+                
+                <span class="ms-1 me-1 text-muted fw-light">></span>
+                <a href="{% url 'home' %}" class="text-muted text-decoration-none  hover-underline">Clubs de boxeo</a>
+            <span class="ms-1 me-1 text-muted fw-light">></span> 
+                <a href="{% url 'search_results' %}?q={{ club.country|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.country }}</a>
                 {% if club.region %}
-                    &gt;
-                    <a href="{% url 'search_results' %}?q={{ club.region|urlencode }}" class="text-muted text-decoration-none">{{ club.region }}</a>
+              <span class="ms-1 me-1 text-muted fw-light">></span>
+                    <a href="{% url 'search_results' %}?q={{ club.region|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.region }}</a>
                 {% endif %}
-                &gt;
-                <a href="{% url 'search_results' %}?q={{ club.city|urlencode }}" class="text-muted text-decoration-none">{{ club.city }}</a>
+          <span class="ms-1 me-1 text-muted fw-light">></span>
+                <a href="{% url 'search_results' %}?q={{ club.city|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.city }}</a>
             </span>
             <div class="d-none d-lg-flex ms-auto justify-content-end gap-2 ">
 
