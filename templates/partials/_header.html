@@ -38,9 +38,10 @@
                 <li class="nav-item d-flex align-items-center ms-2">
                     <a
                         href="{% url 'club_profile' owner_club.slug %}"
-                        class="fw-bold"
+                        class="fw-bold d-flex align-items-center"
                     >
                         <i class="bi bi-eye-fill"></i>
+                        <span class="ms-2 d-none d-lg-inline">{{ owner_club.name }}</span>
                     </a>
                 </li>
                 {% endwith %}
