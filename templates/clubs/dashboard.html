@@ -370,38 +370,32 @@
           <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
         </button>
       </div>
-      <table class="table table-sm"  >
-        <thead>
-          <tr>
-            <th></th>
-            <th class="booking-class-title-col">Título</th>
-            <th class="booking-class-detail-col">Detalle</th>
-            <th>Precio</th>
-            <th>Duración</th>
-            <th>Destacada</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in booking_classes %}
-          <tr>
-            <td class="d-flex gap-1 actions-column">
-              <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
-              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
-              </form>
-            </td>
-            <td class="booking-class-title">{{ c.titulo|upper }}</td>
-            <td class="booking-class-detail">{{ c.detalle }}</td>
-            <td>{% if c.precio == 0 %}Gratis{% else %}{{ c.precio }} €{% endif %}</td>
-            <td>{{ c.duracion }} min</td>
-            <td>{% if c.destacado %}Sí{% else %}No{% endif %}</td>
-          </tr>
-          {% empty %}
-          <tr><td colspan="6" class="text-muted">No hay clases.</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+        {% for c in booking_classes %}
+        <div class="col">
+          <div class="card h-100 text-center">
+            <div class="card-body p-2 d-flex flex-column justify-content-between">
+              <div>
+                <span class="fw-medium d-block mb-1">{{ c.titulo|upper }}</span>
+                <small class="d-block mb-1">{{ c.detalle }}</small>
+                <small class="d-block mb-1">{% if c.precio == 0 %}Gratis{% else %}{{ c.precio }} €{% endif %}</small>
+                <small class="d-block mb-1">{{ c.duracion }} min</small>
+                <small class="d-block">{% if c.destacado %}Destacada{% else %}No destacada{% endif %}</small>
+              </div>
+              <div class="mt-2 d-flex justify-content-center gap-2">
+                <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
+                <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
+                  {% csrf_token %}
+                  <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No hay servicios.</p>
+        {% endfor %}
+      </div>
     </div>
     <div id="tab-schedule" class="profile-section">
       <h4>Horarios del club</h4>
