@@ -1,10 +1,9 @@
 <a
   href="#"
-  class="front-button align-items-start ms-2 my-2 fs-3"
+  class="front-button align-items-start ms-2 my-2 fs-3 d-none"
   onclick="window.history.forward(); return false;"
-
 >
-<svg
+  <svg
     fill="#000000"
     width="256px"
     height="256px"
@@ -12,7 +11,7 @@
     id="right-arrow"
     xmlns="http://www.w3.org/2000/svg"
     class="icon line"
->
+  >
     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
     <g
       id="SVGRepo_tracerCarrier"
@@ -42,11 +41,13 @@
       state.idx = window.history.length - 1;
       window.history.replaceState(state, document.title);
     }
-    if (state.idx < window.history.length - 1) {
-      const btn = document.querySelector(".front-button");
-      if (btn) {
-        btn.style.display = "flex";
-      }
+    const btn = document.querySelector(".front-button");
+    if (
+      window.innerWidth >= 992 &&
+      state.idx < window.history.length - 1 &&
+      btn
+    ) {
+      btn.classList.remove("d-none");
     }
   });
 </script>
