@@ -1252,10 +1252,19 @@
           </form>
         </div>
         <div class="col-12 col-md-10">
+          <div class="d-flex justify-content-end mb-3">
+            <button
+              type="button"
+              id="show-saved"
+              class="small bg-transparent border-0 fw-medium text-secondary"
+            >
+              Mostrar guardados
+            </button>
+          </div>
           <div class="row row-cols-2 row-cols-md-4 g-4">
             {% for c in match_results %}
             <div class="col">
-              <div class="card text-center">
+              <div class="card text-center matchmaker-card">
                 <div class="avatar-container position-relative">
                   {% if c.avatar %}
                   <img

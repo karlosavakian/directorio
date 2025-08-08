@@ -30,10 +30,20 @@
 }
 
 .avatar-container .bookmark-btn {
-  opacity: 0;
-  transition: opacity 0.2s;
+  opacity: 1;
 }
 
-.avatar-container:hover .bookmark-btn {
-  opacity: 1;
+/* Pagination styles */
+.pagination .page-link {
+  color: #000;
+}
+
+.pagination .page-link:hover {
+  color: #000;
+}
+
+.page-item.active .page-link {
+  background-color: #000;
+  border-color: #000;
+  color: #fff;
 }
