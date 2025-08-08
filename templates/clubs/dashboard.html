@@ -1245,31 +1245,44 @@
             {% for c in match_results %}
             <div class="col">
               <div class="card text-center">
-                {% if c.avatar %}
-                <img
-                  src="{{ c.avatar.url }}"
-                  class="card-img-top object-fit-cover"
-                  style="height: 200px"
-                  alt="{{ c.nombre }} {{ c.apellidos }}"
-                />
-                {% else %}
-                <div
-                  class="card-img-top d-flex align-items-center justify-content-center bg-light"
-                  style="height: 200px"
-                >
-                  <span class="text-muted">{{ c.nombre|initials }}</span>
+                <div class="avatar-container position-relative">
+                  {% if c.avatar %}
+                  <img
+                    src="{{ c.avatar.url }}"
+                    class="card-img-top object-fit-cover"
+                    style="height: 200px"
+                    alt="{{ c.nombre }} {{ c.apellidos }}"
+                  />
+                  {% else %}
+                  <div
+                    class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                    style="height: 200px"
+                  >
+                    <span class="text-muted">{{ c.nombre|add:' '|add:c.apellidos|initials }}</span>
+                  </div>
+                  {% endif %}
+                  <button
+                    type="button"
+                    class="bookmark-btn btn btn-light btn-sm position-absolute top-0 end-0 m-1 p-1"
+                  >
+                    <i class="bi bi-bookmark"></i>
+                  </button>
                 </div>
-
-                {% endif %}
                 <div class="card-body p-2">
                   <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
-                  <small class="text-muted d-block">{{ c.club.name }}  </small>
-                  <small> {{ c.club.city }}</small>
+                  <small class="d-block">
+                    {% with rec=c.record_tuple %}
+                    <span class="fw-bold text-success">{{ rec.0 }}</span>-
+                    <span class="fw-bold text-danger">{{ rec.1 }}</span>-
+                    <span class="fw-bold text-primary">{{ rec.2 }}</span>
+                    {% endwith %}
+                  </small>
+                  <small class="text-muted d-block">{{ c.club.name }}</small>
+                  <small>{{ c.club.city }}</small>
                   <small class="d-block">
                     {{ c.peso|default:'—' }}
                     {% if c.edad %}| {{ c.edad }}{% else %}| —{% endif %}
                   </small>
-                  
                 </div>
               </div>
             </div>
