@@ -14,6 +14,10 @@ from apps.clubs.forms import (
 from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
+from apps.clubs.spain import REGION_PROVINCES, CITY_TO_PROVINCE
+
+PROVINCE_TO_REGION = {p: r for r, ps in REGION_PROVINCES.items() for p in ps}
+CITY_TO_REGION = {c: PROVINCE_TO_REGION.get(p) for c, p in CITY_TO_PROVINCE.items()}
 
 
 def club_profile(request, slug):
@@ -104,9 +108,13 @@ def club_profile(request, slug):
     country_label = club.country or 'España'
     breadcrumbs.append({'name': country_label, 'url': f"{base_url}{query_params}&country={country_label}"})
     if club.region:
-        breadcrumbs.append({'name': club.region, 'url': f"{base_url}{query_params}&country={country_label}&region={club.region}"})
+        region_label = PROVINCE_TO_REGION.get(club.region) or CITY_TO_REGION.get(club.city, club.region)
+        breadcrumbs.append({'name': region_label, 'url': f"{base_url}{query_params}&country={country_label}&region={region_label}"})
+    else:
+        region_label = CITY_TO_REGION.get(club.city, '')
     if club.city:
-        breadcrumbs.append({'name': club.city, 'url': f"{base_url}{query_params}&country={country_label}&region={club.region}&city={club.city}"})
+        region_query = f"&region={region_label}" if region_label else ""
+        breadcrumbs.append({'name': club.city, 'url': f"{base_url}{query_params}&country={country_label}{region_query}&city={club.city}"})
     breadcrumbs.append({'name': club.name, 'url': reverse('club_profile', args=[club.slug])})
 
     return render(request, 'clubs/club_profile.html', {

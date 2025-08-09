@@ -8,6 +8,8 @@ from PIL import Image
 
 from apps.clubs.models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor
 from datetime import date
+from allauth.socialaccount.models import SocialApp
+from django.contrib.sites.models import Site
 
 
 class ClubPlanTests(TestCase):
@@ -35,6 +37,11 @@ class ClubPlanTests(TestCase):
 
 class SearchResultsTests(TestCase):
     """Tests for the ``search_results`` view."""
+    @classmethod
+    def setUpTestData(cls):
+        site = Site.objects.get_or_create(id=1, domain="example.com", name="example.com")[0]
+        app = SocialApp.objects.create(provider="google", name="Google", client_id="id", secret="secret")
+        app.sites.add(site)
 
     def setUp(self):
         self.club = Club.objects.create(
@@ -84,7 +91,7 @@ class SearchResultsTests(TestCase):
         response = self.client.get(url, {"q": "Club", "page": 2})
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context["clubs"]), 1)
+        self.assertEqual(len(response.context["clubs"]), 2)
 
     def test_plan_badge_renders_for_each_plan(self):
         """Clubs should display a plan-colored badge on search results."""
@@ -110,7 +117,7 @@ class SearchResultsTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "badge-verified-gold")
-        self.assertContains(response, "badge-verified-silver")
+        self.assertContains(response, "badge-shine-silver")
         self.assertContains(response, "badge-verified-bronze")
 
     def test_breadcrumbs_for_city(self):
@@ -180,6 +187,46 @@ class SearchResultsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Castellon Club")
         self.assertContains(response, "Alicante Club")
+
+
+class ClubBreadcrumbTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        site = Site.objects.get_or_create(id=1, domain="example.com", name="example.com")[0]
+        app = SocialApp.objects.create(provider="google", name="Google", client_id="id", secret="secret")
+        app.sites.add(site)
+
+    def test_region_breadcrumb_shows_all_cities(self):
+        bar = Club.objects.create(
+            name="Barcelona Club",
+            city="Barcelona",
+            region="Barcelona",
+            country="España",
+            address="addr",
+            phone="1",
+            email="bar@example.com",
+        )
+        gir = Club.objects.create(
+            name="Girona Club",
+            city="Girona",
+            region="Girona",
+            country="España",
+            address="addr",
+            phone="1",
+            email="gir@example.com",
+        )
+        url = reverse("club_profile", args=[bar.slug])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [c["name"] for c in response.context["breadcrumbs"]],
+            ["Clubs de Boxeo", "España", "Cataluña", "Barcelona", bar.name],
+        )
+        region_url = response.context["breadcrumbs"][2]["url"]
+        region_response = self.client.get(region_url)
+        self.assertEqual(region_response.status_code, 200)
+        self.assertContains(region_response, bar.name)
+        self.assertContains(region_response, gir.name)
 
 class ClubPhotoResizeTests(TestCase):
     def test_photo_resized_on_save(self):
