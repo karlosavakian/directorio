@@ -245,7 +245,10 @@
         </div>
         {% endif %}
         <div id="tab-support" class="profile-section">
-            <h4 class="mb-3">Soporte</h4>
+            <h4 class="mb-3">Soporte Técnico</h4>
+
+               
+          <div class="col-lg-6"> 
             <form method="post" class="mt-4">
                 {% csrf_token %}
                 <div class="mb-3">
@@ -259,7 +262,8 @@
                     <textarea class="form-control" name="support_message" id="support_message" placeholder="Explica en detalle el problema"></textarea>
                 </div>
                 <button type="submit" class="btn btn-dark">Enviar</button>
-            </form>
+            </form>  </div>
+
         </div>
     </div>
 </div>
