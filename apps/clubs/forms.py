@@ -495,6 +495,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         required=False,
         label='Comunidad Autónoma',
     )
+    localidad = forms.ChoiceField(required=False, choices=[('', '')])
 
     class Meta:
         model = models.Miembro
@@ -528,11 +529,15 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
             telefono_field.widget.attrs['placeholder'] = 'Telefono'
 
-        # Custom placeholders
+        # Custom labels without placeholders for units
         if 'peso' in self.fields:
-            self.fields['peso'].widget.attrs['placeholder'] = 'peso (kg)'
+            peso_field = self.fields['peso']
+            peso_field.label = 'Peso (kg)'
+            peso_field.widget.attrs.pop('placeholder', None)
         if 'altura' in self.fields:
-            self.fields['altura'].widget.attrs['placeholder'] = 'altura (cm)'
+            altura_field = self.fields['altura']
+            altura_field.label = 'Altura (cm)'
+            altura_field.widget.attrs.pop('placeholder', None)
 
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
@@ -545,11 +550,11 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
         sexo_field = self.fields.get('sexo')
         if sexo_field:
-            sexo_field.choices = [('', 'Sexo')] + list(models.Miembro.SEXO_CHOICES)
+            sexo_field.choices = list(models.Miembro.SEXO_CHOICES)
 
         fuente_field = self.fields.get('fuente')
         if fuente_field:
-            fuente_field.choices = [('', 'Fuente')] + list(models.Miembro.FUENTE_CHOICES)
+            fuente_field.choices = list(models.Miembro.FUENTE_CHOICES)
 
         nacionalidad_field = self.fields.get('nacionalidad')
         if nacionalidad_field:
@@ -562,12 +567,16 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         if region_field:
             region_field.widget.attrs['placeholder'] = 'Comunidad Autónoma'
 
+        localidad_field = self.fields.get('localidad')
+        if localidad_field:
+            localidad_field.widget = forms.Select()
+            localidad_field.choices = [('', '')]
+            localidad_field.label = 'Ciudad'
+
         # Set default labels for new fields
         email_field = self.fields.get('email')
         if email_field:
             email_field.label = 'Correo electrónico'
-        if 'localidad' in self.fields:
-            self.fields['localidad'].label = 'Ciudad'
         if 'codigo_postal' in self.fields:
             self.fields['codigo_postal'].label = 'Código postal'
         if 'street' in self.fields:
