@@ -51,22 +51,9 @@
       </div>
     </div>
   </div>
+   
   <div class="row g-3">
-    <div class="col-md-6">
-      <div class="form-field">
-        {{ form.email }}
-        <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-        {% if form.email.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.email.errors.as_text|striptags }}
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <div class="row g-3">
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.fecha_nacimiento }}
         <button type="button" class="clear-btn bi bi-x"></button>
@@ -78,7 +65,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.sexo }}
         <button type="button" class="clear-btn bi bi-x"></button>
@@ -92,7 +79,7 @@
     </div>
   </div>
   <div class="row g-3">
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.altura }}
         <button type="button" class="clear-btn bi bi-x"></button>
@@ -104,7 +91,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.peso }}
         <button type="button" class="clear-btn bi bi-x"></button>
@@ -117,18 +104,9 @@
       </div>
     </div>
   </div>
-  <div class="form-field">
-    {{ form.edad }}
-    <button type="button" class="clear-btn bi bi-x"></button>
-    <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
-    {% if form.edad.errors %}
-    <div class="invalid-feedback d-block">
-      {{ form.edad.errors.as_text|striptags }}
-    </div>
-    {% endif %}
-  </div>
+
   <div class="row g-3">
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.fuente }}
         <button type="button" class="clear-btn bi bi-x"></button>
@@ -140,7 +118,7 @@
         {% endif %}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-field">
         {{ form.estado }}
         <button type="button" class="clear-btn bi bi-x"></button>
