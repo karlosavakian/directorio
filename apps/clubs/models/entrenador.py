@@ -35,6 +35,7 @@ class Entrenador(models.Model):
     whatsapp = models.CharField(max_length=20, blank=True)
     email = models.EmailField(blank=True)
     verificado = models.BooleanField(default=False)
+    perfil_publico = models.BooleanField(default=True, verbose_name="Perfil público")
     niveles = models.ManyToManyField(TrainingLevel, blank=True)
     precio_hora = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     promociones = models.TextField(blank=True)

@@ -34,7 +34,8 @@ def search_results(request):
             Q(nombre__icontains=search_query) |
             Q(apellidos__icontains=search_query) |
             Q(ciudad__icontains=search_query) |
-            Q(club__name__icontains=search_query)
+            Q(club__name__icontains=search_query),
+            perfil_publico=True,
         )
         if city:
             coaches = coaches.filter(ciudad__iexact=city)

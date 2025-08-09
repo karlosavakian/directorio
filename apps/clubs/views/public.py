@@ -139,7 +139,7 @@ def club_profile(request, slug):
 
 def coach_profile(request, slug):
     """Vista pública del perfil del entrenador."""
-    coach = get_object_or_404(Entrenador, slug=slug)
+    coach = get_object_or_404(Entrenador, slug=slug, perfil_publico=True)
     return render(request, 'clubs/coach_profile.html', {
         'coach': coach,
     })

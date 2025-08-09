@@ -239,10 +239,11 @@
                             </div>
                             <!-- Columna derecha: Entrenadores -->
                             <div class="col-lg-5 p-2">
-                                {% if club.entrenadores.all %}
+                                {% with club.entrenadores.filter(perfil_publico=True) as public_coaches %}
+                                {% if public_coaches %}
                                     <h5 class="mb-4">Entrenadores</h5>
                                     <div class="row">
-                                        {% for e in club.entrenadores.all %}
+                                        {% for e in public_coaches %}
                                             <div class="col-6 d-flex align-items-center mb-3 user-select: none;">
                                                 {% if e.avatar %}
                                                     <img src="{{ e.avatar.url }}"
@@ -266,6 +267,7 @@
                                         {% endfor %}
                                     </div>
                                 {% endif %}
+                                {% endwith %}
                             </div>
                             <!-- Fila completa: Instalaciones y equipamiento -->
                             <div class="col-12 mt-4">
