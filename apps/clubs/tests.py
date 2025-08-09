@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User, Group
 from PIL import Image
 
-from .models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor
+from apps.clubs.models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor
 from datetime import date
 
 
@@ -155,6 +155,31 @@ class SearchResultsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Sevilla Club")
         self.assertNotContains(response, "Madrid Club")
+
+    def test_region_filter_includes_provinces(self):
+        Club.objects.create(
+            name="Castellon Club",
+            city="Castellón de la Plana",
+            region="Castellón",
+            country="España",
+            address="addr",
+            phone="1",
+            email="cas@example.com",
+        )
+        Club.objects.create(
+            name="Alicante Club",
+            city="Alicante",
+            region="Alicante",
+            country="España",
+            address="addr",
+            phone="1",
+            email="ali@example.com",
+        )
+        url = reverse("search_results")
+        response = self.client.get(url, {"region": "Comunidad Valenciana"})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Castellon Club")
+        self.assertContains(response, "Alicante Club")
 
 class ClubPhotoResizeTests(TestCase):
     def test_photo_resized_on_save(self):

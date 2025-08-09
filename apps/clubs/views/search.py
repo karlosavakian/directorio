@@ -39,7 +39,10 @@ def search_results(request):
         if city:
             coaches = coaches.filter(ciudad__iexact=city)
         if region:
-            coaches = coaches.filter(club__region__iexact=region)
+            region_filter = Q(club__region__iexact=region)
+            for province in REGION_PROVINCES.get(region, []):
+                region_filter |= Q(club__region__iexact=province)
+            coaches = coaches.filter(region_filter)
         if country:
             coaches = coaches.filter(club__country__iexact=country)
 
@@ -91,7 +94,10 @@ def search_results(request):
     if city:
         clubs = clubs.filter(city__iexact=city)
     if region:
-        clubs = clubs.filter(region__iexact=region)
+        region_filter = Q(region__iexact=region)
+        for province in REGION_PROVINCES.get(region, []):
+            region_filter |= Q(region__iexact=province)
+        clubs = clubs.filter(region_filter)
     if country:
         clubs = clubs.filter(country__iexact=country)
 
