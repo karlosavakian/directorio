@@ -52,30 +52,26 @@
     </div>
   </div>
   <div class="row g-3">
-    <div class="col-md-6">
-      <div class="form-field phone-field">
-        {{ form.prefijo }}
-        {{ form.telefono }}
-        <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>
-        {% if form.telefono.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.telefono.errors.as_text|striptags }}
-        </div>
-        {% endif %}
+    <div class="form-field col-md-6 phone-field">
+      {{ form.prefijo }}
+      {{ form.telefono }}
+      <button type="button" class="clear-btn bi bi-x"></button>
+      <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>
+      {% if form.telefono.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.telefono.errors.as_text|striptags }}
       </div>
+      {% endif %}
     </div>
-    <div class="col-md-6">
-      <div class="form-field">
-        {{ form.email }}
-        <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.email.id_for_label }}">Correo electrónico</label>
-        {% if form.email.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.email.errors.as_text|striptags }}
-        </div>
-        {% endif %}
+    <div class="form-field col-md-6">
+      {{ form.email }}
+      <button type="button" class="clear-btn bi bi-x"></button>
+      <label for="{{ form.email.id_for_label }}">Correo electrónico</label>
+      {% if form.email.errors %}
+      <div class="invalid-feedback d-block">
+        {{ form.email.errors.as_text|striptags }}
       </div>
+      {% endif %}
     </div>
   </div>
 
