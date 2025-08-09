@@ -1,13 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".form-field").forEach((field) => {
     const input = field.querySelector("input:not(.prefijo-input), textarea, select");
-    const btn = field.querySelector(".clear-btn");
-    if (!input || !btn) return;
+    if (!input) return;
 
-    // Remove clear button for textareas
-    if (input.tagName === "TEXTAREA") {
-      btn.remove();
-      return;
+    // Skip textareas completely
+    if (input.tagName === "TEXTAREA") return;
+
+    let btn = field.querySelector(".clear-btn");
+
+    // Create clear button if not present
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "clear-btn bi bi-x";
+      const label = field.querySelector("label");
+      if (label) {
+        field.insertBefore(btn, label);
+      } else {
+        field.appendChild(btn);
+      }
     }
 
     // Make clear button not tabbable
