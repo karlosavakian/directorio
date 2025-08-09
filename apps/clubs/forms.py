@@ -493,7 +493,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
     class Meta:
         model = models.Miembro
-        exclude = ['club']
+        exclude = ['club', 'codigo']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -541,6 +541,10 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         sexo_field = self.fields.get('sexo')
         if sexo_field:
             sexo_field.choices = [('', 'Sexo')] + list(models.Miembro.SEXO_CHOICES)
+
+        fuente_field = self.fields.get('fuente')
+        if fuente_field:
+            fuente_field.choices = [('', 'Fuente')] + list(models.Miembro.FUENTE_CHOICES)
 
         nacionalidad_field = self.fields.get('nacionalidad')
         if nacionalidad_field:

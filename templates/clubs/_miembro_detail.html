@@ -8,7 +8,9 @@
   {% endif %}
 </div>
 <ul class="list-unstyled d-block">
+  <li><strong>ID:</strong> {{ miembro.codigo }}</li>
   <li><strong>Nombre:</strong> {{ miembro.nombre }} {{ miembro.apellidos }}</li>
+  <li><strong>Fuente:</strong> {{ miembro.get_fuente_display|default:"-" }}</li>
   <li><strong>Fecha de nacimiento:</strong> {{ miembro.fecha_nacimiento|default:"-" }}</li>
   <li><strong>Sexo:</strong> {{ miembro.get_sexo_display|default:"-" }}</li>
   <li><strong>Peso (kg):</strong> {{ miembro.peso|default:"-" }}</li>

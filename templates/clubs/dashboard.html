@@ -882,9 +882,11 @@
             >
               <thead class="table-dark">
                 <tr>
+                  <th>ID</th>
                   <th>Miembro</th>
                   <th class="text-nowrap phone-column">Teléfono</th>
                   <th>Email</th>
+                  <th>Fuente</th>
                   <th>Inscrito</th>
                   <th class="text-nowrap" style="width: 1%">
                     <div class="dropdown d-inline">
@@ -1015,6 +1017,7 @@
                   data-estado="{{ m.estado }}"
                   data-pago="{{ m.pago_mes_actual }}"
                 >
+                  <td>{{ m.codigo }}</td>
                   <td>
                     {{ m.nombre }} {{ m.apellidos }}
                     <button
@@ -1027,6 +1030,7 @@
                   </td>
                   <td class="phone-column">{{ m.prefijo }} {{ m.telefono }}</td>
                   <td>{{ m.email }}</td>
+                  <td>{{ m.get_fuente_display }}</td>
                   <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
                   <td class="text-nowrap">
                     {% if m.estado == 'activo' %}
@@ -1076,7 +1080,7 @@
                 </tr>
                 {% empty %}
                 <tr class="no-members-row">
-                  <td colspan="7" class="text-muted">No hay miembros.</td>
+                  <td colspan="9" class="text-muted">No hay miembros.</td>
                 </tr>
                 {% endfor %}
               </tbody>

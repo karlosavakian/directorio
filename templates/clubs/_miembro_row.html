@@ -1,4 +1,5 @@
 <tr>
+  <td>{{ m.codigo }}</td>
   <td>
     {{ m.nombre }} {{ m.apellidos }}
     <button type="button" class="btn btn-sm btn-link view-member-btn text-dark" data-member-id="{{ m.id }}">
@@ -7,6 +8,7 @@
   </td>
   <td>{{ m.prefijo }} {{ m.telefono }}</td>
   <td>{{ m.email }}</td>
+  <td>{{ m.get_fuente_display }}</td>
   <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
   <td>
     {% if m.estado == 'activo' %}

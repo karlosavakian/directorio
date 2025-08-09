@@ -21,7 +21,7 @@
     </div>
     {% endif %}
   </div>
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-6">
       <div class="form-field">
         {{ form.nombre }}
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-6">
       <div class="form-field phone-field">
         {{ form.prefijo }}
@@ -78,7 +78,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-3">
       <div class="form-field">
         {{ form.fecha_nacimiento }}
@@ -118,7 +118,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-6">
       <div class="form-field">
         {{ form.localidad }}
@@ -148,7 +148,7 @@
       </div>
     </div>
   </div>
-    <div class="row">
+    <div class="row g-3">
       <div class="col-md-6">
         <div class="form-field">
           {{ form.altura }}
@@ -158,9 +158,9 @@
           <div class="invalid-feedback d-block">
             {{ form.altura.errors.as_text|striptags }}
           </div>
-        {% endif %}
+          {% endif %}
+        </div>
       </div>
-    </div>
       <div class="col-md-6">
         <div class="form-field">
           {{ form.peso }}
@@ -170,10 +170,10 @@
           <div class="invalid-feedback d-block">
             {{ form.peso.errors.as_text|striptags }}
           </div>
-        {% endif %}
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
   <div class="form-field">
     {{ form.edad }}
     <button type="button" class="clear-btn bi bi-x"></button>
@@ -184,15 +184,31 @@
     </div>
     {% endif %}
   </div>
-  <div class="form-field">
-    {{ form.estado }}
-    <button type="button" class="clear-btn bi bi-x"></button>
-    <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
-    {% if form.estado.errors %}
-    <div class="invalid-feedback d-block">
-      {{ form.estado.errors.as_text|striptags }}
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="form-field">
+        {{ form.fuente }}
+        <button type="button" class="clear-btn bi bi-x"></button>
+        <label for="{{ form.fuente.id_for_label }}">{{ form.fuente.label }}</label>
+        {% if form.fuente.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.fuente.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
     </div>
-    {% endif %}
+    <div class="col-md-6">
+      <div class="form-field">
+        {{ form.estado }}
+        <button type="button" class="clear-btn bi bi-x"></button>
+        <label for="{{ form.estado.id_for_label }}">{{ form.estado.label }}</label>
+        {% if form.estado.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.estado.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
   <div class="form-field">
     {{ form.notas }}
