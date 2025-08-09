@@ -5,20 +5,7 @@
 
 {% block content %}
 <div class="container-fluid mb-5 px-3 my-3 col-12">
-    {% if breadcrumbs %}
-    <nav aria-label="breadcrumb" class="mb-3">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a class="text-muted text-decoration-none  hover-underline" href="{% url 'home' %}">Inicio</a></li>
-            {% for crumb in breadcrumbs %}
-                {% if forloop.last %}
-                <li class="breadcrumb-item active text-muted text-decoration-none  hover-underline " aria-current="page">{{ crumb.name }}</li>
-                {% else %}
-                <li class="text-muted text-decoration-none  hover-underline breadcrumb-item"><a href="{{ crumb.url }}">{{ crumb.name }}</a></li>
-                {% endif %}
-            {% endfor %}
-        </ol>
-    </nav>
-    {% endif %}
+    {% include 'partials/_breadcrumb.html' %}
 
     <!-- Fila superior con volver y filtro -->
 
