@@ -1,14 +1,23 @@
 {% if breadcrumbs %}
 <nav aria-label="breadcrumb" class="mb-3">
   <ol class="breadcrumb small text-muted mb-0" style="--bs-breadcrumb-divider: '>';">
-    <li class="breadcrumb-item"><a class="text-muted text-decoration-none hover-underline small" href="{% url 'home' %}">Inicio</a></li>
+
+    <li class="breadcrumb-item">
+      <a class="text-muted text-decoration-none hover-underline small" href="{% url 'home' %}">Inicio</a>
+    </li>
+
     {% for crumb in breadcrumbs %}
       {% if crumb.url %}
-        <li class="breadcrumb-item"><a class="text-muted text-decoration-none hover-underline small" href="{{ crumb.url }}">{{ crumb.name }}</a></li>
+        <li class="breadcrumb-item">
+          <a class="text-muted text-decoration-none hover-underline small" href="{{ crumb.url }}">{{ crumb.name }}</a>
+        </li>
       {% else %}
-        <li class="breadcrumb-item active text-muted small" aria-current="page">{{ crumb.name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <span class="text-muted text-decoration-none hover-underline small">{{ crumb.name }}</span>
+        </li>
       {% endif %}
     {% endfor %}
+
   </ol>
 </nav>
 {% endif %}

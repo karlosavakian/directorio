@@ -8,4 +8,10 @@
   object-fit: cover;
 }
 
- 
+ /* Puedes poner esto en tu archivo CSS global o en la plantilla base */
+.breadcrumb .breadcrumb-item a.text-muted:hover,
+.breadcrumb .breadcrumb-item span.text-muted:hover {
+    color: #000 !important;
+    text-decoration: underline;
+    cursor: pointer;
+}
