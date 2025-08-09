@@ -334,13 +334,21 @@
 
 
 
- /* Estilo de los tabs */
- .custom-tab-menu .nav-link {
-       color: #000 !important;
-       padding: 0.75rem 1rem;
-       background-color: transparent;
-       border: none;
-       border-bottom: 1px solid transparent;
+/* Sticky tab menu */
+#clubTabs {
+      position: sticky;
+      top: 0;
+      z-index: 1020;
+      background-color: #ffffff;
+}
+
+/* Estilo de los tabs */
+.custom-tab-menu .nav-link {
+      color: #000 !important;
+      padding: 0.75rem 1rem;
+      background-color: transparent;
+      border: none;
+      border-bottom: 1px solid transparent;
        margin-right: 1rem;
        transition: background-color 0.2s ease, border-color 0.2s ease;
  }
