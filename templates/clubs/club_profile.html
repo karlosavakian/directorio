@@ -6,21 +6,8 @@
 <main class="flex-grow-1">
 
     <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
+        {% include 'partials/_breadcrumb.html' %}
         <div class="profile-header d-flex align-items-center mb-4 mt-4">
-            <span class="small d-flex text-center justify-content-center align-items-center">
-                <a href="{% url 'home' %}" class="text-muted text-decoration-none  hover-underline">Inicio</a>
-                
-                <span class="ms-1 me-1 text-muted fw-light">></span>
-                <a href="{% url 'home' %}" class="text-muted text-decoration-none  hover-underline">Clubs de boxeo</a>
-            <span class="ms-1 me-1 text-muted fw-light">></span> 
-                <a href="{% url 'search_results' %}?q={{ club.country|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.country }}</a>
-                {% if club.region %}
-              <span class="ms-1 me-1 text-muted fw-light">></span>
-                    <a href="{% url 'search_results' %}?q={{ club.region|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.region }}</a>
-                {% endif %}
-          <span class="ms-1 me-1 text-muted fw-light">></span>
-                <a href="{% url 'search_results' %}?q={{ club.city|urlencode }}" class="text-muted text-decoration-none  hover-underline">{{ club.city }}</a>
-            </span>
             <div class="d-none d-lg-flex ms-auto justify-content-end gap-2 ">
 
                 <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 mb-1 ms-2 btn btn-dark " data-club-slug="{{ club.slug }}">

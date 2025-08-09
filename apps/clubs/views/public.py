@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from ..models import Club, Entrenador
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from apps.clubs.forms import (
     ReseñaForm,
     ClubPostForm,
@@ -94,6 +95,20 @@ def club_profile(request, slug):
     for r in reseñas:
         r.edit_form = ReseñaForm(instance=r)
 
+    base_url = reverse('search_results')
+    category_label = f"Clubs de {club.get_category_display()}"
+    query_params = f"?category=club&q={club.get_category_display()}"
+    breadcrumbs = [
+        {'name': category_label, 'url': f"{base_url}{query_params}"}
+    ]
+    if club.country:
+        breadcrumbs.append({'name': club.country, 'url': f"{base_url}{query_params}&country={club.country}"})
+    if club.region:
+        breadcrumbs.append({'name': club.region, 'url': f"{base_url}{query_params}&country={club.country}&region={club.region}"})
+    if club.city:
+        breadcrumbs.append({'name': club.city, 'url': f"{base_url}{query_params}&country={club.country}&region={club.region}&city={club.city}"})
+    breadcrumbs.append({'name': club.name, 'url': None})
+
     return render(request, 'clubs/club_profile.html', {
         'club': club,
         'reseñas': reseñas,
@@ -109,6 +124,7 @@ def club_profile(request, slug):
         'register_form': register_form,
         'schedule_data': schedule_data,
         'booking_classes': club.booking_classes.all(),
+        'breadcrumbs': breadcrumbs,
 
     })
 

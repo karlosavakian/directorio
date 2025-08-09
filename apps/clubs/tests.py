@@ -126,7 +126,10 @@ class SearchResultsTests(TestCase):
         url = reverse("search_results")
         response = self.client.get(url, {"q": "Sevilla"})
         self.assertEqual(response.status_code, 200)
-        self.assertEqual([c["name"] for c in response.context["breadcrumbs"]], ["España", "Andalucía", "Sevilla"])
+        self.assertEqual(
+            [c["name"] for c in response.context["breadcrumbs"]],
+            ["Clubs de Sevilla", "España", "Andalucía", "Sevilla"],
+        )
 
     def test_filter_by_region_without_query(self):
         Club.objects.create(
