@@ -490,6 +490,11 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         choices=[('', 'País')] + COUNTRY_CHOICES,
         required=False,
     )
+    region = forms.ChoiceField(
+        choices=[('', 'Comunidad Autónoma')] + REGION_CHOICES,
+        required=False,
+        label='Comunidad Autónoma',
+    )
 
     class Meta:
         model = models.Miembro
@@ -553,11 +558,21 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             nacionalidad_field.widget.attrs['placeholder'] = 'País'
             nacionalidad_field.initial = 'España'
 
+        region_field = self.fields.get('region')
+        if region_field:
+            region_field.widget.attrs['placeholder'] = 'Comunidad Autónoma'
+
         # Set default labels for new fields
         if 'localidad' in self.fields:
-            self.fields['localidad'].label = 'Localidad'
+            self.fields['localidad'].label = 'Ciudad'
         if 'codigo_postal' in self.fields:
             self.fields['codigo_postal'].label = 'Código postal'
+        if 'street' in self.fields:
+            self.fields['street'].label = 'Calle'
+        if 'number' in self.fields:
+            self.fields['number'].label = 'Número'
+        if 'door' in self.fields:
+            self.fields['door'].label = 'Puerta'
 
     def clean_telefono(self):
         telefono = self.cleaned_data.get('telefono', '')
