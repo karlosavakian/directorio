@@ -49,17 +49,16 @@ def search_results(request):
 
         breadcrumbs = []
         base_url = reverse('search_results')
-        category_label = 'Entrenadores'
+        category_label = 'Entrenadores de Boxeo'
         query_params = f"?category=entrenador"
         if search_query:
-            category_label = f"{category_label} de {search_query}"
             query_params += f"&q={search_query}"
         breadcrumbs.append({'name': category_label, 'url': f"{base_url}{query_params}"})
 
-        if country:
-            breadcrumbs.append({'name': country, 'url': f"{base_url}{query_params}&country={country}"})
+        country_label = country or 'España'
+        breadcrumbs.append({'name': country_label, 'url': f"{base_url}{query_params}&country={country_label}"})
         if region:
-            breadcrumbs.append({'name': region, 'url': f"{base_url}{query_params}&country={country}&region={region}"})
+            breadcrumbs.append({'name': region, 'url': f"{base_url}{query_params}&country={country_label}&region={region}"})
         if city:
             breadcrumbs.append({'name': city, 'url': None})
 
@@ -131,17 +130,16 @@ def search_results(request):
         'servicio': 'Servicios',
     }
     category_key = selected_category or 'club'
-    category_label = category_names.get(category_key, category_key.title())
+    category_label = f"{category_names.get(category_key, category_key.title())} de Boxeo"
     query_params = f"?category={category_key}"
     if search_query:
-        category_label = f"{category_label} de {search_query}"
         query_params += f"&q={search_query}"
     breadcrumbs.append({'name': category_label, 'url': f"{base_url}{query_params}"})
 
-    if country:
-        breadcrumbs.append({'name': country, 'url': f"{base_url}{query_params}&country={country}"})
+    country_label = country or 'España'
+    breadcrumbs.append({'name': country_label, 'url': f"{base_url}{query_params}&country={country_label}"})
     if region:
-        breadcrumbs.append({'name': region, 'url': f"{base_url}{query_params}&country={country}&region={region}"})
+        breadcrumbs.append({'name': region, 'url': f"{base_url}{query_params}&country={country_label}&region={region}"})
     if city:
         breadcrumbs.append({'name': city, 'url': None})
 

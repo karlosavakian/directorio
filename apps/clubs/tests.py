@@ -128,7 +128,7 @@ class SearchResultsTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [c["name"] for c in response.context["breadcrumbs"]],
-            ["Clubs de Sevilla", "España", "Andalucía", "Sevilla"],
+            ["Clubs de Boxeo", "España", "Andalucía", "Sevilla"],
         )
 
     def test_filter_by_region_without_query(self):
