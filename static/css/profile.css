@@ -7,7 +7,6 @@
 }
 .profile-tabs {
     min-width: 200px;
-    overflow-x: auto;
     margin:10px;
 
 }
@@ -23,7 +22,6 @@
 }
 .profile-content {
     flex: 1;
-    overflow-x: auto;
 }
 .profile-section {
     display: none;
@@ -104,6 +102,10 @@
   body.profile-page,
   body.dashboard-page {
     overflow-x: auto !important;
+  }
+  .profile-tabs,
+  .profile-content {
+    overflow-x: auto;
   }
   .navbar-nav .eye-icon {
     order: -1;
