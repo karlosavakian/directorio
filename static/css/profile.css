@@ -184,8 +184,7 @@
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container,
 .profile-form .phone-field .iti--separate-dial-code .iti__selected-flag {
-  width: 70px;
-}
+ }
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container {
   padding: 0;
@@ -194,17 +193,14 @@
 .profile-form .phone-field .iti--separate-dial-code .iti__selected-flag {
   box-sizing: border-box;
   border-right: 1px solid #ddd;
-  padding: 0 10px;
-  right:10px;
+  padding: 0 10px; 
 }
 
-.profile-form .phone-field label {
-  margin-left: 80px;
+.profile-form .phone-field label { 
 }
 
 .profile-form .phone-field .iti {
-  width: 100%;
-  --iti-flag-container-width: 70px;
+  width: 100%; 
 }
 
 .profile-form .phone-field input.phone-input {
