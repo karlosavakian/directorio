@@ -15,6 +15,13 @@ class Miembro(models.Model):
         ("F", "Femenino"),
     ]
 
+    FUENTE_CHOICES = [
+        ("directa", "Directa"),
+        ("presencial", "Presencial"),
+        ("telefono", "Telefono"),
+        ("otros", "Otros"),
+    ]
+
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name="miembros")
     avatar = models.ImageField(upload_to="miembros/", blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
@@ -34,6 +41,8 @@ class Miembro(models.Model):
     prefijo = models.CharField(max_length=5, blank=True)
     telefono = models.CharField(max_length=20, blank=True)
     email = models.EmailField(blank=True)
+    codigo = models.CharField(max_length=7, unique=True, editable=False, blank=True, null=True)
+    fuente = models.CharField(max_length=20, choices=FUENTE_CHOICES, blank=True)
     fecha_inscripcion = models.DateField(auto_now_add=True)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="activo")
 
@@ -46,6 +55,16 @@ class Miembro(models.Model):
         return f"{self.nombre} {self.apellidos}"
 
     def save(self, *args, **kwargs):
+        if not self.codigo:
+            last_codigo = Miembro.objects.aggregate(models.Max('codigo'))['codigo__max']
+            if last_codigo:
+                try:
+                    last_num = int(last_codigo.split('-')[1])
+                except (IndexError, ValueError):
+                    last_num = 0
+            else:
+                last_num = 0
+            self.codigo = f"B-{last_num + 1:04d}"
         super().save(*args, **kwargs)
         if self.avatar and hasattr(self.avatar, "path"):
             resize_image(self.avatar.path)
