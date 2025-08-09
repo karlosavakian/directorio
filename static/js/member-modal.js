@@ -35,6 +35,12 @@ document.addEventListener('DOMContentLoaded', () => {
               if (window.initSelectLabels) {
                 window.initSelectLabels(editEl);
               }
+              if (window.initPhoneInputs) {
+                window.initPhoneInputs(editEl);
+              }
+              if (window.initMemberLocationSelects) {
+                window.initMemberLocationSelects(editEl);
+              }
               const form = editEl.querySelector('form');
               form.addEventListener('submit', e => {
                 e.preventDefault();
@@ -107,6 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (window.initSelectLabels) {
               window.initSelectLabels(addEl);
+            }
+            if (window.initPhoneInputs) {
+              window.initPhoneInputs(addEl);
+            }
+            if (window.initMemberLocationSelects) {
+              window.initMemberLocationSelects(addEl);
             }
             const form = addEl.querySelector('form');
             form.addEventListener('submit', e => {

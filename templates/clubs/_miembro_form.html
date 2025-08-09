@@ -69,7 +69,7 @@
       <div class="form-field">
         {{ form.email }}
         <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        <label for="{{ form.email.id_for_label }}">Correo electrónico</label>
         {% if form.email.errors %}
         <div class="invalid-feedback d-block">
           {{ form.email.errors.as_text|striptags }}

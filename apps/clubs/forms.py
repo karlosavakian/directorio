@@ -563,6 +563,9 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             region_field.widget.attrs['placeholder'] = 'Comunidad Autónoma'
 
         # Set default labels for new fields
+        email_field = self.fields.get('email')
+        if email_field:
+            email_field.label = 'Correo electrónico'
         if 'localidad' in self.fields:
             self.fields['localidad'].label = 'Ciudad'
         if 'codigo_postal' in self.fields:

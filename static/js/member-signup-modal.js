@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.initSelectLabels) {
               window.initSelectLabels(modalEl);
             }
+            if (window.initPhoneInputs) {
+              window.initPhoneInputs(modalEl);
+            }
+            if (window.initMemberLocationSelects) {
+              window.initMemberLocationSelects(modalEl);
+            }
             const form = modalEl.querySelector('form');
             form.addEventListener('submit', e => {
               e.preventDefault();
