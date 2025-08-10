@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".form-field").forEach((field) => {
+function initClearInputs(root = document) {
+  root.querySelectorAll(".form-field").forEach((field) => {
     const input = field.querySelector("input:not(.prefijo-input), textarea");
     if (!input) return;
 
@@ -39,4 +39,10 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("input", toggle);
     toggle();
   });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initClearInputs();
 });
+
+window.initClearInputs = initClearInputs;

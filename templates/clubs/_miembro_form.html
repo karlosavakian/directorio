@@ -247,3 +247,14 @@
     </div>
   </div>
 </form>
+<script>
+  const form = document.currentScript.previousElementSibling;
+  if (form) {
+    if (window.initClearInputs) {
+      initClearInputs(form);
+    }
+    if (window.initSelectLabels) {
+      initSelectLabels(form);
+    }
+  }
+</script>
