@@ -405,7 +405,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
         modalidad_field = self.fields.get('modalidad')
         if modalidad_field:
             modalidad_field.choices = [
-                ('', '---------'),
+                ('', ''),
                 ('schoolboy', 'Schoolboy'),
                 ('junior', 'Junior'),
                 ('joven', 'Joven'),
