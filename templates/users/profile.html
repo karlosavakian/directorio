@@ -247,19 +247,23 @@
         <div id="tab-support" class="profile-section">
             <h4 class="mb-3">Soporte Técnico</h4>
 
-               
-          <div class="col-lg-6"> 
+
+          <div class="col-lg-6">
             <form method="post" class="mt-4">
                 {% csrf_token %}
-                <div class="mb-3">
+                <div class="form-field mb-3">
                     <select class="form-select" name="support_option" id="support_option">
+                        <option value="">Selecciona una opción</option>
                         <option value="problema">Notificar de un problema</option>
                         <option value="eliminar">Eliminar mi perfil</option>
                         <option value="otros">Otros</option>
                     </select>
+                    <label for="support_option">Selecciona una opción</label>
                 </div>
-                <div class="mb-3">
-                    <textarea class="form-control" name="support_message" id="support_message" placeholder="Explica en detalle el problema"></textarea>
+                <div class="form-field mb-3">
+                    <textarea class="form-control" name="support_message" id="support_message" placeholder=" "></textarea>
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="support_message">Explica en detalle el problema</label>
                 </div>
                 <button type="submit" class="btn btn-dark">Enviar</button>
             </form>  </div>
