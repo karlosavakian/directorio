@@ -236,7 +236,7 @@ def dashboard(request):
     elif booking_filter in ['active', 'confirmed', 'cancelled']:
         bookings = bookings.filter(status=booking_filter)
 
-    form = ClubForm(instance=club)
+    form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
 
     return render(
         request,
@@ -280,13 +280,19 @@ def club_edit(request, slug):
         data = request.POST.copy()
         for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
             data.setdefault(field, getattr(club, field))
-        form = ClubForm(data, request.FILES, instance=club)
+        form = ClubForm(
+            data,
+            request.FILES,
+            instance=club,
+            require_all=True,
+            exclude_required=['door', 'logo'],
+        )
         if form.is_valid():
             form.save()
             messages.success(request, 'Club actualizado correctamente.')
             return redirect('club_dashboard')
     else:
-        form = ClubForm(instance=club)
+        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
     return render(request, 'clubs/club_form.html', {'form': form, 'club': club})
 
 
@@ -533,7 +539,12 @@ def miembro_create(request, slug):
     if not has_club_permission(request.user, club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = MiembroForm(request.POST, request.FILES)
+        form = MiembroForm(
+            request.POST,
+            request.FILES,
+            require_all=True,
+            exclude_required=['notas', 'avatar', 'edad'],
+        )
         if form.is_valid():
             miembro = form.save(commit=False)
             miembro.club = club
@@ -544,7 +555,7 @@ def miembro_create(request, slug):
                 return HttpResponse(html)
             return redirect('club_dashboard')
     else:
-        form = MiembroForm()
+        form = MiembroForm(require_all=True, exclude_required=['notas', 'avatar', 'edad'])
     template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
     return render(request, template, {'form': form, 'club': club})
 
@@ -555,7 +566,13 @@ def miembro_update(request, pk):
     if not has_club_permission(request.user, miembro.club):
         return HttpResponseForbidden()
     if request.method == 'POST':
-        form = MiembroForm(request.POST, request.FILES, instance=miembro)
+        form = MiembroForm(
+            request.POST,
+            request.FILES,
+            instance=miembro,
+            require_all=True,
+            exclude_required=['notas', 'avatar', 'edad'],
+        )
         if form.is_valid():
             form.save()
             messages.success(request, 'Miembro actualizado correctamente.')
@@ -563,7 +580,7 @@ def miembro_update(request, pk):
                 return HttpResponse(status=204)
             return redirect('club_dashboard')
     else:
-        form = MiembroForm(instance=miembro)
+        form = MiembroForm(instance=miembro, require_all=True, exclude_required=['notas', 'avatar', 'edad'])
     template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
     return render(request, template, {
         'form': form,

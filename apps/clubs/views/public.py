@@ -182,7 +182,12 @@ def member_signup(request, slug):
     """Allow public users to register as club members."""
     club = get_object_or_404(Club, slug=slug)
     if request.method == 'POST':
-        form = MiembroForm(request.POST, request.FILES)
+        form = MiembroForm(
+            request.POST,
+            request.FILES,
+            require_all=True,
+            exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad'],
+        )
         if form.is_valid():
             miembro = form.save(commit=False)
             miembro.club = club
@@ -192,7 +197,7 @@ def member_signup(request, slug):
                 return HttpResponse(status=204)
             return redirect('club_profile', slug=club.slug)
     else:
-        form = MiembroForm()
+        form = MiembroForm(require_all=True, exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad'])
     template = 'clubs/_miembro_public_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
     return render(request, template, {'form': form, 'club': club})
 
