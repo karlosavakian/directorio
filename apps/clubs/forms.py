@@ -489,9 +489,10 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
     nacionalidad = forms.ChoiceField(
         choices=[('', 'País')] + COUNTRY_CHOICES,
         required=False,
+        label='País',
     )
     region = forms.ChoiceField(
-        choices=[('', 'Comunidad Autónoma')] + REGION_CHOICES,
+        choices=[('', '')] + REGION_CHOICES,
         required=False,
         label='Comunidad Autónoma',
     )
@@ -529,7 +530,6 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             telefono_field.widget.attrs['class'] = (css + ' phone-input').strip()
             telefono_field.widget.attrs['placeholder'] = 'Telefono'
 
-        # Custom labels without placeholders for units
         if 'peso' in self.fields:
             peso_field = self.fields['peso']
             peso_field.label = 'Peso (kg)'
@@ -560,8 +560,10 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         if nacionalidad_field:
             nacionalidad_field.choices = [('', 'País'), ('España', 'España')]
             nacionalidad_field.label = 'País'
-            nacionalidad_field.widget.attrs['placeholder'] = 'País'
+            nacionalidad_field.widget.attrs['placeholder'] = 'País' 
             nacionalidad_field.initial = 'España'
+
+
 
         region_field = self.fields.get('region')
         if region_field:
@@ -573,7 +575,6 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             localidad_field.choices = [('', '')]
             localidad_field.label = 'Ciudad'
 
-        # Set default labels for new fields
         email_field = self.fields.get('email')
         if email_field:
             email_field.label = 'Correo electrónico'
@@ -585,6 +586,27 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             self.fields['number'].label = 'Número'
         if 'door' in self.fields:
             self.fields['door'].label = 'Puerta'
+
+        # 🔹 Lógica dependiente país/region/ciudad
+        country_val = self.data.get(self.add_prefix('nacionalidad')) if self.is_bound else self.initial.get('nacionalidad') or getattr(self.instance, 'nacionalidad', '')
+        region_val = self.data.get(self.add_prefix('region')) if self.is_bound else self.initial.get('region') or getattr(self.instance, 'region', '')
+
+        if not country_val:
+            self.fields['region'].widget.attrs['disabled'] = True
+            self.fields['localidad'].widget.attrs['disabled'] = True
+        elif not region_val:
+            self.fields['localidad'].widget.attrs['disabled'] = True
+
+    def clean(self):
+        cleaned = super().clean()
+        country = cleaned.get('nacionalidad') or ''
+        region = cleaned.get('region') or ''
+        if not country:
+            cleaned['region'] = ''
+            cleaned['localidad'] = ''
+        elif not region:
+            cleaned['localidad'] = ''
+        return cleaned
 
     def clean_telefono(self):
         telefono = self.cleaned_data.get('telefono', '')

@@ -180,10 +180,9 @@
     </div>
   </div>
   <div class="row g-3">
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="form-field">
-        {{ form.altura }}
-        <button type="button" class="clear-btn bi bi-x"></button>
+        {{ form.altura }} 
         <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
         {% if form.altura.errors %}
         <div class="invalid-feedback d-block">
@@ -192,10 +191,9 @@
         {% endif %}
       </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
       <div class="form-field">
-        {{ form.peso }}
-        <button type="button" class="clear-btn bi bi-x"></button>
+        {{ form.peso }} 
         <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
         {% if form.peso.errors %}
         <div class="invalid-feedback d-block">
@@ -251,3 +249,4 @@
     </div>
   </div>
 </form>
+ 
