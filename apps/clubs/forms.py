@@ -202,7 +202,8 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'features': 'Instalaciones y Equipamiento',
         }
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, require_all=False, exclude_required=None, **kwargs):
+        exclude_required = exclude_required or []
         super().__init__(*args, **kwargs)
         # Ensure Spain is selected by default
         self.initial.setdefault('country', 'España')
@@ -288,6 +289,13 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             css = logo_widget.widget.attrs.get('class', '')
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
+        if require_all:
+            for name, field in self.fields.items():
+                field.required = True
+            for name in exclude_required:
+                if name in self.fields:
+                    self.fields[name].required = False
+
     def clean_slug(self):
         slug = self.cleaned_data.get('slug', '').lstrip('@')
         if len(slug) < 3:
@@ -306,6 +314,12 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             if digits and digits[0] not in '679':
                 raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
+
+    def clean_features(self):
+        features = self.cleaned_data.get('features')
+        if self.fields.get('features') and self.fields['features'].required and not features:
+            raise forms.ValidationError('Selecciona al menos una característica.')
+        return features
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -502,7 +516,8 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         model = models.Miembro
         exclude = ['club', 'codigo']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, require_all=False, exclude_required=None, **kwargs):
+        exclude_required = exclude_required or []
         super().__init__(*args, **kwargs)
         for name, field in self.fields.items():
             css = field.widget.attrs.get('class', '')
@@ -557,6 +572,13 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         fuente_field = self.fields.get('fuente')
         if fuente_field:
                 fuente_field.choices = [('', '')] + list(models.Miembro.FUENTE_CHOICES)
+
+        if require_all:
+            for name, field in self.fields.items():
+                field.required = True
+            for name in exclude_required:
+                if name in self.fields:
+                    self.fields[name].required = False
 
         if estado_field := self.fields.get('estado'):
             estado_field.choices = [('', '')] + list(models.Miembro.ESTADO_CHOICES) 
