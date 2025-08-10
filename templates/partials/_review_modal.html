@@ -15,12 +15,15 @@
                                 <form method="POST" id="reseña-form">
                                     {% csrf_token %}
                                     {% if form.errors %}<div class="alert alert-danger">Por favor completa todos los campos obligatorios.</div>{% endif %}
-                                    <div class="mb-3">
+                                    <div class="form-field mb-3">
                                         <input type="text"
+                                               id="titulo"
                                                name="titulo"
                                                class="form-control"
-                                               placeholder="Título de la reseña"
+                                               placeholder=" "
                                                required>
+                                        <button type="button" class="clear-btn bi bi-x"></button>
+                                        <label for="titulo">Título de la reseña</label>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label d-block mb-1">Instalaciones:</label>
@@ -53,12 +56,15 @@
                                                required
                                                id="input-variedad_clases">
                                     </div>
-                                    <div class="mb-3">
+                                    <div class="form-field mb-3">
                                         <textarea name="comentario"
+                                                  id="comentario"
                                                   class="form-control"
                                                   rows="4"
                                                   minlength="200"
-                                                  placeholder="¿Qué te ha gustado o qué mejorarías del club?"></textarea>
+                                                  placeholder=" "></textarea>
+                                        <button type="button" class="clear-btn bi bi-x"></button>
+                                        <label for="comentario">¿Qué te ha gustado o qué mejorarías del club?</label>
                                     </div>
                                     <button type="submit" class="btn btn-dark">Enviar Reseña</button>
                                 </form>
