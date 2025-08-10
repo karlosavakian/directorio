@@ -175,6 +175,23 @@ p {
     border-radius: 5px;
 }
 
+ .form-field label {
+  font-size: 12px;
+  position: absolute;
+  left: 0;
+  margin-left:15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 0.25rem;
+  color: #666;
+  pointer-events: none;
+  transition: transform 0.2s, font-size 0.2s, color 0.2s;
+}
+
+.form-control, select   {
+  font-size: 14px !important;
+}
 @keyframes shake {
     0% {
         transform: translateX(0);

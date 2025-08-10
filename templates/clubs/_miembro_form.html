@@ -1,7 +1,7 @@
 <form method="post" enctype="multipart/form-data" class="profile-form" action="{% if miembro %}{% url 'miembro_update' miembro.id %}{% else %}{% url 'miembro_create' club.slug %}{% endif %}">
   {% csrf_token %}
-  <div class="form-field text-center">
-    <div class="avatar-dropzone mx-auto">
+  <div class="form-field text-center rounded border bg-dark">
+    <div class="avatar-dropzone mx-auto p-3">
       {{ form.avatar }}
       <div
         class="avatar-preview rounded-circle{% if miembro and miembro.avatar.name %} has-image{% endif %}"
@@ -21,7 +21,9 @@
     </div>
     {% endif %}
   </div>
-  <div class="row g-3">
+
+    <h4 >Datos personales</h4>
+  <div class="row g-3 mt-1">
     <div class="col-md-6">
       <div class="form-field">
         {{ form.nombre }}
@@ -51,7 +53,71 @@
       </div>
     </div>
   </div>
+  
+
   <div class="row g-3">
+    <div class="col-md-4">
+      <div class="form-field">
+        {{ form.fecha_nacimiento }}
+        <button type="button" class="clear-btn bi bi-x"></button>
+        <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
+        {% if form.fecha_nacimiento.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.fecha_nacimiento.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-field">
+        {{ form.sexo }}
+        <button type="button" class="clear-btn bi bi-x"></button>
+        <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+        {% if form.sexo.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.sexo.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-field">
+        {{ form.guardia }}
+        <button type="button" class="clear-btn bi bi-x"></button>
+        <label for="{{ form.guardia.id_for_label }}">{{ form.guardia.label }}</label>
+        {% if form.guardia.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.guardia.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-field">
+        {{ form.altura }} 
+        <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
+        {% if form.altura.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.altura.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="form-field">
+        {{ form.peso }} 
+        <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
+        {% if form.peso.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.peso.errors.as_text|striptags }}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <h4  >Datos de contacto</h4>
+  <div class="row g-3 mt-1"> 
     <div class="col-md-6">
       <div class="form-field phone-field">
         {{ form.prefijo }}
@@ -77,37 +143,7 @@
         {% endif %}
       </div>
     </div>
-  </div>
-
-  <div class="row g-3">
-    <div class="col-md-3">
-      <div class="form-field">
-        {{ form.fecha_nacimiento }}
-        <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
-        {% if form.fecha_nacimiento.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.fecha_nacimiento.errors.as_text|striptags }}
-        </div>
-        {% endif %}
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="form-field">
-        {{ form.sexo }}
-        <button type="button" class="clear-btn bi bi-x"></button>
-        <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
-        {% if form.sexo.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.sexo.errors.as_text|striptags }}
-        </div>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
-  <h4 class="mt-4">Dirección</h4>
-  <div class="row g-3 mt-2">
+      
     <div class="form-field col-md-4">
       {{ form.nacionalidad }}
       <label for="{{ form.nacionalidad.id_for_label }}">{{ form.nacionalidad.label }}</label>
@@ -179,32 +215,20 @@
       {% endif %}
     </div>
   </div>
-  <div class="row g-3">
-    <div class="col-md-2">
+   <h4 >Otros datos</h4>
+  <div class="row g-3 mt-1">
+        <div class="col-md-6">
       <div class="form-field">
-        {{ form.altura }} 
-        <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
-        {% if form.altura.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.altura.errors.as_text|striptags }}
-        </div>
-        {% endif %}
-      </div>
+    {{ form.notas }}
+    <button type="button" class="clear-btn bi bi-x"></button>
+    <label for="{{ form.notas.id_for_label }}">{{ form.notas.label }}</label>
+    {% if form.notas.errors %}
+    <div class="invalid-feedback d-block">
+      {{ form.notas.errors.as_text|striptags }}
     </div>
-    <div class="col-md-2">
-      <div class="form-field">
-        {{ form.peso }} 
-        <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
-        {% if form.peso.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.peso.errors.as_text|striptags }}
-        </div>
-        {% endif %}
-      </div>
-    </div>
+    {% endif %}
   </div>
-
-  <div class="row g-3">
+    </div>
     <div class="col-md-3">
       <div class="form-field">
         {{ form.fuente }}
@@ -229,21 +253,13 @@
         {% endif %}
       </div>
     </div>
+
   </div>
-  <div class="form-field">
-    {{ form.notas }}
-    <button type="button" class="clear-btn bi bi-x"></button>
-    <label for="{{ form.notas.id_for_label }}">{{ form.notas.label }}</label>
-    {% if form.notas.errors %}
-    <div class="invalid-feedback d-block">
-      {{ form.notas.errors.as_text|striptags }}
-    </div>
-    {% endif %}
-  </div>
+  
   <button type="submit" class="btn btn-dark save-btn">Guardar</button>
   <div class="confirm-edit-container alert alert-warning mt-3 d-none" role="alert">
     ¿Seguro que deseas guardar los cambios?
-    <div class="mt-2 d-flex justify-content-end gap-2">
+    <div class="mt-1 d-flex justify-content-end gap-2">
       <button type="button" class="btn btn-secondary btn-sm cancel-confirm">Cancelar</button>
       <button type="button" class="btn btn-primary btn-sm confirm-edit-btn">Guardar</button>
     </div>

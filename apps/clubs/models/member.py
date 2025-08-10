@@ -14,6 +14,12 @@ class Miembro(models.Model):
         ("M", "Masculino"),
         ("F", "Femenino"),
     ]
+    GUARDIA_CHOICES = [
+        ("diestro", "Diestro"),
+        ("zurdo", "Zurdo"),
+        ("ambidiestro", "Ambidiestro"),
+    ]
+
 
     FUENTE_CHOICES = [
         ("directa", "Directa"),
@@ -32,6 +38,7 @@ class Miembro(models.Model):
     door = models.CharField(max_length=10, blank=True)
     codigo_postal = models.CharField(max_length=10, blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True)
+    guardia = models.CharField(max_length=11, choices=GUARDIA_CHOICES, blank=True)
     peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     nacionalidad = models.CharField(
@@ -48,7 +55,7 @@ class Miembro(models.Model):
     codigo = models.CharField(max_length=7, unique=True, editable=False, blank=True, null=True)
     fuente = models.CharField(max_length=20, choices=FUENTE_CHOICES, blank=True)
     fecha_inscripcion = models.DateField(auto_now_add=True)
-    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="activo")
+    estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, blank=True, null=True)
 
     class Meta:
         verbose_name = "Miembro"

@@ -532,12 +532,10 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
         if 'peso' in self.fields:
             peso_field = self.fields['peso']
-            peso_field.label = 'Peso (kg)'
-            peso_field.widget.attrs.pop('placeholder', None)
+            peso_field.label = 'Peso (kg)' 
         if 'altura' in self.fields:
             altura_field = self.fields['altura']
-            altura_field.label = 'Altura (cm)'
-            altura_field.widget.attrs.pop('placeholder', None)
+            altura_field.label = 'Altura (cm)' 
 
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
@@ -549,12 +547,19 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
             fecha_widget.widget.input_type = 'date'
 
         sexo_field = self.fields.get('sexo')
-        if sexo_field:
-            sexo_field.choices = list(models.Miembro.SEXO_CHOICES)
+        if sexo_field: 
+            sexo_field.choices = [('', '')] + list(models.Miembro.SEXO_CHOICES)
+            
+        guardia_field = self.fields.get('guardia')
+        if guardia_field: 
+            guardia_field.choices = [('', '')] + list(models.Miembro.GUARDIA_CHOICES)
 
         fuente_field = self.fields.get('fuente')
         if fuente_field:
-            fuente_field.choices = list(models.Miembro.FUENTE_CHOICES)
+                fuente_field.choices = [('', '')] + list(models.Miembro.FUENTE_CHOICES)
+
+        if estado_field := self.fields.get('estado'):
+            estado_field.choices = [('', '')] + list(models.Miembro.ESTADO_CHOICES) 
 
         nacionalidad_field = self.fields.get('nacionalidad')
         if nacionalidad_field:

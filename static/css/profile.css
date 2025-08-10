@@ -83,19 +83,7 @@
   -webkit-text-fill-color: #000;
 }
 
-.profile-form .form-field label {
-  font-size: 12px;
-  position: absolute;
-  left: 0;
-  margin-left:15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  padding: 0 0.25rem;
-  color: #666;
-  pointer-events: none;
-  transition: transform 0.2s, font-size 0.2s, color 0.2s;
-}
+
 
 @media (max-width: 991.98px) {
   html,
@@ -184,6 +172,7 @@
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container,
 .profile-form .phone-field .iti--separate-dial-code .iti__selected-flag {
+  font-size:14px;
  }
 
 .profile-form .phone-field .iti--separate-dial-code .iti__flag-container {
