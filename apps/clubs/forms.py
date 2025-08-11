@@ -363,10 +363,18 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
     derrotas = forms.IntegerField(required=False, min_value=0, label='Derrotas')
     empates = forms.IntegerField(required=False, min_value=0, label='Empates')
     peso_kg = forms.DecimalField(
-        required=False, max_digits=5, decimal_places=2, label='Peso (kg)'
+        required=False,
+        max_digits=5,
+        decimal_places=2,
+        label='Peso (kg)',
+        min_value=0,
     )
     altura_cm = forms.DecimalField(
-        required=False, max_digits=5, decimal_places=2, label='Altura (cm)'
+        required=False,
+        max_digits=5,
+        decimal_places=2,
+        label='Altura (cm)',
+        min_value=0,
     )
     fecha_nacimiento = forms.DateField(required=False, label='Fecha de nacimiento')
     tipo_competidor = forms.ChoiceField(
@@ -556,10 +564,14 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
         if 'peso' in self.fields:
             peso_field = self.fields['peso']
-            peso_field.label = 'Peso (kg)' 
+            peso_field.label = 'Peso (kg)'
+            peso_field.min_value = 0
+            peso_field.widget.attrs['min'] = 0
         if 'altura' in self.fields:
             altura_field = self.fields['altura']
-            altura_field.label = 'Altura (cm)' 
+            altura_field.label = 'Altura (cm)'
+            altura_field.min_value = 0
+            altura_field.widget.attrs['min'] = 0
 
         avatar_widget = self.fields.get('avatar')
         if avatar_widget:
