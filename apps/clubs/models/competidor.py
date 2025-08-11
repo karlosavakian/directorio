@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from .club import Club
 from apps.core.utils.image_utils import resize_image
@@ -37,6 +39,7 @@ class Competidor(models.Model):
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150, blank=True)
     edad = models.PositiveIntegerField(null=True, blank=True)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
     record = models.CharField(max_length=20, blank=True)
     modalidad = models.CharField(max_length=15, choices=MODALIDAD_CHOICES, blank=True)
     peso = models.CharField(max_length=15, choices=PESO_CHOICES, blank=True)
@@ -46,6 +49,14 @@ class Competidor(models.Model):
     palmares = models.TextField(blank=True, verbose_name="Palmarés")
 
     def save(self, *args, **kwargs):
+        if self.fecha_nacimiento:
+            today = date.today()
+            self.edad = (
+                today.year
+                - self.fecha_nacimiento.year
+                - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+            )
+
         if self.edad is not None and not self.modalidad:
             if 13 <= self.edad <= 14:
                 self.modalidad = "schoolboy"

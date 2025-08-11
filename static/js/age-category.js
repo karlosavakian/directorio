@@ -1,9 +1,9 @@
 function initAgeCategory(root = document) {
-  const ageInput = root.querySelector('input[name="edad"]');
+  const birthInput = root.querySelector('input[name="fecha_nacimiento"]');
   const select = root.querySelector('select[name="modalidad"]');
   const tipoRadios = root.querySelectorAll('input[name="tipo_competidor"]');
   const modalidadField = select ? select.closest('.form-field') : null;
-  if (!ageInput) return;
+  if (!birthInput) return;
 
   const updateVisibility = () => {
     const checked = root.querySelector('input[name="tipo_competidor"]:checked');
@@ -14,8 +14,21 @@ function initAgeCategory(root = document) {
 
   tipoRadios.forEach(r => r.addEventListener('change', updateVisibility));
 
+  const getAge = () => {
+    const val = birthInput.value;
+    if (!val) return NaN;
+    const d = new Date(val);
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    const m = today.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   const update = () => {
-    const age = parseInt(ageInput.value, 10);
+    const age = getAge();
     let type = '';
     let value = '';
     if (!isNaN(age)) {
@@ -48,7 +61,7 @@ function initAgeCategory(root = document) {
     updateVisibility();
   };
 
-  ageInput.addEventListener('input', update);
+  birthInput.addEventListener('change', update);
   update();
   updateVisibility();
 }
