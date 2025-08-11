@@ -15,6 +15,7 @@ from apps.users.forms import RegistroUsuarioForm
 from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
 from apps.clubs.spain import REGION_PROVINCES, CITY_TO_PROVINCE
+from django.utils import timezone
 
 PROVINCE_TO_REGION = {p: r for r, ps in REGION_PROVINCES.items() for p in ps}
 CITY_TO_REGION = {c: PROVINCE_TO_REGION.get(p) for c, p in CITY_TO_PROVINCE.items()}
@@ -191,6 +192,9 @@ def member_signup(request, slug):
         if form.is_valid():
             miembro = form.save(commit=False)
             miembro.club = club
+            miembro.fuente = 'directa'
+            miembro.estado = 'activo'
+            miembro.fecha_inscripcion = timezone.now().date()
             miembro.save()
             messages.success(request, 'Inscripción guardada correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':

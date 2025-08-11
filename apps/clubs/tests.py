@@ -10,6 +10,8 @@ from apps.clubs.models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competid
 from datetime import date
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
+from django import forms
+from unittest.mock import patch
 
 
 class ClubPlanTests(TestCase):
@@ -472,3 +474,31 @@ class MessageConversationTests(TestCase):
         self.client.login(username='normal', password='pass')
         user_inbox = self.client.get(reverse('conversation'))
         self.assertContains(user_inbox, 'hello')
+
+
+class MemberSignupDefaultsTests(TestCase):
+    def setUp(self):
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='612345678', email='club@example.com'
+        )
+
+    def test_signup_sets_default_fields(self):
+        class SimpleForm(forms.ModelForm):
+            class Meta:
+                model = Miembro
+                fields = ['nombre', 'apellidos']
+
+            def __init__(self, *args, **kwargs):
+                kwargs.pop('require_all', None)
+                kwargs.pop('exclude_required', None)
+                super().__init__(*args, **kwargs)
+
+        url = reverse('club_member_signup', args=[self.club.slug])
+        with patch('apps.clubs.views.public.MiembroForm', SimpleForm):
+            response = self.client.post(url, {'nombre': 'Juan', 'apellidos': 'Pérez'})
+        self.assertEqual(response.status_code, 302)
+        miembro = Miembro.objects.get()
+        self.assertEqual(miembro.club, self.club)
+        self.assertEqual(miembro.fuente, 'directa')
+        self.assertEqual(miembro.estado, 'activo')
+        self.assertEqual(miembro.fecha_inscripcion, date.today())
