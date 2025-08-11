@@ -700,8 +700,8 @@ select option[value="España"] {
 
 /* Larger radio buttons for competitor type */
 .profile-form input[name="tipo_competidor"] {
-  width: 1.3em;
-  height: 1.3em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
 }
 .profile-form input[name="tipo_competidor"]:checked {
