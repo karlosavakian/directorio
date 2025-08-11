@@ -1,4 +1,6 @@
+from datetime import date
 from django.db import models
+from django.core.validators import MinValueValidator
 from .club import Club
 from apps.core.utils.image_utils import resize_image
 
@@ -36,26 +38,44 @@ class Competidor(models.Model):
     avatar = models.ImageField(upload_to="competidores/", blank=True, null=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150, blank=True)
-    edad = models.PositiveIntegerField(null=True, blank=True)
+    fecha_nacimiento = models.DateField(null=True, blank=True)
     record = models.CharField(max_length=20, blank=True)
     modalidad = models.CharField(max_length=15, choices=MODALIDAD_CHOICES, blank=True)
     peso = models.CharField(max_length=15, choices=PESO_CHOICES, blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True)
-    peso_kg = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    altura_cm = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    peso_kg = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0)],
+    )
+    altura_cm = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0)],
+    )
     palmares = models.TextField(blank=True, verbose_name="Palmarés")
 
     def save(self, *args, **kwargs):
-        if self.edad is not None and not self.modalidad:
-            if 13 <= self.edad <= 14:
+        if self.fecha_nacimiento and not self.modalidad:
+            today = date.today()
+            edad = (
+                today.year
+                - self.fecha_nacimiento.year
+                - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+            )
+            if 13 <= edad <= 14:
                 self.modalidad = "schoolboy"
-            elif 15 <= self.edad <= 16:
+            elif 15 <= edad <= 16:
                 self.modalidad = "junior"
-            elif 17 <= self.edad <= 18:
+            elif 17 <= edad <= 18:
                 self.modalidad = "joven"
-            elif 19 <= self.edad <= 40:
+            elif 19 <= edad <= 40:
                 self.modalidad = "elite"
-            elif self.edad >= 18:
+            elif edad >= 18:
                 self.modalidad = "profesional"
         super().save(*args, **kwargs)
         if self.avatar and hasattr(self.avatar, "path"):
@@ -74,6 +94,17 @@ class Competidor(models.Model):
 
     def __str__(self):
         return f"{self.nombre} {self.apellidos}".strip()
+
+    @property
+    def edad(self):
+        if not self.fecha_nacimiento:
+            return None
+        today = date.today()
+        return (
+            today.year
+            - self.fecha_nacimiento.year
+            - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
+        )
 
     @property
     def record_tuple(self):

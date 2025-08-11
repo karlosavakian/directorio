@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MinValueValidator
 from .club import Club
 from apps.core.utils.image_utils import resize_image
 
@@ -39,8 +40,20 @@ class Miembro(models.Model):
     codigo_postal = models.CharField(max_length=10, blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, blank=True)
     guardia = models.CharField(max_length=11, choices=GUARDIA_CHOICES, blank=True)
-    peso = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    altura = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    peso = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0)],
+    )
+    altura = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        validators=[MinValueValidator(0)],
+    )
     nacionalidad = models.CharField(
         max_length=100,
         blank=True,

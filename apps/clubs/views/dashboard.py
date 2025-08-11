@@ -8,6 +8,7 @@ from django.db.models import Q, Exists, OuterRef
 from django.db.models.functions import ExtractYear
 from django.utils import timezone
 from django.core.paginator import Paginator
+from datetime import date
 import json
 from collections import defaultdict
 
@@ -159,12 +160,29 @@ def dashboard(request):
     if mm_ciudad:
         match_qs = match_qs.filter(club__city=mm_ciudad)
 
+    def age_to_birthdate(age):
+        today = date.today()
+        try:
+            return today.replace(year=today.year - age)
+        except ValueError:
+            return today.replace(month=2, day=28, year=today.year - age)
+
     mm_edad_min = request.GET.get('mm_edad_min')
     if mm_edad_min:
-        match_qs = match_qs.filter(edad__gte=mm_edad_min)
+        try:
+            match_qs = match_qs.filter(
+                fecha_nacimiento__lte=age_to_birthdate(int(mm_edad_min))
+            )
+        except ValueError:
+            pass
     mm_edad_max = request.GET.get('mm_edad_max')
     if mm_edad_max:
-        match_qs = match_qs.filter(edad__lte=mm_edad_max)
+        try:
+            match_qs = match_qs.filter(
+                fecha_nacimiento__gte=age_to_birthdate(int(mm_edad_max))
+            )
+        except ValueError:
+            pass
 
     paginator = Paginator(match_qs, 18)
     page_number = request.GET.get('page')

@@ -72,7 +72,7 @@
     </div>
     <div class="col-md-2">
       <div class="form-field">
-        {{ form.altura }} 
+        {{ form.altura.as_widget(attrs={'min':0}) }}
         <label for="{{ form.altura.id_for_label }}">{{ form.altura.label }}</label>
         {% if form.altura.errors %}
         <div class="invalid-feedback d-block">
@@ -83,7 +83,7 @@
     </div>
     <div class="col-md-2">
       <div class="form-field">
-        {{ form.peso }} 
+        {{ form.peso.as_widget(attrs={'min':0}) }}
         <label for="{{ form.peso.id_for_label }}">{{ form.peso.label }}</label>
         {% if form.peso.errors %}
         <div class="invalid-feedback d-block">

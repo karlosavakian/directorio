@@ -381,13 +381,22 @@ class DashboardMatchmakerTests(TestCase):
         self.club2 = Club.objects.create(
             name='Club Two', city='City2', address='A2', phone='2', email='2@e.com', owner=self.owner2
         )
+        today = date.today()
         self.comp1 = Competidor.objects.create(
             club=self.club1,
-            nombre='Alice', apellidos='A', sexo='F', peso_kg=55, edad=24
+            nombre='Alice',
+            apellidos='A',
+            sexo='F',
+            peso_kg=55,
+            fecha_nacimiento=today.replace(year=today.year - 24),
         )
         self.comp2 = Competidor.objects.create(
             club=self.club2,
-            nombre='Bob', apellidos='B', sexo='M', peso_kg=70, edad=29
+            nombre='Bob',
+            apellidos='B',
+            sexo='M',
+            peso_kg=70,
+            fecha_nacimiento=today.replace(year=today.year - 29),
         )
         self.client.login(username='owner1', password='pass')
 

@@ -1,5 +1,5 @@
 function initAgeCategory(root = document) {
-  const ageInput = root.querySelector('input[name="edad"]');
+  const ageInput = root.querySelector('input[name="fecha_nacimiento"]');
   const select = root.querySelector('select[name="modalidad"]');
   const tipoRadios = root.querySelectorAll('input[name="tipo_competidor"]');
   const modalidadField = select ? select.closest('.form-field') : null;
@@ -14,8 +14,18 @@ function initAgeCategory(root = document) {
 
   tipoRadios.forEach(r => r.addEventListener('change', updateVisibility));
 
+  const calculateAge = dob => {
+    if (!dob) return NaN;
+    const birth = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+    return age;
+  };
+
   const update = () => {
-    const age = parseInt(ageInput.value, 10);
+    const age = calculateAge(ageInput.value);
     let type = '';
     let value = '';
     if (!isNaN(age)) {

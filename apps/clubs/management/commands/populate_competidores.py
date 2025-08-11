@@ -2,6 +2,7 @@
 from django.core.management.base import BaseCommand
 from apps.clubs.models import Club, Competidor
 import random
+from datetime import date
 
 class Command(BaseCommand):
     help = "Genera competidores ficticios con nombre completo y algunos con palmarés"
@@ -50,13 +51,15 @@ class Command(BaseCommand):
                     "joven" if edad <= 18 else
                     random.choice(["elite", "profesional"])
                 )
+                birth_year = date.today().year - edad
+                fecha_nacimiento = date(birth_year, random.randint(1, 12), random.randint(1, 28))
                 sexo = random.choice(sexos)
 
                 Competidor.objects.create(
                     club=club,
                     nombre=nombre,
                     apellidos=apellidos,
-                    edad=edad,
+                    fecha_nacimiento=fecha_nacimiento,
                     record=generate_record(),
                     modalidad=modalidad,
                     peso=peso_cat,
