@@ -698,21 +698,6 @@ select option[value="España"] {
   white-space: nowrap;
 }
 
-/* Larger radio buttons for competitor type */
-.profile-form input[name="tipo_competidor"] {
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-}
-.profile-form input[name="tipo_competidor"]:checked {
-  background-color: #000;
-  border-color: #000;
-}
-.profile-form input[name="tipo_competidor"] + .form-check-label {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
 /* Booking class table adjustments */
 .booking-class-title {
   text-transform: uppercase;

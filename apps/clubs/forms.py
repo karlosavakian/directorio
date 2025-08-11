@@ -378,8 +378,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
     )
     fecha_nacimiento = forms.DateField(required=False, label='Fecha de nacimiento')
     tipo_competidor = forms.ChoiceField(
-        choices=[('amateur', 'Amateur'), ('profesional', 'Profesional')],
-        widget=forms.RadioSelect(attrs={"class": "form-check-input"}),
+        choices=[('', ''), ('amateur', 'Amateur'), ('profesional', 'Profesional')],
         required=False,
         label='Tipo'
     )
