@@ -1,6 +1,6 @@
 <form method="post" enctype="multipart/form-data" class="profile-form" action="{% if competidor %}{% url 'competidor_update' competidor.id %}{% else %}{% url 'competidor_create' club.slug %}{% endif %}">
   {% csrf_token %}
-    <div class="form-field">
+    <div class="form-field rounded border bg-dark p-3">
       <div class="avatar-dropzone">
         {{ form.avatar }}
         <div class="avatar-preview{% if competidor and competidor.avatar %} has-image{% endif %}"{% if competidor and competidor.avatar %} style="background-image:url('{{ competidor.avatar.url }}')"{% endif %}>
@@ -16,9 +16,9 @@
       </div>
       {% endif %}
     </div>
-    <div class="d-flex justify-content-center mb-2">
-      <div class="member-search mb-2">
-        <div class="member-search-form" id="competitor-member-search-form">
+    <div class="d-flex justify-content-center mb-2 mx-auto"> 
+      <div class="member-search mb-2"> 
+        <div class="member-search-form" id="competitor-member-search-form"> 
           <button type="button" class="search-icon"><i class="bi bi-search"></i></button>
           <input type="text" id="competitor-member-search" placeholder="Buscar miembro" autocomplete="off" />
           <button type="button" class="close-icon">&times;</button>
@@ -26,7 +26,9 @@
         </div>
       </div>
     </div>
-    <div class="row ">
+
+    <h4 class="mb-2">Perfil pugilístico</h4>
+    <div class="row g-3">
       <div class="col-6  ">
         <div class="form-field">
           {{ form.nombre }}
@@ -79,9 +81,35 @@
           {% endif %}
         </div>
       </div>
+         <div class="col-md-2">
+          <div class="form-field">
+            {{ form.peso_kg }}
+            <button type="button" class="clear-btn bi bi-x"></button>
+            <label for="{{ form.peso_kg.id_for_label }}">{{ form.peso_kg.label }}</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-field">
+            {{ form.altura_cm }}
+            <button type="button" class="clear-btn bi bi-x"></button>
+            <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
+          </div>
+        </div>
+           <div class="col-md-2">
+        <div class="form-field">
+          {{ form.tipo_competidor }}
+          <button type="button" class="clear-btn bi bi-x"></button>
+          <label for="{{ form.tipo_competidor.id_for_label }}">{{ form.tipo_competidor.label }}</label>
+          {% if form.tipo_competidor.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.tipo_competidor.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
     </div>
 
-       <div class="row  ">
+       <div class="row g-3 ">
       <div class="col-md-2">
         <div class="form-field">
           {{ form.victorias }}
@@ -103,33 +131,8 @@
           <label for="{{ form.empates.id_for_label }}" class="text-primary">Empates</label>
         </div>
       </div>
-      <div class="col-12 col-md-6">
-        <div class="form-field">
-          {{ form.tipo_competidor }}
-          <button type="button" class="clear-btn bi bi-x"></button>
-          <label for="{{ form.tipo_competidor.id_for_label }}">{{ form.tipo_competidor.label }}</label>
-          {% if form.tipo_competidor.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.tipo_competidor.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    <div class="row g-2">
-      <div class="col-12 col-md-6">
-        <div class="form-field" id="modalidad-field">
-          {{ form.modalidad }}
-          <button type="button" class="clear-btn bi bi-x"></button>
-          <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
-          {% if form.modalidad.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.modalidad.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      <div class="col-12 col-md-6">
+   
+       <div class="col-md-3">
         <div class="form-field">
           {{ form.peso }}
           <button type="button" class="clear-btn bi bi-x"></button>
@@ -141,22 +144,20 @@
           {% endif %}
         </div>
       </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-          <div class="form-field">
-            {{ form.peso_kg }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.peso_kg.id_for_label }}">{{ form.peso_kg.label }}</label>
+            <div class="col-md-3">
+        <div class="form-field" id="modalidad-field">
+          {{ form.modalidad }}
+          <button type="button" class="clear-btn bi bi-x"></button>
+          <label for="{{ form.modalidad.id_for_label }}">{{ form.modalidad.label }}</label>
+          {% if form.modalidad.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.modalidad.errors.as_text|striptags }}
           </div>
+          {% endif %}
         </div>
-        <div class="col-md-2">
-          <div class="form-field">
-            {{ form.altura_cm }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.altura_cm.id_for_label }}">{{ form.altura_cm.label }}</label>
-          </div>
-        </div>
+      </div>
+    </div> 
+    <div class="row"> 
       </div>
       <div class="form-field">
         {{ form.palmares }}
