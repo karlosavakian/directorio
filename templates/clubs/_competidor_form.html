@@ -105,14 +105,9 @@
       </div>
       <div class="col-12 col-md-6">
         <div class="form-field">
-          <div class="d-flex justify-content-center gap-3">
-            {% for radio in form.tipo_competidor %}
-            <div class="form-check form-check-inline">
-              {{ radio.tag }}
-              <label class="form-check-label fw-bold">{{ radio.choice_label }}</label>
-            </div>
-            {% endfor %}
-          </div>
+          {{ form.tipo_competidor }}
+          <button type="button" class="clear-btn bi bi-x"></button>
+          <label for="{{ form.tipo_competidor.id_for_label }}">{{ form.tipo_competidor.label }}</label>
           {% if form.tipo_competidor.errors %}
           <div class="invalid-feedback d-block">
             {{ form.tipo_competidor.errors.as_text|striptags }}

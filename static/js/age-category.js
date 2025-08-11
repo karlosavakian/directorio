@@ -1,18 +1,20 @@
 function initAgeCategory(root = document) {
   const birthInput = root.querySelector('input[name="fecha_nacimiento"]');
-  const select = root.querySelector('select[name="modalidad"]');
-  const tipoRadios = root.querySelectorAll('input[name="tipo_competidor"]');
-  const modalidadField = select ? select.closest('.form-field') : null;
+  const modalidadSelect = root.querySelector('select[name="modalidad"]');
+  const tipoSelect = root.querySelector('select[name="tipo_competidor"]');
+  const modalidadField = modalidadSelect ? modalidadSelect.closest('.form-field') : null;
   if (!birthInput) return;
 
   const updateVisibility = () => {
-    const checked = root.querySelector('input[name="tipo_competidor"]:checked');
+    const value = tipoSelect ? tipoSelect.value : '';
     if (modalidadField) {
-      modalidadField.style.display = checked && checked.value === 'amateur' ? '' : 'none';
+      modalidadField.style.display = value === 'amateur' ? '' : 'none';
     }
   };
 
-  tipoRadios.forEach(r => r.addEventListener('change', updateVisibility));
+  if (tipoSelect) {
+    tipoSelect.addEventListener('change', updateVisibility);
+  }
 
   const getAge = () => {
     const val = birthInput.value;
@@ -49,14 +51,13 @@ function initAgeCategory(root = document) {
         value = 'profesional';
       }
     }
-    if (tipoRadios.length) {
-      tipoRadios.forEach(r => {
-        r.checked = r.value === type;
-      });
+    if (tipoSelect) {
+      tipoSelect.value = type;
+      tipoSelect.dispatchEvent(new Event('change'));
     }
-    if (select) {
-      select.value = type === 'amateur' ? value : '';
-      select.dispatchEvent(new Event('change'));
+    if (modalidadSelect) {
+      modalidadSelect.value = type === 'amateur' ? value : '';
+      modalidadSelect.dispatchEvent(new Event('change'));
     }
     updateVisibility();
   };
