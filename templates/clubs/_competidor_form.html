@@ -54,7 +54,19 @@
  
     </div>
  
-    <div class="row g-3  ">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="form-field">
+          {{ form.fecha_nacimiento }}
+          <button type="button" class="clear-btn bi bi-x"></button>
+          <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
+          {% if form.fecha_nacimiento.errors %}
+          <div class="invalid-feedback d-block">
+            {{ form.fecha_nacimiento.errors.as_text|striptags }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
       <div class="col-md-2">
         <div class="form-field">
           {{ form.sexo }}
@@ -63,18 +75,6 @@
           {% if form.sexo.errors %}
           <div class="invalid-feedback d-block">
             {{ form.sexo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
-        </div>
-      </div>
-      <div class="col-6 col-md-2">
-        <div class="form-field">
-          {{ form.edad }}
-          <button type="button" class="clear-btn bi bi-x"></button>
-          <label for="{{ form.edad.id_for_label }}">{{ form.edad.label }}</label>
-          {% if form.edad.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.edad.errors.as_text|striptags }}
           </div>
           {% endif %}
         </div>

@@ -368,7 +368,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
     altura_cm = forms.DecimalField(
         required=False, max_digits=5, decimal_places=2, label='Altura (cm)'
     )
-    edad = forms.IntegerField(required=False, min_value=0, label='Edad')
+    fecha_nacimiento = forms.DateField(required=False, label='Fecha de nacimiento')
     tipo_competidor = forms.ChoiceField(
         choices=[('amateur', 'Amateur'), ('profesional', 'Profesional')],
         widget=forms.RadioSelect,
@@ -382,7 +382,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
             'avatar',
             'nombre',
             'apellidos',
-            'edad',
+            'fecha_nacimiento',
             'modalidad',
             'peso',
             'peso_kg',
@@ -412,6 +412,10 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
             )):
                 field.widget.attrs.setdefault('placeholder', ' ')
 
+        fecha_field = self.fields.get('fecha_nacimiento')
+        if fecha_field:
+            fecha_field.widget.input_type = 'date'
+
         palmares_field = self.fields.get('palmares')
         if palmares_field:
             palmares_field.widget.attrs['rows'] = 3
@@ -429,6 +433,11 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
         peso_field = self.fields.get('peso')
         if peso_field:
             peso_field.label = 'Categoría'
+            peso_field.choices = [('', '')] + list(models.Competidor.PESO_CHOICES)
+
+        sexo_field = self.fields.get('sexo')
+        if sexo_field:
+            sexo_field.choices = [('', '')] + list(models.Competidor.SEXO_CHOICES)
 
         tipo_field = self.fields.get('tipo_competidor')
         if tipo_field:
