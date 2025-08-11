@@ -17,7 +17,6 @@ from apps.clubs.views import (
 )
 from apps.clubs.views.dashboard import (
     dashboard,
-    club_edit,
     photo_upload,
     photo_delete,
     photo_bulk_delete,
@@ -54,8 +53,6 @@ urlpatterns = [
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
     path('slug-disponible/', check_slug, name='club_slug_check'),
     path('ciudades/', cities_by_country, name='cities_by_country'),
-
-    path('<slug:slug>/editar/', club_edit, name='club_edit'),
 
     path('<slug:slug>/foto/nueva/', photo_upload, name='clubphoto_upload'),
     path('foto/<int:pk>/eliminar/', photo_delete, name='clubphoto_delete'),

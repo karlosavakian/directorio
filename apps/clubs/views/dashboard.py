@@ -77,6 +77,25 @@ def dashboard(request):
     club = request.user.owned_clubs.first()
     if not club:
         return redirect('home')
+
+    if request.method == 'POST':
+        data = request.POST.copy()
+        for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
+            data.setdefault(field, getattr(club, field))
+        form = ClubForm(
+            data,
+            request.FILES,
+            instance=club,
+            require_all=True,
+            exclude_required=['door', 'logo'],
+        )
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Club actualizado correctamente.')
+            return redirect('club_dashboard')
+    else:
+        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
+
     bookmarked_ids = set(
         club.bookmarked_competidores.values_list('id', flat=True)
     )
@@ -236,8 +255,6 @@ def dashboard(request):
     elif booking_filter in ['active', 'confirmed', 'cancelled']:
         bookings = bookings.filter(status=booking_filter)
 
-    form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
-
     return render(
         request,
         'clubs/dashboard.html',
@@ -271,31 +288,6 @@ def check_slug(request):
     current = request.GET.get('current', '')
     exists = Club.objects.filter(slug=slug).exclude(slug=current).exists()
     return JsonResponse({'available': not exists})
-@login_required
-def club_edit(request, slug):
-    club = get_object_or_404(Club, slug=slug)
-    if not has_club_permission(request.user, club):
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        data = request.POST.copy()
-        for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
-            data.setdefault(field, getattr(club, field))
-        form = ClubForm(
-            data,
-            request.FILES,
-            instance=club,
-            require_all=True,
-            exclude_required=['door', 'logo'],
-        )
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Club actualizado correctamente.')
-            return redirect('club_dashboard')
-    else:
-        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
-    return render(request, 'clubs/club_form.html', {'form': form, 'club': club})
-
-
 @login_required
 def photo_upload(request, slug):
     club = get_object_or_404(Club, slug=slug)
