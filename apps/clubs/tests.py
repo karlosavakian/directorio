@@ -372,6 +372,36 @@ class DashboardMemberFilterTests(TestCase):
         members = list(res.context['members'])
         self.assertEqual(members[0], self.member1)
 
+
+class DashboardMemberCreateTests(TestCase):
+    def setUp(self):
+        Group.objects.get_or_create(name='ClubOwner')
+        self.owner = User.objects.create_user(username='owner2', password='pass')
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='1', email='e@e.com', owner=self.owner
+        )
+        self.client.login(username='owner2', password='pass')
+
+    def test_member_is_saved(self):
+        url = reverse('miembro_create', args=[self.club.slug])
+        data = {
+            'nombre': 'Ana',
+            'apellidos': 'Doe',
+            'fecha_nacimiento': '2000-01-01',
+            'sexo': 'F',
+            'guardia': 'diestro',
+            'altura': '160',
+            'peso': '55',
+            'prefijo': '+34',
+            'telefono': '612345678',
+            'email': 'ana@example.com',
+            'nacionalidad': 'España',
+            'fuente': 'directa',
+            'estado': 'activo',
+        }
+        self.client.post(url, data)
+        self.assertEqual(self.club.miembros.count(), 1)
+
 class DashboardMatchmakerTests(TestCase):
     def setUp(self):
         Group.objects.get_or_create(name='ClubOwner')
