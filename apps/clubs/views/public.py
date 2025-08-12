@@ -187,7 +187,7 @@ def member_signup(request, slug):
             request.POST,
             request.FILES,
             require_all=True,
-            exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad'],
+            exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad', 'region', 'localidad', 'street', 'number', 'door', 'codigo_postal'],
         )
         if form.is_valid():
             miembro = form.save(commit=False)
@@ -196,12 +196,13 @@ def member_signup(request, slug):
             miembro.estado = 'activo'
             miembro.fecha_inscripcion = timezone.now().date()
             miembro.save()
+            form.save_m2m()
             messages.success(request, 'Inscripción guardada correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 return HttpResponse(status=204)
             return redirect('club_profile', slug=club.slug)
     else:
-        form = MiembroForm(require_all=True, exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad'])
+        form = MiembroForm(require_all=True, exclude_required=['notas', 'fuente', 'estado', 'avatar', 'edad', 'region', 'localidad', 'street', 'number', 'door', 'codigo_postal'])
     template = 'clubs/_miembro_public_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
     return render(request, template, {'form': form, 'club': club})
 

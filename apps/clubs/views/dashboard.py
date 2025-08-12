@@ -535,19 +535,20 @@ def miembro_create(request, slug):
             request.POST,
             request.FILES,
             require_all=True,
-            exclude_required=['notas', 'avatar', 'edad'],
+            exclude_required=['notas', 'avatar', 'edad', 'region', 'localidad', 'street', 'number', 'door', 'codigo_postal'],
         )
         if form.is_valid():
             miembro = form.save(commit=False)
             miembro.club = club
             miembro.save()
+            form.save_m2m()
             messages.success(request, 'Miembro añadido correctamente.')
             if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                 html = render_to_string('clubs/_miembro_row.html', {'m': miembro}, request=request)
                 return HttpResponse(html)
             return redirect('club_dashboard')
     else:
-        form = MiembroForm(require_all=True, exclude_required=['notas', 'avatar', 'edad'])
+        form = MiembroForm(require_all=True, exclude_required=['notas', 'avatar', 'edad', 'region', 'localidad', 'street', 'number', 'door', 'codigo_postal'])
     template = 'clubs/_miembro_form.html' if request.headers.get('x-requested-with') == 'XMLHttpRequest' else 'clubs/miembro_form.html'
     return render(request, template, {'form': form, 'club': club})
 
