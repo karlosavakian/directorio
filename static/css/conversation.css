@@ -1,17 +1,27 @@
 #message-form {
   position: relative;
-  background-color: #f8f9fa;
-  padding: 0.25rem;
-  border-radius: 0.25rem;
+  background-color: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  border: 1px solid #ced4da;
 }
 #message-form textarea {
-  max-height: 30px;
-  padding-right: 2rem;
+  max-height: 45px;
+  padding-right: 2.5rem;
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  box-shadow: none;
+}
+#message-form textarea:focus {
+  outline: none;
+  box-shadow: none;
 }
 #message-form button[type="submit"] {
   position: absolute;
   top: 50%;
-  right: 0.25rem;
+  right: 0.75rem;
   transform: translateY(-50%);
 }
 
