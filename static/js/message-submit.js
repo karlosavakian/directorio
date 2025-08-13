@@ -1,8 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('message-form');
   if (!form) return;
-  const container = form.previousElementSibling;
+
+  const container = document.getElementById('message-container');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+  const textarea = form.querySelector('textarea');
+
+  const scrollToBottom = () => {
+    container?.scrollTo({ top: container.scrollHeight });
+  };
+
+  scrollToBottom();
+
+  if (textarea) {
+    textarea.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -45,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       container.appendChild(row);
       container.appendChild(timestamp);
+      scrollToBottom();
 
       const likeBtn = row.querySelector('.message-like');
       if (likeBtn) {

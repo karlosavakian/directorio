@@ -40,7 +40,7 @@
     </div>
       {% if club %}
       <div class="col-md-8">
-        <div class="mb-3">
+        <div class="mb-3" id="message-container" style="max-height:60vh; overflow-y:auto;">
           {% for m in messages %}
             <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row">
               <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}">
