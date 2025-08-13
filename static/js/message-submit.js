@@ -1,0 +1,87 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('message-form');
+  if (!form) return;
+  const container = form.previousElementSibling;
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const url = form.action || window.location.href;
+    const formData = new FormData(form);
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken,
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData,
+        credentials: 'same-origin'
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      form.reset();
+
+      const row = document.createElement('div');
+      row.className = 'd-flex justify-content-end mb-2 message-row';
+      row.innerHTML = `
+        <div class="p-1 rounded message-bubble bg-dark text-white">
+          <div>${data.content}</div>
+        </div>
+        <div class="message-actions ms-1">
+          <button class="btn p-0 reply-btn">
+            <i class="bi bi-reply"></i>
+          </button>
+          <button class="btn p-0 message-like" data-url="${data.like_url}">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+            </svg>
+          </button>
+        </div>
+      `;
+      const timestamp = document.createElement('div');
+      timestamp.className = 'text-center text-muted small';
+      timestamp.textContent = data.created_at;
+
+      container.appendChild(row);
+      container.appendChild(timestamp);
+
+      const likeBtn = row.querySelector('.message-like');
+      if (likeBtn) {
+        likeBtn.addEventListener('click', async () => {
+          const url = likeBtn.dataset.url;
+          const countSpan = likeBtn.querySelector('.like-count');
+          likeBtn.classList.toggle('liked');
+          try {
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': csrftoken,
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              credentials: 'same-origin'
+            });
+            if (res.redirected) {
+              const modal = document.getElementById('loginModal');
+              if (modal) new bootstrap.Modal(modal).show();
+              likeBtn.classList.toggle('liked');
+              return;
+            }
+            if (res.ok) {
+              const data = await res.json();
+              likeBtn.classList.toggle('liked', data.liked);
+              if (countSpan) countSpan.textContent = data.count;
+            } else {
+              likeBtn.classList.toggle('liked');
+            }
+          } catch (err) {
+            console.error(err);
+            likeBtn.classList.toggle('liked');
+          }
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+});
