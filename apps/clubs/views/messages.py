@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 from ..models import Club, ClubMessage
 from ..forms import ClubMessageForm
+from apps.core.templatetags.utils_filters import message_timestamp
 
 
 @login_required
@@ -80,10 +81,21 @@ def conversation(request):
             msg.sender_is_club = request.user == club.owner
             msg.is_read = True
             msg.save()
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                data = {
+                    'id': msg.pk,
+                    'content': msg.content,
+                    'created_at': message_timestamp(msg.created_at),
+                    'sender_is_club': msg.sender_is_club,
+                    'like_url': reverse('message_like', args=[msg.pk]),
+                }
+                return JsonResponse(data)
             url = reverse('conversation') + f'?club={club.slug}'
             if request.user == club.owner:
                 url += f'&user={conversant.id}'
             return redirect(url)
+        elif request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'errors': form.errors}, status=400)
     else:
         form = ClubMessageForm()
 
