@@ -705,9 +705,9 @@ class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
         widgets = {
             'content': forms.Textarea(
                 attrs={
-                    'class': 'form-control form-control-sm w-100',
+                    'class': 'form-control w-100 border-0',
                     'rows': 1,
-                    'style': 'height:30px; max-height:30px;',
+                    'style': 'height:40px; max-height:40px; resize:none;',
                     'placeholder': 'Mensaje...'
                 }
             )
