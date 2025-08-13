@@ -5,7 +5,6 @@
   border-radius: 0.25rem;
 }
 #message-form textarea {
-  max-height: 30px;
   padding-right: 2rem;
 }
 #message-form button[type="submit"] {

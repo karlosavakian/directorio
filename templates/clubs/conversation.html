@@ -40,7 +40,7 @@
     </div>
       {% if club %}
       <div class="col-md-8">
-        <div class="mb-3">
+        <div id="message-thread" class="mb-3 overflow-auto" style="height: 400px;">
           {% for m in messages %}
             <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row">
               <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}">
@@ -77,4 +77,6 @@
 
 {% block extra_js %}
 <script src="{% static 'js/message-like.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/autosize@4.0.2/dist/autosize.min.js"></script>
+<script src="{% static 'js/message-submit.js' %}"></script>
 {% endblock %}
