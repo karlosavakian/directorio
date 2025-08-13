@@ -19,7 +19,7 @@
               class="col-12 d-flex {% if user == m.club.owner and m.sender_is_club or user != m.club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %}"
             >
               <div
-                class="p-1 rounded {% if user == m.club.owner and m.sender_is_club or user != m.club.owner and not m.sender_is_club %}bg-primary text-white{% else %}bg-light{% endif %}"
+                class="p-1 rounded {% if user == m.club.owner and m.sender_is_club or user != m.club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}"
               >
                 <div>{{ m.content }}</div>
                 <div class="d-flex align-items-center gap-1 mt-1">
