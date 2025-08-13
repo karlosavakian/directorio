@@ -6,11 +6,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const textarea = form.querySelector('textarea');
 
+  const attachReplyHandler = (btn) => {
+    btn.addEventListener('click', () => {
+      const row = btn.closest('.message-row');
+      const text = row?.querySelector('.message-bubble div')?.textContent.trim();
+      if (textarea && text) {
+        textarea.value = `> ${text}\n`;
+        textarea.focus();
+      }
+    });
+  };
+
   const scrollToBottom = () => {
     container?.scrollTo({ top: container.scrollHeight });
   };
 
   scrollToBottom();
+
+  document.querySelectorAll('.reply-btn').forEach(attachReplyHandler);
 
   if (textarea) {
     textarea.addEventListener('keydown', (e) => {
@@ -98,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       }
+
+      const replyBtn = row.querySelector('.reply-btn');
+      if (replyBtn) attachReplyHandler(replyBtn);
     } catch (err) {
       console.error(err);
     }
