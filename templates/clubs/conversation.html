@@ -6,9 +6,9 @@
 <main class="flex-grow-1">
   <div class="container my-4 h-100">
     <div class="row h-100">
-      <div class="col-md-4 mb-3">
+      <div class="col-md-4 mb-3 border ">
         <h5 class="mb-3">Mis mensajes</h5>
-        <div class="list-group">
+        <div class="list-group ">
           {% for conv in conversations %}
             {% if user == conv.club.owner %}
               <a href="{% url 'conversation' %}?club={{ conv.club.slug }}&user={{ conv.user.id }}" class="p-3 list-group-item list-group-item-action d-flex align-items-center {% if conv.club == club and conv.user == conversant %}bg-light text-dark{% endif %}">
@@ -41,7 +41,7 @@
       </div>
       <div class="col-md-8 d-flex flex-column h-100">
         {% if club %}
-          <div class="mb-3 flex-grow-1" id="message-container" style="max-height:60vh; overflow-y:auto;">
+          <div class="mb-3 flex-grow-1 boder" id="message-container" style="max-height:60vh; overflow-y:auto;">
             {% for m in messages %}
               <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row">
                 <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}bg-light{% endif %}">
@@ -66,7 +66,7 @@
           <form method="post" id="message-form">
             {% csrf_token %}
             {{ form.content }}
-            <button type="submit" class="btn btn-dark d-flex align-items-center">
+            <button type="submit" class="btn d-flex align-items-center">
               <i class="bi bi-send-fill"></i>
             </button>
           </form>
