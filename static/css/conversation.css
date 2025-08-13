@@ -29,3 +29,11 @@
 .message-row:hover .message-actions {
   display: flex;
 }
+
+.badge-unread {
+  background-color: #dc3545;
+  color: #fff;
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  border-radius: 6px;
+}

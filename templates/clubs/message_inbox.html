@@ -21,9 +21,16 @@
         <div class="flex-grow-1">
           <div class="fw-bold">
             {% if user == m.club.owner %}
-              {{ m.user.username }} - {{ m.club.name }}
+              {{ m.user.username }}
+              {% if m.unread_count %}
+                <span class="badge badge-unread">{{ m.unread_count }}</span>
+              {% endif %}
+              - {{ m.club.name }}
             {% else %}
               {{ m.club.name }}
+              {% if m.unread_count %}
+                <span class="badge badge-unread">{{ m.unread_count }}</span>
+              {% endif %}
             {% endif %}
           </div>
           <div class="text-muted small">{{ m.content|truncatechars:40 }}</div>
