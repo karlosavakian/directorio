@@ -701,7 +701,7 @@ class PagoForm(UniformFieldsMixin, forms.ModelForm):
 class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.ClubMessage
-        fields = ['content']
+        fields = ['content', 'reply_to']
         widgets = {
             'content': forms.Textarea(
                 attrs={
@@ -711,5 +711,6 @@ class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
                     'placeholder': 'Mensaje...',
                     'oninput': 'this.value=this.value.replace(/\n/g, "")'
                 }
-            )
+            ),
+            'reply_to': forms.HiddenInput()
         }
