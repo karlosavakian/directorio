@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load utils_filters %}
-{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block body_class %}d-flex flex-column vh-100 overflow-hidden{% endblock %}
 {% block content %}
-<main class="flex-grow-1" >
-  <div class="container my-4 h-100 conversation-container">
+<main class="flex-grow-1">
+  <div class="container h-100 py-4 conversation-container">
     <div class="row  h-100 border" >
       <div class="col-md-4 p-0">
         <h5 class="border-bottom fw-medium p-3 ">Conversaciones recientes </h5>
@@ -96,12 +96,12 @@
               <span class="fw-bold">{{ club.name }}</span>
             {% endif %}
           </div>
-          <div class="mb-3 flex-grow-1 p-3 " id="message-container" style="max-height:60vh; overflow-y:auto;">
+          <div class="mb-3 flex-grow-1 p-3" id="message-container" style="overflow-y:auto;">
             {% for m in messages %}
               {% ifchanged m.created_at|date:"Y-m-d" %}
                 <div class="text-center text-muted small my-2">{{ m.created_at|message_day }}</div>
               {% endifchanged %}
-              <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row" data-id="{{ m.id }}">
+              <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row" data-id="{{ m.id }}" data-sender="{% if m.sender_is_club %}{{ m.club.name }}{% else %}{{ m.user.username }}{% endif %}">
                 {% if m.sender_is_club %}
                   <div class="message-actions me-1">
                  <button class="btn p-0 reply-btn">
@@ -132,7 +132,16 @@
                 {% endif %}
                 <div class="rounded message-bubble text-wrap text-break {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
                   {% if m.reply_to %}
-                    <div class="message-reply bg-secondary rounded  text-white mb-2">{{ m.reply_to.content }}</div>
+                  <div class="message-reply bg-secondary rounded text-white mb-2">
+                    <div class="fw-medium">
+                      {% if m.reply_to.sender_is_club %}
+                        {{ m.reply_to.club.name }}
+                      {% else %}
+                        {{ m.reply_to.user.username }}
+                      {% endif %}
+                    </div>
+                    {{ m.reply_to.content }}
+                  </div>
                   {% endif %}
                   <div class="message-content d-flex justify-content-between align-items-center">
                   <span >{{ m.content }}</span>
@@ -177,12 +186,13 @@
               <p>No hay mensajes.</p>
             {% endfor %}
           </div>
-          <div id="reply-preview" class="border-top py-2 px-3 d-none d-flex align-items-center">
-            <div id="reply-text" class="bg-light p-2 rounded flex-grow-1 d-flex align-items-start">
-              <span id="reply-content" class="flex-grow-1 text-break"></span>
+            <div id="reply-preview" class="border-top py-2 px-3 d-none d-flex align-items-center">
+              <div id="reply-text" class="bg-light p-2 rounded flex-grow-1 d-flex flex-column">
+                <span id="reply-username" class="fw-medium"></span>
+                <span id="reply-content" class="flex-grow-1 text-break"></span>
+              </div>
               <button type="button" id="reply-close" class="btn-close ms-2"></button>
             </div>
-          </div>
           <form method="post" id="message-form" class="m-4 ">
             {% csrf_token %}
             {{ form.content }}
