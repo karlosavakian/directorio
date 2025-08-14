@@ -39,10 +39,7 @@
   display: flex;
 }
 
-.conversation-container {
-  height: 100%;
-}
-
+ 
 
 .message-reply{
   border-left:3px solid rgb(255, 255, 255);
