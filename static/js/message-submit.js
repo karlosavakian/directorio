@@ -7,12 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const textarea = form.querySelector('textarea');
   const replyPreview = document.getElementById('reply-preview');
   const replyText = document.getElementById('reply-content');
+  const replyUsername = document.getElementById('reply-username');
   const replyClose = document.getElementById('reply-close');
   const replyInput = form.querySelector('[name="reply_to"]');
 
   const clearReplyPreview = () => {
     replyPreview?.classList.add('d-none');
     if (replyText) replyText.textContent = '';
+    if (replyUsername) replyUsername.textContent = '';
     if (replyInput) replyInput.value = '';
   };
   replyClose?.addEventListener('click', () => {
@@ -30,8 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         text = span ? span.textContent.trim() : contentElem.textContent.trim();
       }
       const id = row?.dataset.id;
+      const sender = row?.dataset.sender || '';
       if (text) {
         if (replyText) replyText.textContent = text;
+        if (replyUsername) replyUsername.textContent = sender;
         if (replyInput) replyInput.value = id || '';
         replyPreview?.classList.remove('d-none');
         textarea?.focus();
@@ -80,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = document.createElement('div');
         row.className = 'd-flex justify-content-end mb-2 message-row';
         row.dataset.id = data.id;
-        const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark">${data.reply_to}</div>` : '';
+        row.dataset.sender = data.sender;
+        const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark"><div class="fw-medium">${data.reply_to.sender}</div>${data.reply_to.content}</div>` : '';
         const bubble = `
           <div class="p-1 rounded message-bubble col-md-5 text-wrap text-break bg-dark text-white">
             ${quote}

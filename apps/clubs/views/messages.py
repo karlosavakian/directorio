@@ -88,7 +88,15 @@ def conversation(request):
                     'created_at': message_timestamp(msg.created_at),
                     'sender_is_club': msg.sender_is_club,
                     'like_url': reverse('message_like', args=[msg.pk]),
-                    'reply_to': msg.reply_to.content if msg.reply_to else None,
+                    'sender': msg.club.name if msg.sender_is_club else msg.user.username,
+                    'reply_to': (
+                        {
+                            'content': msg.reply_to.content,
+                            'sender': msg.reply_to.club.name if msg.reply_to.sender_is_club else msg.reply_to.user.username,
+                        }
+                        if msg.reply_to
+                        else None
+                    ),
                 }
                 return JsonResponse(data)
             url = reverse('conversation') + f'?club={club.slug}'
