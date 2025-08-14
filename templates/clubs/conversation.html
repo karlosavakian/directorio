@@ -80,9 +80,9 @@
               <p>No hay mensajes.</p>
             {% endfor %}
           </div>
-          <div id="reply-preview" class="border-top py-2 px-3 d-none position-relative">
-            <div id="reply-text" class="bg-light p-2 rounded"></div>
-            <button type="button" id="reply-close" class="btn-close position-absolute top-0 end-0 m-2"></button>
+          <div id="reply-preview" class="border-top py-2 px-3 d-none d-flex align-items-center">
+            <div id="reply-text" class="bg-light p-2 rounded flex-grow-1"></div>
+            <button type="button" id="reply-close" class="btn-close ms-2"></button>
           </div>
           <form method="post" id="message-form" class="m-4 ">
             {% csrf_token %}
