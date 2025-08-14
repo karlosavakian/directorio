@@ -103,35 +103,11 @@ def get_list(querydict, key):
 
 @register.filter
 def message_timestamp(value):
-    """Return a friendly timestamp for chat messages."""
+    """Return only the time portion of ``value`` in 24h format."""
     if not value:
         return ""
 
     from django.utils import timezone
 
     value = timezone.localtime(value)
-    now = timezone.localtime(timezone.now())
-
-    if value.date() == now.date():
-        return value.strftime("%H:%M")
-
-    start_of_week = now - timezone.timedelta(days=now.weekday())
-    if value.date() >= start_of_week.date():
-        days = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
-        return f"{days[value.weekday()]} {value.strftime('%H:%M')}"
-
-    months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ]
-    return f"{months[value.month - 1]} {value.day}, {value.year}, {value.strftime('%H:%M')}"
+    return value.strftime("%H:%M")
