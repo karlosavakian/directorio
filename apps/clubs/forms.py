@@ -707,8 +707,9 @@ class ClubMessageForm(UniformFieldsMixin, forms.ModelForm):
                 attrs={
                     'class': 'form-control w-100 border-0',
                     'rows': 1,
-                    'style': 'height:40px; max-height:40px; resize:none; line-height:40px; padding-top:0; padding-bottom:0;',
-                    'placeholder': 'Mensaje...'
+                    'style': 'height:40px; max-height:40px; resize:none; line-height:40px; padding-top:0; padding-bottom:0; overflow:hidden; white-space:nowrap;',
+                    'placeholder': 'Mensaje...',
+                    'oninput': 'this.value=this.value.replace(/\n/g, "")'
                 }
             )
         }
