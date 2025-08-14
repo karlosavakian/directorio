@@ -60,6 +60,11 @@
   white-space: pre-wrap;
 }
 
+#reply-content {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
 .message-bubble {
   padding:10px 15px 10px 15px;
   word-wrap: break-word;
