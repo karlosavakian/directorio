@@ -62,7 +62,7 @@ def conversation(request):
 
     messages_qs = (
         ClubMessage.objects.filter(club=club, user=conversant)
-        .select_related('user')
+        .select_related('user', 'reply_to')
         .order_by('created_at')
     )
     unread_filter = Q(is_read=False)
@@ -88,6 +88,7 @@ def conversation(request):
                     'created_at': message_timestamp(msg.created_at),
                     'sender_is_club': msg.sender_is_club,
                     'like_url': reverse('message_like', args=[msg.pk]),
+                    'reply_to': msg.reply_to.content if msg.reply_to else None,
                 }
                 return JsonResponse(data)
             url = reverse('conversation') + f'?club={club.slug}'

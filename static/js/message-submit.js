@@ -8,10 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const replyPreview = document.getElementById('reply-preview');
   const replyText = document.getElementById('reply-text');
   const replyClose = document.getElementById('reply-close');
+  const replyInput = form.querySelector('[name="reply_to"]');
 
   const clearReplyPreview = () => {
     replyPreview?.classList.add('d-none');
     if (replyText) replyText.textContent = '';
+    if (replyInput) replyInput.value = '';
   };
   replyClose?.addEventListener('click', () => {
     clearReplyPreview();
@@ -21,9 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const attachReplyHandler = (btn) => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.message-row');
-      const text = row?.querySelector('.message-bubble div')?.textContent.trim();
+      const text = row?.querySelector('.message-bubble div:last-child')?.textContent.trim();
+      const id = row?.dataset.id;
       if (text) {
         if (replyText) replyText.textContent = text;
+        if (replyInput) replyInput.value = id || '';
         replyPreview?.classList.remove('d-none');
         textarea?.focus();
       }
@@ -64,27 +68,30 @@ document.addEventListener('DOMContentLoaded', () => {
         credentials: 'same-origin'
       });
       if (!res.ok) return;
-      const data = await res.json();
-      form.reset();
-      clearReplyPreview();
+        const data = await res.json();
+        form.reset();
+        clearReplyPreview();
 
-      const row = document.createElement('div');
-      row.className = 'd-flex justify-content-end mb-2 message-row';
-      row.innerHTML = `
-        <div class="p-1 rounded message-bubble bg-dark text-white">
-          <div>${data.content}</div>
-        </div>
-        <div class="message-actions ms-1">
-          <button class="btn p-0 reply-btn">
-            <i class="bi bi-reply"></i>
-          </button>
-          <button class="btn p-0 message-like" data-url="${data.like_url}">
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-            </svg>
-          </button>
-        </div>
-      `;
+        const row = document.createElement('div');
+        row.className = 'd-flex justify-content-end mb-2 message-row';
+        row.dataset.id = data.id;
+        const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark">${data.reply_to}</div>` : '';
+        row.innerHTML = `
+          <div class="p-1 rounded message-bubble bg-dark text-white">
+            ${quote}
+            <div>${data.content}</div>
+          </div>
+          <div class="message-actions ms-1">
+            <button class="btn p-0 reply-btn">
+              <i class="bi bi-reply"></i>
+            </button>
+            <button class="btn p-0 message-like" data-url="${data.like_url}">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+              </svg>
+            </button>
+          </div>
+        `;
       const timestamp = document.createElement('div');
       timestamp.className = 'text-center text-muted small';
       timestamp.textContent = data.created_at;

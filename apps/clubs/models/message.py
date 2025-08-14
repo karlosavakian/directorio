@@ -11,6 +11,13 @@ class ClubMessage(TimeStampedModel):
     content = models.TextField()
     sender_is_club = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
+    reply_to = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        related_name='replies',
+        on_delete=models.SET_NULL,
+    )
     likes = models.ManyToManyField(
         User,
         related_name='liked_messages',
