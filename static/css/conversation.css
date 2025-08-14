@@ -50,6 +50,11 @@
   border-color: #212529;
 }
 
+
+.message-reply{
+  border-left:3px solid rgb(255, 255, 255);  
+    padding:5px 10px 5px 10px;
+}
 #reply-preview {
   background-color: #fff;
 }
@@ -60,4 +65,9 @@
 
 #reply-text {
   white-space: pre-wrap;
+}
+
+.message-bubble {
+  padding:5px 10px 5px 10px;
+   
 }

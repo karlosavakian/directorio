@@ -6,7 +6,7 @@
 <main class="flex-grow-1" >
   <div class="container my-4 h-100 conversation-container">
     <div class="row  h-100 border" >
-      <div class="col-md-4 mb-3 p-0">
+      <div class="col-md-4  p-0">
         <h5 class="border-bottom fw-medium p-3 ">Conversaciones recientes </h5>
         <div class="list-group ">
           {% for conv in conversations %}
@@ -18,7 +18,7 @@
               {% if conv.club.logo %}
                 <img src="{{ conv.club.logo.url }}" class="rounded-circle me-3" style="min-width:40px;min-height:40px;object-fit:cover;" alt="{{ conv.club.name }}">
               {% else %}
-                <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center me-3" style="min-width:40px;min-height:40px;">
+                <div class="rounded-circle bg-white text-dark d-flex align-items-center justify-content-center me-3" style="min-width:40px;min-height:40px;">
                   {{ conv.club.name|first|upper }}
                 </div>
               {% endif %}
@@ -30,9 +30,9 @@
                     {{ conv.club.name }}
                   {% endif %}
                 </div>
-                <div class="{% if conv.club == club and (user == conv.club.owner and conv.user == conversant or user != conv.club.owner and conv.club == club) %}text-white small{% else %}text-muted small{% endif %}">{{ conv.content|truncatechars:40 }}</div>
-              </div>
-              <small class="{% if conv.club == club and (user == conv.club.owner and conv.user == conversant or user != conv.club.owner and conv.club == club) %}text-white{% else %}text-muted{% endif %} ms-3">{{ conv.created_at|timesince }} atrás</small>
+              <div class="{% if conv.club == club and user == conv.club.owner and conv.user == conversant or conv.club == club and user != conv.club.owner %}text-white small{% else %}text-muted small{% endif %}">{{ conv.content|truncatechars:40 }}</div>
+                  </div>
+              <small class="{% if conv.club == club and user == conv.club.owner and conv.user == conversant or conv.club == club and user != conv.club.owner %}text-white{% else %}text-muted{% endif %} ms-3">{{ conv.created_at|timesince }} atrás</small>
             </a>
           {% empty %}
             <p>No hay mensajes.</p>
@@ -61,10 +61,10 @@
             <div class="mb-3 flex-grow-1 p-3 " id="message-container" style="max-height:60vh; overflow-y:auto;">
               {% for m in messages %}
                 <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row" data-id="{{ m.id }}">
-                  <div class="p-1 rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
+                  <div class="rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
                     {% if m.reply_to %}
-                      <div class="bg-light p-1 rounded mb-1 text-dark">{{ m.reply_to.content }}</div>
-                    {% endif %}
+                      <div class="message-reply bg-secondary rounded  text-white mb-2">{{ m.reply_to.content }}</div>
+                       {% endif %}
                     <div>{{ m.content }}</div>
                   </div>
                   <div class="message-actions ms-1">
