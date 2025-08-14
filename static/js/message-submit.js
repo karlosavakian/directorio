@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="p-1 rounded message-bubble bg-dark text-white">
             ${quote}
             <div class="message-content">${data.content}</div>
-            <div class="text-end text-muted small mt-1">${data.created_at}</div>
+            <div class="text-end text-white small mt-1">${data.created_at}</div>
           </div>`;
         const actions = `
           <div class="message-actions ${data.sender_is_club ? 'me-1' : 'ms-1'}">
