@@ -98,7 +98,7 @@
           <div class="mb-3 flex-grow-1 p-3 " id="message-container" style="max-height:60vh; overflow-y:auto;">
             {% for m in messages %}
               {% ifchanged m.created_at|date:"Y-m-d" %}
-                <div class="text-center text-muted small my-2">{{ m.created_at|date:"d/m/Y" }}</div>
+                <div class="text-center text-muted small my-2">{{ m.created_at|message_day }}</div>
               {% endifchanged %}
               <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row" data-id="{{ m.id }}">
                 {% if m.sender_is_club %}
