@@ -111,3 +111,23 @@ def message_timestamp(value):
 
     value = timezone.localtime(value)
     return value.strftime("%H:%M")
+
+
+@register.filter
+def message_day(value):
+    """Return 'Hoy', 'Ayer' or formatted date for ``value``."""
+    if not value:
+        return ""
+
+    from datetime import timedelta
+    from django.utils import timezone
+
+    value_date = timezone.localtime(value).date()
+    today = timezone.localtime(timezone.now()).date()
+
+    if value_date == today:
+        return "Hoy"
+    if value_date == today - timedelta(days=1):
+        return "Ayer"
+
+    return value_date.strftime("%d/%m/%Y")
