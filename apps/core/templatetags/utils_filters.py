@@ -50,6 +50,36 @@ def time_since_short(value):
     return f"hace {weeks} semanas"
 
 
+@register.filter
+def time_since_simple(value):
+    """Return time difference using a single unit (minutes, hours, days or weeks)."""
+    if not value:
+        return ""
+
+    from django.utils import timezone
+
+    now = timezone.now()
+    diff = now - value
+    seconds = int(diff.total_seconds())
+
+    minutes = seconds // 60
+    if minutes < 1:
+        return "1 minuto"
+    if minutes < 60:
+        return f"{minutes} minuto{'s' if minutes != 1 else ''}"
+
+    hours = minutes // 60
+    if hours < 24:
+        return f"{hours} hora{'s' if hours != 1 else ''}"
+
+    days = hours // 24
+    if days < 7:
+        return f"{days} día{'s' if days != 1 else ''}"
+
+    weeks = days // 7
+    return f"{weeks} semana{'s' if weeks != 1 else ''}"
+
+
 @register.filter(is_safe=True)
 def youtube_embed(text):
     """Replace YouTube links in ``text`` with embed iframe."""
