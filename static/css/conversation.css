@@ -68,3 +68,8 @@
   overflow-wrap: anywhere;
   max-width:50%;
 }
+
+.conversation-container {
+  height: 100%;
+  overflow: hidden;
+}
