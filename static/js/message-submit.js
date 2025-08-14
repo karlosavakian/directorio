@@ -5,14 +5,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('message-container');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const textarea = form.querySelector('textarea');
+  const replyPreview = document.getElementById('reply-preview');
+  const replyText = document.getElementById('reply-text');
+  const replyClose = document.getElementById('reply-close');
+
+  const clearReplyPreview = () => {
+    replyPreview?.classList.add('d-none');
+    if (replyText) replyText.textContent = '';
+  };
+  replyClose?.addEventListener('click', () => {
+    clearReplyPreview();
+    textarea?.focus();
+  });
 
   const attachReplyHandler = (btn) => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.message-row');
       const text = row?.querySelector('.message-bubble div')?.textContent.trim();
-      if (textarea && text) {
-        textarea.value = `> ${text}\n`;
-        textarea.focus();
+      if (text) {
+        if (replyText) replyText.textContent = text;
+        replyPreview?.classList.remove('d-none');
+        textarea?.focus();
       }
     });
   };
@@ -53,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) return;
       const data = await res.json();
       form.reset();
+      clearReplyPreview();
 
       const row = document.createElement('div');
       row.className = 'd-flex justify-content-end mb-2 message-row';

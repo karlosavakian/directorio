@@ -4,16 +4,16 @@
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block content %}
 <main class="flex-grow-1" >
-  <div class="container my-4 h-100">
+  <div class="container my-4 h-100 conversation-container">
     <div class="row  h-100 border" >
       <div class="col-md-4 mb-3 p-0">
         <h5 class="border-bottom fw-medium p-3 ">Conversaciones recientes </h5>
         <div class="list-group ">
           {% for conv in conversations %}
             {% if user == conv.club.owner %}
-              <a href="{% url 'conversation' %}?club={{ conv.club.slug }}&user={{ conv.user.id }}" class="p-3 list-group-item list-group-item-action d-flex align-items-center {% if conv.club == club and conv.user == conversant %}  {% endif %}">
+              <a href="{% url 'conversation' %}?club={{ conv.club.slug }}&user={{ conv.user.id }}" class="p-3 list-group-item list-group-item-action d-flex align-items-center{% if conv.club == club and conv.user == conversant %} active{% endif %}">
             {% else %}
-              <a href="{% url 'conversation' %}?club={{ conv.club.slug }}" class="list-group-item list-group-item-action d-flex align-items-center {% if conv.club == club %}bg-dark text-white{% endif %}">
+              <a href="{% url 'conversation' %}?club={{ conv.club.slug }}" class="list-group-item list-group-item-action d-flex align-items-center{% if conv.club == club %} active{% endif %}">
             {% endif %}
               {% if conv.club.logo %}
                 <img src="{{ conv.club.logo.url }}" class="rounded-circle me-3" style="min-width:40px;min-height:40px;object-fit:cover;" alt="{{ conv.club.name }}">
@@ -79,6 +79,10 @@
             {% empty %}
               <p>No hay mensajes.</p>
             {% endfor %}
+          </div>
+          <div id="reply-preview" class="border-top py-2 px-3 d-none position-relative">
+            <div id="reply-text" class="bg-light p-2 rounded"></div>
+            <button type="button" id="reply-close" class="btn-close position-absolute top-0 end-0 m-2"></button>
           </div>
           <form method="post" id="message-form" class="m-4 ">
             {% csrf_token %}

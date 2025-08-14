@@ -39,3 +39,27 @@
 .message-row:hover .message-actions {
   display: flex;
 }
+
+.conversation-container {
+  height: 100vh;
+}
+
+.list-group-item.active {
+  background-color: #212529;
+  color: #fff;
+  border-color: #212529;
+}
+
+#reply-preview {
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+}
+
+#reply-preview .btn-close {
+  box-shadow: none;
+}
+
+#reply-text {
+  white-space: pre-wrap;
+}
