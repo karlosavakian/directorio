@@ -24,7 +24,7 @@
                     {{ conv.club.name|first|upper }}
                   </div>
                 {% endif %}
-                <div class="flex-grow-1">
+                <div class="col-md-10">
                   <div class="fw-bold">
                     {% if user == conv.club.owner %}
                       {{ conv.user.username }}
@@ -32,8 +32,8 @@
                       {{ conv.club.name }}
                     {% endif %}
                   </div>
-                  <div class="{% if conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %}">
-                    {{ conv.content|truncatechars:40 }}
+                  <div class="{% if conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
+                    {{ conv.content }}
                   </div>
                 </div>
                 <small class="{% if conv.club == club and conv.user == conversant %}text-white{% else %}text-muted{% endif %} ms-3">
@@ -54,7 +54,7 @@
                     {{ conv.club.name|first|upper }}
                   </div>
                 {% endif %}
-                <div class="flex-grow-1">
+                <div class="col-md-10">
                   <div class="fw-bold">
                     {% if user == conv.club.owner %}
                       {{ conv.user.username }}
@@ -62,8 +62,8 @@
                       {{ conv.club.name }}
                     {% endif %}
                   </div>
-                  <div class="{% if conv.club == club %}text-white small{% else %}text-muted small{% endif %}">
-                    {{ conv.content|truncatechars:40 }}
+                  <div class="{% if conv.club == club %}text-white small{% else %}text-muted small{% endif %} text-truncate">
+                    {{ conv.content }}
                   </div>
                 </div>
                 <small class="{% if conv.club == club %}text-white{% else %}text-muted{% endif %} ms-3">
@@ -113,7 +113,7 @@
                     </button>
                   </div>
                 {% endif %}
-                <div class="rounded message-bubble {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
+                <div class="rounded message-bubble col-md-5 text-wrap text-break {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
                   {% if m.reply_to %}
                     <div class="message-reply bg-secondary rounded  text-white mb-2">{{ m.reply_to.content }}</div>
                   {% endif %}

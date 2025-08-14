@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         row.dataset.id = data.id;
         const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark">${data.reply_to}</div>` : '';
         const bubble = `
-          <div class="p-1 rounded message-bubble bg-dark text-white">
+          <div class="p-1 rounded message-bubble col-md-5 text-wrap text-break bg-dark text-white">
             ${quote}
             <div class="message-content">${data.content}</div>
             <div class="text-end text-white small mt-1">${data.created_at}</div>
