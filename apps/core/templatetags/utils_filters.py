@@ -81,6 +81,25 @@ def youtube_embed(text):
     return mark_safe(html)
 
 
+@register.filter(is_safe=True)
+def format_reply(text):
+    """Render reply quotes within message bubbles."""
+    if not text:
+        return ""
+    from django.utils.html import escape
+    from django.utils.safestring import mark_safe
+
+    lines = str(text).split('\n')
+    if lines and lines[0].startswith('>'):
+        quoted = escape(lines[0][1:].strip())
+        rest = escape('\n'.join(lines[1:]).strip())
+        html = f'<blockquote class="m-0 small text-muted">{quoted}</blockquote>'
+        if rest:
+            html += f'<div>{rest}</div>'
+        return mark_safe(html)
+    return escape(text)
+
+
 @register.filter
 def safe_url(file_field):
     """Return the file URL or empty string if missing."""

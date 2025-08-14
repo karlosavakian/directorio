@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const textarea = form.querySelector('textarea');
 
+  const formatReply = (content) => {
+    if (content.startsWith('>')) {
+      const [first, ...rest] = content.split('\n');
+      const quoted = first.replace(/^>\s?/, '').trim();
+      const remaining = rest.join('\n').trim();
+      let html = `<blockquote class="m-0 small text-muted">${quoted}</blockquote>`;
+      if (remaining) html += `<div>${remaining}</div>`;
+      return html;
+    }
+    return `<div>${content}</div>`;
+  };
+
   const attachReplyHandler = (btn) => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.message-row');
@@ -32,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
         form.requestSubmit();
       }
     });
+    textarea.addEventListener('input', () => {
+      textarea.value = textarea.value.replace(/\n/g, '');
+    });
   }
 
   form.addEventListener('submit', async (e) => {
@@ -56,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
       row.className = 'd-flex justify-content-end mb-2 message-row';
       row.innerHTML = `
         <div class="p-1 rounded message-bubble bg-dark text-white">
-          <div>${data.content}</div>
+          ${formatReply(data.content)}
         </div>
         <div class="message-actions ms-1">
           <button class="btn p-0 reply-btn">
