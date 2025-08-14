@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const attachReplyHandler = (btn) => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.message-row');
-      const text = row?.querySelector('.message-bubble div:last-child')?.textContent.trim();
+      const text = row?.querySelector('.message-content')?.textContent.trim();
       const id = row?.dataset.id;
       if (text) {
         if (replyText) replyText.textContent = text;
@@ -76,28 +76,26 @@ document.addEventListener('DOMContentLoaded', () => {
         row.className = 'd-flex justify-content-end mb-2 message-row';
         row.dataset.id = data.id;
         const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark">${data.reply_to}</div>` : '';
-        row.innerHTML = `
+        const bubble = `
           <div class="p-1 rounded message-bubble bg-dark text-white">
             ${quote}
-            <div>${data.content}</div>
-          </div>
-          <div class="message-actions ms-1">
+            <div class="message-content">${data.content}</div>
+            <div class="text-end text-muted small mt-1">${data.created_at}</div>
+          </div>`;
+        const actions = `
+          <div class="message-actions ${data.sender_is_club ? 'me-1' : 'ms-1'}">
             <button class="btn p-0 reply-btn">
-              <i class="bi bi-reply"></i>
+              <i class="bi bi-reply" ${data.sender_is_club ? 'style="transform:scaleX(-1);"' : ''}></i>
             </button>
             <button class="btn p-0 message-like" data-url="${data.like_url}">
               <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
               </svg>
             </button>
-          </div>
-        `;
-      const timestamp = document.createElement('div');
-      timestamp.className = 'text-center text-muted small';
-      timestamp.textContent = data.created_at;
+          </div>`;
+        row.innerHTML = data.sender_is_club ? actions + bubble : bubble + actions;
 
       container.appendChild(row);
-      container.appendChild(timestamp);
       scrollToBottom();
 
       const likeBtn = row.querySelector('.message-like');
