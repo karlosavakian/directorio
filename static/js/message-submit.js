@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const textarea = form.querySelector('textarea');
   const replyPreview = document.getElementById('reply-preview');
-  const replyText = document.getElementById('reply-text');
+  const replyText = document.getElementById('reply-content');
   const replyClose = document.getElementById('reply-close');
   const replyInput = form.querySelector('[name="reply_to"]');
 
@@ -23,7 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const attachReplyHandler = (btn) => {
     btn.addEventListener('click', () => {
       const row = btn.closest('.message-row');
-      const text = row?.querySelector('.message-content')?.textContent.trim();
+      const contentElem = row?.querySelector('.message-content');
+      let text = '';
+      if (contentElem) {
+        const span = contentElem.querySelector('span');
+        text = span ? span.textContent.trim() : contentElem.textContent.trim();
+      }
       const id = row?.dataset.id;
       if (text) {
         if (replyText) replyText.textContent = text;
@@ -85,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const actions = `
           <div class="message-actions ${data.sender_is_club ? 'me-1' : 'ms-1'}">
             <button class="btn p-0 reply-btn">
-              <i class="bi bi-reply" ${data.sender_is_club ? 'style="transform:scaleX(-1);"' : ''}></i>
+              <i class="bi bi-reply" style="transform:scaleX(-1);"></i>
             </button>
             <button class="btn p-0 message-like" data-url="${data.like_url}">
               <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
