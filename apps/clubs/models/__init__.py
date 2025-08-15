@@ -13,3 +13,4 @@ from .member import Miembro
 from .payment import Pago
 from .schedule_hour import ScheduleHour
 from .message import ClubMessage
+from .chat import ClubChat

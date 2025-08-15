@@ -18,12 +18,12 @@
         <div class="spinner-border" role="status"></div>
     </div>
 
-    {% if request.path == '/mensajes/' %}
+    {% if request.path|slice:':10' == '/mensajes/' %}
     <div id="chat-progress-bar"></div>
     {% endif %}
 
     {% include 'partials/_header.html' %}
-    {% if request.path != '/mensajes/' %}
+    {% if request.path|slice:':10' != '/mensajes/' %}
     {% include 'partials/_messages.html' %}
     {% endif %}
  

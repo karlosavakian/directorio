@@ -30,6 +30,7 @@ urlpatterns = [
 
     # Bandeja y conversaciones de mensajes
     path('mensajes/', club_messages.conversation, name='conversation'),
+    path('mensajes/chat/<str:chat_id>/', club_messages.conversation, name='chat'),
     path('mensaje/<int:pk>/like/', club_messages.message_toggle_like, name='message_like'),
 
     # Clubs: Gestión de Clubs y búsqueda
