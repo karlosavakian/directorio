@@ -15,39 +15,36 @@
               {% if conv.club.logo %}
                 <img src="{{ conv.club.logo.url }}"
                      class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white p-1{% endif %}"
-                     style="min-width:40px;min-height:40px;object-fit:cover;"
+                     style="min-width:60px;min-height:60px;object-fit:cover;"
                      alt="{{ conv.club.name }}">
               {% else %}
                 <div class="rounded-circle d-flex align-items-center justify-content-center me-3 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}bg-white text-dark{% else %}bg-dark text-white{% endif %}"
-                     style="min-width:40px;min-height:40px;">
+                     style="min-width:60px;min-height:60px;">
                   {{ conv.club.name|first|upper }}
                 </div>
               {% endif %}
               <div class="flex-grow-1 position-relative">
-                <div class="fw-bold d-flex align-items-center">
-                  {% if user == conv.club.owner %}
-                    {{ conv.user.username }}
-                  {% else %}
-                    {{ conv.club.name }}
-                    {% if conv.club.plan == 'oro' %}
-                      {% include 'partials/_verified-gold.html' %}
-                    {% elif conv.club.plan == 'plata' %}
-                      {% include 'partials/_verified-silver.html' %}
-                    {% elif conv.club.plan == 'bronce' %}
-                      {% include 'partials/_verified-bronze.html' %}
-                    {% endif %}
+                <h6 class="col-md-6 mt-1 mb-1 h6 fw-bold text-center text-lg-start text-break">
+                <span class="text-break">{{ club.name }}</span>
+                <span class="ms-1 align-middle">
+                  {% if club.plan == 'oro' %}
+                    {% include 'partials/_verified-gold.html' %}
+                  {% elif club.plan == 'plata' %}
+                    {% include 'partials/_verified-silver.html' %}
+                  {% elif club.plan == 'bronce' %}
+                    {% include 'partials/_verified-bronze.html' %}
                   {% endif %}
+                </span>
+              </h6>
+
+                <div class="col-md-6 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
+                  {{ conv.content }}...
                 </div>
-                <div class="col-md-7 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
-                  {{ conv.content }}
-                </div>
-                <small style="font-size:12px;" class="position-absolute end-0 top-50 translate-middle-y text-nowrap ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} text-white{% else %} text-muted{% endif %}">
+                <small style="font-size:12px;" class="col-md-2 position-absolute end-0 top-50 translate-middle-y text-wrap ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} text-white{% else %} text-muted{% endif %}">
                   {{ conv.created_at|time_since_short }}
                 </small>
               </div>
-              {% if user != conv.club.owner %}
-                <span class="badge ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white text-dark{% endif %}">{{ conv.club.get_category_display }}</span>
-              {% endif %}
+
             </a>
           {% empty %}
             <p>No hay mensajes.</p>
@@ -91,7 +88,7 @@
 
 <div class="d-flex {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}justify-content-end{% else %}justify-content-start{% endif %} mb-2 message-row" data-id="{{ m.id }}" data-sender="{% if m.sender_is_club %}{{ m.club.name }}{% else %}{{ m.user.username }}{% endif %}">
   {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}
-    <div class="message-actions me-1">
+    <div class="message-actions   me-1">
       <button class="btn p-0 reply-btn">
         <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" style="transform:scaleX(-1);">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 8.046H11V6.119c0-.921-.9-1.446-1.524-.894l-5.108 4.49a1.2 1.2 0 0 0 0 1.739l5.108 4.49c.624.556 1.524.027 1.524-.893v-1.928h2a3.023 3.023 0 0 1 3 3.046V19a5.593 5.593 0 0 0-1.5-10.954Z"/>
@@ -166,14 +163,21 @@
           </div>
         </div>
 
-          <form method="post" id="message-form" class="m-4 ">
-            {% csrf_token %}
-            {{ form.content }}
-            {{ form.reply_to }}
-            <button type="submit" class="btn d-flex align-items-center">
-              <i class="bi bi-send-fill"></i>
-            </button>
-          </form>
+        <form method="post" id="message-form" class="bg-light m-4">
+          {% csrf_token %}
+          <div class="row g-2 align-items-center">
+            <div class="col-11">
+              {{ form.content }}
+              {{ form.reply_to }}
+            </div>
+            <div class="col-1">
+              <button type="submit" class="btn d-flex justify-content-center align-items-center">
+                <i class="bi bi-send-fill"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
         {% else %}
           <div class="d-flex flex-column justify-content-center align-items-center text-center flex-grow-1 text-muted p-3">
             <svg class="w-6 h-6 mb-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="none" viewBox="0 0 24 24">
