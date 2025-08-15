@@ -43,9 +43,9 @@
                 {% csrf_token %}
 
                 {% if not is_owner %}
-                <h5 class="mb-3">Avatar</h5>
-                <div class="mb-5 text-center bg-dark p-3 rounded">
-                    <div class="avatar-dropzone mx-auto p-3">
+                <h5 class="mb-3">Foto de perfil</h5>
+                <div class="mb-5 text-center border p-3 rounded">
+                    <div class="avatar-dropzone avatar-dropzone-square mx-auto p-3">
                         {{ form.avatar }}
                         <div class="avatar-preview{% if profile.avatar|safe_url %} has-image{% endif %}"
                             {% if profile.avatar|safe_url %}style="background-image:url('{{ profile.avatar|safe_url }}')"{% endif %}>
