@@ -85,25 +85,30 @@ document.addEventListener('DOMContentLoaded', () => {
         row.className = 'd-flex justify-content-end mb-2 message-row';
         row.dataset.id = data.id;
         row.dataset.sender = data.sender;
-        const quote = data.reply_to ? `<div class="bg-light p-1 rounded mb-1 text-dark"><div class="fw-medium">${data.reply_to.sender}</div>${data.reply_to.content}</div>` : '';
-        const bubble = `
-          <div class="p-1 rounded message-bubble col-md-5 text-wrap text-break bg-dark text-white">
-            ${quote}
-            <div class="message-content">${data.content}</div>
-            <div class="text-end text-white small mt-1">${data.created_at}</div>
-          </div>`;
-        const actions = `
-          <div class="message-actions ms-1">
-            <button class="btn p-0 reply-btn">
-              <i class="bi bi-reply" style="transform:scaleX(-1);"></i>
-            </button>
-            <button class="btn p-0 message-like" data-url="${data.like_url}">
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-              </svg>
-            </button>
-          </div>`;
-        row.innerHTML = bubble + actions;
+        const quote = data.reply_to ? `<div class="message-reply rounded text-white mb-2"><div class="fw-medium small">${data.reply_to.sender}</div><span class="small test-white fw-light fst-italic">${data.reply_to.content}</span></div>` : '';
+
+const bubble = `
+  <div class="rounded message-bubble text-wrap text-break bg-dark text-white">
+    ${quote}
+    <div class="message-content d-flex justify-content-between align-items-center">
+      <span>${data.content}</span>
+      <span style="font-size:10px;" class="small text-nowrap ms-2 mt-auto align-self-end text-light">${data.created_at}</span>
+    </div>
+  </div>`;
+const actions = `
+  <div class="message-actions me-1">
+    <button class="btn p-0 reply-btn">
+      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" style="transform:scaleX(-1);">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.5 8.046H11V6.119c0-.921-.9-1.446-1.524-.894l-5.108 4.49a1.2 1.2 0 0 0 0 1.739l5.108 4.49c.624.556 1.524.027 1.524-.893v-1.928h2a3.023 3.023 0 0 1 3 3.046V19a5.593 5.593 0 0 0-1.5-10.954Z"/>
+      </svg>
+    </button>
+    <button class="btn p-0 message-like" data-url="${data.like_url}">
+      <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.51 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+      </svg>
+    </button>
+  </div>`;
+row.innerHTML = actions + bubble;
 
       container.appendChild(row);
       scrollToBottom();
