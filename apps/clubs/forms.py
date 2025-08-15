@@ -184,6 +184,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'category',
             'plan',
             'address',
+            'bookmarked_competidores',
         )
         labels = {
             'name': 'Nombre del club',
