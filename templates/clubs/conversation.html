@@ -186,8 +186,8 @@
               <p>No hay mensajes.</p>
             {% endfor %}
           </div>
-        <div id="reply-preview" class="border-top py-3 px-3 d-none d-flex align-items-center">
-          <div id="reply-text" class="bg-light border p-2  rounded flex-grow-1 position-relative d-flex flex-column">
+         <div id="reply-preview" class="border-top py-3 px-3 d-none d-flex align-items-center">
+          <div id="reply-text" class="bg-light border p-2 m-2  rounded flex-grow-1 position-relative d-flex flex-column">
             <!-- Botón de cierre -->
             <button type="button" id="reply-close" class="btn-close position-absolute top-0 end-0 m-2"></button>
 
@@ -205,10 +205,9 @@
             </div>
 
             <!-- Contenido debajo, alineado con la misma columna (sin margen izquierdo) -->
-            <span id="reply-content" class="ms-4 text-break"></span>
+            <span id="reply-content" class="ms-4 me-4 p-3 text-break"></span>
           </div>
         </div>
-
 
           <form method="post" id="message-form" class="m-4 ">
             {% csrf_token %}
