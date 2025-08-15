@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load utils_filters %}
-{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
+{% block body_class %}d-flex flex-column vh-100  {% endblock %}
 {% block content %}
-<main class="flex-grow-1">
-  <div class="container h-100 py-4 conversation-container">
-    <div class="row  h-100 border" >
-      <div class="col-md-4 p-0">
+<main class="flex-grow-1 m-4 overflow-hidden">
+  <div class="container h-100  conversation-container">
+    <div class="row    h-100 border">
+      <div class="col-md-4 p-0  h-100 d-flex flex-column">
         <h5 class="border-bottom fw-medium p-3 ">Conversaciones recientes </h5>
-        <div class="list-group ">
+        <div class="list-group flex-grow-1 overflow-auto ">
           {% for conv in conversations %}
             {% if user == conv.club.owner %}
               <a href="{% url 'conversation' %}?club={{ conv.club.slug }}&user={{ conv.user.id }}"
@@ -132,15 +132,15 @@
                 {% endif %}
                 <div class="rounded message-bubble text-wrap text-break {% if user == club.owner and m.sender_is_club or user != club.owner and not m.sender_is_club %}bg-dark text-white{% else %}border{% endif %}">
                   {% if m.reply_to %}
-                  <div class="message-reply bg-secondary rounded text-white mb-2">
-                    <div class="fw-medium">
+                  <div class="message-reply rounded text-white mb-2">
+                    <div class="fw-medium small ">
                       {% if m.reply_to.sender_is_club %}
                         {{ m.reply_to.club.name }}
                       {% else %}
                         {{ m.reply_to.user.username }}
                       {% endif %}
                     </div>
-                    {{ m.reply_to.content }}
+                   <span class="small test-white fw-light fst-italic">{{ m.reply_to.content }}</span>
                   </div>
                   {% endif %}
                   <div class="message-content d-flex justify-content-between align-items-center">
