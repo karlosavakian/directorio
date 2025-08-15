@@ -23,12 +23,19 @@
                   {{ conv.club.name|first|upper }}
                 </div>
               {% endif %}
-              <div class="col-md-10 position-relative">
-                <div class="fw-bold">
+              <div class="flex-grow-1 position-relative">
+                <div class="fw-bold d-flex align-items-center">
                   {% if user == conv.club.owner %}
                     {{ conv.user.username }}
                   {% else %}
                     {{ conv.club.name }}
+                    {% if conv.club.plan == 'oro' %}
+                      {% include 'partials/_verified-gold.html' %}
+                    {% elif conv.club.plan == 'plata' %}
+                      {% include 'partials/_verified-silver.html' %}
+                    {% elif conv.club.plan == 'bronce' %}
+                      {% include 'partials/_verified-bronze.html' %}
+                    {% endif %}
                   {% endif %}
                 </div>
                 <div class="col-md-7 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
@@ -38,6 +45,9 @@
                   {{ conv.created_at|time_since_short }}
                 </small>
               </div>
+              {% if user != conv.club.owner %}
+                <span class="badge ms-2">{{ conv.club.get_category_display }}</span>
+              {% endif %}
             </a>
           {% empty %}
             <p>No hay mensajes.</p>
@@ -60,7 +70,17 @@
               {% else %}
                 <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center me-2" style="width:40px;height:40px;">{{ club.name|first|upper }}</div>
               {% endif %}
-              <span class="fw-bold">{{ club.name }}</span>
+              <a href="{% url 'club_profile' club.slug %}" class="fw-bold text-decoration-none text-dark d-flex align-items-center">
+                {{ club.name }}
+                {% if club.plan == 'oro' %}
+                  {% include 'partials/_verified-gold.html' %}
+                {% elif club.plan == 'plata' %}
+                  {% include 'partials/_verified-silver.html' %}
+                {% elif club.plan == 'bronce' %}
+                  {% include 'partials/_verified-bronze.html' %}
+                {% endif %}
+              </a>
+              <span class="badge ms-auto">{{ club.get_category_display }}</span>
             {% endif %}
           </div>
           <div class="mb-3 flex-grow-1 p-3" id="message-container" style="overflow-y:auto;">
