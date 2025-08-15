@@ -109,38 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollToBottom();
 
       const likeBtn = row.querySelector('.message-like');
-      if (likeBtn) {
-        likeBtn.addEventListener('click', async () => {
-          const url = likeBtn.dataset.url;
-          const countSpan = likeBtn.querySelector('.like-count');
-          likeBtn.classList.toggle('liked');
-          try {
-            const res = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'X-CSRFToken': csrftoken,
-                'X-Requested-With': 'XMLHttpRequest'
-              },
-              credentials: 'same-origin'
-            });
-            if (res.redirected) {
-              const modal = document.getElementById('loginModal');
-              if (modal) new bootstrap.Modal(modal).show();
-              likeBtn.classList.toggle('liked');
-              return;
-            }
-            if (res.ok) {
-              const data = await res.json();
-              likeBtn.classList.toggle('liked', data.liked);
-              if (countSpan) countSpan.textContent = data.count;
-            } else {
-              likeBtn.classList.toggle('liked');
-            }
-          } catch (err) {
-            console.error(err);
-            likeBtn.classList.toggle('liked');
-          }
-        });
+      if (likeBtn && window.attachMessageLike) {
+        window.attachMessageLike(likeBtn);
       }
 
       const replyBtn = row.querySelector('.reply-btn');

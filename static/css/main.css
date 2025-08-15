@@ -181,6 +181,11 @@
 }
 
 /* Message likes */
+
+.message-bubble {
+  position: relative;
+}
+
 .message-like.liked svg path {
   fill: #e63946;
   stroke: #e63946;
@@ -188,6 +193,40 @@
 
 .message-like svg path {
   stroke: #000;
+}
+
+.message-like.inside {
+  position: absolute;
+  bottom: -8px;
+  left: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--bs-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message-like.inside svg {
+  width: 16px;
+  height: 16px;
+}
+
+.message-like.inside.animating {
+  animation: like-pop 0.3s ease;
+}
+
+@keyframes like-pop {
+  0% {
+    transform: scale(0.2);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 input::placeholder,
