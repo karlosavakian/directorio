@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="text-end text-white small mt-1">${data.created_at}</div>
           </div>`;
         const actions = `
-          <div class="message-actions ${data.sender_is_club ? 'me-1' : 'ms-1'}">
+          <div class="message-actions ms-1">
             <button class="btn p-0 reply-btn">
               <i class="bi bi-reply" style="transform:scaleX(-1);"></i>
             </button>
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </svg>
             </button>
           </div>`;
-        row.innerHTML = data.sender_is_club ? actions + bubble : bubble + actions;
+        row.innerHTML = bubble + actions;
 
       container.appendChild(row);
       scrollToBottom();
