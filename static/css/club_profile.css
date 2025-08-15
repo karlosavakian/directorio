@@ -46,9 +46,15 @@
        display: inline-flex;
        align-items: center;
        justify-content: center;
-       position: relative;
-       top: 3px;
- }
+       vertical-align: middle;
+       line-height: 1;
+       margin-left: 0.25rem;
+}
+
+.badge-verified svg {
+       width: 16px;
+       height: 16px;
+}
 
 
  /* List groups */

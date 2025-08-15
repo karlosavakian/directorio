@@ -24,7 +24,7 @@
                 </div>
               {% endif %}
               <div class="flex-grow-1 position-relative">
-                <div class="fw-bold d-flex align-items-center">
+                <div class="fw-bold d-flex align-items-center flex-wrap">
                   {% if user == conv.club.owner %}
                     {{ conv.user.username }}
                   {% else %}
@@ -46,7 +46,7 @@
                 </small>
               </div>
               {% if user != conv.club.owner %}
-                <span class="badge ms-2">{{ conv.club.get_category_display }}</span>
+                <span class="badge ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white text-dark{% else %} bg-secondary text-white{% endif %}">{{ conv.club.get_category_display }}</span>
               {% endif %}
             </a>
           {% empty %}
