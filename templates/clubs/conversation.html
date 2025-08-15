@@ -46,7 +46,7 @@
                 </small>
               </div>
               {% if user != conv.club.owner %}
-                <span class="badge ms-2">{{ conv.club.get_category_display }}</span>
+                <span class="badge ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white text-dark{% endif %}">{{ conv.club.get_category_display }}</span>
               {% endif %}
             </a>
           {% empty %}

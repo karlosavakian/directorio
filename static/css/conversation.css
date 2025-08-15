@@ -88,3 +88,8 @@
   height: 100%;
   overflow: hidden;
 }
+
+/* Adjust verified badge position in messages */
+.conversation-container .badge-verified {
+  top: 1px;
+}
