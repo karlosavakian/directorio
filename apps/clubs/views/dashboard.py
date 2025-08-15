@@ -90,7 +90,14 @@ def dashboard(request):
             exclude_required=['door', 'logo'],
         )
         if form.is_valid():
-            form.save()
+            club = form.save()
+            # If the club owner uploads a new logo, mirror it to the user's
+            # profile avatar so it is reflected in the header and other
+            # profile references immediately.
+            if 'logo' in form.changed_data and club.logo:
+                profile = request.user.profile
+                profile.avatar = club.logo
+                profile.save(update_fields=['avatar'])
             messages.success(request, 'Club actualizado correctamente.')
             return redirect('club_dashboard')
     else:
