@@ -15,16 +15,16 @@
               {% if conv.club.profilepic %}
                 <img src="{{ conv.club.profilepic.url }}"
                      class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white p-1{% endif %}"
-                     style="min-width:60px;min-height:60px;object-fit:cover;"
+                     style="width:40px;height:40px;object-fit:cover;"
                      alt="{{ conv.club.name }}">
               {% elif conv.club.logo %}
                 <img src="{{ conv.club.logo.url }}"
                      class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white p-1{% endif %}"
-                     style="min-width:60px;min-height:60px;object-fit:cover;"
+                     style="width:40px;height:40px;object-fit:cover;"
                      alt="{{ conv.club.name }}">
               {% else %}
                 <div class="rounded-circle d-flex align-items-center justify-content-center me-3 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}bg-white text-dark{% else %}bg-dark text-white{% endif %}"
-                     style="min-width:60px;min-height:60px;">
+                     style="width:40px;height:40px;">
                   {{ conv.club.name|first|upper }}
                 </div>
               {% endif %}
