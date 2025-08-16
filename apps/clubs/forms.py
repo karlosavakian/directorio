@@ -321,6 +321,16 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             raise forms.ValidationError('Selecciona al menos una característica.')
         return features
 
+    def clean_logo(self):
+        logo = self.cleaned_data.get('logo')
+        if not logo and self.instance and getattr(self.instance, 'logo', None):
+            return self.instance.logo
+        return logo
+
+    def clean_postal_code(self):
+        code = self.cleaned_data.get('postal_code', '')
+        return code.strip()
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         region = self.cleaned_data.get('region')

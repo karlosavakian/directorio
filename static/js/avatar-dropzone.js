@@ -80,7 +80,9 @@ function initAvatarDropzones(root = document) {
       zone.classList.remove('dragover');
       const file = e.dataTransfer.files[0];
       if (file) {
-        input.files = e.dataTransfer.files;
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
         showFile(file);
       }
     });
