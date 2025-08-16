@@ -23,8 +23,7 @@
 <div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
   <div class="profile-tabs d-none d-lg-block">
     <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
-    <div class="profile-tab" data-target="tab-gallery">Galería</div>
-    <div class="profile-tab" data-target="tab-profilepic">Foto de Perfil</div>
+    <div class="profile-tab" data-target="tab-gallery">Galería</div> 
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
     <div class="profile-tab" data-target="tab-clase">Servicios</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
@@ -47,26 +46,22 @@
           <div class="col-lg-6">
         <h5 class="mb-3  ">Logotipo</h5>
         <div class="mb-5 text-center bg-dark p-3   rounded">
-          <div class="avatar-dropzone avatar-dropzone-square mx-auto p-3">
-
-            {{ form.logo }}
-            <div
-              class="avatar-preview{% if club.logo %} has-image{% endif %}"
-              {% if club.logo %}
-              style="background-image:url('{{ club.logo|safe_url }}')"
-              {% endif %}
-            >
+           <form method="post" action="{% url 'club_profilepic_upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-5 text-center bg-dark p-3 rounded">
+          <div class="avatar-dropzone avatar-dropzone-square p-3">
+            <input type="file" name="profilepic" id="id_profilepic">
+            <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
+              {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
               <div class="avatar-dropzone-msg p-3">
                 <i class="bi bi-cloud-upload mb-1 fs-4"></i>
                 <span>Arrastra una imagen o haz click </span>
               </div>
             </div>
           </div>
-          {% if form.logo.errors %}
-          <div class="invalid-feedback d-block">
-            {{ form.logo.errors.as_text|striptags }}
-          </div>
-          {% endif %}
+        </div>
+        <button type="submit" class="btn btn-dark">Guardar</button>
+      </form>
         </div>
 
         <div class="row g-3">
@@ -369,26 +364,7 @@
         {% endfor %}
       </div>
     </div>
-    <div id="tab-profilepic" class="profile-section">
-      <h4>Foto de perfil</h4>
-      <form method="post" action="{% url 'club_profilepic_upload' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="mb-5 text-center bg-dark p-3 rounded">
-          <div class="avatar-dropzone avatar-dropzone-square p-3">
-            <input type="file" name="profilepic" id="id_profilepic">
-            <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
-              {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
-              <div class="avatar-dropzone-msg p-3">
-                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                <span>Arrastra una imagen o haz click </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-dark">Guardar</button>
-      </form>
-    </div>
-
+    
     <div id="tab-clase" class="profile-section">
       <h4>Mis servicios</h4>
       <div class="mb-4 align-items-end d-flex mx-auto justify-content-end">
