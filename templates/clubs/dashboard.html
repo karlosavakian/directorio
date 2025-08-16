@@ -10,6 +10,7 @@
             class="profile-tabs-select form-select  w-auto text-end">
       <option value="tab-profile">Mi Perfil</option>
       <option value="tab-gallery">Galería</option>
+      <option value="tab-profilepic">Foto de Perfil</option>
       <option value="tab-schedule">Horarios</option>
       <option value="tab-clase">Servicios</option>
       <option value="tab-bookings">Reservas</option>
@@ -23,6 +24,7 @@
   <div class="profile-tabs d-none d-lg-block">
     <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
     <div class="profile-tab" data-target="tab-gallery">Galería</div>
+    <div class="profile-tab" data-target="tab-profilepic">Foto de Perfil</div>
     <div class="profile-tab" data-target="tab-schedule">Horarios</div>
     <div class="profile-tab" data-target="tab-clase">Servicios</div>
     <div class="profile-tab" data-target="tab-bookings">Reservas</div>
@@ -366,6 +368,17 @@
         <p>No hay fotos.</p>
         {% endfor %}
       </div>
+    </div>
+    <div id="tab-profilepic" class="profile-section">
+      <h4>Foto de perfil</h4>
+      <form method="post" action="{% url 'club_profilepic_upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="profilepic" id="id_profilepic" class="form-control mb-3" />
+        {% if club.profilepic %}
+          <img src="{{ club.profilepic.url }}" alt="Foto de perfil" style="width:40px;height:40px;object-fit:cover;" />
+        {% endif %}
+        <button type="submit" class="btn btn-dark">Guardar</button>
+      </form>
     </div>
 
     <div id="tab-clase" class="profile-section">

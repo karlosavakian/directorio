@@ -184,6 +184,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'category',
             'plan',
             'address',
+            'profilepic',
         )
         labels = {
             'name': 'Nombre del club',
@@ -344,6 +345,12 @@ class ClubPhotoForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.ClubPhoto
         fields = ['image']
+
+
+class ClubProfilePicForm(UniformFieldsMixin, forms.ModelForm):
+    class Meta:
+        model = models.Club
+        fields = ['profilepic']
 
 
 class HorarioForm(UniformFieldsMixin, forms.ModelForm):

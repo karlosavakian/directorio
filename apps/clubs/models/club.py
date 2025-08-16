@@ -10,6 +10,7 @@ from ..countries import COUNTRY_CHOICES
  
 class Club(models.Model):
     logo = models.ImageField(upload_to='clubs/logos/', blank=True, null=True)
+    profilepic = models.ImageField(upload_to='clubs/profilepics/', blank=True, null=True)
     owner = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='owned_clubs')
     name = models.CharField(max_length=255)
     about = models.TextField(blank=True)   

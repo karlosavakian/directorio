@@ -29,6 +29,7 @@ from ..forms import (
     ClubForm,
     ClubPostForm,
     ClubPhotoForm,
+    ClubProfilePicForm,
     HorarioForm,
     CompetidorForm,
     EntrenadorForm,
@@ -313,6 +314,22 @@ def photo_upload(request, slug):
         return redirect('club_dashboard')
     form = ClubPhotoForm()
     return render(request, 'clubs/photo_form.html', {'form': form, 'club': club})
+
+
+@login_required
+def profilepic_upload(request):
+    club = request.user.owned_clubs.first()
+    if not club:
+        return HttpResponseForbidden()
+    if request.method == 'POST':
+        form = ClubProfilePicForm(request.POST, request.FILES, instance=club)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Foto de perfil actualizada correctamente.')
+        else:
+            messages.error(request, 'Error al subir la foto de perfil.')
+        return redirect('club_dashboard')
+    return HttpResponseForbidden()
 
 
 @login_required
