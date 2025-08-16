@@ -204,7 +204,6 @@
                   value="{{ feature.id }}"
                   class="d-none"
                   {% if feature in club.features.all %}checked{% endif %}
-                  {% if forloop.first %}required{% endif %}
                 />
                 {% if feature.icon %}
                 <img

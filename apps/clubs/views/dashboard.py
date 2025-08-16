@@ -87,19 +87,21 @@ def dashboard(request):
             'number', 'door', 'prefijo', 'phone', 'email'
         ]:
             data.setdefault(field, getattr(club, field))
+        if 'features' not in data:
+            data.setlist('features', club.features.values_list('id', flat=True))
         form = ClubForm(
             data,
             request.FILES,
             instance=club,
             require_all=True,
-            exclude_required=['door', 'logo'],
+            exclude_required=['door', 'logo', 'features', 'about'],
         )
         if form.is_valid():
             form.save()
             messages.success(request, 'Club actualizado correctamente.')
             return redirect('club_dashboard')
     else:
-        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
+        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo', 'features', 'about'])
 
     bookmarked_ids = set(
         club.bookmarked_competidores.values_list('id', flat=True)
