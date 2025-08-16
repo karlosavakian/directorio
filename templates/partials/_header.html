@@ -34,15 +34,15 @@
                         id="user-dropdown"
                     >
                         <div class="selected d-flex align-items-center">
-                            {% if user.owned_clubs.first and user.owned_clubs.first.logo %}
+                            {% if user.profile.avatar %}
                             <img
-                                src="{{ user.owned_clubs.first.logo|safe_url }}"
+                                src="{{ user.profile.avatar|safe_url }}"
                                 alt="{{ user.username }}"
                                 class="nav-avatar-img"
                             />
-                            {% elif user.profile.avatar %}
+                            {% elif user.owned_clubs.first and user.owned_clubs.first.logo %}
                             <img
-                                src="{{ user.profile.avatar|safe_url }}"
+                                src="{{ user.owned_clubs.first.logo|safe_url }}"
                                 alt="{{ user.username }}"
                                 class="nav-avatar-img"
                             />
