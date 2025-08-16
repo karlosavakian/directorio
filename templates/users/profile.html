@@ -86,14 +86,20 @@
                 </div>
 
                 <div class="row g-3">
-                    <div class="form-field col-md-6">
-                    {{ form.new_password1 }}
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
+                    <div class="form-field col-md-6 with-toggle">
+                        <div class="input-wrapper">
+                            <button type="button" class="clear-btn bi bi-x"></button>
+                            <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
+                            {{ form.new_password1 }}
+                        </div>
+                        <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
                     </div>
-                    <div class="form-field col-md-6">
-                        {{ form.new_password2 }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
+                    <div class="form-field col-md-6 with-toggle">
+                        <div class="input-wrapper">
+                            <button type="button" class="clear-btn bi bi-x"></button>
+                            <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
+                            {{ form.new_password2 }}
+                        </div>
                         <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
                     </div>
 
@@ -297,6 +303,7 @@
 <script src="{% static 'js/clear-input.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
 <script src="{% static 'js/plan-cards.js' %}"></script>
+<script src="{% static 'js/toggle-password.js' %}"></script>
 {% if is_owner %}
 <script src="{% static 'js/slug-check.js' %}"></script>
 {% endif %}
