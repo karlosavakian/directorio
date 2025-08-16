@@ -49,8 +49,8 @@
 
             {{ form.logo }}
             <div
-              class="avatar-preview{% if club.logo|safe_url %} has-image{% endif %}"
-              {% if club.logo|safe_url %}
+              class="avatar-preview{% if club.logo %} has-image{% endif %}"
+              {% if club.logo %}
               style="background-image:url('{{ club.logo|safe_url }}')"
               {% endif %}
             >
