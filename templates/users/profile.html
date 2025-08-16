@@ -42,7 +42,7 @@
             <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                 {% csrf_token %}
                  {% if not is_owner %}
-                <h5 class="mb-3">Avatar</h5>
+                <h5 class="mb-3">Foto de perfil</h5>
                 <div class="mb-5 text-center bg-dark p-3 rounded">
                     <div class="avatar-dropzone avatar-dropzone-square  p-3">
                         {{ form.avatar }}
