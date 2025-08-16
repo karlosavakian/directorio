@@ -87,19 +87,15 @@
 
                 <div class="row g-3">
                     <div class="form-field col-md-6 with-toggle">
-                        <div class="input-wrapper">
-                            <button type="button" class="clear-btn bi bi-x"></button>
-                            <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
-                            {{ form.new_password1 }}
-                        </div>
+                        {{ form.new_password1 }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                         <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
                     </div>
                     <div class="form-field col-md-6 with-toggle">
-                        <div class="input-wrapper">
-                            <button type="button" class="clear-btn bi bi-x"></button>
-                            <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
-                            {{ form.new_password2 }}
-                        </div>
+                        {{ form.new_password2 }}
+                        <button type="button" class="clear-btn bi bi-x"></button>
+                        <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                         <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
                     </div>
 

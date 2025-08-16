@@ -111,6 +111,7 @@
   position: static;
   transform: none;
   padding: 0;
+  color: #000;
 }
 
 .profile-form .form-field input:not(:placeholder-shown) ~ label,

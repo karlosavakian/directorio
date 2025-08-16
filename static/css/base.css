@@ -292,3 +292,13 @@ input[type="checkbox"] {
     font-size: 16px;
 
 }
+
+/* Form check styling */
+.form-check-label {
+  color: #000;
+}
+
+.form-check-input:checked {
+  background-color: #000;
+  border-color: #000;
+}

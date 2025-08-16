@@ -23,16 +23,14 @@
 
 
                 <div class="form-field with-toggle">
-                  <div class="input-wrapper">
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                     <input type="password"
                            name="{{ form.password.name }}"
                            class="form-control"
                            id="{{ form.password.id_for_label }}"
                            placeholder=" "
                            required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
-                  </div>
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
                     {% if form.password.errors %}
                       <div class="invalid-feedback d-block">
