@@ -45,17 +45,27 @@ class ProfileAvatarPersistenceTests(TestCase):
     @override_settings(ALLOWED_HOSTS=["testserver"])
     def test_nav_avatar_on_owned_club_profile(self):
         """Nav avatar should use the uploaded profile image on owned club pages."""
-        club = Club.objects.create(
-            name="Club Avatar",
-            city="C",
-            address="A",
-            phone="1",
-            email="e@e.com",
-            owner=self.user,
-        )
         self.client.login(username="avataruser", password="pass")
         with tempfile.TemporaryDirectory() as tmpdir:
             with override_settings(MEDIA_ROOT=tmpdir):
+                # Create a club with a logo to ensure nav avatar prefers the
+                # user's profile avatar over the club logo.
+                img_logo = Image.new("RGB", (50, 50), "white")
+                buf_logo = io.BytesIO()
+                img_logo.save(buf_logo, format="JPEG")
+                buf_logo.seek(0)
+                logo_upload = SimpleUploadedFile("logo.jpg", buf_logo.getvalue(), content_type="image/jpeg")
+                club = Club.objects.create(
+                    name="Club Avatar",
+                    city="C",
+                    address="A",
+                    phone="1",
+                    email="e@e.com",
+                    owner=self.user,
+                    logo=logo_upload,
+                )
+
+                # Upload a profile avatar for the user.
                 img = Image.new("RGB", (50, 50), "white")
                 buf = io.BytesIO()
                 img.save(buf, format="JPEG")
