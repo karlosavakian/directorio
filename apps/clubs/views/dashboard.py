@@ -80,7 +80,12 @@ def dashboard(request):
 
     if request.method == 'POST':
         data = request.POST.copy()
-        for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
+        if 'logo' not in request.FILES:
+            data.setdefault('logo', club.logo)
+        for field in [
+            'slug', 'country', 'region', 'city', 'postal_code', 'street',
+            'number', 'door', 'prefijo', 'phone', 'email'
+        ]:
             data.setdefault(field, getattr(club, field))
         form = ClubForm(
             data,
