@@ -24,16 +24,23 @@
             <!-- Columna Izquierda: Info del Club -->
             <div class="col-lg-2 ">
          <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center">
-            {% if club.logo|safe_url %}
-                <img src="{{ club.logo|safe_url }}"
-                    class="w-100 h-100"
-                    style="object-fit:cover;"
-                    alt="{{ club.name }}">
-            {% else %}
-                <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgb(85, 85, 85);">
-                    <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
-                </div>
-            {% endif %}
+            {% with avatar=club.owner.profile.avatar|safe_url %}
+                {% if avatar %}
+                    <img src="{{ avatar }}"
+                        class="w-100 h-100"
+                        style="object-fit:cover;"
+                        alt="{{ club.name }}">
+                {% elif club.logo|safe_url %}
+                    <img src="{{ club.logo|safe_url }}"
+                        class="w-100 h-100"
+                        style="object-fit:cover;"
+                        alt="{{ club.name }}">
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgb(85, 85, 85);">
+                        <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
+                    </div>
+                {% endif %}
+            {% endwith %}
             </div>
 
                 <div class="p-2 d-flex align-items-start justify-content-center justify-content-lg-start mt-2 mb-4 gap-3">

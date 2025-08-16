@@ -251,6 +251,44 @@ class ClubPhotoResizeTests(TestCase):
         self.assertLessEqual(height, 800)
 
 
+class ClubProfileAvatarTests(TestCase):
+    @override_settings(ALLOWED_HOSTS=["testserver"])
+    def test_profile_avatar_shown_when_no_club_logo(self):
+        user = User.objects.create_user(username="avatarowner", password="pass")
+        self.client.login(username="avatarowner", password="pass")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with override_settings(MEDIA_ROOT=tmpdir):
+                img = Image.new("RGB", (50, 50), "white")
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG")
+                buf.seek(0)
+                upload = SimpleUploadedFile("avatar.jpg", buf.getvalue(), content_type="image/jpeg")
+                self.client.post(
+                    reverse("profile"),
+                    {
+                        "username": "avatarowner",
+                        "email": "",
+                        "new_password1": "",
+                        "new_password2": "",
+                        "notifications": "on",
+                        "avatar": upload,
+                    },
+                    follow=True,
+                )
+                user.refresh_from_db()
+                club = Club.objects.create(
+                    name="Avatar Club",
+                    city="C",
+                    address="A",
+                    phone="1",
+                    email="e@e.com",
+                    owner=user,
+                )
+                response = self.client.get(reverse("club_profile", args=[club.slug]))
+                self.assertEqual(response.status_code, 200)
+                self.assertContains(response, user.profile.avatar.url)
+
+
 class DashboardPermissionTests(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user(username='owner', password='pass')
