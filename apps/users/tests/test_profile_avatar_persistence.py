@@ -1,5 +1,6 @@
 import io
 import tempfile
+import uuid
 from PIL import Image
 from django.contrib.auth.models import User
 from apps.clubs.models import Club
@@ -49,7 +50,7 @@ class ProfileAvatarPersistenceTests(TestCase):
             name="Club Avatar",
             city="C",
             address="A",
-            phone="1",
+            phone="612345678",
             email="e@e.com",
             owner=self.user,
         )
@@ -80,12 +81,11 @@ class ProfileAvatarPersistenceTests(TestCase):
 
     @override_settings(ALLOWED_HOSTS=["testserver"])
     def test_nav_avatar_updates_with_club_profilepic(self):
-        """Nav avatar should display club profilepic after upload."""
+        """Nav avatar should display club profilepic if one exists."""
         club = Club.objects.create(
-            name="Club Pic",
+            name=f"Club Pic {uuid.uuid4()}",
             city="C",
-            address="A",
-            phone="1",
+            phone="612345678",
             email="e@e.com",
             owner=self.user,
         )
@@ -97,12 +97,8 @@ class ProfileAvatarPersistenceTests(TestCase):
                 img.save(buf, format="JPEG")
                 buf.seek(0)
                 upload = SimpleUploadedFile("clubpic.jpg", buf.getvalue(), content_type="image/jpeg")
-                response = self.client.post(
-                    reverse("club_profilepic_upload"),
-                    {"profilepic": upload},
-                    follow=True,
-                )
-                club.refresh_from_db()
+                club.profilepic.save("clubpic.jpg", upload)
+                response = self.client.get(reverse("club_dashboard"))
                 self.assertEqual(response.status_code, 200)
                 self.assertTrue(club.profilepic.name)
                 self.assertContains(response, club.profilepic.url)

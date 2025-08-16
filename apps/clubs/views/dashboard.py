@@ -29,7 +29,6 @@ from ..forms import (
     ClubForm,
     ClubPostForm,
     ClubPhotoForm,
-    ClubProfilePicForm,
     HorarioForm,
     CompetidorForm,
     EntrenadorForm,
@@ -83,6 +82,8 @@ def dashboard(request):
         data = request.POST.copy()
         if 'logo' not in request.FILES:
             data.setdefault('logo', club.logo)
+        if 'profilepic' not in request.FILES:
+            data.setdefault('profilepic', club.profilepic)
         for field in [
             'slug', 'country', 'region', 'city', 'postal_code', 'street',
             'number', 'door', 'prefijo', 'phone', 'email'
@@ -93,14 +94,14 @@ def dashboard(request):
             request.FILES,
             instance=club,
             require_all=True,
-            exclude_required=['door', 'logo'],
+            exclude_required=['door', 'logo', 'profilepic'],
         )
         if form.is_valid():
             form.save()
             messages.success(request, 'Club actualizado correctamente.')
             return redirect('club_dashboard')
     else:
-        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo'])
+        form = ClubForm(instance=club, require_all=True, exclude_required=['door', 'logo', 'profilepic'])
 
     bookmarked_ids = set(
         club.bookmarked_competidores.values_list('id', flat=True)
@@ -314,23 +315,6 @@ def photo_upload(request, slug):
         return redirect('club_dashboard')
     form = ClubPhotoForm()
     return render(request, 'clubs/photo_form.html', {'form': form, 'club': club})
-
-
-@login_required
-def profilepic_upload(request):
-    club = request.user.owned_clubs.first()
-    if not club:
-        return HttpResponseForbidden()
-    if request.method == 'POST':
-        form = ClubProfilePicForm(request.POST, request.FILES, instance=club)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Foto de perfil actualizada correctamente.')
-        else:
-            messages.error(request, 'Error al subir la foto de perfil.')
-        return redirect('club_dashboard')
-    return HttpResponseForbidden()
-
 
 @login_required
 def photo_delete(request, pk):
