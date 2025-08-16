@@ -79,6 +79,36 @@ class ProfileAvatarPersistenceTests(TestCase):
                 self.assertContains(response, 'class="nav-avatar-img"')
 
     @override_settings(ALLOWED_HOSTS=["testserver"])
+    def test_nav_avatar_updates_with_club_profilepic(self):
+        """Nav avatar should display club profilepic after upload."""
+        club = Club.objects.create(
+            name="Club Pic",
+            city="C",
+            address="A",
+            phone="1",
+            email="e@e.com",
+            owner=self.user,
+        )
+        self.client.login(username="avataruser", password="pass")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with override_settings(MEDIA_ROOT=tmpdir):
+                img = Image.new("RGB", (50, 50), "white")
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG")
+                buf.seek(0)
+                upload = SimpleUploadedFile("clubpic.jpg", buf.getvalue(), content_type="image/jpeg")
+                response = self.client.post(
+                    reverse("club_profilepic_upload"),
+                    {"profilepic": upload},
+                    follow=True,
+                )
+                club.refresh_from_db()
+                self.assertEqual(response.status_code, 200)
+                self.assertTrue(club.profilepic.name)
+                self.assertContains(response, club.profilepic.url)
+                self.assertContains(response, 'class="nav-avatar-img"')
+
+    @override_settings(ALLOWED_HOSTS=["testserver"])
     def test_header_displays_initial_when_no_avatar(self):
         """Header should show the first letter of username when no avatar exists."""
         self.client.login(username="avataruser", password="pass")
