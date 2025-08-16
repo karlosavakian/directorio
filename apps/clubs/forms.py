@@ -288,6 +288,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if logo_widget:
             css = logo_widget.widget.attrs.get('class', '')
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+            logo_widget.widget.attrs['accept'] = 'image/*'
 
         if require_all:
             for name, field in self.fields.items():

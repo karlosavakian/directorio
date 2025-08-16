@@ -24,8 +24,8 @@
             <!-- Columna Izquierda: Info del Club -->
             <div class="col-lg-2 ">
          <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center">
-            {% if club.logo|safe_url %}
-                <img src="{{ club.logo|safe_url }}"
+            {% if logo_url %}
+                <img src="{{ logo_url }}"
                     class="w-100 h-100"
                     style="object-fit:cover;"
                     alt="{{ club.name }}">

@@ -16,6 +16,7 @@ from apps.users.models import Follow
 from django.contrib.contenttypes.models import ContentType
 from apps.clubs.spain import REGION_PROVINCES, CITY_TO_PROVINCE
 from django.utils import timezone
+from apps.core.templatetags.utils_filters import safe_url
 
 PROVINCE_TO_REGION = {p: r for r, ps in REGION_PROVINCES.items() for p in ps}
 CITY_TO_REGION = {c: PROVINCE_TO_REGION.get(p) for c, p in CITY_TO_PROVINCE.items()}
@@ -23,6 +24,7 @@ CITY_TO_REGION = {c: PROVINCE_TO_REGION.get(p) for c, p in CITY_TO_PROVINCE.item
 
 def club_profile(request, slug):
     club = get_object_or_404(Club, slug=slug)
+    logo_url = safe_url(club.logo)
     reseñas = club.reseñas.select_related('usuario__profile', 'usuario').all()
     detallado = club.get_detailed_ratings()
     competidores = club.competidores.all()
@@ -134,6 +136,7 @@ def club_profile(request, slug):
         'schedule_data': schedule_data,
         'booking_classes': club.booking_classes.all(),
         'breadcrumbs': breadcrumbs,
+        'logo_url': logo_url,
 
     })
 
