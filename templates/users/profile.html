@@ -41,6 +41,24 @@
             <h4>Mi Cuenta</h4>
             <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                 {% csrf_token %}
+                 {% if not is_owner %}
+                <h5 class="mb-3">Avatar</h5>
+                <div class="mb-5 text-center bg-dark p-3 rounded">
+                    <div class="avatar-dropzone mx-auto p-3">
+                        {{ form.avatar }}
+                        <div class="avatar-preview{% if profile.avatar|safe_url %} has-image{% endif %}"
+                            {% if profile.avatar|safe_url %}style="background-image:url('{{ profile.avatar|safe_url }}')"{% endif %}>
+                            <div class="avatar-dropzone-msg p-3">
+                                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                                <span>Arrastra una imagen o haz click </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if form.avatar.errors %}
+                    <div class="invalid-feedback d-block">{{ form.avatar.errors.as_text|striptags }}</div>
+                    {% endif %}
+                </div>
+                {% endif %}
 
                 <div class="row g-3">
 

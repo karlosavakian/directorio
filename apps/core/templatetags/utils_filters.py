@@ -1,5 +1,5 @@
 from django import template
-
+import os
 register = template.Library()
 
 @register.filter
@@ -83,13 +83,24 @@ def youtube_embed(text):
 
 @register.filter
 def safe_url(file_field):
-    """Return the file URL or empty string if missing."""
+    """Return the file URL or empty string if missing.
+
+    Adds a simple cache-busting query parameter based on the file's
+    modification time so updated avatars/logos are reflected immediately
+    in the browser without requiring a hard refresh.
+    """
     try:
         if file_field:
-            return file_field.url
+            url = file_field.url
+            # Append the file's mtime to force browsers to fetch the latest version
+            if hasattr(file_field, "path") and os.path.exists(file_field.path):
+                mtime = int(os.path.getmtime(file_field.path))
+                return f"{url}?v={mtime}"
+            return url
     except (ValueError, AttributeError):
         return ""
     return ""
+
 
 
 @register.filter

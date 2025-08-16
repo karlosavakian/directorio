@@ -1,4 +1,5 @@
-{% load static %}
+{% load static utils_filters %}
+ 
 <header
     class="navbar navbar-expand-lg bg-white {% if request.path != '/' %}border-bottom{% endif %}"
 >
@@ -36,13 +37,13 @@
                         <div class="selected d-flex align-items-center">
                             {% if user.owned_clubs.first and user.owned_clubs.first.logo %}
                             <img
-                                src="{{ user.owned_clubs.first.logo.url }}"
+                                src="{{ user.owned_clubs.first.logo|safe_url }}"
                                 alt="{{ user.username }}"
                                 class="nav-avatar-img"
                             />
                             {% elif user.profile.avatar %}
                             <img
-                                src="{{ user.profile.avatar.url }}"
+                                src="{{ user.profile.avatar|safe_url }}"
                                 alt="{{ user.username }}"
                                 class="nav-avatar-img"
                             />
