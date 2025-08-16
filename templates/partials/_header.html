@@ -13,7 +13,14 @@
                         href="{% url 'club_profile' owner_club.slug %}"
                         class="fw-medium small d-flex align-items-center"
                     >
-                       
+
+                        {% if owner_club.logo %}
+                        <img
+                                src="{{ owner_club.logo|safe_url }}"
+                                alt="{{ owner_club.name }}"
+                                class="nav-avatar-img me-2"
+                        />
+                        {% endif %}
                         <span class="ms-2 d-none d-lg-inline">{{ owner_club.name }}</span>
                          <i class="ms-2 bi bi-eye"></i>
                     </a>

@@ -520,3 +520,52 @@ class MemberSignupDefaultsTests(TestCase):
         self.assertEqual(miembro.fuente, 'directa')
         self.assertEqual(miembro.estado, 'activo')
         self.assertEqual(miembro.fecha_inscripcion, date.today())
+
+
+class DashboardLogoUploadTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="logo_user", password="pass")
+        self.club = Club.objects.create(
+            name="Logo Club",
+            city="C",
+            region="R",
+            postal_code="12345",
+            street="Street",
+            number="1",
+            prefijo="+34",
+            phone="123456789",
+            email="e@e.com",
+            about="About",
+            owner=self.user,
+        )
+
+    @override_settings(ALLOWED_HOSTS=["testserver"])
+    def test_logo_upload_updates_header_and_profile(self):
+        self.client.login(username="logo_user", password="pass")
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with override_settings(MEDIA_ROOT=tmpdir):
+                img = Image.new("RGB", (50, 50), "white")
+                buf = io.BytesIO()
+                img.save(buf, format="JPEG")
+                buf.seek(0)
+                upload = SimpleUploadedFile(
+                    "logo.jpg", buf.getvalue(), content_type="image/jpeg"
+                )
+                response = self.client.post(
+                    reverse("club_dashboard"),
+                    {
+                        "name": self.club.name,
+                        "about": self.club.about,
+                        "logo": upload,
+                    },
+                    follow=True,
+                )
+                self.club.refresh_from_db()
+                self.assertEqual(response.status_code, 200)
+                self.assertTrue(self.club.logo.name)
+                self.assertContains(response, self.club.logo.url)
+                self.assertContains(response, 'class="nav-avatar-img"')
+                profile_resp = self.client.get(
+                    reverse("club_profile", args=[self.club.slug])
+                )
+                self.assertContains(profile_resp, self.club.logo.url)
