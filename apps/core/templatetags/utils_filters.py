@@ -83,13 +83,23 @@ def youtube_embed(text):
 
 @register.filter
 def safe_url(file_field):
-    """Return the file URL or empty string if missing."""
+    """Return the file URL with a cache-busting timestamp if available."""
     try:
-        if file_field:
-            return file_field.url
+        if not file_field:
+            return ""
+        url = file_field.url
+        try:
+            modified = file_field.storage.get_modified_time(file_field.name)
+        except Exception:
+            modified = None
+        if modified:
+            from django.utils import timezone
+            if timezone.is_aware(modified):
+                modified = timezone.make_naive(modified, timezone.utc)
+            url = f"{url}?v={int(modified.timestamp())}"
+        return url
     except (ValueError, AttributeError):
         return ""
-    return ""
 
 
 @register.filter

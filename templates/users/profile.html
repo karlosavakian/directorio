@@ -42,6 +42,28 @@
             <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                 {% csrf_token %}
 
+                {% if not is_owner %}
+                <div class="mb-4 text-center">
+                    <div class="avatar-dropzone mx-auto">
+                        {{ form.avatar }}
+                        <div class="avatar-preview{% if user.profile.avatar|safe_url %} has-image{% endif %}"
+                            {% if user.profile.avatar|safe_url %}
+                                style="background-image:url('{{ user.profile.avatar|safe_url }}')"
+                            {% endif %}>
+                            <div class="avatar-dropzone-msg">
+                                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                                <span>Sube avatar</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% if form.avatar.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.avatar.errors.as_text|striptags }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
                 <div class="row g-3">
 
                 {% if is_owner %}

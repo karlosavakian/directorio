@@ -3,6 +3,7 @@ import tempfile
 from PIL import Image
 from django.contrib.auth.models import User
 from apps.clubs.models import Club
+from apps.core.templatetags.utils_filters import safe_url
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -36,10 +37,11 @@ class ProfileAvatarPersistenceTests(TestCase):
                 self.user.refresh_from_db()
                 self.assertEqual(response.status_code, 200)
                 self.assertTrue(self.user.profile.avatar.name)
-                self.assertContains(response, self.user.profile.avatar.url)
+                expected_url = safe_url(self.user.profile.avatar)
+                self.assertContains(response, expected_url)
 
                 # nav avatar in header should display the uploaded image
-                self.assertContains(response, self.user.profile.avatar.url)
+                self.assertContains(response, expected_url)
                 self.assertContains(response, 'class="nav-avatar-img"')
 
     @override_settings(ALLOWED_HOSTS=["testserver"])
@@ -75,7 +77,8 @@ class ProfileAvatarPersistenceTests(TestCase):
                 )
                 self.user.refresh_from_db()
                 response = self.client.get(reverse("club_profile", args=[club.slug]))
-                self.assertContains(response, self.user.profile.avatar.url)
+                expected_url = safe_url(self.user.profile.avatar)
+                self.assertContains(response, expected_url)
                 self.assertContains(response, 'class="nav-avatar-img"')
 
     @override_settings(ALLOWED_HOSTS=["testserver"])
