@@ -373,10 +373,18 @@
       <h4>Foto de perfil</h4>
       <form method="post" action="{% url 'club_profilepic_upload' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="profilepic" id="id_profilepic" class="form-control mb-3" />
-        {% if club.profilepic %}
-          <img src="{{ club.profilepic.url }}" alt="Foto de perfil" style="width:40px;height:40px;object-fit:cover;" />
-        {% endif %}
+        <div class="mb-5 text-center bg-dark p-3 rounded">
+          <div class="avatar-dropzone avatar-dropzone-square p-3">
+            <input type="file" name="profilepic" id="id_profilepic">
+            <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
+              {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
+              <div class="avatar-dropzone-msg p-3">
+                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                <span>Arrastra una imagen o haz click </span>
+              </div>
+            </div>
+          </div>
+        </div>
         <button type="submit" class="btn btn-dark">Guardar</button>
       </form>
     </div>
