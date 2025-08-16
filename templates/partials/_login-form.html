@@ -11,7 +11,7 @@
                            class="form-control"
                            id="{{ form.username.id_for_label }}"
                            placeholder=" "
-                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                           required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
                     {% if form.username.errors %}
@@ -23,15 +23,16 @@
 
 
                 <div class="form-field with-toggle">
-                  <button type="button" class="clear-btn bi bi-x"></button>
-                  <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
+                  <div class="input-wrapper">
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                     <input type="password"
                            name="{{ form.password.name }}"
                            class="form-control"
                            id="{{ form.password.id_for_label }}"
                            placeholder=" "
-                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
-
+                           required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
+                  </div>
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
                     {% if form.password.errors %}
                       <div class="invalid-feedback d-block">
