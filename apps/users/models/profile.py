@@ -1,13 +1,18 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from apps.core.utils.image_utils import resize_image
-
 
 PLAN_CHOICES = [
     ("bronce", "Plan Bronce"),
     ("plata", "Plan Plata"),
     ("oro", "Plan Oro"),
+]
+
+
+PROFILE_TYPE_CHOICES = [
+    ("club_owner", "Club Owner"),
+    ("coach", "Coach"),
 ]
 
 
@@ -18,6 +23,11 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True)
     notifications = models.BooleanField(default=True)
     plan = models.CharField(max_length=10, choices=PLAN_CHOICES, default="bronce")
+    profile_type = models.CharField(
+        max_length=20,
+        choices=PROFILE_TYPE_CHOICES,
+        default="club_owner",
+    )
 
     def __str__(self):
         return f"Perfil de {self.user.username}"
@@ -39,4 +49,3 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
         if self.avatar and hasattr(self.avatar, "path"):
             resize_image(self.avatar.path)
-
