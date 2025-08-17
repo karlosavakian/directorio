@@ -141,8 +141,40 @@ def club_profile(request, slug):
 def coach_profile(request, slug):
     """Vista pública del perfil del entrenador."""
     coach = get_object_or_404(Entrenador, slug=slug)
+    coach_followed = False
+    if request.user.is_authenticated:
+        ct_user = ContentType.objects.get_for_model(request.user)
+        ct_coach = ContentType.objects.get_for_model(Entrenador)
+        coach_followed = Follow.objects.filter(
+            follower_content_type=ct_user,
+            follower_object_id=request.user.id,
+            followed_content_type=ct_coach,
+            followed_object_id=coach.id,
+        ).exists()
+
+    base_url = reverse('search_results')
+    category_label = "Entrenadores de Boxeo"
+    query_params = "?category=entrenador"
+    breadcrumbs = [
+        {'name': category_label, 'url': f"{base_url}{query_params}"}
+    ]
+    country_label = coach.club.country or 'España'
+    breadcrumbs.append({'name': country_label, 'url': f"{base_url}{query_params}&country={country_label}"})
+    if coach.club.region:
+        region_label = PROVINCE_TO_REGION.get(coach.club.region) or CITY_TO_REGION.get(coach.club.city, coach.club.region)
+        breadcrumbs.append({'name': region_label, 'url': f"{base_url}{query_params}&country={country_label}&region={region_label}"})
+    else:
+        region_label = CITY_TO_REGION.get(coach.club.city, '')
+    if coach.club.city:
+        region_query = f"&region={region_label}" if region_label else ""
+        breadcrumbs.append({'name': coach.club.city, 'url': f"{base_url}{query_params}&country={country_label}{region_query}&city={coach.club.city}"})
+    breadcrumbs.append({'name': coach.club.name, 'url': reverse('club_profile', args=[coach.club.slug])})
+    breadcrumbs.append({'name': f"{coach.nombre} {coach.apellidos}", 'url': reverse('coach_profile', args=[coach.slug])})
+
     return render(request, 'clubs/coach_profile.html', {
         'coach': coach,
+        'coach_followed': coach_followed,
+        'breadcrumbs': breadcrumbs,
     })
 
 
