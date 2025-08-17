@@ -316,6 +316,11 @@ class CoachPermissionTests(TestCase):
         response = self.client.get(reverse('coach_profile', args=[self.coach.slug]))
         self.assertContains(response, reverse('coach_dashboard'))
 
+    def test_coach_access_admin_redirects_to_dashboard(self):
+        self.client.login(username='coach', password='pass')
+        response = self.client.get(reverse('club_dashboard'))
+        self.assertRedirects(response, reverse('coach_dashboard'))
+
 
 class UserReviewFirstTests(TestCase):
     def setUp(self):

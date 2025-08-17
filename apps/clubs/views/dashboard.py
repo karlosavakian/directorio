@@ -76,6 +76,9 @@ def matchmaker_toggle_bookmark(request):
 def dashboard(request):
     club = request.user.owned_clubs.first()
     if not club:
+        coach = getattr(request.user, "coach_profile", None)
+        if coach:
+            return redirect('coach_dashboard')
         return redirect('home')
 
     if request.method == 'POST':
