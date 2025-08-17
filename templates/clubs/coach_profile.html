@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
-{% load static utils_filters %}
+{% load static star_rating utils_filters %}
 {% block content %}
 <main class="flex-grow-1">
 
     <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
         <div class="profile-header d-flex align-items-center mb-4 mt-4">
             <div class="d-flex align-items-center" style="font-size:14px; font-style:italic;">
-                {% include 'partials/_breadcrumb.html' %}
+                {% include 'partials/_breadcrumb_coach.html' %}
             </div>
             <div class="d-none d-lg-flex ms-auto align-items-center gap-2">
                 <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 ms-2 btn btn-dark" data-club-slug="{{ coach.club.slug }}">
@@ -161,6 +161,11 @@
                             Sobre el entrenador
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
+                            Valoraciones
+                        </button>
+                    </li>
                 </ul>
 
                 <!-- Contenido de pestañas -->
@@ -192,11 +197,94 @@
                             </div>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="mt-2" id="review-list">
+                                    {% with reseñas=coach.club.reseñas.all %}
+                                        {% include 'clubs/reviews_list.html' %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Columna Derecha vacía para mantener formato -->
-            <div class="col-lg-2"></div>
+            <!-- Columna Derecha: Valoraciones y Reseñas -->
+            <div class="col-12 col-md-6 col-lg-2">
+                {% with reseñas=coach.club.reseñas.all %}
+                    {% if reseñas %}
+                        <div class="club-reviews">
+                            <div class="review-carousel border rounded mb-2" id="review-carousel" onmouseenter="pauseAutoplay()" onmouseleave="startAutoplay()">
+                                {% for reseña in reseñas %}
+                                    <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
+                                        <p class="review-text">“{{ reseña.comentario }}”</p>
+                                        <div class="review-user-container d-flex align-items-center position-absolute bottom-0  mb-4">
+                                            {% if reseña.usuario.profile.avatar %}
+                                                <img src="{{ reseña.usuario.profile.avatar.url }}" alt="{{ reseña.usuario.username }}" class="review-avatar-img rounded-circle">
+                                            {% else %}
+                                                <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
+                                            {% endif %}
+                                            <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
+                                    <svg viewBox="0 0 48 48" width="20" height="20">
+                                        <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                        <path d="M0-.5h48v48h-48z" fill="none" />
+                                    </svg>
+                                </button>
+                                <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
+                                    <svg viewBox="0 0 48 48" width="20" height="20" style="transform: rotate(180deg)">
+                                        <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                        <path d="M0-.5h48v48h-48z" fill="none" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <ul class="list-group">
+                                <div class="d-flex flex-wrap rounded p-2">
+                                    <div class="mb-3 d-flex align-items-center col-12">
+                                        <div class="d-flex flex-column align-items-end w-100">
+                                            <span class="fs-4 fw-bold">
+                                                {{ coach.club.average_rating }}
+                                                <small style="font-size:12px">/ 5</small>
+                                            </span>
+                                            <span class="fw-light" style="font-size:12px">
+                                                ({{ coach.club.reviews_count }} reseñas)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {% with detallado=coach.club.get_detailed_ratings %}
+                                        <div class="d-flex flex-column small rounded gap-1 w-100" style="font-size:1rem;">
+                                            <div class="d-flex justify-content-between" >
+                                                <span>Instalaciones</span>
+                                                <span class="d-flex">{% render_stars detallado.instalaciones %}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Entrenadores</span>
+                                                <span class="d-flex">{% render_stars detallado.entrenadores %}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Calidad/precio</span>
+                                                <span class="d-flex">{% render_stars detallado.calidad_precio %}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Ambiente</span>
+                                                <span class="d-flex">{% render_stars detallado.ambiente %}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <span>Variedad clases</span>
+                                                <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                            </div>
+                                        </div>
+                                    {% endwith %}
+                                </div>
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
         </div>
     </div>
 </main>
@@ -210,5 +298,6 @@
 <script src="{% static 'js/member-signup-modal.js' %}"></script>
 <script src="{% static 'js/booking-modal.js' %}"></script>
 <script src="{% static 'js/gallery-slideshow.js' %}"></script>
+<script src="{% static 'js/slides.js' %}"></script>
 {% endblock %}
 
