@@ -51,8 +51,7 @@
             {{ form.non_field_errors }}
 
           <!-- Username -->
-<div class="form-field slug-field always-active">
-    <span class="username-prefix">@</span>
+<div class="form-field slug-field always-active"> 
     <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default_if_none:'' }}" class="form-control" id="{{ form.username.id_for_label }}" placeholder=" " minlength="3" required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
     <button type="button" class="clear-btn bi bi-x"></button>
     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
