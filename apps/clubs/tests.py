@@ -6,7 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User, Group
 from PIL import Image
 
-from apps.clubs.models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor
+from apps.clubs.models import Club, ClubPhoto, ClubPost, Miembro, Pago, Competidor, Entrenador
 from datetime import date
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
@@ -282,6 +282,33 @@ class DashboardPermissionTests(TestCase):
         self.client.login(username='other', password='pass')
         url = reverse('clubpost_create', args=[self.club.slug])
         response = self.client.post(url, {'titulo': 'x', 'contenido': 'y'})
+        self.assertEqual(response.status_code, 403)
+
+
+class CoachPermissionTests(TestCase):
+    def setUp(self):
+        self.owner = User.objects.create_user(username='owner', password='pass')
+        self.coach_user = User.objects.create_user(username='coach', password='pass')
+        self.club = Club.objects.create(
+            name='Club', city='C', address='A', phone='1', email='e@e.com', owner=self.owner
+        )
+        self.coach = Entrenador.objects.create(
+            club=self.club, nombre='Coach', apellidos='User', user=self.coach_user
+        )
+
+    def test_coach_can_edit_own_profile(self):
+        self.client.login(username='coach', password='pass')
+        url = reverse('entrenador_update', args=[self.coach.id])
+        response = self.client.post(url, {'nombre': 'Nuevo', 'apellidos': 'User'})
+        self.assertRedirects(response, reverse('coach_profile', args=[self.coach.slug]))
+        self.coach.refresh_from_db()
+        self.assertEqual(self.coach.nombre, 'Nuevo')
+
+    def test_other_cannot_edit_coach(self):
+        other = User.objects.create_user(username='other', password='pass')
+        self.client.login(username='other', password='pass')
+        url = reverse('entrenador_update', args=[self.coach.id])
+        response = self.client.post(url, {'nombre': 'X', 'apellidos': 'Y'})
         self.assertEqual(response.status_code, 403)
 
 

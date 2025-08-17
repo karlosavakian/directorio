@@ -36,7 +36,7 @@ from ..forms import (
     PagoForm,
     BookingClassForm,
 )
-from ..permissions import has_club_permission
+from ..permissions import has_club_permission, has_coach_permission
 from ..spain import CITY_CHOICES
 
 
@@ -503,13 +503,18 @@ def entrenador_create(request, slug):
 @login_required
 def entrenador_update(request, pk):
     entrenador = get_object_or_404(Entrenador, pk=pk)
-    if not has_club_permission(request.user, entrenador.club):
+    if not (
+        has_club_permission(request.user, entrenador.club)
+        or has_coach_permission(request.user, entrenador)
+    ):
         return HttpResponseForbidden()
     if request.method == 'POST':
         form = EntrenadorForm(request.POST, request.FILES, instance=entrenador)
         if form.is_valid():
             form.save()
             messages.success(request, 'Entrenador actualizado correctamente.')
+            if has_coach_permission(request.user, entrenador):
+                return redirect('coach_profile', entrenador.slug)
             return redirect('club_dashboard')
     else:
         form = EntrenadorForm(instance=entrenador)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 from .club import Club
 from apps.core.utils.image_utils import resize_image
@@ -26,6 +27,13 @@ class Entrenador(models.Model):
     ]
 
     club = models.ForeignKey(Club, on_delete=models.CASCADE, related_name='entrenadores')
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='coach_profile',
+        null=True,
+        blank=True,
+    )
     avatar = models.ImageField(upload_to='entrenadores/', blank=True, null=True)
     nombre = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=150)

@@ -21,7 +21,9 @@ def profile(request):
     profile_obj, _ = Profile.objects.get_or_create(user=request.user)
     owned_clubs = request.user.owned_clubs.all()
     club = owned_clubs.first() if owned_clubs.exists() else None
+    coach_profile = getattr(request.user, 'coach_profile', None)
     is_owner = owned_clubs.exists()
+    is_coach = coach_profile is not None
     if request.method == 'POST':
         if 'plan' in request.POST:
             form = AccountForm(instance=profile_obj, user=request.user)
@@ -98,6 +100,8 @@ def profile(request):
         first_club = owned_clubs.first()
         if first_club and first_club.logo:
             avatar_url = first_club.logo.url
+    elif is_coach and coach_profile and coach_profile.avatar:
+        avatar_url = coach_profile.avatar.url
 
     plans = [
         {
@@ -145,6 +149,8 @@ def profile(request):
         'reviews': user_reviews,
         'owned_clubs': owned_clubs,
         'is_owner': is_owner,
+        'coach_profile': coach_profile,
+        'is_coach': is_coach,
         'avatar_url': avatar_url,
     })
 
