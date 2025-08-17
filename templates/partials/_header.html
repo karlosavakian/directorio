@@ -83,7 +83,7 @@
                             <a
                                 href="{% url 'profile' %}"
                                 class="dropdown-item text-light"
-                                >Mi Cuenta</a
+                                >Perfil</a
                             >
                             {% if user.owned_clubs.exists %}
                             <a
@@ -91,11 +91,17 @@
                                 class="dropdown-item text-light"
                                 >Panel de control</a
                             >
+                            {% elif user.coach_profile %}
+                            <a
+                                href="{% url 'entrenador_update' user.coach_profile.id %}"
+                                class="dropdown-item text-light"
+                                >Panel de control</a
+                            >
                             {% endif %}
                             <a
                                 href="{% url 'conversation' %}"
                                 class="dropdown-item text-light"
-                                >Mis mensajes</a
+                                >Mensajes</a
                             >
                             <a
                                 href="#"
