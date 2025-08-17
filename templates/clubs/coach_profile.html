@@ -1,122 +1,193 @@
 {% extends 'base.html' %}
-{% block body_class %}club-profile-page{% endblock %}
-{% load static %}
+{% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
+{% load static utils_filters %}
 {% block content %}
-<div class="container-fluid col-12 px-3 my-3" id="profile-container">
-    <div class="row">
-        <div class="col-lg-2">
-            {% if coach.avatar %}
-                <img src="{{ coach.avatar.url }}" alt="{{ coach.nombre }}" class="img-fluid rounded">
-            {% endif %}
-            <div class="d-flex align-items-start mt-4 mb-4 gap-3">
-                <div>
-                    <h1 class="h3 mb-2" style="font-weight:900;">{{ coach.nombre }} {{ coach.apellidos }}</h1>
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="badge">Entrenador</span>
-                        {% if coach.verificado %}
-                            <span class="ms-2" title="Verificado">
-                                <svg fill="none" height="24" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-                                    <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
-                                </svg>
-                            </span>
-                        {% endif %}
-                    </div>
-                    {% if coach.ciudad %}
-                    <p class="mb-2 d-flex">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
-                        </svg>
-                        {{ coach.ciudad }}
-                    </p>
-                    {% endif %}
-                    {% if coach.telefono %}
-                    <p class="mb-2 d-flex align-items-center">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
-                        </svg>
-                        <a href="tel:{{ coach.telefono }}" class="text-decoration-none text-reset">{{ coach.telefono }}</a>
-                    </p>
-                    {% endif %}
-                    {% if coach.whatsapp %}
-                    <p class="mb-2 d-flex align-items-center">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path fill="currentColor" fill-rule="evenodd" d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.359 2.32-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.382 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z" clip-rule="evenodd" />
-                            <path fill="currentColor" d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0 0 0-.112.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.160 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.43-.308Z" />
-                        </svg>
-                        <a href="https://wa.me/{{ coach.whatsapp }}" target="_blank" class="text-decoration-none text-reset">WhatsApp</a>
-                    </p>
-                    {% endif %}
-                    {% if coach.email %}
-                    <p class="mb-2 d-flex align-items-center">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-8.029-4.46a2 2 0 0 0-1.942 0L3 8m18 0-9 6.5L3 8" />
-                        </svg>
-                        <a href="mailto:{{ coach.email }}" class="text-decoration-none text-reset">{{ coach.email }}</a>
-                    </p>
-                    {% endif %}
-                </div>
+<main class="flex-grow-1">
+
+    <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
+        <div class="profile-header d-flex align-items-center mb-4 mt-4">
+            <div class="d-flex align-items-center" style="font-size:14px; font-style:italic;">
+                {% include 'partials/_breadcrumb.html' %}
             </div>
         </div>
-        <div class="col-lg-8">
-            <div class="mb-4 rounded">
-                {% if coach.photos.all %}
-                    <div class="mb-4 gallery-slideshow position-relative">
-                        {% for photo in coach.photos.all %}
-                            <div class="gallery-slide{% if forloop.first %} active{% endif %}">
-                                <img src="{{ photo.image.url }}" alt="Foto" class="img-fluid rounded shadow-sm" style="width:100%;max-height:500px;min-height:500px;object-fit:cover;background:rgb(85,85,85);">
+        <div class="row">
+            <!-- Columna Izquierda: Información del entrenador -->
+            <div class="col-lg-2 ">
+                <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center">
+                    {% if coach.avatar %}
+                        <img src="{{ coach.avatar.url }}"
+                             class="w-100 h-100"
+                             style="object-fit:cover;"
+                             alt="{{ coach.nombre }} {{ coach.apellidos }}">
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgb(85, 85, 85);">
+                            <span class="text-white fw-bold display-4">
+                                {{ coach.nombre|first|upper }}{{ coach.apellidos|first|upper }}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="p-2 d-flex align-items-start justify-content-center justify-content-lg-start mt-2 mb-4 gap-3">
+                    <ul class="p-0 club-info-links d-flex flex-column align-items-center align-items-lg-start text-center text-lg-start mx-auto mx-lg-0">
+                        <div class="d-flex justify-content-center justify-content-lg-start mb-1">
+                            <span class="badge fw-medium">Entrenador</span>
+                        </div>
+                        <h3 class="mt-1 mb-1 h5 fw-bold mb-2 text-center text-lg-start">
+                            {{ coach.nombre }} {{ coach.apellidos }}
+                            {% if coach.verificado %}
+                                <span class="ms-1" title="Verificado">
+                                    <svg fill="none" height="24" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                                        <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
+                                    </svg>
+                                </span>
+                            {% endif %}
+                        </h3>
+
+                        {% if coach.ciudad %}
+                            <p class="mb-2 d-flex">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
+                                </svg>
+                                {{ coach.ciudad }}
+                            </p>
+                        {% endif %}
+
+                        {% if coach.telefono %}
+                            <p class="mb-2 d-flex align-items-center">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.427 14.768 17.2 13.542a1.733 1.733 0 0 0-2.45 0l-.613.613a1.732 1.732 0 0 1-2.45 0l-1.838-1.84a1.735 1.735 0 0 1 0-2.452l.612-.613a1.735 1.735 0 0 0 0-2.452L9.237 5.572a1.6 1.6 0 0 0-2.45 0c-3.223 3.2-1.702 6.896 1.519 10.117 3.22 3.221 6.914 4.745 10.12 1.535a1.601 1.601 0 0 0 0-2.456Z" />
+                                </svg>
+                                <a href="tel:{{ coach.telefono }}" class="text-decoration-none text-reset">{{ coach.telefono }}</a>
+                            </p>
+                        {% endif %}
+
+                        {% if coach.whatsapp %}
+                            <p class="mb-2 d-flex align-items-center">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                                    <path fill="currentColor" fill-rule="evenodd" d="M12 4a8 8 0 0 0-6.895 12.06l.569.718-.697 2.321 2.321-.648.379.243A8 8 0 1 0 12 4ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10a9.96 9.96 0 0 1-5.016-1.347l-4.948 1.381 1.426-4.829-.006-.007-.033-.055A9.958 9.958 0 0 1 2 12Z" clip-rule="evenodd" />
+                                    <path fill="currentColor" d="M16.735 13.492c-.038-.018-1.497-.736-1.756-.83a1.008 1.008 0 0 0-.34-.075c-.196 0-.362.098-.49.291-.146.217-.587.732-.723.886-.018.02-.042.045-.057.045-.013 0-.239-.093-.307-.123-1.564-.68-2.751-2.313-2.914-2.589-.023-.04-.024-.057-.024-.057.005-.021.058-.074.085-.101.08-.079.166-.182.249-.283l.117-.14c.121-.14.175-.25.237-.375l.033-.066a.68.68 0 0 0-.02-.64c-.034-.069-.65-1.555-.715-1.711-.158-.377-.366-.552-.655-.552-.027 0-.112.005-.137.005-.137.005-.883.104-1.213.311-.35.22-.94.924-.94 2.16 1.112.705 2.162 1.008 2.561l.041.06c1.161 1.695 2.608 2.951 4.074 3.537 1.412.564 2.081.63 2.461.63.16 0 .288-.013.4-.024l.072-.007c.488-.043 1.56-.599 1.804-1.276.192-.534.243-1.117.115-1.329-.088-.144-.239-.216-.403-.308Z" />
+                                </svg>
+                                <a href="https://wa.me/{{ coach.whatsapp }}" target="_blank" class="text-decoration-none text-reset">WhatsApp</a>
+                            </p>
+                        {% endif %}
+
+                        {% if coach.email %}
+                            <p class="mb-2 d-flex align-items-center">
+                                <svg class="w-6 h-6 text-gray-800 dark:text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0-8.029-4.46a2 2 0 0 0-1.942 0L3 8m18 0-9 6.5L3 8" />
+                                </svg>
+                                <a href="mailto:{{ coach.email }}" class="text-decoration-none text-reset">{{ coach.email }}</a>
+                            </p>
+                        {% endif %}
+
+                        <li class="club-actions d-flex flex-row flex-lg-column flex-wrap justify-content-center align-items-center align-items-lg-start gap-2 mb-4">
+                            <button class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1" id="coach-share" aria-label="Compartir">
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                </svg>
+                                Compartir
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Columna Central: Galería y contenido -->
+            <div class="col-lg-8">
+                <div class="mb-4 rounded">
+                    {% if coach.photos.all %}
+                        <div class="mb-4 gallery-slideshow position-relative">
+                            {% for photo in coach.photos.all %}
+                                <div class="gallery-slide{% if forloop.first %} active{% endif %}">
+                                    <img src="{{ photo.image.url }}"
+                                         alt="Foto"
+                                         class="img-fluid rounded shadow-sm"
+                                         style="width:100%;max-height:500px;min-height:500px;object-fit:cover;background:rgb(85,85,85);">
+                                </div>
+                            {% endfor %}
+                            <button id="galleryPrev" class="slide-arrow left ms-3">
+                                <svg viewBox="0 0 48 48">
+                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                    <path d="M0-.5h48v48h-48z" fill="none" />
+                                </svg>
+                            </button>
+                            <button id="galleryNext" class="slide-arrow right me-3">
+                                <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
+                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                    <path d="M0-.5h48v48h-48z" fill="none" />
+                                </svg>
+                            </button>
+                            <div class="gallery-dots-container" style="position: absolute; bottom: 15px; width: 100%; display: flex; justify-content: center">
+                                <div class="gallery-dots d-flex gap-1">
+                                    {% for photo in coach.photos.all %}
+                                        <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        {% endfor %}
-                        <button id="galleryPrev" class="slide-arrow left ms-3">
-                            <svg viewBox="0 0 48 48">
-                                <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                <path d="M0-.5h48v48h-48z" fill="none" />
-                            </svg>
+                        </div>
+                    {% else %}
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="gallery-placeholder rounded d-flex flex-column align-items-center">
+                                <svg class="text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm16 0-4-5-3 3-2-2-4 4"/>
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.5 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                                </svg>
+                                <p class="mt-2 text-white text-center">No hay fotos todavía.</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Menú de pestañas -->
+                <ul class="border-bottom nav custom-tab-menu mb-3 justify-content-center" id="coachTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">
+                            Sobre el entrenador
                         </button>
-                        <button id="galleryNext" class="slide-arrow right me-3">
-                            <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
-                                <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                <path d="M0-.5h48v48h-48z" fill="none" />
-                            </svg>
-                        </button>
-                        <div class="gallery-dots-container" style="position:absolute;bottom:15px;width:100%;display:flex;justify-content:center;">
-                            <div class="gallery-dots d-flex gap-1">
-                                {% for photo in coach.photos.all %}
-                                    <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
-                                {% endfor %}
+                    </li>
+                </ul>
+
+                <!-- Contenido de pestañas -->
+                <div class="tab-content" id="coachTabsContent">
+                    <div class="tab-pane fade show active" id="about" role="tabpanel">
+                        <div class="row p-3">
+                            <div class="col-12">
+                                {% if coach.bio %}
+                                    <p>{{ coach.bio|linebreaks }}</p>
+                                {% endif %}
+                                {% if coach.niveles.all %}
+                                    <h5 class="mb-2">Niveles</h5>
+                                    <div class="d-flex flex-wrap gap-2 mb-2">
+                                        {% for n in coach.niveles.all %}
+                                            <span class="badge">{{ n.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {% if coach.precio_hora %}
+                                    <p><strong>Precio/hora:</strong> {{ coach.precio_hora }} €</p>
+                                {% endif %}
+                                {% if coach.promociones %}
+                                    <p><strong>Promociones:</strong> {{ coach.promociones }}</p>
+                                {% endif %}
+                                <p><strong>Clase de prueba:</strong> {{ coach.clase_prueba|yesno:"Sí,No" }}</p>
+                                {% if coach.experiencia_anos %}
+                                    <p><strong>Experiencia:</strong> {{ coach.experiencia_anos }} años</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                {% else %}
-                    <p>No hay fotos todavía.</p>
-                {% endif %}
+                </div>
             </div>
-            <div class="mb-4">
-                {% if coach.bio %}
-                    <p>{{ coach.bio|linebreaks }}</p>
-                {% endif %}
-                {% if coach.niveles.all %}
-                    <h5 class="mb-2">Niveles</h5>
-                    <div class="d-flex flex-wrap gap-2 mb-2">
-                        {% for n in coach.niveles.all %}
-                            <span class="badge">{{ n.name }}</span>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                {% if coach.precio_hora %}
-                    <p><strong>Precio/hora:</strong> {{ coach.precio_hora }} €</p>
-                {% endif %}
-                {% if coach.promociones %}
-                    <p><strong>Promociones:</strong> {{ coach.promociones }}</p>
-                {% endif %}
-                <p><strong>Clase de prueba:</strong> {{ coach.clase_prueba|yesno:"Sí,No" }}</p>
-                {% if coach.experiencia_anos %}
-                    <p><strong>Experiencia:</strong> {{ coach.experiencia_anos }} años</p>
-                {% endif %}
-            </div>
+
+            <!-- Columna Derecha vacía para mantener formato -->
+            <div class="col-lg-2"></div>
         </div>
     </div>
-</div>
+</main>
+
 {% include 'partials/_share_profile_modal.html' %}
 <script src="{% static 'js/gallery-slideshow.js' %}"></script>
 {% endblock %}
+
