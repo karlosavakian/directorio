@@ -492,7 +492,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
 class EntrenadorForm(UniformFieldsMixin, forms.ModelForm):
     class Meta:
         model = models.Entrenador
-        exclude = ['slug', 'club']
+        exclude = ['slug', 'club', 'user']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

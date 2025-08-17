@@ -14,14 +14,26 @@
                         href="{% url 'club_profile' owner_club.slug %}"
                         class="fw-medium small d-flex align-items-center"
                     >
-                       
+
                         <span class="ms-2 d-none d-lg-inline">{{ owner_club.name }}</span>
                          <i class="ms-2 bi bi-eye"></i>
                     </a>
                 </li>
                 {% endwith %}
-                {% endif %}
-            
+            {% elif user.is_authenticated and user.coach_profile %}
+                {% with coach=user.coach_profile %}
+                <li class="nav-item d-flex align-items-center ">
+                    <a
+                        href="{% url 'coach_profile' coach.slug %}"
+                        class="fw-medium small d-flex align-items-center"
+                    >
+                        <span class="ms-2 d-none d-lg-inline">{{ coach.nombre }} {{ coach.apellidos }}</span>
+                        <i class="ms-2 bi bi-eye"></i>
+                    </a>
+                </li>
+                {% endwith %}
+            {% endif %}
+
         </div>
  
         {% endif %}
@@ -38,6 +50,12 @@
                             {% if user.owned_clubs.first and user.owned_clubs.first.profilepic %}
                             <img
                                 src="{{ user.owned_clubs.first.profilepic|safe_url }}"
+                                alt="{{ user.username }}"
+                                class="nav-avatar-img"
+                            />
+                            {% elif user.coach_profile and user.coach_profile.avatar %}
+                            <img
+                                src="{{ user.coach_profile.avatar|safe_url }}"
                                 alt="{{ user.username }}"
                                 class="nav-avatar-img"
                             />
