@@ -167,8 +167,10 @@ def coach_profile(request, slug):
         region_label = CITY_TO_REGION.get(coach.club.city, '')
     if coach.club.city:
         region_query = f"&region={region_label}" if region_label else ""
-        breadcrumbs.append({'name': coach.club.city, 'url': f"{base_url}{query_params}&country={country_label}{region_query}&city={coach.club.city}"})
-    breadcrumbs.append({'name': coach.club.name, 'url': reverse('club_profile', args=[coach.club.slug])})
+        breadcrumbs.append({
+            'name': coach.club.city,
+            'url': f"{base_url}{query_params}&country={country_label}{region_query}&city={coach.club.city}"
+        })
     breadcrumbs.append({'name': f"{coach.nombre} {coach.apellidos}", 'url': reverse('coach_profile', args=[coach.slug])})
 
     return render(request, 'clubs/coach_profile.html', {

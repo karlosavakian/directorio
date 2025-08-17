@@ -166,6 +166,16 @@
                             Valoraciones
                         </button>
                     </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab">
+                            Horarios
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
+                            Publicaciones
+                        </button>
+                    </li>
                 </ul>
 
                 <!-- Contenido de pestañas -->
@@ -207,6 +217,68 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="schedule" role="tabpanel">
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered text-center align-middle mb-0" style="min-width: 700px; font-size:14px;">
+                                <thead class="table-dark">
+                                    <tr>
+                                        {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}
+                                            <td>
+                                                {% with horarios_dia=coach.club.horarios.all|dictsort:"hora_inicio" %}
+                                                    {% for h in horarios_dia %}
+                                                        {% if h.dia == dia %}
+                                                            {% if h.estado == 'abierto' %}
+                                                                <div class="py-1">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
+                                                            {% elif h.estado == 'cerrado' %}
+                                                                <div class="py-1">Cerrado</div>
+                                                            {% else %}
+                                                                <div class="py-1">{{ h.estado_otro }}</div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% empty %}
+                                                        <span class="">—</span>
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="posts" role="tabpanel">
+                        {% for post in coach.club.posts.all %}
+                            <div class="container mt-3 mb-3 col-lg-12 p-5 border rounded p-4 mx-auto">
+                                <div class="d-flex align-items-start gap-3 mb-2">
+                                    {% if post.user.profile.avatar %}
+                                        <img src="{{ post.user.profile.avatar.url }}" alt="{{ post.user.username }}" class="review-avatar-img rounded-circle">
+                                    {% else %}
+                                        <div class="review-avatar me-sm-3 mb-2 mb-sm-0">{{ post.user.username|first|upper }}</div>
+                                    {% endif %}
+                                    <div class="flex-grow-1 w-100">
+                                        <span class="fw-bold">{{ post.user.username }}</span>
+                                        <small class="text-muted">{{ post.created_at|time_since_short }}</small>
+                                        <div class="mt-4 mb-4 w-100">
+                                            {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen" style="max-height:300px;">{% endif %}
+                                            <div class="ratio ratio-16x9">
+                                                {{ post.contenido|youtube_embed }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p class="m-3 justify-content-center d-flex flex-column align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m198.24 62.63l15.68-17.25a8 8 0 0 0-11.84-10.76L186.4 51.86A95.95 95.95 0 0 0 57.76 193.37l-15.68 17.25a8 8 0 1 0 11.84 10.76l15.68-17.24A95.95 95.95 0 0 0 198.24 62.63M48 128a80 80 0 0 1 127.6-64.25l-107 117.73A79.63 79.63 0 0 1 48 128m80 80a79.55 79.55 0 0 1-47.6-15.75l107-117.73A79.95 79.95 0 0 1 128 208"/></svg>
+                                No hay publicaciones.
+                            </p>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
