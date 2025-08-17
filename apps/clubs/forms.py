@@ -188,7 +188,7 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         )
         labels = {
             'name': 'Nombre del club',
-            'slug': 'Usuario',
+            'slug': 'Nombe de usuario',
             'about': 'Bio',
             'country': 'País',
             'region': 'Comunidad Autónoma',

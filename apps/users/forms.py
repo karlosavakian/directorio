@@ -31,7 +31,7 @@ class LoginForm(UniformFieldsMixin, AuthenticationForm):
     }
 
     username = forms.CharField(
-        label="Usuario",
+        label="Nombre de usuario",
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         error_messages={"required": "Rellene este campo"},
     )

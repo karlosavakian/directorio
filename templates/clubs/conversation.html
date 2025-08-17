@@ -5,42 +5,38 @@
 {% block content %}
 <main class="flex-grow-1 m-4 overflow-hidden">
   <div class="container h-100  conversation-container">
-    <div class="row    h-100 border">
+    <div class="row h-100 border">
       <div class="col-md-4 p-0  h-100 d-flex flex-column">
         <h5 class="border-bottom fw-medium p-3 mb-0" >Conversaciones recientes </h5>
         <div class="list-group rounded-0 flex-grow-1 overflow-auto ">
           {% for conv in conversations %}
             <a href="{% url 'chat' conv.chat_id %}"
                class="p-3 list-group-item list-group-item-action d-flex align-items-center{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-dark text-white{% endif %}">
-              {% if conv.club.profilepic %}
-                <img src="{{ conv.club.profilepic.url }}"
-                     class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white p-1{% endif %}"
-                     style="width:40px;height:40px;object-fit:cover;"
-                     alt="{{ conv.club.name }}">
-              {% elif conv.club.logo %}
-                <img src="{{ conv.club.logo.url }}"
-                     class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} bg-white p-1{% endif %}"
-                     style="width:40px;height:40px;object-fit:cover;"
-                     alt="{{ conv.club.name }}">
-              {% else %}
-                <div class="rounded-circle d-flex align-items-center justify-content-center me-3 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}bg-white text-dark{% else %}bg-dark text-white{% endif %}"
-                     style="width:40px;height:40px;">
-                  {{ conv.club.name|first|upper }}
-                </div>
-              {% endif %}
-              <div class="flex-grow-1 position-relative">
-                <h6 class="col-md-6 mt-1 mb-1 h6 fw-bold text-center text-lg-start text-break">
-                <span class="text-break">{{ club.name }}</span>
-                <span class="ms-1 align-middle">
-                  {% if club.plan == 'oro' %}
-                    {% include 'partials/_verified-gold.html' %}
-                  {% elif club.plan == 'plata' %}
-                    {% include 'partials/_verified-silver.html' %}
-                  {% elif club.plan == 'bronce' %}
-                    {% include 'partials/_verified-bronze.html' %}
+              <span class="me-1">
+                    {% if conv.club.profilepic %}
+                    <img src="{{ conv.club.profilepic.url }}"
+                        class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}{% endif %}"
+                        style="width:60px;height:60px;object-fit:cover;"
+                        alt="{{ conv.club.name }}">
+                  {% elif conv.club.logo %}
+                    <img src="{{ conv.club.logo.url }}"
+                        class="rounded-circle me-3{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}{% endif %}"
+                        style="width:60px;height:60px;object-fit:cover;"
+                        alt="{{ conv.club.name }}">
+                  {% else %}
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}bg-white text-dark{% else %}bg-dark text-white{% endif %}"
+                        style="width:60px;height:60px;">
+                      {{ conv.club.name|first|upper }}
+                    </div>
                   {% endif %}
-                </span>
-              </h6>
+              </span>
+              <div class="flex-grow-1 position-relative">
+                    <h6 class="col-md-6 mt-1 mb-1 h6 fw-bold text-center text-lg-start text-break">
+                    <span class="text-break fw-bold">{{ conv.club.name }}</span>
+                    <span class="ms-1 align-middle">
+                      {% if conv.club.plan == 'oro' %}{% include 'partials/_verified-gold.html' %}{% elif conv.club.plan == 'plata' %}{% include 'partials/_verified-silver.html' %}{% elif conv.club.plan == 'bronce' %}{% include 'partials/_verified-bronze.html' %}{% endif %}
+                    </span>
+                  </h6>
 
                 <div class="col-md-6 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
                   {{ conv.content }}...
@@ -84,6 +80,8 @@
                   {% include 'partials/_verified-bronze.html' %}
                 {% endif %}
               </a>
+
+              
               <span class="badge ms-auto">{{ club.get_category_display }}</span>
             {% endif %}
           </div>
@@ -118,7 +116,7 @@
           {{ m.reply_to.user.username }}
         {% endif %}
       </div>
-     <span class="small test-white fw-light fst-italic">{{ m.reply_to.content }}</span>
+     <span class="small text-white fw-light fst-italic">{{ m.reply_to.content }}</span>
     </div>
     {% endif %}
     <div class="message-content d-flex justify-content-between align-items-center">
@@ -148,11 +146,9 @@
             {% endfor %}
           </div>
          <div id="reply-preview" class="border-top py-3 px-3 d-none d-flex align-items-center">
-          <div id="reply-text" class="bg-light border p-2 m-2  rounded flex-grow-1 position-relative d-flex flex-column">
-            <!-- Botón de cierre -->
+          <div id="reply-text" class="bg-light col-md-10 border p-2 m-2  rounded flex-grow-1 position-relative d-flex flex-column">
             <button type="button" id="reply-close" class="btn-close position-absolute top-0 end-0 m-2"></button>
-
-            <!-- Línea: SVG + "Responder a" + username -->
+ 
             <div class="d-flex align-items-center">
               <svg class="me-2" style="width:16px;height:16px;" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -163,14 +159,13 @@
                 <small class="fw-medium me-1">Responder a</small>
                 <span id="reply-username" class="small fw-medium me-2"></span>
               </div>
-            </div>
+            </div> 
+            <p id="reply-content" class="me-4 p-3 mb-0"></p>
 
-            <!-- Contenido debajo, alineado con la misma columna (sin margen izquierdo) -->
-            <span id="reply-content" class="ms-4 me-4 p-3 text-break"></span>
           </div>
         </div>
 
-        <form method="post" id="message-form" class="bg-light m-4">
+        <form method="post" id="message-form" class="bg-light me-4 ms-4">
           {% csrf_token %}
           <div class="row g-2 align-items-center">
             <div class="col-11">

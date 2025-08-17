@@ -11,7 +11,7 @@
                            class="form-control"
                            id="{{ form.username.id_for_label }}"
                            placeholder=" "
-                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                           required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
                     {% if form.username.errors %}
@@ -24,30 +24,36 @@
 
                 <div class="form-field with-toggle">
                   <button type="button" class="clear-btn bi bi-x"></button>
-                  <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
                     <input type="password"
                            name="{{ form.password.name }}"
                            class="form-control"
                            id="{{ form.password.id_for_label }}"
                            placeholder=" "
-                           required oninvalid="this.setCustomValidity('rellene este campo')" oninput="setCustomValidity('')">
+                           required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
 
                     <label for="{{ form.password.id_for_label }}">Contraseña</label>
-                    {% if form.password.errors %}
-                      <div class="invalid-feedback d-block">
+                    <button type="button" class="toggle-password"><i class="bi bi-eye"></i></button>
+
+                </div>
+
+                   <div class="alert-password">
+                      {% if form.password.errors %}
+                      <div  class=" position-relative invalid-feedback d-block">
                         {{ form.password.errors.as_text|striptags }}
                       </div>
                     {% endif %}
                     {% if form.non_field_errors %}
-                      <div class="invalid-feedback d-block">
+                      <div  class=" position-relative invalid-feedback d-block">
                         {{ form.non_field_errors }}
                       </div>
                     {% endif %}
-                </div>
+                  </div>
                 <div class="form-check mb-3">
                     <input type="checkbox" name="{{ form.remember_me.name }}" class="form-check-input" id="{{ form.remember_me.id_for_label }}" {% if form.remember_me.value or form.remember_me.initial %}checked{% endif %}>
                     <label class="form-check-label" for="{{ form.remember_me.id_for_label }}">Recordar contraseña</label>
                 </div>
+                
+               
 
 
                 <button type="submit" class="btn btn-dark w-100">Iniciar Sesión</button>
