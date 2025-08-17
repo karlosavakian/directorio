@@ -184,7 +184,6 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'category',
             'plan',
             'address',
-            'profilepic',
         )
         labels = {
             'name': 'Nombre del club',
@@ -289,6 +288,11 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
         if logo_widget:
             css = logo_widget.widget.attrs.get('class', '')
             logo_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
+        profilepic_widget = self.fields.get('profilepic')
+        if profilepic_widget:
+            css = profilepic_widget.widget.attrs.get('class', '')
+            profilepic_widget.widget.attrs['class'] = (css + ' d-none').strip()
 
         if require_all:
             for name, field in self.fields.items():

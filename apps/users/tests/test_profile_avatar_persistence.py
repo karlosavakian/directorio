@@ -49,7 +49,7 @@ class ProfileAvatarPersistenceTests(TestCase):
             name="Club Avatar",
             city="C",
             address="A",
-            phone="1",
+            phone="612345678",
             email="e@e.com",
             owner=self.user,
         )
@@ -83,9 +83,16 @@ class ProfileAvatarPersistenceTests(TestCase):
         """Nav avatar should display club profilepic after upload."""
         club = Club.objects.create(
             name="Club Pic",
-            city="C",
-            address="A",
-            phone="1",
+            about="About",
+            slug="club-pic",
+            country="España",
+            region="Madrid",
+            city="Madrid",
+            street="S",
+            number="1",
+            postal_code="00000",
+            prefijo="+34",
+            phone="612345678",
             email="e@e.com",
             owner=self.user,
         )
@@ -98,7 +105,7 @@ class ProfileAvatarPersistenceTests(TestCase):
                 buf.seek(0)
                 upload = SimpleUploadedFile("clubpic.jpg", buf.getvalue(), content_type="image/jpeg")
                 response = self.client.post(
-                    reverse("club_profilepic_upload"),
+                    reverse("club_dashboard"),
                     {"profilepic": upload},
                     follow=True,
                 )
