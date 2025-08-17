@@ -10,7 +10,6 @@
             class="profile-tabs-select form-select  w-auto text-end">
       <option value="tab-profile">Mi Perfil</option>
       <option value="tab-gallery">Galería</option>
-      <option value="tab-profilepic">Foto de Perfil</option>
       <option value="tab-schedule">Horarios</option>
       <option value="tab-clase">Servicios</option>
       <option value="tab-bookings">Reservas</option>
@@ -46,11 +45,8 @@
           <div class="col-lg-6">
         <h5 class="mb-3  ">Logotipo</h5>
         <div class="mb-5 text-center bg-dark p-3   rounded">
-           <form method="post" action="{% url 'club_profilepic_upload' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="mb-5 text-center bg-dark p-3 rounded">
           <div class="avatar-dropzone avatar-dropzone-square p-3">
-            <input type="file" name="profilepic" id="id_profilepic">
+            {{ form.profilepic }}
             <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
               {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
               <div class="avatar-dropzone-msg p-3">
@@ -59,9 +55,9 @@
               </div>
             </div>
           </div>
-        </div>
-        <button type="submit" class="btn btn-dark">Guardar</button>
-      </form>
+          {% if form.profilepic.errors %}
+          <div class="invalid-feedback d-block">{{ form.profilepic.errors.as_text|striptags }}</div>
+          {% endif %}
         </div>
 
         <div class="row g-3">
