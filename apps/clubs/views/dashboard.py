@@ -526,6 +526,25 @@ def entrenador_update(request, pk):
 
 
 @login_required
+def coach_dashboard(request):
+    coach = getattr(request.user, "coach_profile", None)
+    if not coach:
+        return redirect('home')
+    if request.method == 'POST':
+        form = EntrenadorForm(request.POST, request.FILES, instance=coach)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Entrenador actualizado correctamente.')
+            return redirect('coach_profile', coach.slug)
+    else:
+        form = EntrenadorForm(instance=coach)
+    return render(request, 'clubs/coach_dashboard.html', {
+        'form': form,
+        'coach': coach,
+    })
+
+
+@login_required
 def entrenador_delete(request, pk):
     entrenador = get_object_or_404(Entrenador, pk=pk)
     if not has_club_permission(request.user, entrenador.club):

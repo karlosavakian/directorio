@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from apps.clubs.views import public as club_public
 from apps.clubs.views import messages as club_messages
-from apps.clubs.views.dashboard import dashboard
+from apps.clubs.views.dashboard import dashboard, coach_dashboard
 from apps.users.views import profile as user_profile
   
 from apps.users.forms import LoginForm   
@@ -20,6 +20,7 @@ urlpatterns = [
 
     # Perfil público de clubs
     path('admin/', dashboard, name='club_dashboard'),
+    path('coach-admin/', coach_dashboard, name='coach_dashboard'),
     path('@<slug:slug>/inscribirse/', club_public.member_signup, name='club_member_signup'),
     path('@<slug:slug>/reservar/', club_public.booking_form, name='club_booking'),
     path('@<slug:slug>/', club_public.club_profile, name='club_profile'),

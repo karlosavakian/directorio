@@ -298,7 +298,7 @@ class CoachPermissionTests(TestCase):
 
     def test_coach_can_edit_own_profile(self):
         self.client.login(username='coach', password='pass')
-        url = reverse('entrenador_update', args=[self.coach.id])
+        url = reverse('coach_dashboard')
         response = self.client.post(url, {'nombre': 'Nuevo', 'apellidos': 'User'})
         self.assertRedirects(response, reverse('coach_profile', args=[self.coach.slug]))
         self.coach.refresh_from_db()
@@ -310,6 +310,11 @@ class CoachPermissionTests(TestCase):
         url = reverse('entrenador_update', args=[self.coach.id])
         response = self.client.post(url, {'nombre': 'X', 'apellidos': 'Y'})
         self.assertEqual(response.status_code, 403)
+
+    def test_nav_shows_coach_panel_link(self):
+        self.client.login(username='coach', password='pass')
+        response = self.client.get(reverse('coach_profile', args=[self.coach.slug]))
+        self.assertContains(response, reverse('coach_dashboard'))
 
 
 class UserReviewFirstTests(TestCase):
