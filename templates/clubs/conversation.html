@@ -16,29 +16,29 @@
                       {% if conv.club.profilepic %}
                       <img src="{{ conv.club.profilepic.url }}"
                           class="rounded-circle me-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}{% endif %}"
-                          style="width:60px;height:60px;object-fit:cover;"
+                          style="width:60px;height:60px; min-width:60px; min-height:60px; object-fit:cover;"
                           alt="{{ conv.club.name }}">
                     {% elif conv.club.logo %}
                       <img src="{{ conv.club.logo.url }}"
                           class="rounded-circle me-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}{% endif %}"
-                          style="width:60px;height:60px;object-fit:cover;"
+                          style="width:60px;height:60px; min-width:60px; min-height:60px; object-fit:cover;"
                           alt="{{ conv.club.name }}">
                     {% else %}
                       <div class="rounded-circle d-flex align-items-center justify-content-center me-2 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}bg-white text-dark{% else %}bg-dark text-white{% endif %}"
-                          style="width:60px;height:60px;">
+                          style="width:60px;height:60px; min-width:60px; min-height:60px; ">
                         {{ conv.club.name|first|upper }}
                       </div>
                     {% endif %}
                 </span>
               <div class="flex-grow-1 position-relative">
-                      <h6 class="col-md-5 mt-1 mb-1 h6 fw-bold text-center text-lg-start text-break">
+                  <div class="col-md-7 ms-2  fw-bold text-center text-lg-start text-break">
                     <span class="text-break fw-bold">{{ conv.club.name }}</span>
                     <span class="ms-1 align-middle">
                       {% if conv.club.plan == 'oro' %}{% include 'partials/_verified-gold.html' %}{% elif conv.club.plan == 'plata' %}{% include 'partials/_verified-silver.html' %}{% elif conv.club.plan == 'bronce' %}{% include 'partials/_verified-bronze.html' %}{% endif %}
                     </span>
-                  </h6>
+                  </div>
 
-                  <div class="col-md-7 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
+                  <div class="col-md-7 ms-2 {% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %}text-white small{% else %}text-muted small{% endif %} text-truncate">
                     {{ conv.content|truncatechars:50 }}
                   </div>
                 <small style="font-size:12px;" class="col-md-2 position-absolute end-0 top-50 translate-middle-y text-wrap ms-2{% if conv.club == club and user != conv.club.owner or conv.club == club and conv.user == conversant %} text-white{% else %} text-muted{% endif %}">
