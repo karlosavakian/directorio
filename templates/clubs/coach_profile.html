@@ -2,374 +2,424 @@
 {% block body_class %}club-profile-page d-flex flex-column min-vh-100{% endblock %}
 {% load static star_rating utils_filters %}
 {% block content %}
-<main class="flex-grow-1">
-
-    <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
-        <div class="profile-header d-flex align-items-center mb-4 mt-4">
-            <div class="d-flex align-items-center" style="font-size:14px; font-style:italic;">
-                {% include 'partials/_breadcrumb_coach.html' %}
-            </div>
-            <div class="d-none d-lg-flex ms-auto align-items-center gap-2">
-                <button type="button" class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 ms-2 btn btn-dark" data-club-slug="{{ coach.club.slug }}">
-                     <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
-                    </svg>
-                    Reservar clase
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <!-- Columna Izquierda: Información del entrenador -->
-            <div class="col-lg-2 ">
-                <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center">
-                    {% if coach.avatar %}
-                        <img src="{{ coach.avatar.url }}"
-                             class="w-100 h-100"
-                             style="object-fit:cover;"
-                             alt="{{ coach.nombre }} {{ coach.apellidos }}">
-                    {% else %}
-                        <div class="d-flex align-items-center justify-content-center w-100 h-100" style="background: rgb(85, 85, 85);">
-                            <span class="text-white fw-bold display-4">
-                                {{ coach.nombre|first|upper }}{{ coach.apellidos|first|upper }}
-                            </span>
-                        </div>
-                    {% endif %}
+    <main class="flex-grow-1">
+        <div class="container-fluid mb-5 col-12 px-3 my-3" id="profile-container">
+            <div class="profile-header d-flex align-items-center mb-4 mt-4">
+                <div class="d-flex align-items-center"
+                     style="font-size:14px;
+                            font-style:italic">{% include 'partials/_breadcrumb_coach.html' %}</div>
+                <div class="d-none d-lg-flex ms-auto align-items-center gap-2">
+                    <button type="button"
+                            class="p-3 booking-btn fw-medium d-flex align-items-center gap-1 ms-2 btn btn-dark"
+                            data-club-slug="{{ coach.club.slug }}">
+                        <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             width="24"
+                             height="24"
+                             fill="none"
+                             viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z" />
+                        </svg>
+                        Reservar clase
+                    </button>
                 </div>
-
-                <div class="p-2 d-flex align-items-start justify-content-center justify-content-lg-start mt-2 mb-4 gap-3">
-                    <ul class="p-0 club-info-links d-flex flex-column align-items-center align-items-lg-start text-center text-lg-start mx-auto mx-lg-0">
-                        <div class="d-flex justify-content-center justify-content-lg-start mb-1">
-                            <span class="badge fw-medium">Entrenador</span>
-                        </div>
-                        <h3 class="mt-1 mb-1 h5 fw-bold mb-2 text-center text-lg-start">
-                            {{ coach.nombre }} {{ coach.apellidos }}
-                            {% if coach.verificado %}
-                                <span class="ms-1" title="Verificado">
-                                    <svg fill="none" height="24" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-                                        <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
+            </div>
+            <div class="row">
+                <!-- Columna Izquierda: Información del entrenador -->
+                <div class="col-lg-2 ">
+                    <div class="position-relative bg-black club-logo d-flex align-items-center justify-content-center">
+                        {% if coach.avatar %}
+                            <img src="{{ coach.avatar.url }}"
+                                 class="w-100 h-100"
+                                 style="object-fit:cover"
+                                 alt="{{ coach.nombre }} {{ coach.apellidos }}">
+                        {% else %}
+                            <div class="d-flex align-items-center justify-content-center w-100 h-100"
+                                 style="background: rgb(85, 85, 85)">
+                                <span class="text-white fw-bold display-4">{{ coach.nombre|first|upper }}{{ coach.apellidos|first|upper }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="p-2 d-flex align-items-start justify-content-center justify-content-lg-start mt-2 mb-4 gap-3">
+                        <ul class="p-0 club-info-links d-flex flex-column align-items-center align-items-lg-start text-center text-lg-start mx-auto mx-lg-0">
+                            <div class="d-flex justify-content-center justify-content-lg-start mb-1">
+                                <span class="badge fw-medium">Entrenador</span>
+                            </div>
+                            <h3 class="mt-1 mb-1 h5 fw-bold mb-2 text-center text-lg-start">
+                                {{ coach.nombre }} {{ coach.apellidos }}
+                                {% if coach.verificado %}
+                                    <span class="ms-1" title="Verificado">
+                                        <svg fill="none"
+                                             height="24"
+                                             viewBox="0 0 24 24"
+                                             width="20"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM11.2071 16.2071L18.2071 9.20711L16.7929 7.79289L10.5 14.0858L7.20711 10.7929L5.79289 12.2071L9.79289 16.2071C9.98043 16.3946 10.2348 16.5 10.5 16.5C10.7652 16.5 11.0196 16.3946 11.2071 16.2071Z" fill="black" fill-rule="evenodd" />
+                                        </svg>
+                                    </span>
+                                {% endif %}
+                            </h3>
+                            <li class="club-actions d-flex flex-row flex-lg-column flex-wrap justify-content-center align-items-center align-items-lg-start gap-2 mb-4">
+                                <button type="button"
+                                        class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1"
+                                        onclick="window.open('https://www.google.com/maps/search/?api=1&query={{ coach.club.address|urlencode }}', '_blank')">
+                                    <svg class="w-[100px] h-[100px] text-gray-800 dark:text-white"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="26"
+                                         height="26"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z" />
                                     </svg>
-                                </span>
-                            {% endif %}
-                        </h3>
-
-                      
-
-                        <li class="club-actions d-flex flex-row flex-lg-column flex-wrap justify-content-center align-items-center align-items-lg-start gap-2 mb-4">
-
-                         
-                            <button
-                                type="button"
-                                class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1"
-                                onclick="window.open('https://www.google.com/maps/search/?api=1&query={{ coach.club.address|urlencode }}', '_blank')"
-                            >
-
-                                <svg class="w-[100px] h-[100px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-                                </svg>
-                                <span class="fw-medium">Cómo llegar</span>
-                            </button>
-
-                            <button type="button"
-                                    onclick="location.href='{% url 'conversation' %}?club={{ coach.club.slug }}'"
-                                    class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>
-                                </svg>
-                                Enviar un mensaje
-                            </button>
-                            <button id="club-heart"
-                                    aria-label="Seguir"
-                                    data-url="{% url 'toggle_follow' 'entrenador' coach.id %}"
-                                    class="fw-medium {% if coach_followed %}liked{% endif %} d-flex flex-column flex-lg-row align-items-center gap-1 mb-1">
-                                <svg aria-hidden="true"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     width="26"
-                                     height="26"
-                                     fill="none"
-                                     viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
-                                </svg>
-                                Añadir a favoritos
-                            </button>
-                            <button class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1" id="club-share" aria-label="Compartir">
-                                <svg aria-hidden="true"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     width="26"
-                                     height="26"
-                                     fill="none"
-                                     viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
-                                </svg>
-                                Compartir
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Columna Central: Galería y contenido -->
-            <div class="col-lg-8">
-                <div class="mb-4 rounded">
-                    {% if coach.photos.all %}
-                        <div class="mb-4 gallery-slideshow position-relative">
-                            {% for photo in coach.photos.all %}
-                                <div class="gallery-slide{% if forloop.first %} active{% endif %}">
-                                    <img src="{{ photo.image.url }}"
-                                         alt="Foto"
-                                         class="img-fluid rounded shadow-sm"
-                                         style="width:100%;max-height:500px;min-height:500px;object-fit:cover;background:rgb(85,85,85);">
-                                </div>
-                            {% endfor %}
-                            <button id="galleryPrev" class="slide-arrow left ms-3">
-                                <svg viewBox="0 0 48 48">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                            <button id="galleryNext" class="slide-arrow right me-3">
-                                <svg viewBox="0 0 48 48" style="transform:rotate(180deg);">
-                                    <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                    <path d="M0-.5h48v48h-48z" fill="none" />
-                                </svg>
-                            </button>
-                            <div class="gallery-dots-container" style="position: absolute; bottom: 15px; width: 100%; display: flex; justify-content: center">
-                                <div class="gallery-dots d-flex gap-1">
-                                    {% for photo in coach.photos.all %}
-                                        <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="gallery-placeholder rounded d-flex flex-column align-items-center">
-                                <svg class="text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm16 0-4-5-3 3-2-2-4 4"/>
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.5 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                                </svg>
-                                <p class="mt-2 text-white text-center">No hay fotos todavía.</p>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-
-                <!-- Menú de pestañas -->
-                <ul class="border-bottom nav custom-tab-menu mb-3 justify-content-center" id="coachTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="about-tab" data-bs-toggle="tab" data-bs-target="#about" type="button" role="tab">
-                            Sobre el entrenador
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
-                            Valoraciones
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule" type="button" role="tab">
-                            Horarios
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
-                            Publicaciones
-                        </button>
-                    </li>
-                </ul>
-
-                <!-- Contenido de pestañas -->
-                <div class="tab-content" id="coachTabsContent">
-                    <div class="tab-pane fade show active" id="about" role="tabpanel">
-                        <div class="row p-3">
-                            <div class="col-12">
-                                {% if coach.bio %}
-                                    <p>{{ coach.bio|linebreaks }}</p>
-                                {% endif %}
-                                {% if coach.niveles.all %}
-                                    <h5 class="mb-2">Niveles</h5>
-                                    <div class="d-flex flex-wrap gap-2 mb-2">
-                                        {% for n in coach.niveles.all %}
-                                            <span class="badge">{{ n.name }}</span>
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                                {% if coach.precio_hora %}
-                                    <p><strong>Precio/hora:</strong> {{ coach.precio_hora }} €</p>
-                                {% endif %}
-                                {% if coach.promociones %}
-                                    <p><strong>Promociones:</strong> {{ coach.promociones }}</p>
-                                {% endif %}
-                                <p><strong>Clase de prueba:</strong> {{ coach.clase_prueba|yesno:"Sí,No" }}</p>
-                                {% if coach.experiencia_anos %}
-                                    <p><strong>Experiencia:</strong> {{ coach.experiencia_anos }} años</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="reviews" role="tabpanel">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="mt-2" id="review-list">
-                                    {% with reseñas=coach.club.reseñas.all %}
-                                        {% include 'clubs/reviews_list.html' %}
-                                    {% endwith %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="schedule" role="tabpanel">
-                        <div class="table-responsive mt-3">
-                            <table class="table table-bordered text-center align-middle mb-0" style="min-width: 700px; font-size:14px;">
-                                <thead class="table-dark">
-                                    <tr>
-                                        {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}
-                                            <td>
-                                                {% with horarios_dia=coach.club.horarios.all|dictsort:"hora_inicio" %}
-                                                    {% for h in horarios_dia %}
-                                                        {% if h.dia == dia %}
-                                                            {% if h.estado == 'abierto' %}
-                                                                <div class="py-1">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
-                                                            {% elif h.estado == 'cerrado' %}
-                                                                <div class="py-1">Cerrado</div>
-                                                            {% else %}
-                                                                <div class="py-1">{{ h.estado_otro }}</div>
-                                                            {% endif %}
-                                                        {% endif %}
-                                                    {% empty %}
-                                                        <span class="">—</span>
-                                                    {% endfor %}
-                                                {% endwith %}
-                                            </td>
-                                        {% endfor %}
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="posts" role="tabpanel">
-                        {% for post in coach.club.posts.all %}
-                            <div class="container mt-3 mb-3 col-lg-12 p-5 border rounded p-4 mx-auto">
-                                <div class="d-flex align-items-start gap-3 mb-2">
-                                    {% if post.user.profile.avatar %}
-                                        <img src="{{ post.user.profile.avatar.url }}" alt="{{ post.user.username }}" class="review-avatar-img rounded-circle">
-                                    {% else %}
-                                        <div class="review-avatar me-sm-3 mb-2 mb-sm-0">{{ post.user.username|first|upper }}</div>
-                                    {% endif %}
-                                    <div class="flex-grow-1 w-100">
-                                        <span class="fw-bold">{{ post.user.username }}</span>
-                                        <small class="text-muted">{{ post.created_at|time_since_short }}</small>
-                                        <div class="mt-4 mb-4 w-100">
-                                            {% if post.image %}<img src="{{ post.image.url }}" class="img-fluid mb-2" alt="imagen" style="max-height:300px;">{% endif %}
-                                            <div class="ratio ratio-16x9">
-                                                {{ post.contenido|youtube_embed }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% empty %}
-                            <p class="m-3 justify-content-center d-flex flex-column align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"><path fill="currentColor" d="m198.24 62.63l15.68-17.25a8 8 0 0 0-11.84-10.76L186.4 51.86A95.95 95.95 0 0 0 57.76 193.37l-15.68 17.25a8 8 0 1 0 11.84 10.76l15.68-17.24A95.95 95.95 0 0 0 198.24 62.63M48 128a80 80 0 0 1 127.6-64.25l-107 117.73A79.63 79.63 0 0 1 48 128m80 80a79.55 79.55 0 0 1-47.6-15.75l107-117.73A79.95 79.95 0 0 1 128 208"/></svg>
-                                No hay publicaciones.
-                            </p>
-                        {% endfor %}
+                                    <span class="fw-medium">Cómo llegar</span>
+                                </button>
+                                <button type="button"
+                                        onclick="location.href='{% url 'conversation' %}?club={{ coach.club.slug }}'"
+                                        class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="26"
+                                         height="26"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 10.5h.01m-4.01 0h.01M8 10.5h.01M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-6.6a1 1 0 0 0-.69.275l-2.866 2.723A.5.5 0 0 1 8 18.635V17a1 1 0 0 0-1-1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                                    </svg>
+                                    Enviar un mensaje
+                                </button>
+                                <button id="club-heart"
+                                        aria-label="Seguir"
+                                        data-url="{% url 'toggle_follow' 'entrenador' coach.id %}"
+                                        class="fw-medium {% if coach_followed %}liked{% endif %} d-flex flex-column flex-lg-row align-items-center gap-1 mb-1">
+                                    <svg aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="26"
+                                         height="26"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z" />
+                                    </svg>
+                                    Añadir a favoritos
+                                </button>
+                                <button class="fw-medium d-flex flex-column flex-lg-row align-items-center gap-1 mb-1"
+                                        id="club-share"
+                                        aria-label="Compartir">
+                                    <svg aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="26"
+                                         height="26"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M7.926 10.898 15 7.727m-7.074 5.39L15 16.29M8 12a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm12 5.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm0-11a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+                                    </svg>
+                                    Compartir
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-            <!-- Columna Derecha: Valoraciones y Reseñas -->
-            <div class="col-12 col-md-6 col-lg-2">
-                {% with reseñas=coach.club.reseñas.all %}
-                    {% if reseñas %}
-                        <div class="club-reviews">
-                            <div class="review-carousel border rounded mb-2" id="review-carousel" onmouseenter="pauseAutoplay()" onmouseleave="startAutoplay()">
-                                {% for reseña in reseñas %}
-                                    <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
-                                        <p class="review-text">“{{ reseña.comentario }}”</p>
-                                        <div class="review-user-container d-flex align-items-center position-absolute bottom-0  mb-4">
-                                            {% if reseña.usuario.profile.avatar %}
-                                                <img src="{{ reseña.usuario.profile.avatar.url }}" alt="{{ reseña.usuario.username }}" class="review-avatar-img rounded-circle">
-                                            {% else %}
-                                                <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
-                                            {% endif %}
-                                            <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
-                                        </div>
+                <!-- Columna Central: Galería y contenido -->
+                <div class="col-lg-8">
+                    <div class="mb-4 rounded">
+                        {% if coach.photos.all %}
+                            <div class="mb-4 gallery-slideshow position-relative">
+                                {% for photo in coach.photos.all %}
+                                    <div class="gallery-slide{% if forloop.first %} active{% endif %}">
+                                        <img src="{{ photo.image.url }}"
+                                             alt="Foto"
+                                             class="img-fluid rounded shadow-sm"
+                                             style="width:100%;
+                                                    max-height:500px;
+                                                    min-height:500px;
+                                                    object-fit:cover;
+                                                    background:rgb(85,85,85)">
                                     </div>
                                 {% endfor %}
-                                <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
-                                    <svg viewBox="0 0 48 48" width="20" height="20">
-                                        <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                        <path d="M0-.5h48v48h-48z" fill="none" />
-                                    </svg>
-                                </button>
-                                <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
-                                    <svg viewBox="0 0 48 48" width="20" height="20" style="transform: rotate(180deg)">
-                                        <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
-                                        <path d="M0-.5h48v48h-48z" fill="none" />
-                                    </svg>
-                                </button>
+                                {% include 'partials/utils/_gallery_control_button.html' %}
+                                <div class="gallery-dots-container"
+                                     style="position: absolute;
+                                            bottom: 15px;
+                                            width: 100%;
+                                            display: flex;
+                                            justify-content: center">
+                                    <div class="gallery-dots d-flex gap-1">
+                                        {% for photo in coach.photos.all %}
+                                            <span class="gallery-dot{% if forloop.first %} active{% endif %}"></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
-                            <ul class="list-group">
-                                <div class="d-flex flex-wrap rounded p-2">
-                                    <div class="mb-3 d-flex align-items-center col-12">
-                                        <div class="d-flex flex-column align-items-end w-100">
-                                            <span class="fs-4 fw-bold">
-                                                {{ coach.club.average_rating }}
-                                                <small style="font-size:12px">/ 5</small>
-                                            </span>
-                                            <span class="fw-light" style="font-size:12px">
-                                                ({{ coach.club.reviews_count }} reseñas)
-                                            </span>
+                        {% else %}
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="gallery-placeholder rounded d-flex flex-column align-items-center">
+                                    <svg class="text-white"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         width="60"
+                                         height="60"
+                                         fill="none"
+                                         viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v10.5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Zm16 0-4-5-3 3-2-2-4 4" />
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.5 9.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                                    </svg>
+                                    <p class="mt-2 text-white text-center">No hay fotos todavía.</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <!-- Menú de pestañas -->
+                    <ul class="border-bottom nav custom-tab-menu mb-3 justify-content-center"
+                        id="coachTabs"
+                        role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active"
+                                    id="about-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#about"
+                                    type="button"
+                                    role="tab">Sobre el entrenador</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="reviews-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#reviews"
+                                    type="button"
+                                    role="tab">Valoraciones</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="schedule-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#schedule"
+                                    type="button"
+                                    role="tab">Horarios</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="posts-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#posts"
+                                    type="button"
+                                    role="tab">Publicaciones</button>
+                        </li>
+                    </ul>
+                    <!-- Contenido de pestañas -->
+                    <div class="tab-content" id="coachTabsContent">
+                        <div class="tab-pane fade show active" id="about" role="tabpanel">
+                            <div class="row p-3">
+                                <div class="col-12">
+                                    {% if coach.bio %}<p>{{ coach.bio|linebreaks }}</p>{% endif %}
+                                    {% if coach.niveles.all %}
+                                        <h5 class="mb-2">Niveles</h5>
+                                        <div class="d-flex flex-wrap gap-2 mb-2">
+                                            {% for n in coach.niveles.all %}<span class="badge">{{ n.name }}</span>{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    {% if coach.precio_hora %}
+                                        <p>
+                                            <strong>Precio/hora:</strong> {{ coach.precio_hora }} €
+                                        </p>
+                                    {% endif %}
+                                    {% if coach.promociones %}
+                                        <p>
+                                            <strong>Promociones:</strong> {{ coach.promociones }}
+                                        </p>
+                                    {% endif %}
+                                    <p>
+                                        <strong>Clase de prueba:</strong> {{ coach.clase_prueba|yesno:"Sí,No" }}
+                                    </p>
+                                    {% if coach.experiencia_anos %}
+                                        <p>
+                                            <strong>Experiencia:</strong> {{ coach.experiencia_anos }} años
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="mt-2" id="review-list">
+                                        {% with reseñas=coach.club.reseñas.all %}
+                                            {% include 'clubs/reviews_list.html' %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="schedule" role="tabpanel">
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered text-center align-middle mb-0"
+                                       style="min-width: 700px;
+                                              font-size:14px">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}<th scope="col">{{ nombre }}</th>{% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            {% for dia, nombre in coach.club.horarios.model.DiasSemana.choices %}
+                                                <td>
+                                                    {% with horarios_dia=coach.club.horarios.all|dictsort:"hora_inicio" %}
+                                                        {% for h in horarios_dia %}
+                                                            {% if h.dia == dia %}
+                                                                {% if h.estado == 'abierto' %}
+                                                                    <div class="py-1">{{ h.hora_inicio|time:"H:i" }} - {{ h.hora_fin|time:"H:i" }}</div>
+                                                                {% elif h.estado == 'cerrado' %}
+                                                                    <div class="py-1">Cerrado</div>
+                                                                {% else %}
+                                                                    <div class="py-1">{{ h.estado_otro }}</div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% empty %}
+                                                            <span class="">—</span>
+                                                        {% endfor %}
+                                                    {% endwith %}
+                                                </td>
+                                            {% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="posts" role="tabpanel">
+                            {% for post in coach.club.posts.all %}
+                                <div class="container mt-3 mb-3 col-lg-12 p-5 border rounded p-4 mx-auto">
+                                    <div class="d-flex align-items-start gap-3 mb-2">
+                                        {% if post.user.profile.avatar %}
+                                            <img src="{{ post.user.profile.avatar.url }}"
+                                                 alt="{{ post.user.username }}"
+                                                 class="review-avatar-img rounded-circle">
+                                        {% else %}
+                                            <div class="review-avatar me-sm-3 mb-2 mb-sm-0">{{ post.user.username|first|upper }}</div>
+                                        {% endif %}
+                                        <div class="flex-grow-1 w-100">
+                                            <span class="fw-bold">{{ post.user.username }}</span>
+                                            <small class="text-muted">{{ post.created_at|time_since_short }}</small>
+                                            <div class="mt-4 mb-4 w-100">
+                                                {% if post.image %}
+                                                    <img src="{{ post.image.url }}"
+                                                         class="img-fluid mb-2"
+                                                         alt="imagen"
+                                                         style="max-height:300px">
+                                                {% endif %}
+                                                <div class="ratio ratio-16x9">{{ post.contenido|youtube_embed }}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                    {% with detallado=coach.club.get_detailed_ratings %}
-                                        <div class="d-flex flex-column small rounded gap-1 w-100" style="font-size:1rem;">
-                                            <div class="d-flex justify-content-between" >
-                                                <span>Instalaciones</span>
-                                                <span class="d-flex">{% render_stars detallado.instalaciones %}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <span>Entrenadores</span>
-                                                <span class="d-flex">{% render_stars detallado.entrenadores %}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <span>Calidad/precio</span>
-                                                <span class="d-flex">{% render_stars detallado.calidad_precio %}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <span>Ambiente</span>
-                                                <span class="d-flex">{% render_stars detallado.ambiente %}</span>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <span>Variedad clases</span>
-                                                <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                </div>
+                            {% empty %}
+                                <p class="m-3 justify-content-center d-flex flex-column align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="20"
+                                         height="20"
+                                         viewBox="0 0 256 256">
+                                        <path fill="currentColor" d="m198.24 62.63l15.68-17.25a8 8 0 0 0-11.84-10.76L186.4 51.86A95.95 95.95 0 0 0 57.76 193.37l-15.68 17.25a8 8 0 1 0 11.84 10.76l15.68-17.24A95.95 95.95 0 0 0 198.24 62.63M48 128a80 80 0 0 1 127.6-64.25l-107 117.73A79.63 79.63 0 0 1 48 128m80 80a79.55 79.55 0 0 1-47.6-15.75l107-117.73A79.95 79.95 0 0 1 128 208" />
+                                    </svg>
+                                    No hay publicaciones.
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Columna Derecha: Valoraciones y Reseñas -->
+                <div class="col-12 col-md-6 col-lg-2">
+                    {% with reseñas=coach.club.reseñas.all %}
+                        {% if reseñas %}
+                            <div class="club-reviews">
+                                <div class="review-carousel border rounded mb-2"
+                                     id="review-carousel"
+                                     onmouseenter="pauseAutoplay()"
+                                     onmouseleave="startAutoplay()">
+                                    {% for reseña in reseñas %}
+                                        <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
+                                            <p class="review-text">“{{ reseña.comentario }}”</p>
+                                            <div class="review-user-container d-flex align-items-center position-absolute bottom-0  mb-4">
+                                                {% if reseña.usuario.profile.avatar %}
+                                                    <img src="{{ reseña.usuario.profile.avatar.url }}"
+                                                         alt="{{ reseña.usuario.username }}"
+                                                         class="review-avatar-img rounded-circle">
+                                                {% else %}
+                                                    <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
+                                                {% endif %}
+                                                <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
                                             </div>
                                         </div>
-                                    {% endwith %}
+                                    {% endfor %}
+                                    <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
+                                        <svg viewBox="0 0 48 48" width="20" height="20">
+                                            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                            <path d="M0-.5h48v48h-48z" fill="none" />
+                                        </svg>
+                                    </button>
+                                    <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
+                                        <svg viewBox="0 0 48 48"
+                                             width="20"
+                                             height="20"
+                                             style="transform: rotate(180deg)">
+                                            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+                                            <path d="M0-.5h48v48h-48z" fill="none" />
+                                        </svg>
+                                    </button>
                                 </div>
-                            </ul>
-                        </div>
-                    {% endif %}
-                {% endwith %}
+                                <ul class="list-group">
+                                    <div class="d-flex flex-wrap rounded p-2">
+                                        <div class="mb-3 d-flex align-items-center col-12">
+                                            <div class="d-flex flex-column align-items-end w-100">
+                                                <span class="fs-4 fw-bold">
+                                                    {{ coach.club.average_rating }}
+                                                    <small style="font-size:12px">/ 5</small>
+                                                </span>
+                                                <span class="fw-light" style="font-size:12px">({{ coach.club.reviews_count }} reseñas)</span>
+                                            </div>
+                                        </div>
+                                        {% with detallado=coach.club.get_detailed_ratings %}
+                                            <div class="d-flex flex-column small rounded gap-1 w-100"
+                                                 style="font-size:1rem">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Instalaciones</span>
+                                                    <span class="d-flex">{% render_stars detallado.instalaciones %}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Entrenadores</span>
+                                                    <span class="d-flex">{% render_stars detallado.entrenadores %}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Calidad/precio</span>
+                                                    <span class="d-flex">{% render_stars detallado.calidad_precio %}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Ambiente</span>
+                                                    <span class="d-flex">{% render_stars detallado.ambiente %}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Variedad clases</span>
+                                                    <span class="d-flex">{% render_stars detallado.variedad_clases %}</span>
+                                                </div>
+                                            </div>
+                                        {% endwith %}
+                                    </div>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
-{% include 'partials/_share_profile_modal.html' %}
-{% include 'partials/_register_modal.html' %}
-{% include 'partials/_member_signup_modal.html' %}
-{% include 'partials/_booking_modal.html' %}
-<script src="{% static 'js/share-like.js' %}"></script>
-<script src="{% static 'js/share-modal.js' %}"></script>
-<script src="{% static 'js/member-signup-modal.js' %}"></script>
-<script src="{% static 'js/booking-modal.js' %}"></script>
-<script src="{% static 'js/gallery-slideshow.js' %}"></script>
-<script src="{% static 'js/slides.js' %}"></script>
+    </main>
+    {% include 'partials/_share_profile_modal.html' %}
+    {% include 'partials/_register_modal.html' %}
+    {% include 'partials/_member_signup_modal.html' %}
+    {% include 'partials/_booking_modal.html' %}
+    <script src="{% static 'js/share-like.js' %}"></script>
+    <script src="{% static 'js/share-modal.js' %}"></script>
+    <script src="{% static 'js/member-signup-modal.js' %}"></script>
+    <script src="{% static 'js/booking-modal.js' %}"></script>
+    <script src="{% static 'js/gallery-slideshow.js' %}"></script>
+    <script src="{% static 'js/slides.js' %}"></script>
 {% endblock %}
-

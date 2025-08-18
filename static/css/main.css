@@ -233,3 +233,9 @@ input::placeholder,
 textarea::placeholder {
   text-indent: 0.5rem;
 }
+
+
+.breadcrumb{
+ font-size:14px; 
+ font-style:italic;
+}

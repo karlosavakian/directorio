@@ -1,0 +1,36 @@
+<div class="review-carousel border rounded mb-2"
+     id="review-carousel"
+     onmouseenter="pauseAutoplay()"
+     onmouseleave="startAutoplay()">
+    {% for reseña in reseñas %}
+        <div class="p-4 review-slide{% if forloop.first %} active{% endif %}">
+            <p class="review-text">“{{ reseña.comentario }}”</p>
+            <div class="review-user-container d-flex align-items-center position-absolute bottom-0  mb-4 ">
+                {% if reseña.usuario.profile.avatar %}
+                    <img src="{{ reseña.usuario.profile.avatar.url }}"
+                         alt="{{ reseña.usuario.username }}"
+                         class="review-avatar-img rounded-circle">
+                {% else %}
+                    <div class="review-avatar bg-black text-white">{{ reseña.usuario.username|first|upper }}</div>
+                {% endif %}
+                <div class="fw-medium ms-2 review-username">{{ reseña.usuario.username }}</div>
+            </div>
+        </div>
+    {% endfor %}
+    <!-- Arrows -->
+    <button id="prevBtn" class="review-arrow left" onclick="changeSlide(-1)">
+        <svg viewBox="0 0 48 48" width="20" height="20">
+            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+            <path d="M0-.5h48v48h-48z" fill="none" />
+        </svg>
+    </button>
+    <button id="nextBtn" class="review-arrow right" onclick="changeSlide(1)">
+        <svg viewBox="0 0 48 48"
+             width="20"
+             height="20"
+             style="transform: rotate(180deg)">
+            <path d="M30.83 32.67l-9.17-9.17 9.17-9.17-2.83-2.83-12 12 12 12z" />
+            <path d="M0-.5h48v48h-48z" fill="none" />
+        </svg>
+    </button>
+</div>

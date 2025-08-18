@@ -1,0 +1,8 @@
+{{ club.name }}
+{% if club.plan == 'oro' %}
+    {% include 'partials/_verified-gold.html' %}
+{% elif club.plan == 'plata' %}
+    {% include 'partials/_verified-silver.html' %}
+{% elif club.plan == 'bronce' %}
+    {% include 'partials/_verified-bronze.html' %}
+{% endif %}

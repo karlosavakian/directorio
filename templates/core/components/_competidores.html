@@ -1,0 +1,36 @@
+{% load static utils_filters %}
+{% if competidores %}
+    <div class="d-flex justify-content-center">
+        <div class="table-responsive col-12">
+            <table class="table table-sm text-center competitors-table">
+                <tbody>
+                    {% for competidor in competidores %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if competidor.avatar %}
+                                        <img src="{{ competidor.avatar.url }}"
+                                             alt="{{ competidor.nombre }}"
+                                             class="competitor-avatar-img me-2">
+                                    {% else %}
+                                        <div class="competitor-avatar me-2">{{ competidor.nombre|initials }}</div>
+                                    {% endif %}
+                                    <span class="ms-2">{{ competidor.nombre }} {{ competidor.apellidos }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                {% with rec=competidor.record_tuple %}
+                                    <span class="text-success fw-bold">{{ rec.0 }}</span>-<span class="text-danger fw-bold">{{ rec.1 }}</span>-<span class="text-primary fw-bold">{{ rec.2 }}</span>
+                                {% endwith %}
+                            </td>
+                            <td>{{ competidor.categoria }}</td>
+                            <td>{{ competidor.palmares|default:"—" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <p class="mt-3 text-muted">Este club aún no tiene competidores registrados.</p>
+{% endif %}

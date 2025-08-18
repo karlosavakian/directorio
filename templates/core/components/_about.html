@@ -1,0 +1,60 @@
+<div class="row p-3">
+    <!-- Columna izquierda: El club -->
+    <div class="col-lg-7">
+        <div class="mb-5">
+            <h5 class="mb-3">El Club</h5>
+            <p>{{ club.about|linebreaks }}</p>
+        </div>
+    </div>
+    <!-- Columna derecha: Entrenadores -->
+    <div class="col-lg-5 p-2">
+        {% if club.entrenadores.all %}
+            <h5 class="mb-4">Entrenadores</h5>
+            <div class="row">
+                {% for e in club.entrenadores.all %}
+                    <div class="col-6 d-flex align-items-center mb-3 user-select: none;">
+                        {% if e.avatar %}
+                            <img src="{{ e.avatar.url }}"
+                                 alt="{{ e.nombre }}"
+                                 class="rounded-circle me-3"
+                                 style="width: 60px;
+                                        height: 60px;
+                                        object-fit: cover">
+                        {% else %}
+                            <div class="rounded-circle bg-black text-white d-flex justify-content-center align-items-center me-3"
+                                 style="width: 60px;
+                                        height: 60px">{{ e.nombre|first|upper }}</div>
+                        {% endif %}
+                        {% if e.slug %}
+                            <a href="{% url 'coach_profile' e.slug %}"
+                               class="text-decoration-none text-reset">{{ e.nombre }} {{ e.apellidos }}</a>
+                        {% else %}
+                            <span>{{ e.nombre }} {{ e.apellidos }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <!-- Fila completa: Instalaciones y equipamiento -->
+    <div class="col-12 mt-4">
+        <h5 class="mb-3">Instalaciones y equipamiento</h5>
+        <div class="d-flex flex-wrap gap-3">
+            {% for feature in club.features.all %}
+                <div class="border rounded  d-flex align-items-center "
+                     style="padding:8px 16px">
+                    {% if feature.icon %}
+                        <img src="{{ feature.icon.url }}"
+                             alt="{{ feature.name }}"
+                             style="width: 50px;
+                                    height: 50px;
+                                    object-fit: contain;
+                                    user-select:none"
+                             class="me-2">
+                    {% endif %}
+                    <div class="text-wrap" style="font-size: 14px; user-select:none;">{{ feature.name }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
