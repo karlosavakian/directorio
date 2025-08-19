@@ -103,6 +103,14 @@
     {% endif %}
 </div>
 
+<h6>Preferencias de correo electrónico</h6>
+<div class="form-check mb-3">
+    <input class="form-check-input bg-dark border-dark" type="checkbox" name="{{ form.notifications.name }}" id="{{ form.notifications.id_for_label }}" {% if form.notifications.value %}checked{% endif %}>
+    <label class="form-check-label" for="{{ form.notifications.id_for_label }}">
+        <small>Recibir actualizaciones ocasionales de productos y anuncios</small>
+    </label>
+</div>
+
             <button type="submit" class="btn btn-dark w-100">Crear cuenta</button>
         </form>
 
