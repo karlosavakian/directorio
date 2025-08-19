@@ -13,7 +13,7 @@
 
 </head>
  <body>
-    
+
 <div class="d-flex flex-column min-vh-100">
       <main class="flex-grow-1">
         <div class="px-0">
@@ -21,10 +21,10 @@
             <!-- Izquierda -->
            <div class="col-md-6 d-none d-md-flex flex-column align-items-center bg-dark text-white p-5 position-relative"
      style="background-image: url('{% static 'img/register-bg.png' %}'); background-repeat:no-repeat; background-size: cover; background-position: center;">
-  
+
   <!-- Capa negra semitransparente -->
   <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,.7);"></div>
-  
+
   <!-- Contenido -->
   <div class="position-relative align-self-start m-3   p-5 rounded">
     <h1 class="h1 mb-3 ">Únete al directorio de clubs de boxeo más grande del mundo.</h1>
@@ -34,16 +34,16 @@
   </div>
 </div>
 
- 
+
         <!-- Derecha -->
-<div class="col-md-6 d-flex flex-column align-items-center justify-content-start py-5">
+<div class="col-md-6 d-flex flex-column align-items-center justify-content-start p-4">
     <!-- Logo -->
     <div class="mb-4">
                 {% include 'partials/_header-logo.html' %}
     </div>
 
     <!-- Card -->
-    <div class="card p-4" style="width: 100%; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div class="card p-4 shadow-sm col-md-8">
         <h1 class="h3 mb-3 text-center">Crear una cuenta</h1>
 
         <form method="post" class="profile-form">
@@ -51,7 +51,7 @@
             {{ form.non_field_errors }}
 
           <!-- Username -->
-<div class="form-field slug-field always-active"> 
+<div class="form-field slug-field always-active">
     <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default_if_none:'' }}" class="form-control" id="{{ form.username.id_for_label }}" placeholder=" " minlength="3" required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
     <button type="button" class="clear-btn bi bi-x"></button>
     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
@@ -115,7 +115,7 @@
         </form>
 
         <div class="text-center my-3">
-            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100 mb-2">Continuar con Google</a> 
+            <a href="{% provider_login_url 'google' %}" class="btn btn-outline-danger w-100 mb-2">Continuar con Google</a>
         </div>
 
         <div class="mt-3 text-center">
@@ -134,8 +134,8 @@
 
       </div>
     </div>
-  </main> 
-</div> 
+  </main>
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{% static 'js/page-loader.js' %}"></script>
