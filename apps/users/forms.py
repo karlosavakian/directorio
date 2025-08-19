@@ -64,6 +64,12 @@ class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
         widget=forms.TextInput(attrs={'minlength': 3})
     )
 
+    notifications = forms.BooleanField(
+        label='Recibir actualizaciones ocasionales de productos y anuncios',
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input bg-dark border-dark'})
+    )
+
     error_messages = {
         **UserCreationForm.error_messages,
         'password_mismatch': _('Las contraseñas no coinciden'),

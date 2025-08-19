@@ -15,6 +15,10 @@ def register(request):
         form = RegistroUsuarioForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # Set notification preferences based on checkbox
+            user.profile.notifications = form.cleaned_data.get("notifications")
+            user.profile.save()
+
             send_welcome_email(user.email)
             send_confirmation_email(user.email)
             # authenticate to attach backend info before login

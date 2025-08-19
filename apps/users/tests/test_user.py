@@ -18,8 +18,24 @@ class RegistrationTests(TestCase):
         response = self.client.post(url, data)
 
         self.assertTrue(User.objects.filter(username="newuser").exists())
+        user = User.objects.get(username="newuser")
+        self.assertFalse(user.profile.notifications)
         # And the view should redirect to home
         self.assertRedirects(response, reverse("home"))
+
+    def test_user_can_opt_in_notifications(self):
+        data = {
+            "username": "notifyuser",
+            "email": "notify@example.com",
+            "password1": "secretpass123",
+            "password2": "secretpass123",
+            "notifications": "on",
+        }
+        url = reverse("register")
+        self.client.post(url, data)
+
+        user = User.objects.get(username="notifyuser")
+        self.assertTrue(user.profile.notifications)
 
     def test_welcome_email_sent(self):
         data = {
