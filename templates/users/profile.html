@@ -61,27 +61,11 @@
                 {% endif %}
 
                 <div class="row g-3">
-
-                {% if is_owner %}
-                    <div class="form-field col-md-6 slug-field always-active"> 
-                    {{ club_form.slug }}
-                    <span id="slug-status"></span>
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ club_form.slug.id_for_label }}">{{ club_form.slug.label }}</label>
-                    <div id="slug-error" class="invalid-feedback {% if club_form.slug.errors %}d-block{% else %}d-none{% endif %}">
-                        {% if club_form.slug.errors %}
-                        {{ club_form.slug.errors.as_text|striptags }}
-                        {% endif %}
-                    </div>
-                </div>
-                {% else %}
-                <div class="form-field slug-field always-active">
+                    <div class="form-field always-active">
                     {{ form.username }}
                     <button type="button" class="clear-btn bi bi-x"></button>
                     <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                 </div>
-
-                {% endif %}
                 </div>
 
                 <div class="row g-3">
@@ -316,6 +300,5 @@
 <script src="{% static 'js/plan-cards.js' %}"></script>
 <script src="{% static 'js/profile-save-confirm.js' %}"></script>
 {% if is_owner %}
-<script src="{% static 'js/slug-check.js' %}"></script>
 {% endif %}
 {% endblock %}

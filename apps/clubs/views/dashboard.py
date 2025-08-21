@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponse
 from django.template.loader import render_to_string
 from django.db.models import Q, Exists, OuterRef
 from django.db.models.functions import ExtractYear
@@ -289,14 +289,6 @@ def dashboard(request):
             'today': today,
         },
     )
-
-
-@login_required
-def check_slug(request):
-    slug = request.GET.get('slug', '').strip()
-    current = request.GET.get('current', '')
-    exists = Club.objects.filter(slug=slug).exclude(slug=current).exists()
-    return JsonResponse({'available': not exists})
 @login_required
 def photo_upload(request, slug):
     club = get_object_or_404(Club, slug=slug)

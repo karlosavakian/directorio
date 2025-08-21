@@ -37,12 +37,10 @@ def profile(request):
             return redirect('profile')
         else:
             data = request.POST.copy()
-            if is_owner:
-                data['username'] = data.get('slug', request.user.username).lstrip('@')
             form = AccountForm(data, request.FILES, instance=profile_obj, user=request.user)
             plan_form = PlanForm(initial={'plan': profile_obj.plan})
             if club:
-                for field in ['slug', 'country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
+                for field in ['country', 'region', 'city', 'postal_code', 'street', 'number', 'door', 'prefijo', 'phone', 'email']:
                     data.setdefault(field, getattr(club, field))
                 club_form = ClubForm(data, request.FILES, instance=club)
                 club_valid = club_form.is_valid()

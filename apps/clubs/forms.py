@@ -184,10 +184,10 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'category',
             'plan',
             'address',
+            'slug',
         )
         labels = {
             'name': 'Nombre del club',
-            'slug': 'Nombe de usuario',
             'about': 'Bio',
             'country': 'País',
             'region': 'Comunidad Autónoma',
@@ -259,13 +259,9 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
                 (forms.TextInput, forms.EmailInput,
                  forms.URLInput, forms.NumberInput,
                  forms.PasswordInput, forms.Textarea,
-                 forms.DateInput, forms.TimeInput, forms.Select),
+                forms.DateInput, forms.TimeInput, forms.Select),
             ):
                 field.widget.attrs.setdefault('placeholder', ' ')
-            if name == 'slug':
-                field.widget.attrs['data-current'] = getattr(self.instance, 'slug', '')
-                field.widget.attrs['minlength'] = 3
-                field.required = True
 
         prefijo_field = self.fields.get('prefijo')
         if prefijo_field:
@@ -300,14 +296,6 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             for name in exclude_required:
                 if name in self.fields:
                     self.fields[name].required = False
-
-    def clean_slug(self):
-        slug = self.cleaned_data.get('slug', '').lstrip('@')
-        if len(slug) < 3:
-            raise forms.ValidationError('Introduce un nombre con al menos 3 carácteres')
-        if models.Club.objects.exclude(pk=self.instance.pk).filter(slug=slug).exists():
-            raise forms.ValidationError('Este usuario ya está en uso.')
-        return slug
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone', '')

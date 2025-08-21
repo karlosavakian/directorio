@@ -65,7 +65,9 @@ class Club(models.Model):
 
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if self.owner:
+            self.slug = self.owner.username
+        elif not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
