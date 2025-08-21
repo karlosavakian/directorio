@@ -290,9 +290,23 @@
             </form>  </div>
 
         </div>
-    </div>
+</div>
 </div>
 </main>
+<div class="modal fade" id="confirmProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">¿Seguro que deseas modificar los datos de tu perfil?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer d-flex flex-column gap-2">
+                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Descartar</button>
+                <button type="button" class="btn btn-dark w-100 confirm-save">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
@@ -300,6 +314,7 @@
 <script src="{% static 'js/clear-input.js' %}"></script>
 <script src="{% static 'js/avatar-dropzone.js' %}"></script>
 <script src="{% static 'js/plan-cards.js' %}"></script>
+<script src="{% static 'js/profile-save-confirm.js' %}"></script>
 {% if is_owner %}
 <script src="{% static 'js/slug-check.js' %}"></script>
 {% endif %}

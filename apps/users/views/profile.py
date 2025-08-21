@@ -53,6 +53,7 @@ def profile(request):
                 profile_obj = form.save()
                 if club_form and club_valid:
                     club_form.save()
+                request.user.refresh_from_db()
                 request.user.profile.refresh_from_db()
                 messages.success(request, 'Perfil actualizado exitosamente.')
                 return redirect('profile')
