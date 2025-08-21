@@ -43,7 +43,6 @@ from apps.clubs.views.dashboard import (
     booking_class_create,
     booking_class_update,
     booking_class_delete,
-    check_slug,
     cities_by_country,
     matchmaker_toggle_bookmark,
 )
@@ -51,7 +50,6 @@ from apps.clubs.views.dashboard import (
 urlpatterns = [
     path('resultados/', search.search_results, name='search_results'),
     path('valoraciones/<slug:slug>/', public.ajax_reviews, name='ajax_reviews'),
-    path('slug-disponible/', check_slug, name='club_slug_check'),
     path('ciudades/', cities_by_country, name='cities_by_country'),
 
     path('<slug:slug>/foto/nueva/', photo_upload, name='clubphoto_upload'),
