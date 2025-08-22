@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Profile
 from apps.core.mixins import UniformFieldsMixin
 import os
+import re
 
 try:
     from disposable_email_domains import blocklist
@@ -29,6 +30,20 @@ def _validate_avatar(avatar):
             'Formato de imagen no soportado. Usa JPG o PNG.'
         )
     return avatar
+
+
+def _validate_password_strength(password):
+    """Validate password length and composition."""
+    if (
+        len(password) < 6
+        or not re.search(r"[A-Z]", password)
+        or not re.search(r"[a-z]", password)
+        or not re.search(r"\d", password)
+    ):
+        raise forms.ValidationError(
+            "La contraseña debe tener al menos 6 caracteres e incluir mayúsculas, minúsculas y números."
+        )
+    return password
 
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
@@ -113,10 +128,8 @@ class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
 
     def clean_password1(self):
         password = self.cleaned_data.get('password1')
-        if password and len(password) < 6:
-            raise forms.ValidationError(
-                'La contraseña debe tener al menos 6 caracteres.'
-            )
+        if password:
+            return _validate_password_strength(password)
         return password
 
 class ProfileForm(UniformFieldsMixin, forms.ModelForm):
@@ -197,8 +210,10 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
             if p1 != p2:
                 self.add_error('new_password2', 'Las contraseñas no coinciden')
             else:
-                if p1 and len(p1) < 6:
-                    self.add_error('new_password1', 'La contraseña es muy corta')
+                try:
+                    _validate_password_strength(p1)
+                except forms.ValidationError as e:
+                    self.add_error('new_password1', e)
                 else:
                     try:
                         password_validation.validate_password(p1, self.user)

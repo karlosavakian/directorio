@@ -11,8 +11,8 @@ class RegistrationTests(TestCase):
         data = {
             "username": "newuser",
             "email": "new@example.com",
-            "password1": "secretpass123",
-            "password2": "secretpass123",
+            "password1": "Secretpass123",
+            "password2": "Secretpass123",
         }
         url = reverse("register")
         response = self.client.post(url, data)
@@ -27,8 +27,8 @@ class RegistrationTests(TestCase):
         data = {
             "username": "notifyuser",
             "email": "notify@example.com",
-            "password1": "secretpass123",
-            "password2": "secretpass123",
+            "password1": "Secretpass123",
+            "password2": "Secretpass123",
             "notifications": "on",
         }
         url = reverse("register")
@@ -41,8 +41,8 @@ class RegistrationTests(TestCase):
         data = {
             "username": "emailuser",
             "email": "email@example.com",
-            "password1": "secretpass123",
-            "password2": "secretpass123",
+            "password1": "Secretpass123",
+            "password2": "Secretpass123",
         }
         url = reverse("register")
         with patch("apps.users.views.auth.send_welcome_email") as mock_send:
@@ -53,8 +53,8 @@ class RegistrationTests(TestCase):
         data = {
             "username": "ab",
             "email": "short@example.com",
-            "password1": "secretpass123",
-            "password2": "secretpass123",
+            "password1": "Secretpass123",
+            "password2": "Secretpass123",
         }
         url = reverse("register")
         response = self.client.post(url, data)
@@ -65,13 +65,28 @@ class RegistrationTests(TestCase):
         data = {
             "username": "tempuser",
             "email": "temp@yopmail.com",
-            "password1": "secretpass123",
-            "password2": "secretpass123",
+            "password1": "Secretpass123",
+            "password2": "Secretpass123",
         }
         url = reverse("register")
         response = self.client.post(url, data)
         self.assertContains(response, "Introduzca un correo electrónico valido, el dominio usado no está permitido.")
         self.assertFalse(User.objects.filter(username="tempuser").exists())
+
+    def test_password_requirements(self):
+        data = {
+            "username": "weakpass",
+            "email": "weak@example.com",
+            "password1": "weak",
+            "password2": "weak",
+        }
+        url = reverse("register")
+        response = self.client.post(url, data)
+        self.assertContains(
+            response,
+            "La contraseña debe tener al menos 6 caracteres e incluir mayúsculas, minúsculas y números.",
+        )
+        self.assertFalse(User.objects.filter(username="weakpass").exists())
 
 
 class LoginRememberMeTests(TestCase):
@@ -149,7 +164,10 @@ class ProfilePasswordTests(TestCase):
             "new_password2": "short",
         }
         response = self.client.post(self.url, data)
-        self.assertContains(response, "La contraseña es muy corta")
+        self.assertContains(
+            response,
+            "La contraseña debe tener al menos 6 caracteres e incluir mayúsculas, minúsculas y números.",
+        )
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password("oldpass123"))
 
