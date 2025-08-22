@@ -1,5 +1,7 @@
 from django import forms
 from apps.core.mixins import UniformFieldsMixin
+from apps.clubs.countries import COUNTRY_CHOICES
+from apps.clubs.spain import REGION_CHOICES
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
@@ -29,4 +31,34 @@ class RegistroProfesionalForm(UniformFieldsMixin, forms.Form):
 
     tipo = TipoUsuarioForm.base_fields['tipo']
     plan = PlanForm.base_fields['plan']
+
+
+class ProRegisterForm(UniformFieldsMixin, forms.Form):
+    """Formulario para los datos personales y de dirección del profesional."""
+
+    nombre = forms.CharField(label="Nombre")
+    apellidos = forms.CharField(label="Apellidos")
+    fecha_nacimiento = forms.DateField(
+        label="Fecha de nacimiento", widget=forms.DateInput(attrs={"type": "date"})
+    )
+    dni = forms.CharField(label="DNI/NIE/CIF")
+    telefono = forms.CharField(label="Teléfono")
+    sexo = forms.ChoiceField(
+        label="Sexo",
+        choices=[
+            ("hombre", "Hombre"),
+            ("mujer", "Mujer"),
+            ("otro", "Otro"),
+        ],
+    )
+
+    pais = forms.ChoiceField(label="País", choices=COUNTRY_CHOICES)
+    comunidad_autonoma = forms.ChoiceField(
+        label="Comunidad Autónoma", choices=REGION_CHOICES
+    )
+    ciudad = forms.CharField(label="Ciudad")
+    calle = forms.CharField(label="Calle")
+    numero = forms.CharField(label="Número")
+    puerta = forms.CharField(label="Puerta")
+    codigo_postal = forms.CharField(label="Código Postal")
 

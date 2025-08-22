@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const progress = ['step-label-1', 'step-label-2', 'step-label-3'].map(id => document.getElementById(id));
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
-  const clubFields = document.getElementById('club-fields');
-  const coachFields = document.getElementById('coach-fields');
-  const tipoRadios = document.querySelectorAll('input[name="tipo"]');
   const tipoCards = document.querySelectorAll('.tipo-card');
   const planCards = document.querySelectorAll('.plan-card');
   const paymentSection = document.getElementById('payment-section');
@@ -33,23 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (prev2) prev2.addEventListener('click', () => showStep(1));
   if (prev3) prev3.addEventListener('click', () => showStep(2));
 
-  function toggleTipoFields() {
-    const checked = document.querySelector('input[name="tipo"]:checked');
-    if (!checked) return;
-    if (checked.value === 'club') {
-      clubFields && clubFields.classList.remove('d-none');
-      coachFields && coachFields.classList.add('d-none');
-    } else if (checked.value === 'entrenador') {
-      coachFields && coachFields.classList.remove('d-none');
-      clubFields && clubFields.classList.add('d-none');
-    } else {
-      clubFields && clubFields.classList.add('d-none');
-      coachFields && coachFields.classList.add('d-none');
-    }
-  }
-
-  tipoRadios.forEach(radio => radio.addEventListener('change', toggleTipoFields));
-
   tipoCards.forEach(card => {
     const input = card.querySelector('input');
     if (input.checked) {
@@ -58,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => {
       input.checked = true;
       tipoCards.forEach(c => c.classList.toggle('active', c === card));
-      toggleTipoFields();
     });
   });
 
@@ -84,8 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   togglePaymentSection();
-
-  toggleTipoFields();
 
   showStep(current);
 });

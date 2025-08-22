@@ -1,0 +1,22 @@
+<h3 class="h6 mb-3">Datos personales</h3>
+{% for field in (form.nombre, form.apellidos, form.fecha_nacimiento, form.dni, form.telefono, form.sexo) %}
+<div class="form-field">
+  {{ field }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {% if field.errors %}
+  <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+{% endfor %}
+<h3 class="h6 mt-4 mb-3">Dirección</h3>
+{% for field in (form.pais, form.comunidad_autonoma, form.ciudad, form.calle, form.numero, form.puerta, form.codigo_postal) %}
+<div class="form-field">
+  {{ field }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+  {% if field.errors %}
+  <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+{% endfor %}
