@@ -9,6 +9,7 @@ from ..models import Profile, Follow
 from apps.clubs.models import Booking, Club, Reseña
 from apps.clubs.forms import ClubForm
 from apps.core.forms import PlanForm
+from apps.core.utils.plans import PLANS
 
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import F, FloatField, Avg, Count, ExpressionWrapper
@@ -101,45 +102,11 @@ def profile(request):
         if first_club and first_club.logo:
             avatar_url = first_club.logo.url
 
-    plans = [
-        {
-            'value': 'bronce',
-            'title': 'Plan Bronce',
-            'price': '0€ / mes',
-            'features': [
-                'Presencia básica en el directorio',
-                'Publicación de eventos',
-                'Acceso a valoraciones',
-            ],
-        },
-        {
-            'value': 'plata',
-            'title': 'Plan Plata',
-            'price': '9€ / mes',
-            'features': [
-                'Todos los beneficios del Plan Bronce',
-                'Publicaciones ilimitadas',
-                'Estadísticas básicas',
-            ],
-            'featured': True,
-        },
-        {
-            'value': 'oro',
-            'title': 'Plan Oro',
-            'price': '19€ / mes',
-            'features': [
-                'Todos los beneficios del Plan Plata',
-                'Badge de verificación',
-                'Herramientas de marketing avanzadas',
-            ],
-        },
-    ]
-
     return render(request, 'users/profile.html', {
         'form': form,
         'club_form': club_form,
         'plan_form': plan_form,
-        'plans': plans,
+        'plans': PLANS,
         'current_plan': profile_obj.plan,
         'profile': profile_obj,
         'bookings': bookings,

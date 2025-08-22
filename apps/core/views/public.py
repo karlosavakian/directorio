@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from ..forms import TipoUsuarioForm, PlanForm, RegistroProfesionalForm
 from apps.clubs.forms import ClubForm, EntrenadorForm
+from ..utils.plans import PLANS
 
 
 def home(request):
@@ -53,6 +54,8 @@ def registro_profesional(request):
             "start_step": start_step,
             "club_form": club_form,
             "coach_form": coach_form,
+            "plans": PLANS,
+            "current_plan": form["plan"].value(),
         },
     )
 
