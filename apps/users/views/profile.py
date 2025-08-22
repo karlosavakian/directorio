@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 
 from ..forms import AccountForm
 from ..models import Profile, Follow
@@ -14,6 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import F, FloatField, Avg, Count, ExpressionWrapper
 from django.db.models.functions import Round
 from django.core.paginator import Paginator
+from django.urls import reverse
 
 
 @login_required
@@ -54,7 +55,9 @@ def profile(request):
                 request.user.refresh_from_db()
                 request.user.profile.refresh_from_db()
                 messages.success(request, 'Perfil actualizado exitosamente.')
-                return redirect('profile')
+                update_session_auth_hash(request, request.user)
+                next_url = request.META.get('HTTP_REFERER', reverse('profile'))
+                return redirect(next_url)
             else:
                 for error in form.errors.get('avatar', []):
                     messages.error(request, error)
