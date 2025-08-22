@@ -133,3 +133,46 @@ class ProfileEmailTests(TestCase):
         self.user.refresh_from_db()
         self.assertEqual(self.user.email, "old@example.com")
 
+
+class ProfilePasswordTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="passuser", email="pass@example.com", password="oldpass123"
+        )
+        self.client.login(username="passuser", password="oldpass123")
+        self.url = reverse("profile")
+
+    def test_short_password_rejected(self):
+        data = {
+            "username": "passuser",
+            "new_password1": "short",
+            "new_password2": "short",
+        }
+        response = self.client.post(self.url, data)
+        self.assertContains(response, "La contraseña es muy corta")
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("oldpass123"))
+
+    def test_common_password_message_translated(self):
+        data = {
+            "username": "passuser",
+            "new_password1": "password123",
+            "new_password2": "password123",
+        }
+        response = self.client.post(self.url, data)
+        self.assertContains(response, "La contraseña es demasiado común.")
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("oldpass123"))
+
+    def test_redirects_to_previous_page_after_password_change(self):
+        data = {
+            "username": "passuser",
+            "new_password1": "StrongPass123",
+            "new_password2": "StrongPass123",
+        }
+        response = self.client.post(self.url, data, HTTP_REFERER="/prev/")
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response["Location"], "/prev/")
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("StrongPass123"))
+

@@ -3,14 +3,17 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import password_validation
 from django.utils.translation import gettext_lazy as _
 from .models import Profile
 from apps.core.mixins import UniformFieldsMixin
 import os
 
-from disposable_email_domains import blocklist
-
-DISPOSABLE_EMAIL_DOMAINS = set(blocklist)
+try:
+    from disposable_email_domains import blocklist
+    DISPOSABLE_EMAIL_DOMAINS = set(blocklist)
+except ModuleNotFoundError:  # pragma: no cover - fallback when dependency missing
+    DISPOSABLE_EMAIL_DOMAINS = {"yopmail.com"}
 
 
 def _validate_avatar(avatar):
@@ -193,8 +196,24 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
         if p1 or p2:
             if p1 != p2:
                 self.add_error('new_password2', 'Las contraseñas no coinciden')
-            elif p1 and len(p1) < 6:
-                self.add_error('new_password1', 'La contraseña es muy corta')
+            else:
+                if p1 and len(p1) < 6:
+                    self.add_error('new_password1', 'La contraseña es muy corta')
+                else:
+                    try:
+                        password_validation.validate_password(p1, self.user)
+                    except forms.ValidationError as e:
+                        translations = {
+                            "The password is too similar to the username.": "La contraseña es demasiado similar al nombre de usuario.",
+                            "The password is too similar to the first name.": "La contraseña es demasiado similar al nombre.",
+                            "The password is too similar to the last name.": "La contraseña es demasiado similar al apellido.",
+                            "The password is too similar to the email.": "La contraseña es demasiado similar al correo electrónico.",
+                            "This password is too short. It must contain at least 8 characters.": "La contraseña es demasiado corta. Debe contener al menos 8 caracteres.",
+                            "This password is too common.": "La contraseña es demasiado común.",
+                            "This password is entirely numeric.": "La contraseña es completamente numérica.",
+                        }
+                        msgs = [translations.get(m, 'La contraseña no cumple con los requisitos.') for m in e.messages]
+                        self.add_error('new_password1', " ".join(msgs))
         return cleaned
 
     def save(self, commit=True):
