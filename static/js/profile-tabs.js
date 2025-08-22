@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sections = document.querySelectorAll('.profile-section');
   const selects = document.querySelectorAll('.profile-tabs-select');
   const storageKey = 'activeTab:' + window.location.pathname;
+  const baseTitle = document.title.split('|')[0].trim();
 
   function activate(tab) {
     tabs.forEach(t => t.classList.remove('active'));
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sec) sec.classList.add('active');
     localStorage.setItem(storageKey, target);
     selects.forEach(s => (s.value = target));
+    document.title = `${baseTitle} | ${tab.textContent.trim()}`;
   }
 
   tabs.forEach(t => {
