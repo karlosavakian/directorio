@@ -1,22 +1,47 @@
 <h3 class="h6 mb-3">Datos personales</h3>
-{% for field in (form.nombre, form.apellidos, form.fecha_nacimiento, form.dni, form.telefono, form.sexo) %}
 <div class="form-field">
-  {{ field }}
+  {{ form.nombre }}
   <button type="button" class="clear-btn bi bi-x"></button>
-  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-  {% if field.errors %}
-  <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+  <label for="{{ form.nombre.id_for_label }}">{{ form.nombre.label }}</label>
+  {% if form.nombre.errors %}
+    <div class="invalid-feedback d-block">{{ form.nombre.errors.as_text|striptags }}</div>
   {% endif %}
 </div>
-{% endfor %}
-<h3 class="h6 mt-4 mb-3">Dirección</h3>
-{% for field in (form.pais, form.comunidad_autonoma, form.ciudad, form.calle, form.numero, form.puerta, form.codigo_postal) %}
 <div class="form-field">
-  {{ field }}
+  {{ form.apellidos }}
   <button type="button" class="clear-btn bi bi-x"></button>
-  <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-  {% if field.errors %}
-  <div class="invalid-feedback d-block">{{ field.errors.as_text|striptags }}</div>
+  <label for="{{ form.apellidos.id_for_label }}">{{ form.apellidos.label }}</label>
+  {% if form.apellidos.errors %}
+    <div class="invalid-feedback d-block">{{ form.apellidos.errors.as_text|striptags }}</div>
   {% endif %}
 </div>
-{% endfor %}
+<div class="form-field">
+  {{ form.fecha_nacimiento }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.fecha_nacimiento.id_for_label }}">{{ form.fecha_nacimiento.label }}</label>
+  {% if form.fecha_nacimiento.errors %}
+    <div class="invalid-feedback d-block">{{ form.fecha_nacimiento.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+<div class="form-field">
+  {{ form.dni }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.dni.id_for_label }}">{{ form.dni.label }}</label>
+  {% if form.dni.errors %}<div class="invalid-feedback d-block">{{ form.dni.errors.as_text|striptags }}</div>{% endif %}
+</div>
+<div class="form-field">
+  {{ form.telefono }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>
+  {% if form.telefono.errors %}
+    <div class="invalid-feedback d-block">{{ form.telefono.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+<div class="form-field">
+  {{ form.sexo }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.sexo.id_for_label }}">{{ form.sexo.label }}</label>
+  {% if form.sexo.errors %}
+    <div class="invalid-feedback d-block">{{ form.sexo.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
