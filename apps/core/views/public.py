@@ -71,3 +71,7 @@ def cookies(request):
  
 
 
+
+def error_404(request, exception=None):
+    """Display custom 404 page."""
+    return render(request, '404.html', status=404)

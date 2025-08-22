@@ -9,9 +9,10 @@ from apps.clubs.views import public as club_public
 from apps.clubs.views import messages as club_messages
 from apps.clubs.views.dashboard import dashboard
 from apps.users.views import profile as user_profile
-  
-from apps.users.forms import LoginForm   
- 
+from apps.core.views import public as core_public
+
+from apps.users.forms import LoginForm
+
 urlpatterns = [
     path('django-admin/', admin.site.urls),
 
@@ -43,7 +44,15 @@ urlpatterns = [
     # Rutas de autenticación sin el prefijo "accounts/"
     path('', include('apps.users.urls')),
     path('', include('allauth.urls')),
+    
+    # Rutas explícitas para páginas no encontradas
+    path('404/', core_public.error_404, name='error_404'),
+    path('page-not-found/', core_public.error_404, name='page_not_found'),
+    path('pagina-no-encontrada/', core_public.error_404, name='pagina_no_encontrada'),
 ]
+
+# Custom error handlers
+handler404 = "apps.core.views.public.error_404"
 
 # Archivos estáticos en modo DEBUG
 if settings.DEBUG:
