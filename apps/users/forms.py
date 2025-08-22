@@ -3,14 +3,17 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import password_validation
 from django.utils.translation import gettext_lazy as _
 from .models import Profile
 from apps.core.mixins import UniformFieldsMixin
 import os
 
-from disposable_email_domains import blocklist
-
-DISPOSABLE_EMAIL_DOMAINS = set(blocklist)
+try:
+    from disposable_email_domains import blocklist
+    DISPOSABLE_EMAIL_DOMAINS = set(blocklist)
+except ModuleNotFoundError:  # pragma: no cover - fallback when dependency missing
+    DISPOSABLE_EMAIL_DOMAINS = {"yopmail.com"}
 
 
 def _validate_avatar(avatar):
@@ -193,8 +196,14 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
         if p1 or p2:
             if p1 != p2:
                 self.add_error('new_password2', 'Las contraseñas no coinciden')
-            elif p1 and len(p1) < 6:
-                self.add_error('new_password1', 'La contraseña es muy corta')
+            else:
+                if p1 and len(p1) < 6:
+                    self.add_error('new_password1', 'La contraseña es muy corta')
+                else:
+                    try:
+                        password_validation.validate_password(p1, self.user)
+                    except forms.ValidationError as e:
+                        self.add_error('new_password1', e)
         return cleaned
 
     def save(self, commit=True):
