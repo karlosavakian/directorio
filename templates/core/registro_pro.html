@@ -70,8 +70,7 @@
                 </div>
                 <div id="step3" class="step d-none">
                     <p class="text-muted">Rellena la información de tu perfil.</p>
-                    <div id="club-fields" class="d-none">{% include 'core/_profile_fields.html' with form=club_form %}</div>
-                    <div id="coach-fields" class="d-none">{% include 'core/_profile_fields.html' with form=coach_form %}</div>
+                    {% include 'core/_pro_register_form.html' with form=pro_form %}
                     <button type="button" class="btn btn-outline-dark me-2" id="prev3">Anterior</button>
                     <button type="submit" class="btn btn-dark">Finalizar</button>
                 </div>
