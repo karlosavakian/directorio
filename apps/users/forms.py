@@ -8,7 +8,9 @@ from .models import Profile
 from apps.core.mixins import UniformFieldsMixin
 import os
 
-DISPOSABLE_EMAIL_DOMAINS = ("yopmail", "mohmal")
+from disposable_email_domains import blocklist
+
+DISPOSABLE_EMAIL_DOMAINS = set(blocklist)
 
 
 def _validate_avatar(avatar):
@@ -100,7 +102,7 @@ class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         domain = email.split('@')[-1].lower()
-        if any(bad in domain for bad in DISPOSABLE_EMAIL_DOMAINS):
+        if domain in DISPOSABLE_EMAIL_DOMAINS:
             raise forms.ValidationError('Introduzca un correo electrónico valido, el dominio usado no está permitido.')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('Este correo electrónico ya está registrado')
@@ -180,7 +182,7 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
         email = self.cleaned_data.get('email')
         if email:
             domain = email.split('@')[-1].lower()
-            if any(bad in domain for bad in DISPOSABLE_EMAIL_DOMAINS):
+            if domain in DISPOSABLE_EMAIL_DOMAINS:
                 raise forms.ValidationError('Introduzca un correo electrónico valido, el dominio usado no está permitido.')
         return email
 
