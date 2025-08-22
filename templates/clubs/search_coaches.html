@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Clubs de Boxeo | Resultados de búsqueda{% endblock %}
+{% block title %}Clubs de Boxeo | {{ search_query|default:"Resultados de búsqueda" }}{% endblock %}
 {% block body_class %}search-result-page{% endblock %}
 
 {% block content %}
