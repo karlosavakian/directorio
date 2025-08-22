@@ -1,122 +1,84 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="container-fluid  px-3 my-5 col-8">
-    <div class="mx-auto">
-        <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
-
-        <ul class="progress-steps mb-4">
-            <li class="step-item active" data-step="1" id="step-label-1">Perfil</li>
-            <li class="step-item" data-step="2" id="step-label-2">Plan</li>
-            <li class="step-item" data-step="3" id="step-label-3">Datos</li>
-        </ul>
-
-        <form method="post" class="profile-form">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <input type="hidden" name="current_step" id="current-step" value="{{ start_step }}">
-
-        <div id="step1" class="step">
-            <div class="mb-3">{{ form.tipo.label }}</div>
-            <p class="text-muted">Indícanos qué tipo de profesional eres.</p>
-            <div class="d-flex justify-content-center flex-wrap gap-3">
-            {% for radio in form.tipo %}
-                <label class="tipo-card">
-                    {{ radio.tag }}
-                    <div class="fw-medium">{{ radio.choice_label }}</div>
-                </label>
-            {% endfor %}
-            </div>
-            {% if form.tipo.errors %}
-            <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
-            {% endif %}
-            <button type="button" class="btn btn-dark mt-3" id="next1">Siguiente</button>
-        </div>
-
-        <div id="step2" class="step d-none">
-            <div class="mb-3">{{ form.plan.label }}</div>
-            <p class="text-muted">Selecciona el plan que prefieras.</p> 
-             <h1 class="text-center mb-3">Nuestros Planes</h1>
-        <p class="text-center text-muted mb-5">Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.</p>
-
-        <div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
-            <label class="plan-card h-100">
-                <input type="radio" name="plan" value="bronce">
-                <h3 class="mb-2">Plan Bronce</h3>
-                <ul>
-                    <li>Presencia básica en el directorio</li>
-                    <li>Publicación de eventos</li>
-                    <li>Acceso a valoraciones</li>
-                </ul>
-                <div class="plan-card-price">0€ / mes</div>
-            </label>
-            <label class="plan-card featured p-5 h-100">
-                <input type="radio" name="plan" value="plata">
-                <h3 class="mb-2">Plan Plata</h3>
-                <ul>
-                    <li>Todos los beneficios del Plan Bronce</li>
-                    <li>Publicaciones ilimitadas</li>
-                    <li>Estadísticas básicas</li>
-                </ul>
-                <div class="plan-card-price">9€ / mes</div>
-            </label>
-            <label class="plan-card h-100">
-                <input type="radio" name="plan" value="oro">
-                <h3 class="mb-2">Plan Oro</h3>
-                <ul>
-                    <li>Todos los beneficios del Plan Plata</li>
-                    <li>Badge de verificación</li>
-                    <li>Herramientas de marketing avanzadas</li>
-                </ul>
-                <div class="plan-card-price">19€ / mes</div>
-            </label>
-        </div>
-        <div id="payment-section" class="mt-4 d-none">
-            <h3 class="h6 mb-3">Datos de pago</h3>
-            <div class="form-field">
-                <input type="text" name="card_number" id="id_card_number" placeholder=" ">
-                <button type="button" class="clear-btn bi bi-x"></button>
-                <label for="id_card_number">Número de tarjeta</label>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-field">
-                        <input type="text" name="card_expiry" id="id_card_expiry" placeholder="MM/AA">
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="id_card_expiry">Expiración</label>
+    <div class="container-fluid  px-3 my-5 col-8">
+        <div class="mx-auto">
+            <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
+            <ul class="progress-steps mb-4">
+                <li class="step-item active" data-step="1" id="step-label-1">Perfil</li>
+                <li class="step-item" data-step="2" id="step-label-2">Plan</li>
+                <li class="step-item" data-step="3" id="step-label-3">Datos</li>
+            </ul>
+            <form method="post" class="profile-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <input type="hidden"
+                       name="current_step"
+                       id="current-step"
+                       value="{{ start_step }}">
+                <div id="step1" class="step">
+                    <div class="mb-3">{{ form.tipo.label }}</div>
+                    <p class="text-muted">Indícanos qué tipo de profesional eres.</p>
+                    <div class="d-flex justify-content-center flex-wrap gap-3">
+                        {% for radio in form.tipo %}
+                            <label class="tipo-card">
+                                {{ radio.tag }}
+                                <div class="fw-medium">{{ radio.choice_label }}</div>
+                            </label>
+                        {% endfor %}
                     </div>
+                    {% if form.tipo.errors %}
+                        <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
+                    {% endif %}
+                    <button type="button" class="btn btn-dark mt-3" id="next1">Siguiente</button>
                 </div>
-                <div class="col">
-                    <div class="form-field">
-                        <input type="text" name="card_cvc" id="id_card_cvc" placeholder=" ">
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="id_card_cvc">CVC</label>
+                <div id="step2" class="step d-none">
+                    <div class="mb-3">{{ form.plan.label }}</div>
+                    {% include 'core/components/_plan_option_cards.html' %}
+                    <div id="payment-section" class="mt-4 d-none">
+                        <h3 class="h6 mb-3">Datos de pago</h3>
+                        <div class="form-field">
+                            <input type="text" name="card_number" id="id_card_number" placeholder=" ">
+                            <button type="button" class="clear-btn bi bi-x"></button>
+                            <label for="id_card_number">Número de tarjeta</label>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-field">
+                                    <input type="text"
+                                           name="card_expiry"
+                                           id="id_card_expiry"
+                                           placeholder="MM/AA">
+                                    <button type="button" class="clear-btn bi bi-x"></button>
+                                    <label for="id_card_expiry">Expiración</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-field">
+                                    <input type="text" name="card_cvc" id="id_card_cvc" placeholder=" ">
+                                    <button type="button" class="clear-btn bi bi-x"></button>
+                                    <label for="id_card_cvc">CVC</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {% if form.plan.errors %}
+                        <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
+                    {% endif %}
+                    <button type="button" class="btn btn-outline-dark me-2" id="prev2">Anterior</button>
+                    <button type="button" class="btn btn-dark" id="next2">Siguiente</button>
                 </div>
-            </div>
+                <div id="step3" class="step d-none">
+                    <p class="text-muted">Rellena la información de tu perfil.</p>
+                    <div id="club-fields" class="d-none">{% include 'core/_profile_fields.html' with form=club_form %}</div>
+                    <div id="coach-fields" class="d-none">{% include 'core/_profile_fields.html' with form=coach_form %}</div>
+                    <button type="button" class="btn btn-outline-dark me-2" id="prev3">Anterior</button>
+                    <button type="submit" class="btn btn-dark">Finalizar</button>
+                </div>
+            </form>
         </div>
-            {% if form.plan.errors %}
-            <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
-            {% endif %}
-            <button type="button" class="btn btn-outline-dark me-2" id="prev2">Anterior</button>
-            <button type="button" class="btn btn-dark" id="next2">Siguiente</button>
-        </div>
-
-        <div id="step3" class="step d-none">
-            <p class="text-muted">Rellena la información de tu perfil.</p>
-            <div id="club-fields" class="d-none">
-                {% include 'core/_profile_fields.html' with form=club_form %}
-            </div>
-            <div id="coach-fields" class="d-none">
-                {% include 'core/_profile_fields.html' with form=coach_form %}
-            </div>
-            <button type="button" class="btn btn-outline-dark me-2" id="prev3">Anterior</button>
-            <button type="submit" class="btn btn-dark">Finalizar</button>
-        </div>
-        </form>
     </div>
-</div>
 {% endblock %}
 {% block extra_js %}
-<script src="{% static 'js/pro-registro.js' %}"></script>
+    <script src="{% static 'js/pro-registro.js' %}"></script>
 {% endblock %}

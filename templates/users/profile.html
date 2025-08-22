@@ -1,315 +1,290 @@
 {% extends 'base.html' %}
 {% load static utils_filters %}
-
 {% block body_class %}d-flex flex-column min-vh-100 profile-page{% endblock %}
-
 {% block content %}
-<main class="flex-grow-1">
-<div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
-    <select id="mobile-profile-tabs" class="profile-tabs-select form-select w-auto text-end">
-        <option value="tab-account">Mi cuenta</option>
-        {% if is_owner %}
-        <option value="tab-plans">Planes</option>
-        <option value="tab-support">Soporte</option>
-        {% else %}
-        <option value="tab-bookings">Reservas</option>
-        <option value="tab-favorites">Favoritos</option>
-        <option value="tab-reviews">Reseñas</option>
-        <option value="tab-support">Soporte</option>
-        {% endif %}
-    </select>
-</div>
-<div class="d-flex flex-grow-1 mt-5 container-fluid col-12">
-    <div class="profile-tabs d-none d-lg-block">
-        <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
-        {% if is_owner %}
-        <div class="profile-tab" data-target="tab-plans">Planes</div>
-        <div class="profile-tab" data-target="tab-support">Soporte</div>
-        {% else %}
-        <div class="profile-tab" data-target="tab-bookings">Reservas</div>
-        <div class="profile-tab" data-target="tab-favorites">Favoritos</div>
-        <div class="profile-tab" data-target="tab-reviews">Reseñas</div>
-        <div class="profile-tab" data-target="tab-support">Soporte</div>
-        {% endif %}
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="profile-tab text-start w-100">Cerrar sesión</button>
-        </form>
-    </div>
-    <div class="profile-content  ">
-        <div id="tab-account" class="profile-section active col-12 col-lg-6">
-            <h4>Mi Cuenta</h4>
-            <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
-                {% csrf_token %}
-                 {% if not is_owner %}
-                <h5 class="mb-3">Foto de perfil</h5>
-                <div class="mb-5 text-center bg-dark p-3 rounded">
-                    <div class="avatar-dropzone avatar-dropzone-square  p-3">
-                        {{ form.avatar }}
-                        <div class="avatar-preview{% if profile.avatar|safe_url %} has-image{% endif %}"
-                            {% if profile.avatar|safe_url %}style="background-image:url('{{ profile.avatar|safe_url }}')"{% endif %}>
-                            <div class="avatar-dropzone-msg p-3">
-                                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                                <span>Arrastra una imagen o haz click </span>
-                            </div>
-                        </div>
-                    </div>
-                    {% if form.avatar.errors %}
-                    <div class="invalid-feedback d-block">{{ form.avatar.errors.as_text|striptags }}</div>
-                    {% endif %}
-                </div>
+    <main class="flex-grow-1">
+        <div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
+            <select id="mobile-profile-tabs"
+                    class="profile-tabs-select form-select w-auto text-end">
+                <option value="tab-account">Mi cuenta</option>
+                {% if is_owner %}
+                    <option value="tab-plans">Planes</option>
+                    <option value="tab-support">Soporte</option>
+                {% else %}
+                    <option value="tab-bookings">Reservas</option>
+                    <option value="tab-favorites">Favoritos</option>
+                    <option value="tab-reviews">Reseñas</option>
+                    <option value="tab-support">Soporte</option>
                 {% endif %}
-
-                <div class="row g-3">
-                    <div class="form-field always-active">
-                    {{ form.username }}
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-                </div>
-                </div>
-
-                <div class="row g-3">
-                    <div class="form-field col-md-6">
-                    {{ form.new_password1 }}
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
-                    {% if form.new_password1.errors %}
-                    <div class="invalid-feedback d-block">{{ form.new_password1.errors.as_text|striptags }}</div>
-                    {% endif %}
-                    </div>
-                    <div class="form-field col-md-6">
-                        {{ form.new_password2 }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
-                        {% if form.new_password2.errors %}
-                        <div class="invalid-feedback d-block">{{ form.new_password2.errors.as_text|striptags }}</div>
-                        {% endif %}
-                    </div>
-
-                </div>
-
-
-                <div class="row g-3">
-                    <div class="form-field col-md-6">
-                        {{ form.email }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
-                        {% if form.email.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ form.email.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="form-field col-md-6 phone-field">
-                        {{ club_form.prefijo }}
-                        {{ club_form.phone }}
-                        <button type="button" class="clear-btn bi bi-x"></button>
-                        <label for="{{ club_form.phone.id_for_label }}">{{ club_form.phone.label }}</label>
-                        {% if club_form.phone.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ club_form.phone.errors.as_text|striptags }}
-                        </div>
-                        {% endif %}
-                    </div>
-
-                </div>
-
-                <div class="form-check mb-3">
-                    <input type="checkbox" 
-                        name="{{ form.notifications.name }}" 
-                        class="form-check-input" 
-                        id="{{ form.notifications.id_for_label }}" 
-                        {% if form.notifications.value or form.notifications.initial %}checked{% endif %}>
-                    <label class="form-check-label" for="{{ form.notifications.id_for_label }}">
-                        {{ form.notifications.label }}
-                    </label>
-                </div>
-                <div class="d-flex gap-3 mb-4">
-
-                    <button type="submit" class="btn btn-dark">Guardar cambios</button>
-                    {% if not is_owner %}
-                    <button type="submit" class="btn btn-danger" form="delete-account-form">Eliminar cuenta</button>
-                    {% endif %}
-                </div>
-            </form>
-            {% if not is_owner %}
-            <form id="delete-account-form" action="{% url 'delete_account' %}" method="post" class="d-none">
-                {% csrf_token %}
-            </form>
-            {% endif %}
+            </select>
         </div>
-        {% if is_owner %}
-        <div id="tab-plans" class="profile-section">
-            <h4  class="text-center mb-4">Gestiona tu suscripción</h4>
-            <p class="text-center text-muted mb-5">Selecciona el plan que prefieras.</p>
-            <form method="post" class="text-center mt-4">
-                {% csrf_token %}
-                {% if plan_form.plan.errors %}
-                <div class="invalid-feedback d-block mb-3">{{ plan_form.plan.errors.as_text|striptags }}</div>
+        <div class="d-flex flex-grow-1 mt-5 container-fluid col-12">
+            <div class="profile-tabs d-none d-lg-block">
+                <div class="profile-tab active" data-target="tab-account">Mi cuenta</div>
+                {% if is_owner %}
+                    <div class="profile-tab" data-target="tab-plans">Planes</div>
+                    <div class="profile-tab" data-target="tab-support">Soporte</div>
+                {% else %}
+                    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+                    <div class="profile-tab" data-target="tab-favorites">Favoritos</div>
+                    <div class="profile-tab" data-target="tab-reviews">Reseñas</div>
+                    <div class="profile-tab" data-target="tab-support">Soporte</div>
                 {% endif %}
-                <div class="d-flex justify-content-center flex-wrap gap-3 mb-4 ">
-                    {% for p in plans %}
-                    <label class="plan-card plan-{{ p.value }} {% if p.featured %}featured{% endif %}{% if current_plan == p.value %} active{% endif %}">
-                        <input type="radio" name="plan" value="{{ p.value }}" {% if current_plan == p.value %}checked{% endif %}>
-                        <div class="text-center mb-2">
-                        <h3 class="mt-4">{{ p.title }}</h3>
-                        {% if p.value == 'oro' %}
-                          <div class="mt-1">{% include 'partials/_verified-gold.html' %}</div>
-                        {% elif p.value == 'plata' %}
-                          <div class="mt-1">{% include 'partials/_verified-silver.html' %}</div>
-                        {% elif p.value == 'bronce' %}
-                          <div class="mt-1">{% include 'partials/_verified-bronze.html' %}</div>
-                        {% endif %}
-                      </div>
-
-
-                        <ul>
-                            {% for f in p.features %}
-                            <li class="text-center">{{ f }}</li>
-                            {% endfor %}
-                        </ul>
-                        <div class="plan-card-price">{{ p.price }}</div>
-                        {% if current_plan == p.value %}
-                        <span class="badge bg-dark position-absolute top-0 end-0 m-2">Actual</span>
-                        {% endif %}
-                    </label>
-                    {% endfor %}
-                </div>
-                <button type="submit" class="btn btn-dark">Mejorar mi suscripción</button>
-            </form>
-
-        </div>
-        {% else %}
-        <div id="tab-bookings" class="profile-section">
-            <h2 class="h5">Mis Reservas</h2>
-            {% if bookings %}
-            <ul class="list-group">
-                {% for b in bookings %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>
-                        {{ b.class_type.titulo }}
-                    </span>
-                    {% if b.status != 'cancelled' %}
-                    <form action="{% url 'cancel_booking' b.id %}" method="post" class="ms-2">
+                <form method="POST" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="profile-tab text-start w-100">Cerrar sesión</button>
+                </form>
+            </div>
+            <div class="profile-content  ">
+                <div id="tab-account" class="profile-section active col-12 col-lg-6">
+                    <h4>Mi Cuenta</h4>
+                    <form method="post" enctype="multipart/form-data" class="mt-4 profile-form">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
-                    </form>
-                    {% else %}
-                    <span class="badge bg-secondary">Cancelada</span>
-                    {% endif %}
-                </li>
-                {% empty %}
-                <li class="list-group-item">No tienes reservas.</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No tienes reservas.</p>
-            {% endif %}
-        </div>
-        <div id="tab-favorites" class="profile-section">
-            <h2 class="h5 mb-3">Favoritos</h2>
-            {% if favoritos %}
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                {% for club in favoritos %}
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <a href="{% url 'club_profile' club.slug %}" class="text-decoration-none text-dark">
-                            {% if club.logo %}
-                                <img src="{{ club.logo.url }}" class="card-img-top object-fit-cover" style="height:200px" alt="{{ club.name }}">
-                            {% else %}
-                                <div class="card-img-top d-flex align-items-center justify-content-center bg-dark" style="height:200px;">
-                                    <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
+                        {% if not is_owner %}
+                            <h5 class="mb-3">Foto de perfil</h5>
+                            <div class="mb-5 text-center bg-dark p-3 rounded">
+                                <div class="avatar-dropzone avatar-dropzone-square  p-3">
+                                    {{ form.avatar }}
+                                    <div class="avatar-preview{% if profile.avatar|safe_url %} has-image{% endif %}"
+                                         {% if profile.avatar|safe_url %}style="background-image:url('{{ profile.avatar|safe_url }}')"{% endif %}>
+                                        <div class="avatar-dropzone-msg p-3">
+                                            <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                                            <span>Arrastra una imagen o haz click</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold mb-1">{{ club.name }}</h5>
-                                <div class="d-flex align-items-center gap-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" viewBox="0 0 24 24" stroke="gold">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                    </svg>
-                                    {% if club.average_rating %}
-                                    <span class="small">{{ club.average_rating }} ({{ club.reviews_count }})</span>
-                                    {% else %}
-                                    <span class="text-muted small">Sin reseñas</span>
-                                    {% endif %}
-                                </div>
+                                {% if form.avatar.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.avatar.errors.as_text|striptags }}</div>
+                                {% endif %}
                             </div>
-                        </a>
+                        {% endif %}
+                        <div class="row g-3">
+                            <div class="form-field always-active">
+                                {{ form.username }}
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="form-field col-md-6">
+                                {{ form.new_password1 }}
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="{{ form.new_password1.id_for_label }}">{{ form.new_password1.label }}</label>
+                                {% if form.new_password1.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.new_password1.errors.as_text|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-field col-md-6">
+                                {{ form.new_password2 }}
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="{{ form.new_password2.id_for_label }}">{{ form.new_password2.label }}</label>
+                                {% if form.new_password2.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.new_password2.errors.as_text|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="form-field col-md-6">
+                                {{ form.email }}
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.email.errors.as_text|striptags }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="form-field col-md-6 phone-field">
+                                {{ club_form.prefijo }}
+                                {{ club_form.phone }}
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="{{ club_form.phone.id_for_label }}">{{ club_form.phone.label }}</label>
+                                {% if club_form.phone.errors %}
+                                    <div class="invalid-feedback d-block">{{ club_form.phone.errors.as_text|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox"
+                                   name="{{ form.notifications.name }}"
+                                   class="form-check-input"
+                                   id="{{ form.notifications.id_for_label }}"
+                                   {% if form.notifications.value or form.notifications.initial %}checked{% endif %}>
+                            <label class="form-check-label" for="{{ form.notifications.id_for_label }}">{{ form.notifications.label }}</label>
+                        </div>
+                        <div class="d-flex gap-3 mb-4">
+                            <button type="submit" class="btn btn-dark">Guardar cambios</button>
+                            {% if not is_owner %}
+                                <button type="submit" class="btn btn-danger" form="delete-account-form">Eliminar cuenta</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                    {% if not is_owner %}
+                        <form id="delete-account-form"
+                              action="{% url 'delete_account' %}"
+                              method="post"
+                              class="d-none">
+                            {% csrf_token %}
+                        </form>
+                    {% endif %}
+                </div>
+                {% if is_owner %}
+                    <div id="tab-plans" class="profile-section">
+                        <h4 class="text-center mb-4">Gestiona tu suscripción</h4>
+                        <p class="text-center text-muted mb-5">Selecciona el plan que prefieras.</p>
+                        <form method="post" class="text-center mt-4">
+                            {% csrf_token %}
+                            {% if plan_form.plan.errors %}
+                                <div class="invalid-feedback d-block mb-3">{{ plan_form.plan.errors.as_text|striptags }}</div>
+                            {% endif %}
+                            {% include 'core/components/_plan_option_cards.html' %}
+                            <button type="submit" class="btn btn-dark">Mejorar mi suscripción</button>
+                        </form>
+                    </div>
+                {% else %}
+                    <div id="tab-bookings" class="profile-section">
+                        <h2 class="h5">Mis Reservas</h2>
+                        {% if bookings %}
+                            <ul class="list-group">
+                                {% for b in bookings %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span>{{ b.class_type.titulo }}</span>
+                                        {% if b.status != 'cancelled' %}
+                                            <form action="{% url 'cancel_booking' b.id %}" method="post" class="ms-2">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                                            </form>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Cancelada</span>
+                                        {% endif %}
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item">No tienes reservas.</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No tienes reservas.</p>
+                        {% endif %}
+                    </div>
+                    <div id="tab-favorites" class="profile-section">
+                        <h2 class="h5 mb-3">Favoritos</h2>
+                        {% if favoritos %}
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                                {% for club in favoritos %}
+                                    <div class="col">
+                                        <div class="card h-100 border-0 shadow-sm">
+                                            <a href="{% url 'club_profile' club.slug %}"
+                                               class="text-decoration-none text-dark">
+                                                {% if club.logo %}
+                                                    <img src="{{ club.logo.url }}"
+                                                         class="card-img-top object-fit-cover"
+                                                         style="height:200px"
+                                                         alt="{{ club.name }}">
+                                                {% else %}
+                                                    <div class="card-img-top d-flex align-items-center justify-content-center bg-dark"
+                                                         style="height:200px">
+                                                        <span class="text-white fw-bold display-4">{{ club.name|initials }}</span>
+                                                    </div>
+                                                {% endif %}
+                                                <div class="card-body">
+                                                    <h5 class="card-title fw-bold mb-1">{{ club.name }}</h5>
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                             width="16"
+                                                             height="16"
+                                                             fill="gold"
+                                                             viewBox="0 0 24 24"
+                                                             stroke="gold">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                                        </svg>
+                                                        {% if club.average_rating %}
+                                                            <span class="small">{{ club.average_rating }} ({{ club.reviews_count }})</span>
+                                                        {% else %}
+                                                            <span class="text-muted small">Sin reseñas</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No sigues a ningún club todavía.</p>
+                        {% endif %}
+                    </div>
+                    <div id="tab-reviews" class="profile-section">
+                        <h2 class="h5 mb-3">Mis Reseñas</h2>
+                        {% if reviews %}
+                            <ul class="reseña-list">
+                                {% for r in reviews %}
+                                    <li class="reseña-item mb-3">
+                                        <h4>
+                                            <a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a> - {{ r.titulo }}
+                                        </h4>
+                                        <p>⭐ {{ r.promedio }} | "{{ r.comentario }}"</p>
+                                        <small>{{ r.creado|date:"d/m/Y H:i" }}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No has escrito ninguna reseña todavía.</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div id="tab-support" class="profile-section">
+                    <h4 class="mb-3">Soporte Técnico</h4>
+                    <div class="col-lg-6">
+                        <form method="post" class="mt-4">
+                            {% csrf_token %}
+                            <div class="form-field mb-3">
+                                <select class="form-select" name="support_option" id="support_option">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="problema">Notificar de un problema</option>
+                                    <option value="eliminar">Eliminar mi perfil</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                                <label for="support_option">Selecciona una opción</label>
+                            </div>
+                            <div class="form-field mb-3">
+                                <textarea class="form-control"
+                                          name="support_message"
+                                          id="support_message"
+                                          placeholder=" "></textarea>
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="support_message">Explica en detalle el problema</label>
+                            </div>
+                            <button type="submit" class="btn btn-dark">Enviar</button>
+                        </form>
                     </div>
                 </div>
-                {% endfor %}
             </div>
-            {% else %}
-            <p>No sigues a ningún club todavía.</p>
-            {% endif %}
         </div>
-        <div id="tab-reviews" class="profile-section">
-            <h2 class="h5 mb-3">Mis Reseñas</h2>
-            {% if reviews %}
-            <ul class="reseña-list">
-                {% for r in reviews %}
-                <li class="reseña-item mb-3">
-                   <h4><a href="{% url 'club_profile' r.club.slug %}">{{ r.club.name }}</a> - {{ r.titulo }}</h4>
-                    <p>⭐ {{ r.promedio }} | "{{ r.comentario }}"</p>
-                    <small>{{ r.creado|date:"d/m/Y H:i" }}</small>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No has escrito ninguna reseña todavía.</p>
-            {% endif %}
-        </div>
-        {% endif %}
-        <div id="tab-support" class="profile-section">
-            <h4 class="mb-3">Soporte Técnico</h4>
-
-
-          <div class="col-lg-6">
-            <form method="post" class="mt-4">
-                {% csrf_token %}
-                <div class="form-field mb-3">
-                    <select class="form-select" name="support_option" id="support_option">
-                        <option value="">Selecciona una opción</option>
-                        <option value="problema">Notificar de un problema</option>
-                        <option value="eliminar">Eliminar mi perfil</option>
-                        <option value="otros">Otros</option>
-                    </select>
-                    <label for="support_option">Selecciona una opción</label>
+    </main>
+    <div class="modal fade"
+         id="confirmProfileModal"
+         tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Seguro que deseas modificar los datos de tu perfil?</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
                 </div>
-                <div class="form-field mb-3">
-                    <textarea class="form-control" name="support_message" id="support_message" placeholder=" "></textarea>
-                    <button type="button" class="clear-btn bi bi-x"></button>
-                    <label for="support_message">Explica en detalle el problema</label>
+                <div class="modal-footer d-flex flex-column gap-2">
+                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Descartar</button>
+                    <button type="button" class="btn btn-dark w-100 confirm-save">Confirmar</button>
                 </div>
-                <button type="submit" class="btn btn-dark">Enviar</button>
-            </form>  </div>
-
-        </div>
-</div>
-</div>
-</main>
-<div class="modal fade" id="confirmProfileModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">¿Seguro que deseas modificar los datos de tu perfil?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-footer d-flex flex-column gap-2">
-                <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Descartar</button>
-                <button type="button" class="btn btn-dark w-100 confirm-save">Confirmar</button>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
-
 {% block extra_js %}
-<script src="{% static 'js/profile-tabs.js' %}"></script>
-<script src="{% static 'js/clear-input.js' %}"></script>
-<script src="{% static 'js/avatar-dropzone.js' %}"></script>
-<script src="{% static 'js/plan-cards.js' %}"></script>
-<script src="{% static 'js/profile-save-confirm.js' %}"></script>
-{% if is_owner %}
-{% endif %}
+    <script src="{% static 'js/profile-tabs.js' %}"></script>
+    <script src="{% static 'js/clear-input.js' %}"></script>
+    <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+    <script src="{% static 'js/plan-cards.js' %}"></script>
+    <script src="{% static 'js/profile-save-confirm.js' %}"></script>
+    {% if is_owner %}{% endif %}
 {% endblock %}

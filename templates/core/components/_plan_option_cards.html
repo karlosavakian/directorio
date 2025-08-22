@@ -1,0 +1,30 @@
+<p class="text-muted">Selecciona el plan que prefieras.</p>
+<h1 class="text-center mb-3">Nuestros Planes</h1>
+<p class="text-center text-muted mb-5">
+    Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
+</p>
+<div class="d-flex justify-content-center flex-wrap gap-3 mb-4">
+    {% for p in plans %}
+        <label class="plan-card plan-{{ p.value }} {% if p.featured %}featured{% endif %}{% if current_plan == p.value %} active{% endif %}">
+            <input type="radio"
+                   name="plan"
+                   value="{{ p.value }}"
+                   {% if current_plan == p.value %}checked{% endif %}>
+            <div class="text-center mb-2">
+                <h3 class="mt-4">{{ p.title }}</h3>
+                {% if p.value == "oro" %}
+                    <div class="mt-1">{% include "partials/_verified-gold.html" %}</div>
+                {% elif p.value == "plata" %}
+                    <div class="mt-1">{% include "partials/_verified-silver.html" %}</div>
+                {% elif p.value == "bronce" %}
+                    <div class="mt-1">{% include "partials/_verified-bronze.html" %}</div>
+                {% endif %}
+            </div>
+            <ul>
+                {% for f in p.features %}<li class="text-center">{{ f }}</li>{% endfor %}
+            </ul>
+            <div class="plan-card-price">{{ p.price }}</div>
+            {% if current_plan == p.value %}<span class="badge bg-dark position-absolute top-0 end-0 m-2">Actual</span>{% endif %}
+        </label>
+    {% endfor %}
+</div>
