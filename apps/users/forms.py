@@ -176,6 +176,14 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
             return avatar
         return _validate_avatar(avatar)
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            domain = email.split('@')[-1].lower()
+            if any(bad in domain for bad in DISPOSABLE_EMAIL_DOMAINS):
+                raise forms.ValidationError('Introduzca un correo electrónico valido, el dominio usado no está permitido.')
+        return email
+
     def clean(self):
         cleaned = super().clean()
         p1 = cleaned.get('new_password1')

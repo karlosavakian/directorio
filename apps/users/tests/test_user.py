@@ -114,3 +114,22 @@ class ProfileCreationTests(TestCase):
         user = User.objects.create_user(username="signaluser", password="pass")
         self.assertTrue(Profile.objects.filter(user=user).exists())
 
+
+class ProfileEmailTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="profileupdate", email="old@example.com", password="pass"
+        )
+
+    def test_disposable_email_rejected_on_update(self):
+        self.client.login(username="profileupdate", password="pass")
+        url = reverse("profile")
+        data = {"username": "profileupdate", "email": "temp@yopmail.com"}
+        response = self.client.post(url, data)
+        self.assertContains(
+            response,
+            "Introduzca un correo electrónico valido, el dominio usado no está permitido.",
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, "old@example.com")
+
