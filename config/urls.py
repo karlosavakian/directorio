@@ -10,8 +10,8 @@ from apps.clubs.views import messages as club_messages
 from apps.clubs.views.dashboard import dashboard
 from apps.users.views import profile as user_profile
   
-from apps.users.forms import LoginForm   
- 
+from apps.users.forms import LoginForm
+
 urlpatterns = [
     path('django-admin/', admin.site.urls),
 
@@ -44,6 +44,9 @@ urlpatterns = [
     path('', include('apps.users.urls')),
     path('', include('allauth.urls')),
 ]
+
+# Custom error handlers
+handler404 = "apps.core.views.public.error_404"
 
 # Archivos estáticos en modo DEBUG
 if settings.DEBUG:
