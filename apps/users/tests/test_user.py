@@ -61,6 +61,18 @@ class RegistrationTests(TestCase):
         self.assertContains(response, "El nombre de usuario debe tener al menos 3 caracteres")
         self.assertFalse(User.objects.filter(username="ab").exists())
 
+    def test_disposable_email_rejected(self):
+        data = {
+            "username": "tempuser",
+            "email": "temp@yopmail.com",
+            "password1": "secretpass123",
+            "password2": "secretpass123",
+        }
+        url = reverse("register")
+        response = self.client.post(url, data)
+        self.assertContains(response, "Introduzca un correo electrónico valido, el dominio usado no está permitido.")
+        self.assertFalse(User.objects.filter(username="tempuser").exists())
+
 
 class LoginRememberMeTests(TestCase):
     def setUp(self):
@@ -101,4 +113,23 @@ class ProfileCreationTests(TestCase):
     def test_profile_created_on_user_creation(self):
         user = User.objects.create_user(username="signaluser", password="pass")
         self.assertTrue(Profile.objects.filter(user=user).exists())
+
+
+class ProfileEmailTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="profileupdate", email="old@example.com", password="pass"
+        )
+
+    def test_disposable_email_rejected_on_update(self):
+        self.client.login(username="profileupdate", password="pass")
+        url = reverse("profile")
+        data = {"username": "profileupdate", "email": "temp@yopmail.com"}
+        response = self.client.post(url, data)
+        self.assertContains(
+            response,
+            "Introduzca un correo electrónico valido, el dominio usado no está permitido.",
+        )
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, "old@example.com")
 

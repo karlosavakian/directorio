@@ -88,6 +88,11 @@
                         {{ form.email }}
                         <button type="button" class="clear-btn bi bi-x"></button>
                         <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {% if form.email.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.email.errors.as_text|striptags }}
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="form-field col-md-6 phone-field">
                         {{ club_form.prefijo }}
