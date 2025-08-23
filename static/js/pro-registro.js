@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipoCards = document.querySelectorAll('.tipo-card');
   const planCards = document.querySelectorAll('.plan-card');
   const paymentSection = document.getElementById('payment-section');
+  const cardInputs = ['id_card_number', 'id_card_expiry', 'id_card_cvc'].map(id => document.getElementById(id));
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
@@ -14,7 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function showStep(n) {
     steps.forEach((step, idx) => {
       if (!step) return;
-      step.classList.toggle('d-none', idx !== n - 1);
+      if (idx === n - 1) {
+        step.classList.remove('d-none');
+        step.classList.add('fade-step');
+        step.addEventListener('animationend', () => step.classList.remove('fade-step'), { once: true });
+      } else {
+        step.classList.add('d-none');
+      }
     });
     progress.forEach((item, idx) => {
       if (!item) return;
@@ -27,8 +34,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (finishBtn) finishBtn.classList.toggle('d-none', n !== steps.length);
   }
 
+  function validateStep(n) {
+    const step = steps[n - 1];
+    if (!step) return true;
+    const fields = step.querySelectorAll('input, select, textarea');
+    for (const field of fields) {
+      if (!field.checkValidity()) {
+        field.reportValidity();
+        return false;
+      }
+    }
+    return true;
+  }
+
   if (nextBtn) {
-    nextBtn.addEventListener('click', () => showStep(Math.min(current + 1, steps.length)));
+    nextBtn.addEventListener('click', () => {
+      if (validateStep(current)) {
+        showStep(Math.min(current + 1, steps.length));
+      }
+    });
   }
 
   if (prevBtn) {
@@ -68,11 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function togglePaymentSection() {
     const selected = document.querySelector('input[name="plan"]:checked');
-    if (selected && (selected.value === 'plata' || selected.value === 'oro')) {
-      paymentSection && paymentSection.classList.remove('d-none');
-    } else {
-      paymentSection && paymentSection.classList.add('d-none');
+    const needsPayment = selected && (selected.value === 'plata' || selected.value === 'oro');
+    if (paymentSection) {
+      paymentSection.classList.toggle('d-none', !needsPayment);
     }
+    cardInputs.forEach(input => {
+      if (!input) return;
+      if (needsPayment) {
+        input.setAttribute('required', 'required');
+      } else {
+        input.removeAttribute('required');
+      }
+    });
   }
 
   togglePaymentSection();

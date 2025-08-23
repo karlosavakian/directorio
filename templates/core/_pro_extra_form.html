@@ -1,11 +1,11 @@
 <h3 class="h6 mb-3">Datos adicionales</h3>
-<div class="form-field mb-3">
-  <div class="avatar-dropzone mx-auto">
+<div class="mb-5 text-center bg-dark p-3 rounded w-100">
+  <div class="avatar-dropzone avatar-dropzone-square p-3">
     {{ form.logotipo }}
     <div class="avatar-preview">
-      <div class="avatar-dropzone-msg">
+      <div class="avatar-dropzone-msg p-3">
         <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-        <span>Sube {{ form.logotipo.label|lower }}</span>
+        <span>Arrastra una imagen o haz click</span>
       </div>
     </div>
   </div>
@@ -13,8 +13,8 @@
   <div class="invalid-feedback d-block">{{ form.logotipo.errors.as_text|striptags }}</div>
   {% endif %}
 </div>
-<div class="form-field mb-3">
-  {{ form.username }}
+<div class="form-field always-active mb-3">
+  <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default_if_none:'' }}" class="form-control" id="{{ form.username.id_for_label }}" placeholder=" " minlength="3" required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
   <button type="button" class="clear-btn bi bi-x"></button>
   <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
   {% if form.username.errors %}
