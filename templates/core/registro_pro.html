@@ -1,104 +1,102 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Clubs de Boxeo | Registro Pro{% endblock %}
+{% block title %}Clubs de Boxeo | Registro Partners{% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block content %}
-<main class="flex-grow-1">
-    <div class="container-fluid  px-3 py-5 ">
-        <div class="col-8 mx-auto">
-            <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
-            <ul class="progress-steps mb-5">
-                <li class="step-item active" data-step="1" id="step-label-1"></li>
-                <li class="step-item" data-step="2" id="step-label-2"></li>
-                <li class="step-item" data-step="3" id="step-label-3"></li>
-                <li class="step-item" data-step="4" id="step-label-4"></li>
-                <li class="step-item" data-step="5" id="step-label-5"></li>
-            </ul>
-            <form method="post" class="profile-form mt-5" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-                <input type="hidden"
-                       name="current_step"
-                       id="current-step"
-                       value="{{ start_step }}">
-                <div id="step1" class="step">
-                    <p class="text-muted text-center">Indícanos qué tipo de profesional eres.</p>
-                    <div class="d-flex justify-content-center flex-wrap gap-3">
-                        {% for radio in form.tipo %}
-                            <label class="tipo-card">
-                                {{ radio.tag }}
-                                <div class="fw-medium">{{ radio.choice_label }}</div>
-                            </label>
-                        {% endfor %}
-                    </div>
-                    {% if form.tipo.errors %}
-                        <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
-                    {% endif %}
-                </div>
-                <div id="step2" class="step d-none">
-                    <h1 class="text-center mb-3">Nuestros Planes</h1>
-                    <p class="text-center text-muted mb-5">
-                        Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
-                    </p>
-                    {% include 'core/components/_plan_option_cards.html' %}
-                    <div id="payment-section" class="mt-4 d-none">
-                        <h3 class="h6 mb-3">Datos de pago</h3>
-                        <div class="form-field">
-                            <input type="text" name="card_number" id="id_card_number" placeholder=" ">
-                            <button type="button" class="clear-btn bi bi-x"></button>
-                            <label for="id_card_number">Número de tarjeta</label>
+    <main class="flex-grow-1">
+        <div class="container-fluid  px-3 py-5 ">
+            <div class="col-8 mx-auto">
+                <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
+                <ul class="progress-steps mb-5">
+                    <li class="step-item active" data-step="1" id="step-label-1"></li>
+                    <li class="step-item" data-step="2" id="step-label-2"></li>
+                    <li class="step-item" data-step="3" id="step-label-3"></li>
+                    <li class="step-item" data-step="4" id="step-label-4"></li>
+                    <li class="step-item" data-step="5" id="step-label-5"></li>
+                </ul>
+                <form method="post" class="profile-form mt-5" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <input type="hidden"
+                           name="current_step"
+                           id="current-step"
+                           value="{{ start_step }}">
+                    <div id="step1" class="step">
+                        <p class="text-muted text-center">Indícanos qué tipo de profesional eres.</p>
+                        <div class="d-flex justify-content-center flex-wrap gap-3">
+                            {% for radio in form.tipo %}
+                                <label class="tipo-card">
+                                    {{ radio.tag }}
+                                    <div class="fw-medium">{{ radio.choice_label }}</div>
+                                </label>
+                            {% endfor %}
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-field">
-                                    <input type="text"
-                                           name="card_expiry"
-                                           id="id_card_expiry"
-                                           placeholder="MM/AA">
-                                    <button type="button" class="clear-btn bi bi-x"></button>
-                                    <label for="id_card_expiry">Expiración</label>
+                        {% if form.tipo.errors %}
+                            <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    <div id="step2" class="step d-none">
+                        <h1 class="text-center mb-3">Nuestros Planes</h1>
+                        <p class="text-center text-muted mb-5">
+                            Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
+                        </p>
+                        {% include 'core/components/_plan_option_cards.html' %}
+                        <div id="payment-section" class="mt-4 d-none">
+                            <h3 class="h6 mb-3">Datos de pago</h3>
+                            <div class="form-field">
+                                <input type="text" name="card_number" id="id_card_number" placeholder=" ">
+                                <button type="button" class="clear-btn bi bi-x"></button>
+                                <label for="id_card_number">Número de tarjeta</label>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-field">
+                                        <input type="text"
+                                               name="card_expiry"
+                                               id="id_card_expiry"
+                                               placeholder="MM/AA">
+                                        <button type="button" class="clear-btn bi bi-x"></button>
+                                        <label for="id_card_expiry">Expiración</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-field">
+                                        <input type="text" name="card_cvc" id="id_card_cvc" placeholder=" ">
+                                        <button type="button" class="clear-btn bi bi-x"></button>
+                                        <label for="id_card_cvc">CVC</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-field">
-                                    <input type="text" name="card_cvc" id="id_card_cvc" placeholder=" ">
-                                    <button type="button" class="clear-btn bi bi-x"></button>
-                                    <label for="id_card_cvc">CVC</label>
-                                </div>
-                            </div>
                         </div>
+                        {% if form.plan.errors %}
+                            <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
+                        {% endif %}
                     </div>
-                    {% if form.plan.errors %}
-                        <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
-                    {% endif %}
-                </div>
-                <div id="step3" class="step d-none">
-                    <p class="text-muted">Rellena la información de tu perfil.</p>
-                    {% include 'core/_pro_register_form.html' with form=pro_form %}
-                </div>
-                <div id="step4" class="step d-none">
-                    <p class="text-muted">Datos adicionales obligatorios para completar tu perfil.</p>
-                    {% include 'core/_pro_extra_form.html' with form=extra_form %}
-                </div>
-                <div id="step5" class="step d-none text-center">
-                    <h1 class="h5 mb-3">Pasarela de pagos</h1>
-                    <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
-                    <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
-                </div>
-                <div class="d-flex justify-content-end mt-4">
-                    <button type="button" class="btn btn-outline-dark me-2 d-none" id="prevBtn">Atrás</button>
-                    <button type="button" class="btn btn-dark" id="nextBtn">Continuar</button>
-                    <button type="submit" class="btn btn-dark d-none" id="finishBtn">Finalizar</button>
-                </div>
-            </form>
+                    <div id="step3" class="step d-none">
+                        <p class="text-muted">Rellena la información de tu perfil.</p>
+                        {% include 'core/_pro_register_form.html' with form=pro_form %}
+                    </div>
+                    <div id="step4" class="step d-none">
+                        <p class="text-muted">Datos adicionales obligatorios para completar tu perfil.</p>
+                        {% include 'core/_pro_extra_form.html' with form=extra_form %}
+                    </div>
+                    <div id="step5" class="step d-none text-center">
+                        <h1 class="h5 mb-3">Pasarela de pagos</h1>
+                        <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
+                        <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-outline-dark me-2 d-none" id="prevBtn">Atrás</button>
+                        <button type="button" class="btn btn-dark" id="nextBtn">Continuar</button>
+                        <button type="submit" class="btn btn-dark d-none" id="finishBtn">Finalizar</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</main>
+    </main>
 {% endblock %}
 {% block extra_js %}
-    <script>
-        window.stripePublicKey = "{{ stripe_public_key }}";
-    </script>
+    <script>window.stripePublicKey = "{{ stripe_public_key }}";</script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{% static 'js/member-location.js' %}"></script>
     <script src="{% static 'js/avatar-dropzone.js' %}"></script>
