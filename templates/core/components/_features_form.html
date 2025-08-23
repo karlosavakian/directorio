@@ -1,0 +1,45 @@
+<div>
+  <h5 class="d-block mb-2">{{ form.features.label }}</h5>
+  <div class="d-flex justify-content-between align-items-start mb-3">
+    <p class="small text-muted mb-0">
+      Selecciona las instalaciones y equipamiento disponible en tu club.
+    </p>
+    <div class="d-flex gap-3">
+      <button type="button" id="features-select-all" class="small bg-transparent border-0 fw-medium text-black">
+        Seleccionar todas
+      </button>
+      <button type="button" id="features-deselect-all" class="small bg-transparent border-0 fw-medium text-secondary">
+        Desmarcar todas
+      </button>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap gap-3" id="features-container">
+    {% for feature in form.features.field.queryset %}
+    <div class="feature-option border rounded d-flex align-items-center" style="padding: 8px 16px">
+      <input
+        type="checkbox"
+        name="features"
+        value="{{ feature.id }}"
+        class="d-none"
+        {% if forloop.first %}required{% endif %}
+      />
+      {% if feature.icon %}
+      <img
+        src="{{ feature.icon.url }}"
+        alt="{{ feature.name }}"
+        style="width: 50px; height: 50px; object-fit: contain; user-select: none"
+        class="me-2"
+      />
+      {% endif %}
+      <div class="text-wrap" style="font-size: 14px; user-select: none">
+        {{ feature.name }}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% if form.features.errors %}
+  <div class="invalid-feedback d-block">
+    {{ form.features.errors.as_text|striptags }}
+  </div>
+  {% endif %}
+</div>

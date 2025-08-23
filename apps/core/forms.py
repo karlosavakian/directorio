@@ -3,6 +3,7 @@ import re
 from apps.core.mixins import UniformFieldsMixin
 from apps.clubs.countries import COUNTRY_CHOICES
 from apps.clubs.spain import REGION_CHOICES
+from apps.clubs.models import Feature
 from django.core.validators import RegexValidator
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
@@ -145,5 +146,12 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         },
         widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " ", "pattern": '^[A-Za-z0-9_-]+$'}),
     )
-    descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
+    name = forms.CharField(label="Nombre")
+    about = forms.CharField(label="Bio", widget=forms.Textarea)
+    features = forms.ModelMultipleChoiceField(
+        queryset=Feature.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple,
+        label="Instalaciones y Equipamiento",
+    )
 
