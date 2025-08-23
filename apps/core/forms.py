@@ -43,14 +43,14 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         label="Fecha de nacimiento", widget=forms.DateInput(attrs={"type": "date"})
     )
     dni = forms.CharField(label="DNI/NIE/CIF")
-    prefijo = forms.CharField(label="Prefijo", required=False)
+    prefijo = forms.CharField(label="Prefijo")
     telefono = forms.CharField(label="Teléfono")
     sexo = forms.ChoiceField(
         label="Sexo",
         choices=[
+            ("", ""),
             ("hombre", "Hombre"),
             ("mujer", "Mujer"),
-            ("otro", "Otro"),
         ],
     )
 
@@ -61,7 +61,7 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
     ciudad = forms.CharField(label="Ciudad")
     calle = forms.CharField(label="Calle")
     numero = forms.CharField(label="Número")
-    puerta = forms.CharField(label="Puerta")
+    puerta = forms.CharField(label="Puerta", required=False)
     codigo_postal = forms.CharField(label="Código Postal")
 
     def __init__(self, *args, **kwargs):
@@ -125,7 +125,7 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 
 class ProExtraForm(UniformFieldsMixin, forms.Form):
     """Datos adicionales requeridos para completar el perfil profesional."""
-
-    descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
     logotipo = forms.ImageField(label="Logotipo")
+    username = forms.CharField(label="Nombre de usuario")
+    descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
 
