@@ -5,5 +5,4 @@ config/db.sqlite3
 staticfiles/
 media/
 
-venv/
-.env
+venv/ 
