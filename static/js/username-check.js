@@ -21,14 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
         statusIcon.classList.add('bi-x-circle', 'text-danger');
         return;
       }
+      statusIcon.classList.remove('d-none');
+      statusIcon.classList.add('bi-check-circle', 'text-success');
       timer = setTimeout(() => {
         fetch(`/users/check-username/?username=${encodeURIComponent(username)}`)
           .then(res => res.json())
           .then(data => {
-            statusIcon.classList.remove('d-none');
             if (data.available) {
               statusIcon.classList.add('bi-check-circle', 'text-success');
+              statusIcon.classList.remove('bi-x-circle', 'text-danger');
             } else {
+              statusIcon.classList.remove('bi-check-circle', 'text-success');
               statusIcon.classList.add('bi-x-circle', 'text-danger');
             }
           })
