@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
       statusIcon.classList.add('d-none');
       statusIcon.classList.remove('bi-check-circle', 'text-success', 'bi-x-circle', 'text-danger');
       if (!username) return;
+      const pattern = /^[A-Za-z0-9_-]+$/;
+      if (!pattern.test(username)) {
+        statusIcon.classList.remove('d-none');
+        statusIcon.classList.add('bi-x-circle', 'text-danger');
+        return;
+      }
       timer = setTimeout(() => {
         fetch(`/users/check-username/?username=${encodeURIComponent(username)}`)
           .then(res => res.json())

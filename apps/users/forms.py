@@ -7,6 +7,7 @@ from django.contrib.auth import password_validation
 from django.utils.translation import gettext_lazy as _
 from .models import Profile
 from apps.core.mixins import UniformFieldsMixin
+from django.core.validators import RegexValidator
 import os
 import re
 
@@ -73,17 +74,19 @@ class LoginForm(UniformFieldsMixin, AuthenticationForm):
         super().__init__(*args, **kwargs)
         # Mark "recordar contraseña" checked by default
         self.fields["remember_me"].initial = True
- 
+
 class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True, error_messages={"required": "Rellene este campo"})
     username = forms.CharField(
         label='Nombre de usuario',
         min_length=3,
+        validators=[RegexValidator(r'^[A-Za-z0-9_-]+$', 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.')],
         error_messages={
             'required': 'Rellene este campo',
-            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres'
+            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres',
+            'invalid': 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.'
         },
-        widget=forms.TextInput(attrs={'minlength': 3})
+        widget=forms.TextInput(attrs={'minlength': 3, 'pattern': '^[A-Za-z0-9_-]+$'})
     )
 
     notifications = forms.BooleanField(
@@ -158,11 +161,13 @@ class AccountForm(UniformFieldsMixin, forms.ModelForm):
     username = forms.CharField(
         label='Nombre de usuario',
         min_length=3,
+        validators=[RegexValidator(r'^[A-Za-z0-9_-]+$', 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.')],
         error_messages={
             'required': 'Rellene este campo',
-            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres'
+            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres',
+            'invalid': 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.'
         },
-        widget=forms.TextInput(attrs={'minlength': 3})
+        widget=forms.TextInput(attrs={'minlength': 3, 'pattern': '^[A-Za-z0-9_-]+$'})
     )
     notifications = forms.BooleanField(
         label='Recibir notificaciones', required=False
