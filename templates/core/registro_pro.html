@@ -21,7 +21,7 @@
                        name="current_step"
                        id="current-step"
                        value="{{ start_step }}">
-                <div id="step1" class="step">
+                <div id="step1" class="form-step active">
                     <p class="text-muted text-center">Indícanos qué tipo de profesional eres.</p>
                     <div class="d-flex justify-content-center flex-wrap gap-3">
                         {% for radio in form.tipo %}
@@ -35,7 +35,7 @@
                         <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
                     {% endif %}
                 </div>
-                <div id="step2" class="step d-none">
+                <div id="step2" class="form-step">
                     <h1 class="text-center mb-3">Nuestros Planes</h1>
                     <p class="text-center text-muted mb-5">
                         Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
@@ -72,15 +72,15 @@
                         <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
                     {% endif %}
                 </div>
-                <div id="step3" class="step d-none">
+                <div id="step3" class="form-step">
                     <p class="text-muted">Rellena la información de tu perfil.</p>
                     {% include 'core/_pro_register_form.html' with form=pro_form %}
                 </div>
-                <div id="step4" class="step d-none">
+                <div id="step4" class="form-step">
                     <p class="text-muted">Datos adicionales obligatorios para completar tu perfil.</p>
                     {% include 'core/_pro_extra_form.html' with form=extra_form %}
                 </div>
-                <div id="step5" class="step d-none text-center">
+                <div id="step5" class="form-step text-center">
                     <h1 class="h5 mb-3">Pasarela de pagos</h1>
                     <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
                     <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
@@ -100,6 +100,7 @@
         window.stripePublicKey = "{{ stripe_public_key }}";
     </script>
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="{% static 'js/avatar-dropzone.js' %}"></script>
     <script src="{% static 'js/member-location.js' %}"></script>
     <script src="{% static 'js/pro-registro.js' %}"></script>
 {% endblock %}

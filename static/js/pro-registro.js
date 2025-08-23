@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showStep(n) {
     steps.forEach((step, idx) => {
       if (!step) return;
-      step.classList.toggle('d-none', idx !== n - 1);
+      step.classList.toggle('active', idx === n - 1);
     });
     progress.forEach((item, idx) => {
       if (!item) return;
