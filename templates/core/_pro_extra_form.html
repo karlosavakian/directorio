@@ -14,7 +14,7 @@
   {% endif %}
 </div>
 <div class="form-field always-active mb-3">
-  <input type="text" name="{{ form.username.name }}" value="{{ form.username.value|default_if_none:'' }}" class="form-control" id="{{ form.username.id_for_label }}" placeholder=" " minlength="3" required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
+  {{ form.username }}
   <button type="button" class="clear-btn bi bi-x"></button>
   <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
   {% if form.username.errors %}
