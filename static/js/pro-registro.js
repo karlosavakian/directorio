@@ -75,8 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (stripeBtn && window.stripePublicKey) {
     const stripe = Stripe(window.stripePublicKey);
     stripeBtn.addEventListener('click', () => {
-      // Placeholder para el flujo de Stripe Connect en modo prueba
-      console.log('Stripe Connect init in test mode');
+      fetch('/create-checkout-session/', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          if (data.sessionId) {
+            stripe.redirectToCheckout({ sessionId: data.sessionId });
+          }
+        });
     });
   }
 

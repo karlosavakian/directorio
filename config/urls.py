@@ -11,13 +11,16 @@ from apps.clubs.views.dashboard import dashboard
 from apps.users.views import profile as user_profile
   
 from apps.users.forms import LoginForm
-from apps.core.views.public import error_404
+from apps.core.views import public as core_public
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
 
     # Core: Página principal
     path('', include('apps.core.urls')),
+    path('create-checkout-session/', core_public.create_checkout_session, name='create_checkout_session'),
+    path('checkout/success/', core_public.checkout_success, name='checkout_success'),
+    path('checkout/cancel/', core_public.checkout_cancel, name='checkout_cancel'),
 
     # Perfil público de clubs
     path('admin/', dashboard, name='club_dashboard'),
@@ -47,7 +50,7 @@ urlpatterns = [
 ]
 
 # Custom error handlers
-handler404 = "apps.core.views.public.error_404"
+handler404 = core_public.error_404
 
 # Archivos estáticos en modo DEBUG
 if settings.DEBUG:
