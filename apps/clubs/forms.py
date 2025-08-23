@@ -375,7 +375,11 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
         label='Altura (cm)',
         min_value=0,
     )
-    fecha_nacimiento = forms.DateField(required=False, label='Fecha de nacimiento')
+    fecha_nacimiento = forms.DateField(
+        required=False,
+        label='Fecha de nacimiento',
+        widget=forms.DateInput(attrs={'type': 'date', 'min': '1910-01-01'}),
+    )
     tipo_competidor = forms.ChoiceField(
         choices=[('', ''), ('amateur', 'Amateur'), ('profesional', 'Profesional')],
         required=False,
@@ -421,6 +425,7 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
         fecha_field = self.fields.get('fecha_nacimiento')
         if fecha_field:
             fecha_field.widget.input_type = 'date'
+            fecha_field.widget.attrs.setdefault('min', '1910-01-01')
 
         palmares_field = self.fields.get('palmares')
         if palmares_field:
@@ -463,6 +468,12 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
         if avatar_widget:
             css = avatar_widget.widget.attrs.get('class', '')
             avatar_widget.widget.attrs['class'] = (css + ' d-none').strip()
+
+    def clean_fecha_nacimiento(self):
+        fecha = self.cleaned_data.get('fecha_nacimiento')
+        if fecha and fecha.year < 1910:
+            raise forms.ValidationError('La fecha de nacimiento no puede ser anterior a 1910.')
+        return fecha
 
     def save(self, commit=True):
         wins = self.cleaned_data.get('victorias') or 0
@@ -579,6 +590,7 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         fecha_widget = self.fields.get('fecha_nacimiento')
         if fecha_widget:
             fecha_widget.widget.input_type = 'date'
+            fecha_widget.widget.attrs.setdefault('min', '1910-01-01')
 
         sexo_field = self.fields.get('sexo')
         if sexo_field: 
@@ -653,6 +665,12 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         elif not region:
             cleaned['localidad'] = ''
         return cleaned
+
+    def clean_fecha_nacimiento(self):
+        fecha = self.cleaned_data.get('fecha_nacimiento')
+        if fecha and fecha.year < 1910:
+            raise forms.ValidationError('La fecha de nacimiento no puede ser anterior a 1910.')
+        return fecha
 
     def clean_telefono(self):
         telefono = self.cleaned_data.get('telefono', '')

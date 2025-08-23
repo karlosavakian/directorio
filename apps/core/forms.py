@@ -40,7 +40,8 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
     nombre = forms.CharField(label="Nombre")
     apellidos = forms.CharField(label="Apellidos")
     fecha_nacimiento = forms.DateField(
-        label="Fecha de nacimiento", widget=forms.DateInput(attrs={"type": "date"})
+        label="Fecha de nacimiento",
+        widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
     )
     dni = forms.CharField(label="DNI/NIE/CIF")
     prefijo = forms.CharField(label="Prefijo")
@@ -121,6 +122,12 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
             if digits and digits[0] not in '679':
                 raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
+
+    def clean_fecha_nacimiento(self):
+        fecha = self.cleaned_data['fecha_nacimiento']
+        if fecha and fecha.year < 1910:
+            raise forms.ValidationError('La fecha de nacimiento no puede ser anterior a 1910.')
+        return fecha
 
 
 class ProExtraForm(UniformFieldsMixin, forms.Form):
