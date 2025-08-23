@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}Clubs de Boxeo | Registro Pro{% endblock %}
+{% block body_class %}d-flex flex-column min-vh-100{% endblock %}
 {% block content %}
-    <div class="container-fluid  px-3 my-5 ">
+<main class="flex-grow-1">
+    <div class="container-fluid  px-3 py-5 ">
         <div class="col-8 mx-auto">
             <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
             <ul class="progress-steps mb-5">
@@ -80,7 +82,9 @@
             </form>
         </div>
     </div>
+</main>
 {% endblock %}
 {% block extra_js %}
+    <script src="{% static 'js/member-location.js' %}"></script>
     <script src="{% static 'js/pro-registro.js' %}"></script>
 {% endblock %}

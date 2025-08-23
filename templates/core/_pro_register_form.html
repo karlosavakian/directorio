@@ -53,7 +53,8 @@
     </div>
   </div>
   <div class="col-md-3">
-    <div class="form-field">
+    <div class="form-field phone-field">
+      {{ form.prefijo }}
       {{ form.telefono }}
       <button type="button" class="clear-btn bi bi-x"></button>
       <label for="{{ form.telefono.id_for_label }}">{{ form.telefono.label }}</label>

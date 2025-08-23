@@ -1,7 +1,11 @@
 // Handles dependent dropdown for region and city in member forms
 function initMemberLocationSelects(root = document) {
-  const region = root.querySelector('#id_region');
-  const city = root.querySelector('#id_localidad');
+  const region =
+    root.querySelector('#id_region') ||
+    root.querySelector('#id_comunidad_autonoma');
+  const city =
+    root.querySelector('#id_localidad') ||
+    root.querySelector('#id_ciudad');
   if (!region || !city) return;
 
   const citiesByRegion = {
