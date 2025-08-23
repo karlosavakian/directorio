@@ -1,0 +1,17 @@
+<h3 class="h6 mb-3">Datos adicionales</h3>
+<div class="form-field mb-3">
+  {{ form.descripcion }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
+  {% if form.descripcion.errors %}
+  <div class="invalid-feedback d-block">{{ form.descripcion.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+<div class="form-field">
+  {{ form.logotipo }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.logotipo.id_for_label }}">{{ form.logotipo.label }}</label>
+  {% if form.logotipo.errors %}
+  <div class="invalid-feedback d-block">{{ form.logotipo.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>

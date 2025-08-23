@@ -6,4 +6,5 @@ PyJWT
 Faker
 django-cities-light
 disposable-email-domains
+stripe
 

@@ -122,3 +122,10 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
                 raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
 
+
+class ProExtraForm(UniformFieldsMixin, forms.Form):
+    """Datos adicionales requeridos para completar el perfil profesional."""
+
+    descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
+    logotipo = forms.ImageField(label="Logotipo")
+
