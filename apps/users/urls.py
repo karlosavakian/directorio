@@ -9,6 +9,7 @@ urlpatterns = [
     # Registro de usuarios
     path('signup/', auth.register, name='signup'),
     path('register/', auth.register, name='register'),
+    path('check-username/', auth.check_username, name='check_username'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
     path('profile/', profile_views.profile, name='profile'),

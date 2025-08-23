@@ -158,6 +158,18 @@
   font-size: 1rem;
 }
 
+.profile-form .with-status .clear-btn {
+  right: 40px;
+}
+
+.profile-form .status-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
 .profile-form textarea + .clear-btn {
   display: none !important;
 }
