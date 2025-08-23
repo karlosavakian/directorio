@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       statusIcon.classList.add('d-none');
       statusIcon.classList.remove('bi-check-circle', 'text-success', 'bi-x-circle', 'text-danger');
       if (!username) return;
-      const pattern = /^[A-Za-z0-9_-]+$/;
+      const pattern = /^[A-Za-z0-9_-]{3,}$/;
       if (!pattern.test(username)) {
         statusIcon.classList.remove('d-none');
         statusIcon.classList.add('bi-x-circle', 'text-danger');

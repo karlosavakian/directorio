@@ -69,7 +69,7 @@ class LoginView(DjangoLoginView):
 
 def check_username(request):
     username = request.GET.get('username', '').strip()
-    pattern = r'^[A-Za-z0-9_-]+$'
+    pattern = r'^[A-Za-z0-9_-]{3,}$'
     is_valid = bool(re.fullmatch(pattern, username))
     available = is_valid and not User.objects.filter(username=username).exists()
     return JsonResponse({'available': available})
