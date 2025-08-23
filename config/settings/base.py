@@ -12,7 +12,14 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
- 
+load_dotenv()
+
+STRIPE_SECRET_KEY = os.environ["sk_test_51Rz5iNPFoPk8TDLyO8TgHSKiGKoEkadAIxWv589eHleyni9q1SAYQSvKxou33Xec3ZlOaTCvB84dj08iPulYvaK4006Jx4g2tB"]
+STRIPE_PUBLISHABLE_KEY = os.environ["pk_test_51Rz5iNPFoPk8TDLyLTScU5F3Pv75KTWSnAi6PK8wXT6DiHwirfANwjZ6SsICnbMzHoLJNb1MTCjjuHTo6PiElMnd00CuISxgRg"]
+STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET","")
+STRIPE_CONNECT_REFRESH_URL = os.environ["STRIPE_CONNECT_REFRESH_URL"]
+STRIPE_CONNECT_RETURN_URL  = os.environ["STRIPE_CONNECT_RETURN_URL"]
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
