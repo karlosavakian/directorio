@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   const inputs = document.querySelectorAll('input[name="username"], input[id="id_username"]');
   inputs.forEach(input => {
-    const wrapper = input.closest('.form-field');
-    const statusIcon = wrapper ? wrapper.querySelector('.status-icon') : null;
-    if (!statusIcon) return;
+    const wrapper = input.closest('.form-field') || input.parentElement;
+    let statusIcon = wrapper.querySelector('.status-icon');
+    if (!statusIcon) {
+      statusIcon = document.createElement('i');
+      statusIcon.className = 'status-icon bi d-none';
+      wrapper.appendChild(statusIcon);
+    }
     let timer;
     input.addEventListener('input', () => {
       const username = input.value.trim();

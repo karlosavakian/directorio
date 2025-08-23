@@ -46,10 +46,11 @@
 .tipo-card {
   border: 1px solid #dee2e6;
   border-radius: 0.25rem;
-  padding: 1rem;
+  padding: 2rem;
   cursor: pointer;
   text-align: center;
   position: relative;
+  flex: 0 0 calc(25% - 1rem);
 }
 
 .tipo-card input[type="radio"] {
