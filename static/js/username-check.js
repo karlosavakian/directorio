@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
       wrapper.appendChild(statusIcon);
     }
     let timer;
-    input.addEventListener('input', () => {
+    const runCheck = () => {
       const username = input.value.trim();
       clearTimeout(timer);
       statusIcon.classList.add('d-none');
@@ -34,6 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
           })
           .catch(() => {});
       }, 300);
-    });
+    };
+    input.addEventListener('input', runCheck);
+    if (input.value.trim()) {
+      runCheck();
+    }
   });
 });

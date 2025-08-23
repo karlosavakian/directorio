@@ -71,5 +71,10 @@ def check_username(request):
     username = request.GET.get('username', '').strip()
     pattern = r'^[A-Za-z0-9_-]{3,}$'
     is_valid = bool(re.fullmatch(pattern, username))
-    available = is_valid and not User.objects.filter(username=username).exists()
+    available = False
+    if is_valid:
+        if request.user.is_authenticated and request.user.username == username:
+            available = True
+        else:
+            available = not User.objects.filter(username=username).exists()
     return JsonResponse({'available': available})
