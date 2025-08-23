@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
   const stripeBtn = document.getElementById('stripe-connect-btn');
-  const usernameInput = document.getElementById('id_username');
-  const usernameStatus = document.getElementById('username-status');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -124,31 +122,5 @@ document.addEventListener('DOMContentLoaded', () => {
   togglePaymentSection();
 
   showStep(current);
-
-  if (usernameInput && usernameStatus) {
-    let timer;
-    usernameInput.addEventListener('input', () => {
-      const username = usernameInput.value.trim();
-      clearTimeout(timer);
-      usernameStatus.classList.add('d-none');
-      usernameStatus.classList.remove('bi-person-check-fill', 'text-success', 'bi-person-x-fill', 'text-danger');
-      if (!username) {
-        return;
-      }
-      timer = setTimeout(() => {
-        fetch(`/users/check-username/?username=${encodeURIComponent(username)}`)
-          .then(res => res.json())
-          .then(data => {
-            usernameStatus.classList.remove('d-none');
-            if (data.available) {
-              usernameStatus.classList.add('bi-person-check-fill', 'text-success');
-            } else {
-              usernameStatus.classList.add('bi-person-x-fill', 'text-danger');
-            }
-          })
-          .catch(() => {});
-      }, 300);
-    });
-  }
 });
 

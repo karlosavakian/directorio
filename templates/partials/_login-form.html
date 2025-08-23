@@ -4,7 +4,7 @@
                 <input type="hidden" name="next" value="{{ next_url }}">
                 {% csrf_token %}
 
-                <div class="form-field">
+                <div class="form-field with-status">
                     <input type="text"
                            name="{{ form.username.name }}"
                            value="{{ form.username.value|default_if_none:'' }}"
@@ -13,6 +13,7 @@
                            placeholder=" "
                            required oninvalid="this.setCustomValidity('Rellene este campo')" oninput="setCustomValidity('')">
                     <button type="button" class="clear-btn bi bi-x"></button>
+                    <i class="status-icon bi d-none"></i>
                     <label for="{{ form.username.id_for_label }}">Nombre de usuario o correo electrónico</label>
                     {% if form.username.errors %}
                       <div class="invalid-feedback d-block">

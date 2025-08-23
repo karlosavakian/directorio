@@ -60,9 +60,10 @@
                             </div>
                         {% endif %}
                         <div class="row g-3">
-                            <div class="form-field always-active">
+                            <div class="form-field always-active with-status">
                                 {{ form.username }}
                                 <button type="button" class="clear-btn bi bi-x"></button>
+                                <i class="status-icon bi d-none"></i>
                                 <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
                             </div>
                         </div>
