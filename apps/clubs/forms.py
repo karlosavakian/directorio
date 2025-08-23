@@ -8,6 +8,7 @@ from apps.core.mixins import UniformFieldsMixin
 from .spain import REGION_CHOICES
 from .countries import COUNTRY_CHOICES
 import re
+from django.core.validators import RegexValidator
 
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
@@ -22,6 +23,17 @@ class LoginForm(UniformFieldsMixin, AuthenticationForm):
 
 class RegistroUsuarioForm(UniformFieldsMixin, UserCreationForm):
     email = forms.EmailField(label='Correo electrónico', required=True)
+    username = forms.CharField(
+        label='Nombre de usuario',
+        min_length=3,
+        validators=[RegexValidator(r'^[A-Za-z0-9_-]+$', 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.')],
+        error_messages={
+            'required': 'Rellene este campo',
+            'min_length': 'El nombre de usuario debe tener al menos 3 caracteres',
+            'invalid': 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.'
+        },
+        widget=forms.TextInput(attrs={'minlength':3, 'pattern':'^[A-Za-z0-9_-]+$'})
+    )
 
     class Meta:
         model = User

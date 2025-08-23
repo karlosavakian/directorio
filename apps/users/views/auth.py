@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from ..forms import RegistroUsuarioForm, LoginForm
 from apps.core.services.email_service import send_welcome_email, send_confirmation_email
+import re
 
 
 def register(request):
@@ -68,5 +69,7 @@ class LoginView(DjangoLoginView):
 
 def check_username(request):
     username = request.GET.get('username', '').strip()
-    available = bool(username) and not User.objects.filter(username=username).exists()
+    pattern = r'^[A-Za-z0-9_-]+$'
+    is_valid = bool(re.fullmatch(pattern, username))
+    available = is_valid and not User.objects.filter(username=username).exists()
     return JsonResponse({'available': available})

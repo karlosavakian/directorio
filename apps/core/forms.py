@@ -3,6 +3,7 @@ import re
 from apps.core.mixins import UniformFieldsMixin
 from apps.clubs.countries import COUNTRY_CHOICES
 from apps.clubs.spain import REGION_CHOICES
+from django.core.validators import RegexValidator
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
@@ -136,11 +137,13 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
     username = forms.CharField(
         label="Nombre de usuario",
         min_length=3,
+        validators=[RegexValidator(r'^[A-Za-z0-9_-]+$', 'El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.')],
         error_messages={
             "required": "Rellene este campo",
             "min_length": "El nombre de usuario debe tener al menos 3 caracteres",
+            "invalid": "El nombre de usuario solo puede contener letras, números, guiones y guiones bajos.",
         },
-        widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " "}),
+        widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " ", "pattern": '^[A-Za-z0-9_-]+$'}),
     )
     descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
 
