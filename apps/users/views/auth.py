@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView as DjangoLoginView
 from django.conf import settings
+from django.http import JsonResponse
+from django.contrib.auth.models import User
 from ..forms import RegistroUsuarioForm, LoginForm
 from apps.core.services.email_service import send_welcome_email, send_confirmation_email
 
@@ -62,3 +64,9 @@ class LoginView(DjangoLoginView):
                 next_url = ref
         context['next_url'] = next_url or '/'
         return context
+
+
+def check_username(request):
+    username = request.GET.get('username', '').strip()
+    available = bool(username) and not User.objects.filter(username=username).exists()
+    return JsonResponse({'available': available})

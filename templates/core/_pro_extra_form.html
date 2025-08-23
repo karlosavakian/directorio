@@ -13,9 +13,10 @@
   <div class="invalid-feedback d-block">{{ form.logotipo.errors.as_text|striptags }}</div>
   {% endif %}
 </div>
-<div class="form-field always-active mb-3">
+<div class="form-field always-active mb-3 with-status">
   {{ form.username }}
   <button type="button" class="clear-btn bi bi-x"></button>
+  <i id="username-status" class="status-icon bi d-none"></i>
   <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
   {% if form.username.errors %}
   <div class="invalid-feedback d-block">{{ form.username.errors.as_text|striptags }}</div>
