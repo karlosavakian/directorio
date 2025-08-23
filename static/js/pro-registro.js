@@ -39,6 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!step) return true;
     const fields = step.querySelectorAll('input, select, textarea');
     for (const field of fields) {
+      if (field.name === 'puerta') continue;
+      if (field.type === 'radio') {
+        const group = step.querySelectorAll(`input[name="${field.name}"]`);
+        if (![...group].some(r => r.checked)) {
+          group[0].reportValidity();
+          return false;
+        }
+        continue;
+      }
+      if (field.hasAttribute('required') && !field.value.trim()) {
+        field.reportValidity();
+        return false;
+      }
       if (!field.checkValidity()) {
         field.reportValidity();
         return false;
