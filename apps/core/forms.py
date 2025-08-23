@@ -126,6 +126,14 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 class ProExtraForm(UniformFieldsMixin, forms.Form):
     """Datos adicionales requeridos para completar el perfil profesional."""
     logotipo = forms.ImageField(label="Logotipo")
-    username = forms.CharField(label="Nombre de usuario")
+    username = forms.CharField(
+        label="Nombre de usuario",
+        min_length=3,
+        error_messages={
+            "required": "Rellene este campo",
+            "min_length": "El nombre de usuario debe tener al menos 3 caracteres",
+        },
+        widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " "}),
+    )
     descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
 
