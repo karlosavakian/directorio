@@ -1,6 +1,12 @@
 # apps/core/views.py
 from django.shortcuts import render, redirect
 from django.conf import settings
+from django.http import JsonResponse
+from django.urls import reverse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+import stripe
 from ..forms import (
     TipoUsuarioForm,
     PlanForm,
@@ -76,6 +82,37 @@ def cookies(request):
  
  
 
+@csrf_exempt
+@require_POST
+def create_checkout_session(request):
+    """Create a Stripe Checkout session in test mode."""
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {"name": "Test plan"},
+                    "unit_amount": 1000,
+                },
+                "quantity": 1,
+            }
+        ],
+        success_url=request.build_absolute_uri(reverse("checkout_success")),
+        cancel_url=request.build_absolute_uri(reverse("checkout_cancel")),
+    )
+    return JsonResponse({"sessionId": session.id})
+
+
+def checkout_success(request):
+    """Display Stripe checkout success page."""
+    return render(request, "core/checkout_success.html")
+
+
+def checkout_cancel(request):
+    """Display Stripe checkout cancel page."""
+    return render(request, "core/checkout_cancel.html")
 
 
 def error_404(request, exception=None):
