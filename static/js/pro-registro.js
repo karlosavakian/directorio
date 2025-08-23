@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipoCards = document.querySelectorAll('.tipo-card');
   const planCards = document.querySelectorAll('.plan-card');
   const paymentSection = document.getElementById('payment-section');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const finishBtn = document.getElementById('finishBtn');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -14,21 +17,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     progress.forEach((item, idx) => {
       if (!item) return;
-      item.classList.toggle('active', idx === n - 1);
+      item.classList.toggle('active', idx <= n - 1);
     });
     current = n;
     currentInput.value = current;
+    if (prevBtn) prevBtn.classList.toggle('d-none', n === 1);
+    if (nextBtn) nextBtn.classList.toggle('d-none', n === steps.length);
+    if (finishBtn) finishBtn.classList.toggle('d-none', n !== steps.length);
   }
 
-  const next1 = document.getElementById('next1');
-  const next2 = document.getElementById('next2');
-  const prev2 = document.getElementById('prev2');
-  const prev3 = document.getElementById('prev3');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => showStep(Math.min(current + 1, steps.length)));
+  }
 
-  if (next1) next1.addEventListener('click', () => showStep(2));
-  if (next2) next2.addEventListener('click', () => showStep(3));
-  if (prev2) prev2.addEventListener('click', () => showStep(1));
-  if (prev3) prev3.addEventListener('click', () => showStep(2));
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
+  }
 
   tipoCards.forEach(card => {
     const input = card.querySelector('input');

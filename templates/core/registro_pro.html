@@ -31,7 +31,6 @@
                     {% if form.tipo.errors %}
                         <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
                     {% endif %}
-                    <button type="button" class="btn btn-dark mt-3" id="next1">Siguiente</button>
                 </div>
                 <div id="step2" class="step d-none">
                     <div class="mb-3">{{ form.plan.label }}</div>
@@ -66,14 +65,15 @@
                     {% if form.plan.errors %}
                         <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
                     {% endif %}
-                    <button type="button" class="btn btn-outline-dark me-2" id="prev2">Anterior</button>
-                    <button type="button" class="btn btn-dark" id="next2">Siguiente</button>
                 </div>
                 <div id="step3" class="step d-none">
                     <p class="text-muted">Rellena la información de tu perfil.</p>
                     {% include 'core/_pro_register_form.html' with form=pro_form %}
-                    <button type="button" class="btn btn-outline-dark me-2" id="prev3">Anterior</button>
-                    <button type="submit" class="btn btn-dark">Finalizar</button>
+                </div>
+                <div class="d-flex justify-content-end mt-4">
+                    <button type="button" class="btn btn-outline-dark me-2 d-none" id="prevBtn">Atrás</button>
+                    <button type="button" class="btn btn-dark" id="nextBtn">Continuar</button>
+                    <button type="submit" class="btn btn-dark d-none" id="finishBtn">Finalizar</button>
                 </div>
             </form>
         </div>
