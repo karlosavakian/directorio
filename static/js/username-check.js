@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const inputs = document.querySelectorAll('input[name="username"], input[id="id_username"]');
+  const inputs = document.querySelectorAll('input[name*="username"], input[id*="username"]');
   inputs.forEach(input => {
     const wrapper = input.closest('.form-field') || input.parentElement;
     let statusIcon = wrapper.querySelector('.status-icon');
