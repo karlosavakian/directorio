@@ -1,5 +1,27 @@
 <h3 class="h6 mb-3">Datos adicionales</h3>
 <div class="form-field mb-3">
+  <div class="avatar-dropzone mx-auto">
+    {{ form.logotipo }}
+    <div class="avatar-preview">
+      <div class="avatar-dropzone-msg">
+        <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+        <span>Sube {{ form.logotipo.label|lower }}</span>
+      </div>
+    </div>
+  </div>
+  {% if form.logotipo.errors %}
+  <div class="invalid-feedback d-block">{{ form.logotipo.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+<div class="form-field mb-3">
+  {{ form.username }}
+  <button type="button" class="clear-btn bi bi-x"></button>
+  <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+  {% if form.username.errors %}
+  <div class="invalid-feedback d-block">{{ form.username.errors.as_text|striptags }}</div>
+  {% endif %}
+</div>
+<div class="form-field">
   {{ form.descripcion }}
   <button type="button" class="clear-btn bi bi-x"></button>
   <label for="{{ form.descripcion.id_for_label }}">{{ form.descripcion.label }}</label>
@@ -7,11 +29,4 @@
   <div class="invalid-feedback d-block">{{ form.descripcion.errors.as_text|striptags }}</div>
   {% endif %}
 </div>
-<div class="form-field">
-  {{ form.logotipo }}
-  <button type="button" class="clear-btn bi bi-x"></button>
-  <label for="{{ form.logotipo.id_for_label }}">{{ form.logotipo.label }}</label>
-  {% if form.logotipo.errors %}
-  <div class="invalid-feedback d-block">{{ form.logotipo.errors.as_text|striptags }}</div>
-  {% endif %}
-</div>
+

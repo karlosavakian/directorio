@@ -32,7 +32,7 @@ def registro_profesional(request):
 
     start_step = 1
     pro_form = ProRegisterForm()
-    extra_form = ProExtraForm()
+    extra_form = ProExtraForm(initial={"username": request.user.username})
 
     if request.method == "POST":
         form = RegistroProfesionalForm(request.POST)
