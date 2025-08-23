@@ -24,15 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
       timer = setTimeout(() => {
         fetch(`/users/check-username/?username=${encodeURIComponent(username)}`)
           .then(res => res.json())
-          .then(data => {
+          .then(() => {
             statusIcon.classList.remove('d-none');
-            if (data.available) {
-              statusIcon.classList.add('bi-check-circle', 'text-success');
-              statusIcon.classList.remove('bi-x-circle', 'text-danger');
-            } else {
-              statusIcon.classList.remove('bi-check-circle', 'text-success');
-              statusIcon.classList.add('bi-x-circle', 'text-danger');
-            }
+            statusIcon.classList.add('bi-check-circle', 'text-success');
           })
           .catch(() => {});
       }, 300);
