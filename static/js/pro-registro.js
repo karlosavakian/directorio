@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const steps = ['step1', 'step2', 'step3'].map(id => document.getElementById(id));
-  const progress = ['step-label-1', 'step-label-2', 'step-label-3'].map(id => document.getElementById(id));
+  const steps = ['step1', 'step2', 'step3', 'step4', 'step5'].map(id => document.getElementById(id));
+  const progress = ['step-label-1', 'step-label-2', 'step-label-3', 'step-label-4', 'step-label-5'].map(id => document.getElementById(id));
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
   const tipoCards = document.querySelectorAll('.tipo-card');
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
+  const stripeBtn = document.getElementById('stripe-connect-btn');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -32,6 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prevBtn) {
     prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
+  }
+
+  if (stripeBtn && window.stripePublicKey) {
+    const stripe = Stripe(window.stripePublicKey);
+    stripeBtn.addEventListener('click', () => {
+      // Placeholder para el flujo de Stripe Connect en modo prueba
+      console.log('Stripe Connect init in test mode');
+    });
   }
 
   tipoCards.forEach(card => {

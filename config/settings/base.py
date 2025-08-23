@@ -187,3 +187,8 @@ ACCOUNT_SIGNUP_FIELDS = [
 ]
 # Skip email verification for local development
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# Stripe configuration
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_CONNECT_CLIENT_ID = os.environ.get("STRIPE_CONNECT_CLIENT_ID", "")

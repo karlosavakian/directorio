@@ -1,10 +1,12 @@
 # apps/core/views.py
 from django.shortcuts import render, redirect
+from django.conf import settings
 from ..forms import (
     TipoUsuarioForm,
     PlanForm,
     RegistroProfesionalForm,
     ProRegisterForm,
+    ProExtraForm,
 )
 from ..utils.plans import PLANS
 
@@ -30,12 +32,14 @@ def registro_profesional(request):
 
     start_step = 1
     pro_form = ProRegisterForm()
+    extra_form = ProExtraForm()
 
     if request.method == "POST":
         form = RegistroProfesionalForm(request.POST)
         pro_form = ProRegisterForm(request.POST)
+        extra_form = ProExtraForm(request.POST, request.FILES)
 
-        if form.is_valid() and pro_form.is_valid():
+        if form.is_valid() and pro_form.is_valid() and extra_form.is_valid():
             return render(request, "core/registro_pro_success.html")
         start_step = request.POST.get("current_step", 1)
     else:
@@ -48,8 +52,10 @@ def registro_profesional(request):
             "form": form,
             "start_step": start_step,
             "pro_form": pro_form,
+            "extra_form": extra_form,
             "plans": PLANS,
             "current_plan": form["plan"].value(),
+            "stripe_public_key": settings.STRIPE_PUBLIC_KEY,
         },
     )
 
