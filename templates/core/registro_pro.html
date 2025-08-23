@@ -2,15 +2,15 @@
 {% load static %}
 {% block title %}Clubs de Boxeo | Registro Pro{% endblock %}
 {% block content %}
-    <div class="container-fluid  px-3 my-5 col-8">
-        <div class="mx-auto">
+    <div class="container-fluid  px-3 my-5 ">
+        <div class="col-8 mx-auto">
             <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
-            <ul class="progress-steps mb-4">
+            <ul class="progress-steps mb-5">
                 <li class="step-item active" data-step="1" id="step-label-1"></li>
                 <li class="step-item" data-step="2" id="step-label-2"></li>
                 <li class="step-item" data-step="3" id="step-label-3"></li>
             </ul>
-            <form method="post" class="profile-form">
+            <form method="post" class="profile-form mt-5">
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <input type="hidden"
@@ -18,8 +18,7 @@
                        id="current-step"
                        value="{{ start_step }}">
                 <div id="step1" class="step">
-                    <div class="mb-3">{{ form.tipo.label }}</div>
-                    <p class="text-muted">Indícanos qué tipo de profesional eres.</p>
+                    <p class="text-muted text-center">Indícanos qué tipo de profesional eres.</p>
                     <div class="d-flex justify-content-center flex-wrap gap-3">
                         {% for radio in form.tipo %}
                             <label class="tipo-card">
@@ -33,7 +32,10 @@
                     {% endif %}
                 </div>
                 <div id="step2" class="step d-none">
-                    <div class="mb-3">{{ form.plan.label }}</div>
+                    <h1 class="text-center mb-3">Nuestros Planes</h1>
+                    <p class="text-center text-muted mb-5">
+                        Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
+                    </p>
                     {% include 'core/components/_plan_option_cards.html' %}
                     <div id="payment-section" class="mt-4 d-none">
                         <h3 class="h6 mb-3">Datos de pago</h3>
