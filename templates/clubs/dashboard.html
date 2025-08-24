@@ -1,1392 +1,1077 @@
 {% extends 'base.html' %}
 {% load static utils_filters %}
-
 {% block title %}Clubs de Boxeo | Mi Perfil{% endblock %}
 {% block body_class %}d-flex flex-column min-vh-100 dashboard-page{% endblock %}
-
 {% block content %}
-<main class="flex-grow-1">
-  <div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
-    <select id="mobile-dashboard-tabs"
-            class="profile-tabs-select form-select  w-auto text-end">
-      <option value="tab-profile">Mi Perfil</option>
-      <option value="tab-gallery">Galería</option>
-      <option value="tab-schedule">Horarios</option>
-      <option value="tab-clase">Servicios</option>
-      <option value="tab-bookings">Reservas</option>
-      <option value="tab-coaches">Entrenadores</option>
-      <option value="tab-competitors">Competidores</option>
-      <option value="tab-members">Miembros</option>
-      <option value="tab-matchmaker">Matchmaker</option>
-    </select>
-  </div>
-<div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
-  <div class="profile-tabs d-none d-lg-block">
-    <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
-    <div class="profile-tab" data-target="tab-gallery">Galería</div> 
-    <div class="profile-tab" data-target="tab-schedule">Horarios</div>
-    <div class="profile-tab" data-target="tab-clase">Servicios</div>
-    <div class="profile-tab" data-target="tab-bookings">Reservas</div>
-    <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
-    <div class="profile-tab" data-target="tab-competitors">Competidores</div>
-    <div class="profile-tab" data-target="tab-members">Miembros</div>
-    <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
-  </div>
-  <div class="profile-content">
-      <div id="tab-profile" class="profile-section active">
-        <h4>Administrar Perfil</h4>
-        <form
-          method="post"
-          action="{% url 'club_dashboard' %}"
-          enctype="multipart/form-data"
-          class="profile-form "
-        >
-        {% csrf_token %}
-        <div class="row g-3 mt-3">
-          <div class="col-lg-6">
-        <h5 class="mb-3  ">Logotipo</h5>
-        <div class="mb-5 text-center bg-dark p-3   rounded">
-          <div class="avatar-dropzone avatar-dropzone-square p-3">
-            {{ form.profilepic }}
-            <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
-              {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
-              <div class="avatar-dropzone-msg p-3">
-                <i class="bi bi-cloud-upload mb-1 fs-4"></i>
-                <span>Arrastra una imagen o haz click </span>
-              </div>
-            </div>
-          </div>
-          {% if form.profilepic.errors %}
-          <div class="invalid-feedback d-block">{{ form.profilepic.errors.as_text|striptags }}</div>
-          {% endif %}
-        </div>
-
-        <div class="row g-3">
-          <div class="form-field col-md-12 ">
-            {{ form.name }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
-            {% if form.name.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.name.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-           <div class="form-field">
-            {{ form.about }}
-            <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
-            {% if form.about.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.about.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-            </div>
-
-
-        </div>
-
-        <h5 class="mt-4">Dirección del club</h5>
-        <div class="row g-3 mt-2">
-          <div class="form-field col-md-4">
-            {{ form.country }}
-            <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
-            {% if form.country.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.country.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-4">
-            {{ form.region }}
-            <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
-            {% if form.region.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.region.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-4">
-            {{ form.city }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
-            {% if form.city.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.city.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
-        <div class="row g-3">
-          <div class="form-field col-md-6">
-            {{ form.street }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
-            {% if form.street.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.street.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-2">
-            {{ form.number }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.number.id_for_label }}">{{ form.number.label }}</label>
-            {% if form.number.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.number.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-2">
-            {{ form.door }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.door.id_for_label }}">{{ form.door.label }}</label>
-            {% if form.door.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.door.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="form-field col-md-2">
-            {{ form.postal_code }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ form.postal_code.id_for_label }}">{{ form.postal_code.label }}</label>
-            {% if form.postal_code.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.postal_code.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-        </div>
+  <main class="flex-grow-1">
+    <div class="d-lg-none ps-2 pe-2 pt-2 d-flex justify-content-end">
+      <select id="mobile-dashboard-tabs"
+              class="profile-tabs-select form-select  w-auto text-end">
+        <option value="tab-profile">Mi Perfil</option>
+        <option value="tab-gallery">Galería</option>
+        <option value="tab-schedule">Horarios</option>
+        <option value="tab-clase">Servicios</option>
+        <option value="tab-bookings">Reservas</option>
+        <option value="tab-coaches">Entrenadores</option>
+        <option value="tab-competitors">Competidores</option>
+        <option value="tab-members">Miembros</option>
+        <option value="tab-matchmaker">Matchmaker</option>
+      </select>
+    </div>
+    <div class="d-flex flex-grow-1 mt-5 mb-5 container-fluid col-12">
+      <div class="profile-tabs d-none d-lg-block">
+        <div class="profile-tab active" data-target="tab-profile">Mi Perfil</div>
+        <div class="profile-tab" data-target="tab-gallery">Galería</div>
+        <div class="profile-tab" data-target="tab-schedule">Horarios</div>
+        <div class="profile-tab" data-target="tab-clase">Servicios</div>
+        <div class="profile-tab" data-target="tab-bookings">Reservas</div>
+        <div class="profile-tab" data-target="tab-coaches">Entrenadores</div>
+        <div class="profile-tab" data-target="tab-competitors">Competidores</div>
+        <div class="profile-tab" data-target="tab-members">Miembros</div>
+        <div class="profile-tab" data-target="tab-matchmaker">Matchmaker</div>
       </div>
-      <div class="col-lg-6 d-flex justify-content-end ps-5">
-          <!-- Features -->
-          <div class="form-field">
-
-            <div class="d-flex justify-content-end align-items-end gap-3 mb-3">
-                <button
-                  type="button"
-                  id="features-select-all"
-                  class="small bg-transparent border-0 fw-medium text-black"
-                >
-                  Seleccionar todas
-                </button>
-                <button
-                  type="button"
-                  id="features-deselect-all"
-                  class="small bg-transparent border-0 fw-medium text-secondary"
-                >
-                  Desmarcar todas
-                </button>
-              </div>
-               <h5 class="d-block mb-2">{{ form.features.label }}</h5>
-
-               <div class="d-flex justify-content-between align-items-start mb-3">
-              <p class="small text-muted mb-0">
-                Selecciona las instalaciones y equipamiento disponible en tu club.
-              </p>
-            </div>
-            <div class="d-flex flex-wrap gap-3" id="features-container">
-              {% for feature in form.features.field.queryset %}
-              <div
-                class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
-                style="padding: 8px 16px"
-              >
-                <input
-                  type="checkbox"
-                  name="features"
-                  value="{{ feature.id }}"
-                  class="d-none"
-                  {% if feature in club.features.all %}checked{% endif %}
-                  {% if forloop.first %}required{% endif %}
-                />
-                {% if feature.icon %}
-                <img
-                  src="{{ feature.icon.url }}"
-                  alt="{{ feature.name }}"
-                  style="width: 50px; height: 50px; object-fit: contain; user-select: none"
-                  class="me-2"
-                />
-                {% endif %}
-                <div class="text-wrap" style="font-size: 14px; user-select: none">
-                  {{ feature.name }}
+      <div class="profile-content">
+        <div id="tab-profile" class="profile-section active">
+          <h4>Administrar Perfil</h4>
+          <form method="post"
+                action="{% url 'club_dashboard' %}"
+                enctype="multipart/form-data"
+                class="profile-form ">
+            {% csrf_token %}
+            <div class="row g-3 mt-3">
+              <div class="col-lg-6">
+                <h5 class="mb-3  ">Logotipo</h5>
+                <div class="mb-5 text-center bg-dark p-3   rounded">
+                  <div class="avatar-dropzone avatar-dropzone-square p-3">
+                    {{ form.profilepic }}
+                    <div class="avatar-preview{% if club.profilepic|safe_url %} has-image{% endif %}"
+                         {% if club.profilepic|safe_url %}style="background-image:url('{{ club.profilepic|safe_url }}')"{% endif %}>
+                      <div class="avatar-dropzone-msg p-3">
+                        <i class="bi bi-cloud-upload mb-1 fs-4"></i>
+                        <span>Arrastra una imagen o haz click</span>
+                      </div>
+                    </div>
+                  </div>
+                  {% if form.profilepic.errors %}
+                    <div class="invalid-feedback d-block">{{ form.profilepic.errors.as_text|striptags }}</div>
+                  {% endif %}
+                </div>
+                <div class="row g-3">
+                  <div class="form-field col-md-12 ">
+                    {{ form.name }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                    {% if form.name.errors %}
+                      <div class="invalid-feedback d-block">{{ form.name.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field">
+                    {{ form.about }}
+                    <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
+                    {% if form.about.errors %}
+                      <div class="invalid-feedback d-block">{{ form.about.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <h5 class="mt-4">Dirección del club</h5>
+                <div class="row g-3 mt-2">
+                  <div class="form-field col-md-4">
+                    {{ form.country }}
+                    <label for="{{ form.country.id_for_label }}">{{ form.country.label }}</label>
+                    {% if form.country.errors %}
+                      <div class="invalid-feedback d-block">{{ form.country.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field col-md-4">
+                    {{ form.region }}
+                    <label for="{{ form.region.id_for_label }}">{{ form.region.label }}</label>
+                    {% if form.region.errors %}
+                      <div class="invalid-feedback d-block">{{ form.region.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field col-md-4">
+                    {{ form.city }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+                    {% if form.city.errors %}
+                      <div class="invalid-feedback d-block">{{ form.city.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="row g-3">
+                  <div class="form-field col-md-6">
+                    {{ form.street }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
+                    {% if form.street.errors %}
+                      <div class="invalid-feedback d-block">{{ form.street.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field col-md-2">
+                    {{ form.number }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.number.id_for_label }}">{{ form.number.label }}</label>
+                    {% if form.number.errors %}
+                      <div class="invalid-feedback d-block">{{ form.number.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field col-md-2">
+                    {{ form.door }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.door.id_for_label }}">{{ form.door.label }}</label>
+                    {% if form.door.errors %}
+                      <div class="invalid-feedback d-block">{{ form.door.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="form-field col-md-2">
+                    {{ form.postal_code }}
+                    <button type="button" class="clear-btn bi bi-x"></button>
+                    <label for="{{ form.postal_code.id_for_label }}">{{ form.postal_code.label }}</label>
+                    {% if form.postal_code.errors %}
+                      <div class="invalid-feedback d-block">{{ form.postal_code.errors.as_text|striptags }}</div>
+                    {% endif %}
+                  </div>
                 </div>
               </div>
-              {% endfor %}
+              <div class="col-lg-6 d-flex justify-content-end ps-5">
+                <!-- Features -->
+                {% include 'core/components/_features_form.html' %}
+              </div>
             </div>
-            {% if form.features.errors %}
-            <div class="invalid-feedback d-block">
-              {{ form.features.errors.as_text|striptags }}
-            </div>
-            {% endif %}
-          </div>
-
-        </div>
-
-      </div>
-        <button type="submit" class="btn btn-dark mt-4">Guardar</button>
-      </form>
-
-    </div>
-    <div id="tab-gallery" class="profile-section">
-
-      <h4>Galería de fotos</h4>
-      <div class="d-flex justify-content-between align-items-center mb-3">
-
-
-        <div class="d-flex align-items-center gap-3">
-          <button
-            type="button"
-            id="select-all"
-            class="small bg-transparent border-0 fw-medium text-black"
-          >
-            Seleccionar todas
-          </button>
-
-          <button
-            type="button"
-            id="deselect-all"
-            class="small bg-transparent border-0 fw-medium text-secondary"
-          >
-            Desmarcar todas
-          </button>
-
-          <form
-            id="bulk-delete-form"
-            method="post"
-            action="{% url 'clubphoto_bulk_delete' club.slug %}"
-            class="d-inline mb-0"
-          >
-            {% csrf_token %}
-            <input type="hidden" name="ids" id="delete-ids" />
-            <button
-              type="submit"
-              id="delete-selected"
-              class="small bg-transparent border-0 fw-medium text-secondary"
-            >
-              Eliminar
-            </button>
+            <button type="submit" class="btn btn-dark mt-4">Guardar</button>
           </form>
         </div>
-        <div>
-         <form
-           id="upload-form"
-           method="post"
-           enctype="multipart/form-data"
-           action="{% url 'clubphoto_upload' club.slug %}"
-           class="mb-0"
-         >
-           {% csrf_token %}
-           <input
-             type="file"
-             name="image"
-             id="id_gallery_image"
-             multiple
-             class="d-none"
-           />
-           <button
-             type="button"
-             id="add-photos-btn"
-             class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2"
-           >
-             <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
-           </button>
-         </form>
-       </div>
-      </div>
-
-      <div id="gallery-grid" class="gallery-grid">
-        {% for photo in club.photos.all %}
-        <div
-          class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
-          draggable="true"
-          data-id="{{ photo.id }}"
-        >
-          <img
-            src="{{ photo.image.url }}"
-            alt="foto"
-            class="w-100 h-100 object-fit-cover rounded"
-          />
-          <div class="small photo-dimensions">
-            {{ photo.image.width }}x{{ photo.image.height }}px
-          </div>
-          <input
-            type="checkbox"
-            class="photo-checkbox"
-            value="{{ photo.id }}"
-          />
-          <div class="gallery-hover-actions">
-            <span class="drag-handle bi bi-arrows-move"></span>
-            <div class="dropdown">
-              <button
-                class="btn btn-light btn-sm dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Opciones
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <form
+        <div id="tab-gallery" class="profile-section">
+          <h4>Galería de fotos</h4>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <button type="button"
+                      id="select-all"
+                      class="small bg-transparent border-0 fw-medium text-black">Seleccionar todas</button>
+              <button type="button"
+                      id="deselect-all"
+                      class="small bg-transparent border-0 fw-medium text-secondary">Desmarcar todas</button>
+              <form id="bulk-delete-form"
                     method="post"
-                    action="{% url 'clubphoto_set_main' photo.id %}"
-                  >
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-item">
-                      Destacar
-                    </button>
-                  </form>
-                </li>
-                <li>
-                  <form
-                    method="post"
-                    action="{% url 'clubphoto_delete' photo.id %}"
-                  >
-                    {% csrf_token %}
-                    <button type="submit" class="dropdown-item text-danger">
-                      Eliminar
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </div>
-          </div>
-          {% if photo.is_main %}
-          <span class="bi bi-pin-angle-fill main-pin"></span>
-          {% endif %}
-        </div>
-        {% empty %}
-        <p>No hay fotos.</p>
-        {% endfor %}
-      </div>
-    </div>
-    
-    <div id="tab-clase" class="profile-section">
-      <h4>Mis servicios</h4>
-      <div class="mb-4 align-items-end d-flex mx-auto justify-content-end">
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark add-booking-class-btn"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-        </button>
-      </div>
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for c in booking_classes %}
-        <div class="col">
-          <div class="class-card border rounded text-center p-3 h-100 d-flex flex-column justify-content-between position-relative {% if c.destacado %}highlighted{% endif %}">
-            {% if c.destacado %}
-            <span class="offer-badge position-absolute top-0 end-0 m-1 text-danger">Oferta <i class="bi bi-fire"></i></span>
-            {% endif %}
-            {% if c.detalle %}
-            <span class="d-block">
-              <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="{{ c.detalle }}"></i>
-            </span>
-            {% endif %}
-            <div>
-              <span class="fw-bold text-uppercase d-block">{{ c.titulo }}</span>
-              <span class="d-block">{% if c.precio == 0 %}Gratis{% else %}{{ c.precio }} €{% endif %}</span>
-              <span class="d-block fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} min</small></span>
-            </div>
-            <div class="mt-2 d-flex justify-content-center gap-2">
-              <button type="button" class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark" data-class-id="{{ c.id }}"></button>
-              <form method="post" action="{% url 'booking_class_delete' c.id %}" class="m-0 p-0 delete-profile-form">
+                    action="{% url 'clubphoto_bulk_delete' club.slug %}"
+                    class="d-inline mb-0">
                 {% csrf_token %}
-                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
+                <input type="hidden" name="ids" id="delete-ids" />
+                <button type="submit"
+                        id="delete-selected"
+                        class="small bg-transparent border-0 fw-medium text-secondary">Eliminar</button>
+              </form>
+            </div>
+            <div>
+              <form id="upload-form"
+                    method="post"
+                    enctype="multipart/form-data"
+                    action="{% url 'clubphoto_upload' club.slug %}"
+                    class="mb-0">
+                {% csrf_token %}
+                <input type="file"
+                       name="image"
+                       id="id_gallery_image"
+                       multiple
+                       class="d-none" />
+                <button type="button"
+                        id="add-photos-btn"
+                        class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2">
+                  <i class="bi bi-plus-circle icon-large"></i> Añadir fotos
+                </button>
               </form>
             </div>
           </div>
-        </div>
-        {% empty %}
-        <p class="text-muted">No hay servicios.</p>
-        {% endfor %}
-      </div>
-    </div>
-    <div id="tab-schedule" class="profile-section">
-      <h4>Horarios del club</h4>
-
-      <div class="mt-4 table-responsive">
-        <table
-          class="table table-bordered text-center align-middle"
-          style="min-width: 700px"
-        >
-          <thead class="table-dark">
-            <tr>
-              {% for dia, nombre in dias_semana %}
-              <th scope="col">{{ nombre }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {% for dia, nombre in dias_semana %}
-              <td style="vertical-align: top">
-                <!-- Botón añadir -->
-                <div class="mb-3">
-                  <button
-                    class="btn btn-sm btn-outline-dark w-100 h-50"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#add-{{ dia }}"
-                    aria-expanded="false"
-                    aria-controls="add-{{ dia }}"
-                  >
-                    <i class="bi bi-plus-circle"></i> Añadir
-                  </button>
-
-                  <div class="collapse mt-2" id="add-{{ dia }}">
-                    <form
-                      method="post"
-                      action="{% url 'horario_create' club.slug %}"
-                    >
-                      {% csrf_token %}
-                      <input type="hidden" name="dia" value="{{ dia }}" />
-                      <div class="row g-2">
-                        <div class="col">
-                          <input
-                            type="time"
-                            name="hora_inicio"
-                            class="form-control form-control-sm"
-                            required
-                          />
-                        </div>
-                        <div class="col">
-                          <input
-                            type="time"
-                            name="hora_fin"
-                            class="form-control form-control-sm"
-                            required
-                          />
-                        </div>
-                        <div class="col">
-                          <select
-                            name="estado"
-                            class="form-select form-select-sm"
-                          >
-                            <option value="abierto">Abierto</option>
-                            <option value="cerrado">Cerrado</option>
-                            <option value="otro">Otro</option>
-                          </select>
-                        </div>
-                        <div class="col" style="display: none">
-                          <input
-                            type="text"
-                            name="estado_otro"
-                            class="form-control form-control-sm"
-                            maxlength="30"
-                            placeholder="Especificar"
-                          />
-                        </div>
-                        <div class="col-auto">
-                          <button type="submit" class="btn btn-sm btn-dark">
-                            Guardar
-                          </button>
-                        </div>
-                      </div>
-                    </form>
+          <div id="gallery-grid" class="gallery-grid">
+            {% for photo in club.photos.all %}
+              <div class="gallery-item position-relative{% if photo.is_main %} main{% endif %}"
+                   draggable="true"
+                   data-id="{{ photo.id }}">
+                <img src="{{ photo.image.url }}"
+                     alt="foto"
+                     class="w-100 h-100 object-fit-cover rounded" />
+                <div class="small photo-dimensions">{{ photo.image.width }}x{{ photo.image.height }}px</div>
+                <input type="checkbox" class="photo-checkbox" value="{{ photo.id }}" />
+                <div class="gallery-hover-actions">
+                  <span class="drag-handle bi bi-arrows-move"></span>
+                  <div class="dropdown">
+                    <button class="btn btn-light btn-sm dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">Opciones</button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <form method="post" action="{% url 'clubphoto_set_main' photo.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="dropdown-item">Destacar</button>
+                        </form>
+                      </li>
+                      <li>
+                        <form method="post" action="{% url 'clubphoto_delete' photo.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="dropdown-item text-danger">Eliminar</button>
+                        </form>
+                      </li>
+                    </ul>
                   </div>
                 </div>
-
-                {% for bloque in horarios_por_dia|get_item:dia %}
-                <div
-                  class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1"
-                >
-                  {% if bloque.estado == 'abierto' %}
-                  <div
-                    class="schedule-item"
-                    data-start="{{ bloque.hora_inicio|time:'H:i' }}"
-                    data-end="{{ bloque.hora_fin|time:'H:i' }}"
-                  >
-                    {{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}
-                  </div>
-                  {% elif bloque.estado == 'cerrado' %}
-                  <div class="text-danger">Cerrado</div>
-                  {% else %}
-                  <div class="text-muted">{{ bloque.estado_otro }}</div>
-                  {% endif %}
-                  <span>
-                    <!-- Editar -->
-                    <a
-                      data-bs-toggle="collapse"
-                      href="#edit-{{ bloque.id }}"
-                      role="button"
-                      aria-expanded="false"
-                      aria-controls="edit-{{ bloque.id }}"
-                      class="btn btn-sm btn-link"
-                    >
-                      <i class="bi bi-pencil-square icon-large"></i>
-                    </a>
-                    <!-- Borrar -->
-                    <form
-                      method="post"
-                      action="{% url 'horario_delete' bloque.id %}"
-                      class="d-inline"
-                    >
-                      {% csrf_token %}
-                      <button
-                        type="submit"
-                        class="btn btn-sm btn-link text-danger"
-                      >
-                        <i class="bi bi-dash-circle icon-large"></i>
-                      </button>
-                    </form>
-                  </span>
-                </div>
-                <!-- Collapse para editar -->
-                <div class="collapse" id="edit-{{ bloque.id }}">
-                  <form
-                    method="post"
-                    action="{% url 'horario_update' bloque.id %}"
-                  >
-                    {% csrf_token %}
-                    <input type="hidden" name="dia" value="{{ bloque.dia }}" />
-                    <div class="row g-2 mt-2">
-                      <div class="col">
-                        <input
-                          type="time"
-                          name="hora_inicio"
-                          value="{{ bloque.hora_inicio|time:'H:i' }}"
-                          class="form-control form-control-sm"
-                          required
-                        />
-                      </div>
-                      <div class="col">
-                        <input
-                          type="time"
-                          name="hora_fin"
-                          value="{{ bloque.hora_fin|time:'H:i' }}"
-                          class="form-control form-control-sm"
-                          required
-                        />
-                      </div>
-                      <div class="col">
-                        <select
-                          name="estado"
-                          class="form-select form-select-sm"
-                        >
-                          <option
-                            value="abierto"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="abierto"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Abierto
-                          </option>
-                          <option
-                            value="cerrado"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="cerrado"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Cerrado
-                          </option>
-                          <option
-                            value="otro"
-                            {%
-                            if
-                            bloque.estado=""
-                            ="otro"
-                            %}selected{%
-                            endif
-                            %}
-                          >
-                            Otro
-                          </option>
-                        </select>
-                      </div>
-                      <div class="col" style="display: none">
-                        <input
-                          type="text"
-                          name="estado_otro"
-                          value="{{ bloque.estado_otro }}"
-                          class="form-control form-control-sm"
-                          maxlength="30"
-                          placeholder="Especificar"
-                        />
-                      </div>
-                      <div class="col-auto">
-                        <button type="submit" class="btn btn-sm btn-dark">
-                          Guardar
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                {% empty %}
-                <small class="text-muted">Sin horarios</small>
-                {% endfor %}
-              </td>
-              {% endfor %}
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-           <div id="availability-manager" class="mb-4" data-club-slug="{{ club.slug }}">
-        <h4 class="mb-4 mt-4">Administrar disponibilidad</h4>
-
-        <div id="schedule-manager" class="mb-3">
-          <!-- Removed legacy day and time pickers -->
-          {{ horarios_json|json_script:"schedule-data" }}
-        </div>
-        <div class="d-flex align-items-center gap-2 mb-2">
-          <button id="availability-prev" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <select id="availability-month" class="form-select form-select-sm" style="width:auto;">
-            {% for idx, label in months %}
-              <option value="{{ idx }}" {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
+                {% if photo.is_main %}<span class="bi bi-pin-angle-fill main-pin"></span>{% endif %}
+              </div>
+            {% empty %}
+              <p>No hay fotos.</p>
             {% endfor %}
-          </select>
-          <select id="availability-year" class="form-select form-select-sm" style="width:auto;">
-            <option value="{{ today.year }}" selected>{{ today.year }}</option>
-          </select>
-          <button id="availability-next" class="btn btn-light btn-sm">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <div class="table-responsive">
-          <table id="availability-table" class="table table-bordered table-sm text-center">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <div class="d-flex gap-2">
-          <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
-          <button type="button" id="availability-clear" class="btn btn-outline-danger btn-sm">Limpiar</button>
-        </div>
-      </div>
-
-
-    </div>
-    <div id="tab-coaches" class="profile-section">
-
-        <h4>Entrenadores</h4>
-
-        <div class="d-flex justify-content-end mb-2">
-          <button
-            type="button"
-            class="btn btn-outline-dark mb-4 d-inline-flex   align-items-center  gap-2 btn-sm add-coach-btn "
-            data-club-slug="{{ club.slug }}"
-          >
-            <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-          </button>
-
-              </div>
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for coach in club.entrenadores.all %}
-        <div class="col">
-          <div class="card h-100 text-center">
-            {% if coach.avatar %}
-            <img
-              src="{{ coach.avatar.url }}"
-              class="card-img-top object-fit-cover"
-              style="height: 250px"
-              alt="{{ coach.nombre }}"
-            />
-            {% else %}
-            <div
-              class="card-img-top d-flex align-items-center justify-content-center bg-light"
-              style="height: 250px"
-            >
-              <span class="text-muted">{{ coach.nombre|initials}}</span>
-            </div>
-            {% endif %}
-
-            <div class="card-body p-2">
-              <!-- Nombre centrado -->
-              <span class="fw-medium text-center mb-2"
-                >{{ coach.nombre }} {{ coach.apellidos }}</span
-              >
-
-              <!-- Iconos debajo del nombre, centrados -->
-              <div class="mt-2 d-flex justify-content-center gap-2">
-                <a
-                  href="{% url 'entrenador_update' coach.id %}"
-                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
-                ></a>
-
-                <form
-                  method="post"
-                  action="{% url 'entrenador_delete' coach.id %}"
-                  class="m-0 p-0 delete-profile-form"
-                >
-                  {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center"
-                  ></button>
-                </form>
-              </div>
-            </div>
           </div>
         </div>
-        {% empty %}
-        <p>No hay entrenadores.</p>
-        {% endfor %}
-      </div>
-    </div>
-    <div id="tab-competitors" class="profile-section">
-      <h4>Competidores</h4>
-
-      <div class="d-flex justify-content-end mb-2">
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-        </button>
-
-  </div>
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-        {% for comp in club.competidores.all %}
-        <div class="col">
-          <div class="card text-center">
-            {% if comp.avatar %}
-            <img
-              src="{{ comp.avatar.url }}"
-              class="card-img-top object-fit-cover"
-              style="height: 200px"
-              alt="{{ comp.nombre }} {{ comp.apellidos }}"
-            />
-            {% else %}
-            <div
-              class="card-img-top d-flex align-items-center justify-content-center bg-light"
-              style="height: 200px"
-            >
-              <span class="text-muted">{{ comp.nombre|add:' '|add:comp.apellidos|initials }}</span>
-            </div>
-            {% endif %}
-            <div
-              class="card-body p-2 d-flex flex-column justify-content-between"
-            >
-              <div
-                class="d-flex justify-content-center align-items-center mb-2"
-              >
-                <span class="fw-medium text-center">{{ comp.nombre }} {{ comp.apellidos }}</span>
+        <div id="tab-clase" class="profile-section">
+          <h4>Mis servicios</h4>
+          <div class="mb-4 align-items-end d-flex mx-auto justify-content-end">
+            <button type="button"
+                    class="btn btn-sm btn-outline-dark add-booking-class-btn"
+                    data-club-slug="{{ club.slug }}">
+              <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+            </button>
+          </div>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+            {% for c in booking_classes %}
+              <div class="col">
+                <div class="class-card border rounded text-center p-3 h-100 d-flex flex-column justify-content-between position-relative {% if c.destacado %}highlighted{% endif %}">
+                  {% if c.destacado %}
+                    <span class="offer-badge position-absolute top-0 end-0 m-1 text-danger">Oferta <i class="bi bi-fire"></i></span>
+                  {% endif %}
+                  {% if c.detalle %}
+                    <span class="d-block">
+                      <i class="bi bi-info-circle"
+                         data-bs-toggle="tooltip"
+                         title="{{ c.detalle }}"></i>
+                    </span>
+                  {% endif %}
+                  <div>
+                    <span class="fw-bold text-uppercase d-block">{{ c.titulo }}</span>
+                    <span class="d-block">
+                      {% if c.precio == 0 %}
+                        Gratis
+                      {% else %}
+                        {{ c.precio }} €
+                      {% endif %}
+                    </span>
+                    <span class="d-block fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} min</small></span>
+                  </div>
+                  <div class="mt-2 d-flex justify-content-center gap-2">
+                    <button type="button"
+                            class="bi bi-pencil-square icon-large btn btn-link p-0 edit-booking-class-btn text-dark"
+                            data-class-id="{{ c.id }}"></button>
+                    <form method="post"
+                          action="{% url 'booking_class_delete' c.id %}"
+                          class="m-0 p-0 delete-profile-form">
+                      {% csrf_token %}
+                      <button type="submit"
+                              class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
+                    </form>
+                  </div>
+                </div>
               </div>
-
-              <!-- Información del competidor -->
-              <small class="text-center mb-2">
-                {% with rec=comp.record_tuple %}
-                <span class="fw-bold text-success">{{ rec.0 }}</span>-
-                <span class="fw-bold text-danger">{{ rec.1 }}</span>-
-                <span class="fw-bold text-primary">{{ rec.2 }}</span>
-                {% endwith %}
-                <br />
-                <span>{{ comp.categoria }}</span>
-              </small>
-
-              <!-- Iconos abajo, centrados -->
-              <div class="mt-1 d-flex justify-content-center gap-2">
-                <a
-                  href="{% url 'competidor_update' comp.id %}"
-                  class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"
-                ></a>
-
-                <form
-                  method="post"
-                  action="{% url 'competidor_delete' comp.id %}"
-                  class="d-flex align-items-center p-0 m-0 delete-profile-form"
-                >
-                  {% csrf_token %}
-                  <button
-                    type="submit"
-                    class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center"
-                  ></button>
-                </form>
-              </div>
-            </div>
+            {% empty %}
+              <p class="text-muted">No hay servicios.</p>
+            {% endfor %}
           </div>
         </div>
-        {% empty %}
-        <p>No hay competidores.</p>
-        {% endfor %}
-      </div>
-    </div>
-    <div id="tab-members" class="profile-section">
-      <h4>Miembros</h4>
-
-      <div class="d-flex justify-content-end mb-2">
-
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 add-member-btn"
-          data-club-slug="{{ club.slug }}"
-        >
-          <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
-        </button>
-</div>
-      <div class="d-flex align-items-center gap-2 mb-3">
-
-
-        <div class="ms-auto d-flex align-items-center">
-          <div class="member-search">
-            <form method="get" id="member-search-form" class="member-search-form">
-              <button type="submit" class="search-icon">
-                <svg
-                    class="w-6 h-6 text-gray-800 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke="#000"
-                        stroke-linecap="round"
-                        stroke-width="2"
-                        d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                    />
-                </svg>
-              </button>
-              <input
-                type="text"
-                name="q"
-                id="member-search-input"
-                placeholder="Buscar miembro"
-                value="{{ request.GET.q }}"
-                autocomplete="off"
-              />
-              <button type="button" class="close-icon">&times;</button>
-            </form>
-          </div>
-          {% include 'partials/_member-sort.html' %}
-        </div>
-      </div>
-      <div class="row g-3">
-        <div class="col-12">
-          <div class="members-table-responsive">
-            <table
-              class="table table-bordered text-center align-middle"
-              style="min-width: 600px"
-            >
+        <div id="tab-schedule" class="profile-section">
+          <h4>Horarios del club</h4>
+          <div class="mt-4 table-responsive">
+            <table class="table table-bordered text-center align-middle"
+                   style="min-width: 700px">
               <thead class="table-dark">
                 <tr>
-                  <th>ID</th>
-                  <th>Nombre y Apellidos</th>
-                  <th class="text-nowrap phone-column">Teléfono</th>
-                  <th>Email</th>
-                  <th>Fuente</th>
-                  <th>Inscrito</th>
-                  <th class="text-nowrap" style="width: 1%">
-                    <div class="dropdown d-inline">
-                      <span>Estado</span>
-                      <button
-                        class="btn btn-link p-0 ms-1"
-                        type="button"
-                        id="estado-filter-btn"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-funnel-fill text-white"></i>
-                      </button>
-                      <form
-                        class="dropdown-menu p-3"
-                        aria-labelledby="estado-filter-btn"
-                        id="estado-filter-menu"
-                      >
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="estado-filter"
-                            id="estado-dd-activo"
-                            value="activo"
-                          />
-                          <label class="form-check-label" for="estado-dd-activo"
-                            >Activo</label
-                          >
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="estado-filter"
-                            id="estado-dd-inactivo"
-                            value="inactivo"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="estado-dd-inactivo"
-                            >Inactivo</label
-                          >
-                        </div>
-                        <div class="d-flex justify-content-end gap-2 mt-2">
-                          <button
-                            type="button"
-                            class="btn btn-light btn-sm cancel-filter"
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="submit"
-                            class="btn btn-dark btn-sm apply-filter"
-                          >
-                            Filtrar
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </th>
-                  <th class="text-nowrap" style="width: 1%">
-                    <div class="dropdown d-inline">
-                      <span>Pagos</span>
-                      <button
-                        class="btn btn-link p-0 ms-1"
-                        type="button"
-                        id="pago-filter-btn"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i class="bi bi-funnel-fill text-white"></i>
-                      </button>
-                      <form
-                        class="dropdown-menu p-3"
-                        aria-labelledby="pago-filter-btn"
-                        id="pago-filter-menu"
-                      >
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="pago-filter"
-                            id="pago-dd-completo"
-                            value="completo"
-                          />
-                          <label class="form-check-label" for="pago-dd-completo"
-                            >Completo</label
-                          >
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="pago-filter"
-                            id="pago-dd-pendiente"
-                            value="pendiente"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="pago-dd-pendiente"
-                            >Pendiente</label
-                          >
-                        </div>
-                        <div class="d-flex justify-content-end gap-2 mt-2">
-                          <button
-                            type="button"
-                            class="btn btn-light btn-sm cancel-filter"
-                          >
-                            Cancelar
-                          </button>
-                          <button
-                            type="submit"
-                            class="btn btn-dark btn-sm apply-filter"
-                          >
-                            Filtrar
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </th>
-                  <th class="actions-column"></th>
+                  {% for dia, nombre in dias_semana %}<th scope="col">{{ nombre }}</th>{% endfor %}
                 </tr>
               </thead>
               <tbody>
-                {% for m in members %}
-                <tr
-                  data-estado="{{ m.estado }}"
-                  data-pago="{{ m.pago_mes_actual }}"
-                >
-                  <td>{{ m.codigo }}</td>
-                  <td>
-                    {{ m.nombre }} {{ m.apellidos }}
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link view-member-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-person-bounding-box"></i>
-                    </button>
-                  </td>
-                  <td class="phone-column">{{ m.prefijo }} {{ m.telefono }}</td>
-                  <td>{{ m.email }}</td>
-                  <td>{{ m.get_fuente_display }}</td>
-                  <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
-                  <td class="text-nowrap">
-                    {% if m.estado == 'activo' %}
-                    <span class="badge p-2 bg-success">Activo</span>
-                    {% else %}
-                    <span class="badge p-2 bg-secondary">Inactivo</span>
-                    {% endif %}
-                  </td>
-                  <td class="text-nowrap">
-                    {% if m.pago_mes_actual == 'completo' %}
-                    <span class="badge p-2 bg-primary">Completo</span>
-                    {% else %}
-                    <span class="badge p-2 bg-warning text-dark"
-                      >Pendiente</span
-                    >
-                    {% endif %}
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link view-payments-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-kanban"></i>
-                    </button>
-                  </td>
-                  <td class="actions-column">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-link edit-member-btn text-dark"
-                      data-member-id="{{ m.id }}"
-                    >
-                      <i class="bi bi-pencil-square icon-large text-dark"></i>
-                    </button>
-                    <form
-                      method="post"
-                      action="{% url 'miembro_delete' m.id %}"
-                      class="d-inline delete-profile-form"
-                    >
-                      {% csrf_token %}
-                      <button
-                        type="submit"
-                        class="btn btn-sm btn-link text-danger"
-                      >
-                        <i class="bi bi-dash-circle icon-large"></i>
-                      </button>
-                    </form>
-                  </td>
+                <tr>
+                  {% for dia, nombre in dias_semana %}
+                    <td style="vertical-align: top">
+                      <!-- Botón añadir -->
+                      <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-dark w-100 h-50"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#add-{{ dia }}"
+                                aria-expanded="false"
+                                aria-controls="add-{{ dia }}">
+                          <i class="bi bi-plus-circle"></i> Añadir
+                        </button>
+                        <div class="collapse mt-2" id="add-{{ dia }}">
+                          <form method="post" action="{% url 'horario_create' club.slug %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="dia" value="{{ dia }}" />
+                            <div class="row g-2">
+                              <div class="col">
+                                <input type="time"
+                                       name="hora_inicio"
+                                       class="form-control form-control-sm"
+                                       required />
+                              </div>
+                              <div class="col">
+                                <input type="time"
+                                       name="hora_fin"
+                                       class="form-control form-control-sm"
+                                       required />
+                              </div>
+                              <div class="col">
+                                <select name="estado" class="form-select form-select-sm">
+                                  <option value="abierto">Abierto</option>
+                                  <option value="cerrado">Cerrado</option>
+                                  <option value="otro">Otro</option>
+                                </select>
+                              </div>
+                              <div class="col" style="display: none">
+                                <input type="text"
+                                       name="estado_otro"
+                                       class="form-control form-control-sm"
+                                       maxlength="30"
+                                       placeholder="Especificar" />
+                              </div>
+                              <div class="col-auto">
+                                <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      {% for bloque in horarios_por_dia|get_item:dia %}
+                        <div class="small fw-medium d-flex justify-content-between align-items-center border rounded p-1 mb-1">
+                          {% if bloque.estado == 'abierto' %}
+                            <div class="schedule-item"
+                                 data-start="{{ bloque.hora_inicio|time:'H:i' }}"
+                                 data-end="{{ bloque.hora_fin|time:'H:i' }}">
+                              {{ bloque.hora_inicio|time:'H:i' }} - {{ bloque.hora_fin|time:'H:i' }}
+                            </div>
+                          {% elif bloque.estado == 'cerrado' %}
+                            <div class="text-danger">Cerrado</div>
+                          {% else %}
+                            <div class="text-muted">{{ bloque.estado_otro }}</div>
+                          {% endif %}
+                          <span>
+                            <!-- Editar -->
+                            <a data-bs-toggle="collapse"
+                               href="#edit-{{ bloque.id }}"
+                               role="button"
+                               aria-expanded="false"
+                               aria-controls="edit-{{ bloque.id }}"
+                               class="btn btn-sm btn-link">
+                              <i class="bi bi-pencil-square icon-large"></i>
+                            </a>
+                            <!-- Borrar -->
+                            <form method="post"
+                                  action="{% url 'horario_delete' bloque.id %}"
+                                  class="d-inline">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-sm btn-link text-danger">
+                                <i class="bi bi-dash-circle icon-large"></i>
+                              </button>
+                            </form>
+                          </span>
+                        </div>
+                        <!-- Collapse para editar -->
+                        <div class="collapse" id="edit-{{ bloque.id }}">
+                          <form method="post" action="{% url 'horario_update' bloque.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="dia" value="{{ bloque.dia }}" />
+                            <div class="row g-2 mt-2">
+                              <div class="col">
+                                <input type="time"
+                                       name="hora_inicio"
+                                       value="{{ bloque.hora_inicio|time:'H:i' }}"
+                                       class="form-control form-control-sm"
+                                       required />
+                              </div>
+                              <div class="col">
+                                <input type="time"
+                                       name="hora_fin"
+                                       value="{{ bloque.hora_fin|time:'H:i' }}"
+                                       class="form-control form-control-sm"
+                                       required />
+                              </div>
+                              <div class="col">
+                                <select name="estado" class="form-select form-select-sm">
+                                  <option
+                                    value="abierto"
+                                    {%
+                                    if
+                                    bloque.estado=""
+                                    ="abierto"
+                                    %}selected{%
+                                    endif
+                                    %}
+                                    >Abierto</option>
+                                  <option
+                                    value="cerrado"
+                                    {%
+                                    if
+                                    bloque.estado=""
+                                    ="cerrado"
+                                    %}selected{%
+                                    endif
+                                    %}
+                                    >Cerrado</option>
+                                  <option
+                                    value="otro"
+                                    {%
+                                    if
+                                    bloque.estado=""
+                                    ="otro"
+                                    %}selected{%
+                                    endif
+                                    %}
+                                    >Otro</option>
+                                </select>
+                              </div>
+                              <div class="col" style="display: none">
+                                <input type="text"
+                                       name="estado_otro"
+                                       value="{{ bloque.estado_otro }}"
+                                       class="form-control form-control-sm"
+                                       maxlength="30"
+                                       placeholder="Especificar" />
+                              </div>
+                              <div class="col-auto">
+                                <button type="submit" class="btn btn-sm btn-dark">Guardar</button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      {% empty %}
+                        <small class="text-muted">Sin horarios</small>
+                      {% endfor %}
+                    </td>
+                  {% endfor %}
                 </tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="availability-manager"
+               class="mb-4"
+               data-club-slug="{{ club.slug }}">
+            <h4 class="mb-4 mt-4">Administrar disponibilidad</h4>
+            <div id="schedule-manager" class="mb-3">
+              <!-- Removed legacy day and time pickers -->
+              {{ horarios_json|json_script:"schedule-data" }}
+            </div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <button id="availability-prev" class="btn btn-light btn-sm">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+              <select id="availability-month"
+                      class="form-select form-select-sm"
+                      style="width:auto">
+                {% for idx, label in months %}
+                  <option value="{{ idx }}"
+                          {% if idx == today.month|add:'-1' %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              <select id="availability-year"
+                      class="form-select form-select-sm"
+                      style="width:auto">
+                <option value="{{ today.year }}" selected>{{ today.year }}</option>
+              </select>
+              <button id="availability-next" class="btn btn-light btn-sm">
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table id="availability-table"
+                     class="table table-bordered table-sm text-center">
+                <thead>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="availability-save" class="btn btn-dark btn-sm text-white">Guardar cambios</button>
+              <button type="button"
+                      id="availability-clear"
+                      class="btn btn-outline-danger btn-sm">Limpiar</button>
+            </div>
+          </div>
+        </div>
+        <div id="tab-coaches" class="profile-section">
+          <h4>Entrenadores</h4>
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button"
+                    class="btn btn-outline-dark mb-4 d-inline-flex   align-items-center  gap-2 btn-sm add-coach-btn "
+                    data-club-slug="{{ club.slug }}">
+              <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+            </button>
+          </div>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+            {% for coach in club.entrenadores.all %}
+              <div class="col">
+                <div class="card h-100 text-center">
+                  {% if coach.avatar %}
+                    <img src="{{ coach.avatar.url }}"
+                         class="card-img-top object-fit-cover"
+                         style="height: 250px"
+                         alt="{{ coach.nombre }}" />
+                  {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                         style="height: 250px">
+                      <span class="text-muted">{{ coach.nombre|initials }}</span>
+                    </div>
+                  {% endif %}
+                  <div class="card-body p-2">
+                    <!-- Nombre centrado -->
+                    <span class="fw-medium text-center mb-2">{{ coach.nombre }} {{ coach.apellidos }}</span>
+                    <!-- Iconos debajo del nombre, centrados -->
+                    <div class="mt-2 d-flex justify-content-center gap-2">
+                      <a href="{% url 'entrenador_update' coach.id %}"
+                         class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+                      <form method="post"
+                            action="{% url 'entrenador_delete' coach.id %}"
+                            class="m-0 p-0 delete-profile-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="bi bi-dash-circle icon-large btn btn-link text-danger text-decoration-none p-0 m-0 d-flex align-items-center">
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <p>No hay entrenadores.</p>
+            {% endfor %}
+          </div>
+        </div>
+        <div id="tab-competitors" class="profile-section">
+          <h4>Competidores</h4>
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button"
+                    class="btn btn-sm btn-outline-dark d-inline-flex align-items-center justify-content-center gap-2 btn-sm add-competitor-btn mb-3"
+                    data-club-slug="{{ club.slug }}">
+              <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+            </button>
+          </div>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+            {% for comp in club.competidores.all %}
+              <div class="col">
+                <div class="card text-center">
+                  {% if comp.avatar %}
+                    <img src="{{ comp.avatar.url }}"
+                         class="card-img-top object-fit-cover"
+                         style="height: 200px"
+                         alt="{{ comp.nombre }} {{ comp.apellidos }}" />
+                  {% else %}
+                    <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+                         style="height: 200px">
+                      <span class="text-muted">{{ comp.nombre|add:' '|add:comp.apellidos|initials }}</span>
+                    </div>
+                  {% endif %}
+                  <div class="card-body p-2 d-flex flex-column justify-content-between">
+                    <div class="d-flex justify-content-center align-items-center mb-2">
+                      <span class="fw-medium text-center">{{ comp.nombre }} {{ comp.apellidos }}</span>
+                    </div>
+                    <!-- Información del competidor -->
+                    <small class="text-center mb-2">
+                      {% with rec=comp.record_tuple %}
+                        <span class="fw-bold text-success">{{ rec.0 }}</span>-
+                        <span class="fw-bold text-danger">{{ rec.1 }}</span>-
+                        <span class="fw-bold text-primary">{{ rec.2 }}</span>
+                      {% endwith %}
+                      <br />
+                      <span>{{ comp.categoria }}</span>
+                    </small>
+                    <!-- Iconos abajo, centrados -->
+                    <div class="mt-1 d-flex justify-content-center gap-2">
+                      <a href="{% url 'competidor_update' comp.id %}"
+                         class="bi bi-pencil-square icon-large text-decoration-none d-flex align-items-center p-0"></a>
+                      <form method="post"
+                            action="{% url 'competidor_delete' comp.id %}"
+                            class="d-flex align-items-center p-0 m-0 delete-profile-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="bi bi-dash-circle icon-large text-decoration-none btn btn-link text-danger p-0 m-0 d-flex align-items-center">
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% empty %}
+              <p>No hay competidores.</p>
+            {% endfor %}
+          </div>
+        </div>
+        <div id="tab-members" class="profile-section">
+          <h4>Miembros</h4>
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button"
+                    class="btn btn-sm btn-outline-dark d-inline-flex align-items-center gap-2 add-member-btn"
+                    data-club-slug="{{ club.slug }}">
+              <i class="bi bi-plus-circle icon-large"></i> Añadir nuevo
+            </button>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="ms-auto d-flex align-items-center">
+              <div class="member-search">
+                <form method="get" id="member-search-form" class="member-search-form">
+                  <button type="submit" class="search-icon">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                         aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="24"
+                         height="24"
+                         fill="none"
+                         viewBox="0 0 24 24">
+                      <path stroke="#000" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
+                    </svg>
+                  </button>
+                  <input type="text"
+                         name="q"
+                         id="member-search-input"
+                         placeholder="Buscar miembro"
+                         value="{{ request.GET.q }}"
+                         autocomplete="off" />
+                  <button type="button" class="close-icon">&times;</button>
+                </form>
+              </div>
+              {% include 'partials/_member-sort.html' %}
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="members-table-responsive">
+                <table class="table table-bordered text-center align-middle"
+                       style="min-width: 600px">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre y Apellidos</th>
+                      <th class="text-nowrap phone-column">Teléfono</th>
+                      <th>Email</th>
+                      <th>Fuente</th>
+                      <th>Inscrito</th>
+                      <th class="text-nowrap" style="width: 1%">
+                        <div class="dropdown d-inline">
+                          <span>Estado</span>
+                          <button class="btn btn-link p-0 ms-1"
+                                  type="button"
+                                  id="estado-filter-btn"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false">
+                            <i class="bi bi-funnel-fill text-white"></i>
+                          </button>
+                          <form class="dropdown-menu p-3"
+                                aria-labelledby="estado-filter-btn"
+                                id="estado-filter-menu">
+                            <div class="form-check">
+                              <input class="form-check-input"
+                                     type="radio"
+                                     name="estado-filter"
+                                     id="estado-dd-activo"
+                                     value="activo" />
+                              <label class="form-check-label" for="estado-dd-activo">Activo</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input"
+                                     type="radio"
+                                     name="estado-filter"
+                                     id="estado-dd-inactivo"
+                                     value="inactivo" />
+                              <label class="form-check-label" for="estado-dd-inactivo">Inactivo</label>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2 mt-2">
+                              <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
+                              <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </th>
+                      <th class="text-nowrap" style="width: 1%">
+                        <div class="dropdown d-inline">
+                          <span>Pagos</span>
+                          <button class="btn btn-link p-0 ms-1"
+                                  type="button"
+                                  id="pago-filter-btn"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false">
+                            <i class="bi bi-funnel-fill text-white"></i>
+                          </button>
+                          <form class="dropdown-menu p-3"
+                                aria-labelledby="pago-filter-btn"
+                                id="pago-filter-menu">
+                            <div class="form-check">
+                              <input class="form-check-input"
+                                     type="radio"
+                                     name="pago-filter"
+                                     id="pago-dd-completo"
+                                     value="completo" />
+                              <label class="form-check-label" for="pago-dd-completo">Completo</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input"
+                                     type="radio"
+                                     name="pago-filter"
+                                     id="pago-dd-pendiente"
+                                     value="pendiente" />
+                              <label class="form-check-label" for="pago-dd-pendiente">Pendiente</label>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2 mt-2">
+                              <button type="button" class="btn btn-light btn-sm cancel-filter">Cancelar</button>
+                              <button type="submit" class="btn btn-dark btn-sm apply-filter">Filtrar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </th>
+                      <th class="actions-column"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for m in members %}
+                      <tr data-estado="{{ m.estado }}" data-pago="{{ m.pago_mes_actual }}">
+                        <td>{{ m.codigo }}</td>
+                        <td>
+                          {{ m.nombre }} {{ m.apellidos }}
+                          <button type="button"
+                                  class="btn btn-sm btn-link view-member-btn text-dark"
+                                  data-member-id="{{ m.id }}">
+                            <i class="bi bi-person-bounding-box"></i>
+                          </button>
+                        </td>
+                        <td class="phone-column">{{ m.prefijo }} {{ m.telefono }}</td>
+                        <td>{{ m.email }}</td>
+                        <td>{{ m.get_fuente_display }}</td>
+                        <td>{{ m.fecha_inscripcion|date:"d/m/Y" }}</td>
+                        <td class="text-nowrap">
+                          {% if m.estado == 'activo' %}
+                            <span class="badge p-2 bg-success">Activo</span>
+                          {% else %}
+                            <span class="badge p-2 bg-secondary">Inactivo</span>
+                          {% endif %}
+                        </td>
+                        <td class="text-nowrap">
+                          {% if m.pago_mes_actual == 'completo' %}
+                            <span class="badge p-2 bg-primary">Completo</span>
+                          {% else %}
+                            <span class="badge p-2 bg-warning text-dark">Pendiente</span>
+                          {% endif %}
+                          <button type="button"
+                                  class="btn btn-sm btn-link view-payments-btn text-dark"
+                                  data-member-id="{{ m.id }}">
+                            <i class="bi bi-kanban"></i>
+                          </button>
+                        </td>
+                        <td class="actions-column">
+                          <button type="button"
+                                  class="btn btn-sm btn-link edit-member-btn text-dark"
+                                  data-member-id="{{ m.id }}">
+                            <i class="bi bi-pencil-square icon-large text-dark"></i>
+                          </button>
+                          <form method="post"
+                                action="{% url 'miembro_delete' m.id %}"
+                                class="d-inline delete-profile-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-link text-danger">
+                              <i class="bi bi-dash-circle icon-large"></i>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    {% empty %}
+                      <tr class="no-members-row">
+                        <td colspan="9" class="text-muted">No hay miembros.</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-bookings" class="profile-section">
+          <h4>Reservas</h4>
+          <div class="row mb-3">
+            <div class="col-12 d-flex justify-content-end">{% include 'partials/_booking-filter.html' %}</div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-sm mb-0" style="min-width:600px">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Tipo de reserva</th>
+                  <th>Reserva</th>
+                  <th>Estado</th>
+                  <th class="actions-column">Opciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for b in bookings %}
+                  <tr>
+                    <td>{{ b.user.username }}</td>
+                    <td>{{ b.class_type.titulo }}</td>
+                    <td>{{ b.fecha|date:"d/m/y" }} {{ b.hora|time:"H:i"|default:'' }}</td>
+                    <td>{{ b.get_status_display }}</td>
+                    <td class="d-flex gap-1">
+                      <form method="post" action="{% url 'booking_confirm' b.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="bi bi-check-circle icon-large btn btn-link p-0 text-success"></button>
+                      </form>
+                      <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="bi bi-x-circle icon-large btn btn-link p-0 text-danger"></button>
+                      </form>
+                      <form method="post"
+                            action="{% url 'booking_delete' b.id %}"
+                            class="delete-profile-form">
+                        {% csrf_token %}
+                        <button type="submit"
+                                class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
+                      </form>
+                    </td>
+                  </tr>
                 {% empty %}
-                <tr class="no-members-row">
-                  <td colspan="9" class="text-muted">No hay miembros.</td>
-                </tr>
+                  <tr>
+                    <td colspan="5" class="text-muted">No hay reservas.</td>
+                  </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
         </div>
-      </div>
-    </div>
-    <div id="tab-bookings" class="profile-section">
-      <h4>Reservas</h4>
-      <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-          {% include 'partials/_booking-filter.html' %}
-        </div>
-      </div>
-       <div class="table-responsive">
-      <table class="table table-sm mb-0" style="min-width:600px">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Tipo de reserva</th>
-            <th>Reserva</th>
-            <th>Estado</th>
-            <th class="actions-column">Opciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for b in bookings %}
-          <tr>
-            <td>{{ b.user.username }}</td>
-            <td>{{ b.class_type.titulo }}</td>
-            <td>{{ b.fecha|date:"d/m/y" }} {{ b.hora|time:"H:i"|default:'' }}</td>
-            <td>{{ b.get_status_display }}</td>
-            <td class="d-flex gap-1">
-              <form method="post" action="{% url 'booking_confirm' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-check-circle icon-large btn btn-link p-0 text-success"></button>
-              </form>
-              <form method="post" action="{% url 'booking_cancel_admin' b.id %}">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-x-circle icon-large btn btn-link p-0 text-danger"></button>
-              </form>
-              <form method="post" action="{% url 'booking_delete' b.id %}" class="delete-profile-form">
-                {% csrf_token %}
-                <button type="submit" class="bi bi-dash-circle icon-large btn btn-link text-danger p-0"></button>
-              </form>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="5" class="text-muted">No hay reservas.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      </div>
-    </div>
-    <div id="tab-matchmaker" class="profile-section">
-      <h4>Matchmaker</h4>
-
-      <div class="row mb-3">
-        <div class="col-12 col-md-3 mt-4">
-          <form
-            method="get"
-            id="matchmaker-filter-form"
-            class="d-grid gap-3 mb-3 border rounded p-4"
-          >
-            <div>
-              <span class="d-block small fw-bold">Sexo</span>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input
-                  class="form-check-input custom-check"
-                  type="radio"
-                  name="mm_sexo"
-                  id="mm-sexo-all"
-                  value=""
-                  {% if not request.GET.mm_sexo %}checked{% endif %}
-                />
-                <label class="form-check-label" for="mm-sexo-all">Todos</label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input
-                  class="form-check-input custom-check"
-                  type="radio"
-                  name="mm_sexo"
-                  id="mm-sexo-m"
-                  value="M"
-                  {% if request.GET.mm_sexo == 'M' %}checked{% endif %}
-                />
-                <label class="form-check-label" for="mm-sexo-m">Masculino</label>
-              </div>
-              <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
-                <input
-                  class="form-check-input custom-check"
-                  type="radio"
-                  name="mm_sexo"
-                  id="mm-sexo-f"
-                  value="F"
-                  {% if request.GET.mm_sexo == 'F' %}checked{% endif %}
-                />
-                <label class="form-check-label" for="mm-sexo-f">Femenino</label>
-              </div>
-            </div>
-            <div class="mb-2">
-              <span class="d-block small fw-bold mb-2">Peso</span>
-              <div class="range-slider ms-2 me-2" data-unit="kg">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-            </div>
-            <div class="slider-wrapper mt-2">
-              <div class="slider-track"></div>
-              <input
-                type="range"
-                name="mm_peso_min"
-                min="30"
-                max="160"
-                step="1"
-                value="{{ request.GET.mm_peso_min|default:30 }}"
-              />
-              <input
-                type="range"
-                name="mm_peso_max"
-                min="30"
-                max="160"
-                step="1"
-                value="{{ request.GET.mm_peso_max|default:160 }}"
-              />
-            </div>
-          </div>
-            </div>
-
-            <div class="mb-2">
-              <span class="d-block small fw-bold mb-2">Edad</span>
-              <div class="range-slider ms-2 me-2" data-unit="años">
-                <div class="range-values">
-                  <span class="min-value"></span>
-                  <span class="max-value"></span>
-            </div>
-            <div class="slider-wrapper mt-2">
-              <div class="slider-track"></div>
-              <input
-                type="range"
-                name="mm_edad_min"
-                min="10"
-                max="60"
-                step="1"
-                value="{{ request.GET.mm_edad_min|default:10 }}"
-              />
-              <input
-                type="range"
-                name="mm_edad_max"
-                min="10"
-                max="60"
-                step="1"
-                value="{{ request.GET.mm_edad_max|default:60 }}"
-              />
-            </div>
-          </div>
-            </div>
-                 <div>
-              <span class="d-block small fw-bold mb-2">Ciudad</span>
-              <select name="mm_ciudad" class="form-select form-select-sm">
-                <option value="">Todas</option>
-                {% for city in cities %}
-                <option value="{{ city }}" {% if request.GET.mm_ciudad == city %}selected{% endif %}>{{ city }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="text-end">
-              <button
-                type="button"
-                id="clear-matchmaker-filter-btn"
-                class="btn btn-outline-dark btn-sm ms-2"
-              >
-                Limpiar
-              </button>
-              <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
-            </div>
-          </form>
-        </div>
-        <div class="col-12 col-md-9 d-flex flex-column min-vh-100">
-          <div class="d-flex justify-content-end mb-3">
-            <button
-              type="button"
-              id="show-saved"
-              class="small bg-transparent border-0 fw-medium text-secondary"
-            >
-              Mostrar guardados
-            </button>
-          </div>
-          <div id="matchmaker-results" class="row row-cols-2 row-cols-md-4 g-4 flex-grow-1">
-            {% for c in match_results %}
-            <div class="col">
-              <div class="card text-center matchmaker-card {% if c.id in bookmarked_ids %}bookmarked{% endif %}" data-id="{{ c.id }}">
-                <div class="avatar-container position-relative">
-                  {% if c.avatar %}
-                  <img
-                    src="{{ c.avatar.url }}"
-                    class="card-img-top object-fit-cover"
-                    style="height: 200px"
-                    alt="{{ c.nombre }} {{ c.apellidos }}"
-                  />
-                  {% else %}
-                  <div
-                    class="card-img-top d-flex align-items-center justify-content-center bg-dark"
-                    style="height: 200px"
-                  >
-                    <span class="fw-medium text-white">{{ c.nombre|add:' '|add:c.apellidos|initials }}</span>
+        <div id="tab-matchmaker" class="profile-section">
+          <h4>Matchmaker</h4>
+          <div class="row mb-3">
+            <div class="col-12 col-md-3 mt-4">
+              <form method="get"
+                    id="matchmaker-filter-form"
+                    class="d-grid gap-3 mb-3 border rounded p-4">
+                <div>
+                  <span class="d-block small fw-bold">Sexo</span>
+                  <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                    <input class="form-check-input custom-check"
+                           type="radio"
+                           name="mm_sexo"
+                           id="mm-sexo-all"
+                           value=""
+                           {% if not request.GET.mm_sexo %}checked{% endif %} />
+                    <label class="form-check-label" for="mm-sexo-all">Todos</label>
                   </div>
-                  {% endif %}
-                  <button
-                    type="button"
-                    class="bookmark-btn btn btn-light btn-sm position-absolute top-0 end-0 m-1 p-1"
-                    data-url="{% url 'matchmaker_bookmark' %}"
-                  >
-                    <i class="bi {% if c.id in bookmarked_ids %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
-                  </button>
+                  <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                    <input class="form-check-input custom-check"
+                           type="radio"
+                           name="mm_sexo"
+                           id="mm-sexo-m"
+                           value="M"
+                           {% if request.GET.mm_sexo == 'M' %}checked{% endif %} />
+                    <label class="form-check-label" for="mm-sexo-m">Masculino</label>
+                  </div>
+                  <div class="form-check d-flex align-items-center gap-2 mb-1 small ms-2 mt-2">
+                    <input class="form-check-input custom-check"
+                           type="radio"
+                           name="mm_sexo"
+                           id="mm-sexo-f"
+                           value="F"
+                           {% if request.GET.mm_sexo == 'F' %}checked{% endif %} />
+                    <label class="form-check-label" for="mm-sexo-f">Femenino</label>
+                  </div>
                 </div>
-                <div class="card-body p-2">
-                  <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
-                  <small class="d-block">
-                    {% with rec=c.record_tuple %}
-                    <span class="fw-bold text-success">{{ rec.0 }}</span>-
-                    <span class="fw-bold text-danger">{{ rec.1 }}</span>-
-                    <span class="fw-bold text-primary">{{ rec.2 }}</span>
-                    {% endwith %}
-                  </small>
-                  <small class="text-muted d-block">{{ c.club.name }}</small>
-                  <small>{{ c.club.city }}</small>
-                  <small class="d-block text-capitalize">
-                    {{ c.peso|default:'—' }} | {{ c.peso_kg|default:'—' }} kg
-                  </small>
-                  <small class="d-block">
-                    Edad:
-                    {% if c.edad %}{{ c.edad }} años{% else %}—{% endif %}
-                  </small>
+                <div class="mb-2">
+                  <span class="d-block small fw-bold mb-2">Peso</span>
+                  <div class="range-slider ms-2 me-2" data-unit="kg">
+                    <div class="range-values">
+                      <span class="min-value"></span>
+                      <span class="max-value"></span>
+                    </div>
+                    <div class="slider-wrapper mt-2">
+                      <div class="slider-track"></div>
+                      <input type="range"
+                             name="mm_peso_min"
+                             min="30"
+                             max="160"
+                             step="1"
+                             value="{{ request.GET.mm_peso_min|default:30 }}" />
+                      <input type="range"
+                             name="mm_peso_max"
+                             min="30"
+                             max="160"
+                             step="1"
+                             value="{{ request.GET.mm_peso_max|default:160 }}" />
+                    </div>
+                  </div>
                 </div>
-              </div>
+                <div class="mb-2">
+                  <span class="d-block small fw-bold mb-2">Edad</span>
+                  <div class="range-slider ms-2 me-2" data-unit="años">
+                    <div class="range-values">
+                      <span class="min-value"></span>
+                      <span class="max-value"></span>
+                    </div>
+                    <div class="slider-wrapper mt-2">
+                      <div class="slider-track"></div>
+                      <input type="range"
+                             name="mm_edad_min"
+                             min="10"
+                             max="60"
+                             step="1"
+                             value="{{ request.GET.mm_edad_min|default:10 }}" />
+                      <input type="range"
+                             name="mm_edad_max"
+                             min="10"
+                             max="60"
+                             step="1"
+                             value="{{ request.GET.mm_edad_max|default:60 }}" />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <span class="d-block small fw-bold mb-2">Ciudad</span>
+                  <select name="mm_ciudad" class="form-select form-select-sm">
+                    <option value="">Todas</option>
+                    {% for city in cities %}
+                      <option value="{{ city }}"
+                              {% if request.GET.mm_ciudad == city %}selected{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="text-end">
+                  <button type="button"
+                          id="clear-matchmaker-filter-btn"
+                          class="btn btn-outline-dark btn-sm ms-2">Limpiar</button>
+                  <button type="submit" class="btn btn-dark btn-sm">Filtrar</button>
+                </div>
+              </form>
             </div>
-            {% empty %}
-            <p>No hay competidores.</p>
-            {% endfor %}
+            <div class="col-12 col-md-9 d-flex flex-column min-vh-100">
+              <div class="d-flex justify-content-end mb-3">
+                <button type="button"
+                        id="show-saved"
+                        class="small bg-transparent border-0 fw-medium text-secondary">Mostrar guardados</button>
+              </div>
+              <div id="matchmaker-results"
+                   class="row row-cols-2 row-cols-md-4 g-4 flex-grow-1">
+                {% for c in match_results %}
+                  <div class="col">
+                    <div class="card text-center matchmaker-card {% if c.id in bookmarked_ids %}bookmarked{% endif %}"
+                         data-id="{{ c.id }}">
+                      <div class="avatar-container position-relative">
+                        {% if c.avatar %}
+                          <img src="{{ c.avatar.url }}"
+                               class="card-img-top object-fit-cover"
+                               style="height: 200px"
+                               alt="{{ c.nombre }} {{ c.apellidos }}" />
+                        {% else %}
+                          <div class="card-img-top d-flex align-items-center justify-content-center bg-dark"
+                               style="height: 200px">
+                            <span class="fw-medium text-white">{{ c.nombre|add:' '|add:c.apellidos|initials }}</span>
+                          </div>
+                        {% endif %}
+                        <button type="button"
+                                class="bookmark-btn btn btn-light btn-sm position-absolute top-0 end-0 m-1 p-1"
+                                data-url="{% url 'matchmaker_bookmark' %}">
+                          <i class="bi {% if c.id in bookmarked_ids %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                        </button>
+                      </div>
+                      <div class="card-body p-2">
+                        <span class="fw-medium d-block">{{ c.nombre }} {{ c.apellidos }}</span>
+                        <small class="d-block">
+                          {% with rec=c.record_tuple %}
+                            <span class="fw-bold text-success">{{ rec.0 }}</span>-
+                            <span class="fw-bold text-danger">{{ rec.1 }}</span>-
+                            <span class="fw-bold text-primary">{{ rec.2 }}</span>
+                          {% endwith %}
+                        </small>
+                        <small class="text-muted d-block">{{ c.club.name }}</small>
+                        <small>{{ c.club.city }}</small>
+                        <small class="d-block text-capitalize">{{ c.peso|default:'—' }} | {{ c.peso_kg|default:'—' }} kg</small>
+                        <small class="d-block">
+                          Edad:
+                          {% if c.edad %}
+                            {{ c.edad }} años
+                          {% else %}
+                            —
+                          {% endif %}
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p>No hay competidores.</p>
+                {% endfor %}
+              </div>
+              <p id="no-saved-msg" class="text-center my-3 d-none">No hay competidores guardados</p>
+              {% if match_results.paginator.num_pages > 1 %}
+                <nav aria-label="Matchmaker pagination" class="mt-5">
+                  <ul class="pagination justify-content-center">
+                    {% if match_results.has_previous %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ match_results.previous_page_number }}{% if current_query %}&{{ current_query }}{% endif %}"
+                           aria-label="Anterior">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                    {% else %}
+                      <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&laquo;</span>
+                      </li>
+                    {% endif %}
+                    {% for num in match_results.paginator.page_range %}
+                      {% if num == match_results.number %}
+                        <li class="page-item active">
+                          <span class="page-link">{{ num }}</span>
+                        </li>
+                      {% else %}
+                        <li class="page-item">
+                          <a class="page-link"
+                             href="?page={{ num }}{% if current_query %}&{{ current_query }}{% endif %}">{{ num }}</a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                    {% if match_results.has_next %}
+                      <li class="page-item">
+                        <a class="page-link"
+                           href="?page={{ match_results.next_page_number }}{% if current_query %}&{{ current_query }}{% endif %}"
+                           aria-label="Siguiente">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    {% else %}
+                      <li class="page-item disabled">
+                        <span class="page-link" aria-hidden="true">&raquo;</span>
+                      </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+              {% endif %}
+            </div>
           </div>
-          <p id="no-saved-msg" class="text-center my-3 d-none">No hay competidores guardados </p>
-          {% if match_results.paginator.num_pages > 1 %}
-          <nav aria-label="Matchmaker pagination" class="mt-5">
-            <ul class="pagination justify-content-center">
-              {% if match_results.has_previous %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ match_results.previous_page_number }}{% if current_query %}&{{ current_query }}{% endif %}" aria-label="Anterior">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              {% else %}
-              <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true">&laquo;</span>
-              </li>
-              {% endif %}
-              {% for num in match_results.paginator.page_range %}
-              {% if num == match_results.number %}
-              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-              {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ num }}{% if current_query %}&{{ current_query }}{% endif %}">{{ num }}</a></li>
-              {% endif %}
-              {% endfor %}
-              {% if match_results.has_next %}
-              <li class="page-item">
-                <a class="page-link" href="?page={{ match_results.next_page_number }}{% if current_query %}&{{ current_query }}{% endif %}" aria-label="Siguiente">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-              {% else %}
-              <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true">&raquo;</span>
-              </li>
-              {% endif %}
-            </ul>
-          </nav>
-          {% endif %}
+        </div>
       </div>
-      </div>
-    </div>
-  </div>
-  </main>
-
-  {% include 'partials/_dashboard_modals.html' %}
-
+    </main>
+    {% include 'partials/_dashboard_modals.html' %}
   {% endblock %}
-
   {% block extra_js %}
-<script src="{% static 'js/profile-tabs.js' %}"></script>
-<script src="{% static 'js/feature-select.js' %}"></script>
-<script src="{% static 'js/avatar-dropzone.js' %}"></script>
-<script src="{% static 'js/location-select.js' %}"></script>
-<script src="{% static 'js/member-location.js' %}"></script>
-<script src="{% static 'js/schedule-form.js' %}"></script>
-<script src="{% static 'js/gallery-manager.js' %}"></script>
-<script src="{% static 'js/delete-confirm.js' %}"></script>
-<script src="{% static 'js/payment-history.js' %}"></script>
-<script src="{% static 'js/member-modal.js' %}"></script>
-<script src="{% static 'js/coach-modal.js' %}"></script>
-<script src="{% static 'js/competitor-modal.js' %}"></script>
-<script src="{% static 'js/booking-class-modal.js' %}"></script>
-<script src="{% static 'js/age-category.js' %}"></script>
-<script src="{% static 'js/member-search.js' %}"></script>
-<script src="{% static 'js/sort.js' %}"></script>
-<script src="{% static 'js/range-slider.js' %}"></script>
-<script src="{% static 'js/matchmaker-filter.js' %}"></script>
-<script src="{% static 'js/member-table-filters.js' %}"></script>
-<script src="{% static 'js/booking-filter.js' %}"></script>
-<script src="{% static 'js/availability-manager.js' %}"></script>
-<script src="{% static 'js/schedule-manager.js' %}"></script>
-{% endblock %}
+    <script src="{% static 'js/profile-tabs.js' %}"></script>
+    <script src="{% static 'js/feature-select.js' %}"></script>
+    <script src="{% static 'js/avatar-dropzone.js' %}"></script>
+    <script src="{% static 'js/location-select.js' %}"></script>
+    <script src="{% static 'js/member-location.js' %}"></script>
+    <script src="{% static 'js/schedule-form.js' %}"></script>
+    <script src="{% static 'js/gallery-manager.js' %}"></script>
+    <script src="{% static 'js/delete-confirm.js' %}"></script>
+    <script src="{% static 'js/payment-history.js' %}"></script>
+    <script src="{% static 'js/member-modal.js' %}"></script>
+    <script src="{% static 'js/coach-modal.js' %}"></script>
+    <script src="{% static 'js/competitor-modal.js' %}"></script>
+    <script src="{% static 'js/booking-class-modal.js' %}"></script>
+    <script src="{% static 'js/age-category.js' %}"></script>
+    <script src="{% static 'js/member-search.js' %}"></script>
+    <script src="{% static 'js/sort.js' %}"></script>
+    <script src="{% static 'js/range-slider.js' %}"></script>
+    <script src="{% static 'js/matchmaker-filter.js' %}"></script>
+    <script src="{% static 'js/member-table-filters.js' %}"></script>
+    <script src="{% static 'js/booking-filter.js' %}"></script>
+    <script src="{% static 'js/availability-manager.js' %}"></script>
+    <script src="{% static 'js/schedule-manager.js' %}"></script>
+  {% endblock %}
