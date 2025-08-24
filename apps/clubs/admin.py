@@ -10,6 +10,7 @@ from .models import (
     Entrenador,
     EntrenadorPhoto,
     TrainingLevel,
+    CoachFeature,
 )
 
 class ClubPhotoInline(admin.TabularInline):
@@ -72,10 +73,16 @@ class ClubAdmin(admin.ModelAdmin):
         'email',
         'about',
         'features',
+        'coach_features',
     )
 
 @admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(CoachFeature)
+class CoachFeatureAdmin(admin.ModelAdmin):
     list_display = ('name',)
 
 @admin.register(ClubPhoto)
@@ -121,5 +128,6 @@ class EntrenadorAdmin(admin.ModelAdmin):
         'experiencia_anos',
         'bio',
         'niveles',
+        'features',
     )
 

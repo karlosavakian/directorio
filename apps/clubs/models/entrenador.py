@@ -36,6 +36,7 @@ class Entrenador(models.Model):
     email = models.EmailField(blank=True)
     verificado = models.BooleanField(default=False)
     niveles = models.ManyToManyField(TrainingLevel, blank=True)
+    features = models.ManyToManyField('CoachFeature', blank=True)
     precio_hora = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     promociones = models.TextField(blank=True)
     clase_prueba = models.BooleanField(default=False)
