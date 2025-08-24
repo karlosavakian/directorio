@@ -13,8 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const stripeBtn = document.getElementById('stripe-connect-btn');
   const clubFeaturesForm = document.getElementById('club-feature-form');
   const coachFeaturesForm = document.getElementById('coach-feature-form');
-
-  function updateFeatureForm() {
+  const logoTitle = document.getElementById('logo-title');
+  const nameField = document.getElementById('name-field');
+  const coachesSection = document.getElementById('coaches-section');
+  function updateForms() {
     const selectedTipo = document.querySelector('input[name="tipo"]:checked');
     const tipoVal = selectedTipo ? selectedTipo.value : null;
     if (clubFeaturesForm) {
@@ -22,6 +24,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (coachFeaturesForm) {
       coachFeaturesForm.classList.toggle('d-none', tipoVal !== 'entrenador');
+    }
+    if (logoTitle) {
+      logoTitle.textContent = tipoVal === 'entrenador' ? 'Foto de perfil' : 'Logotipo';
+    }
+    if (coachesSection) {
+      coachesSection.classList.toggle('d-none', tipoVal === 'entrenador');
+    }
+    if (nameField) {
+      nameField.classList.toggle('d-none', tipoVal === 'entrenador');
+      const nameInput = nameField.querySelector('input');
+      if (nameInput) {
+        if (tipoVal === 'entrenador') {
+          nameInput.removeAttribute('required');
+        } else {
+          nameInput.setAttribute('required', 'required');
+        }
+      }
     }
   }
 
@@ -45,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn) prevBtn.classList.toggle('d-none', n === 1);
     if (nextBtn) nextBtn.classList.toggle('d-none', n === steps.length);
     if (finishBtn) finishBtn.classList.toggle('d-none', n !== steps.length);
-    if (n === 4) {
-      updateFeatureForm();
+    if ([3, 4].includes(n)) {
+      updateForms();
     }
   }
 
@@ -108,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => {
       input.checked = true;
       tipoCards.forEach(c => c.classList.toggle('active', c === card));
-      updateFeatureForm();
+      updateForms();
     });
   });
 
@@ -143,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   togglePaymentSection();
 
   showStep(current);
-  updateFeatureForm();
+  updateForms();
 
   const coachContainer = document.getElementById('coaches-formset');
   const addCoachBtn = document.getElementById('add-coach-btn');

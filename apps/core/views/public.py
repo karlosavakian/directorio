@@ -53,7 +53,12 @@ def registro_profesional(request):
         pro_form = ProRegisterForm(request.POST)
         extra_form = ProExtraForm(request.POST, request.FILES)
         coach_formset = CoachFormSet(request.POST, prefix="coaches")
-        if form.is_valid() and pro_form.is_valid() and extra_form.is_valid():
+        form_valid = form.is_valid()
+        if form_valid and form.cleaned_data["tipo"] == "entrenador":
+            extra_form.fields["name"].required = False
+            extra_form.fields["features"].required = False
+            extra_form.fields["coach_features"].required = True
+        if form_valid and pro_form.is_valid() and extra_form.is_valid():
             coach_valid = True
             if form.cleaned_data["tipo"] == "club":
                 coach_valid = coach_formset.is_valid()
@@ -69,9 +74,10 @@ def registro_profesional(request):
                 user.save()
 
                 if form.cleaned_data["tipo"] == "entrenador":
+                    club_name = f"{pro_form.cleaned_data['nombre']} {pro_form.cleaned_data['apellidos']}".strip()
                     club = Club.objects.create(
                         owner=user,
-                        name=extra_form.cleaned_data["name"],
+                        name=club_name,
                         about=extra_form.cleaned_data["about"],
                         logo=extra_form.cleaned_data.get("logotipo"),
                         profilepic=extra_form.cleaned_data.get("logotipo"),
@@ -88,8 +94,8 @@ def registro_profesional(request):
                         category="entrenador",
                         plan=form.cleaned_data["plan"],
                     )
-                    club.features.set(extra_form.cleaned_data["features"])
-                    club.coach_features.set(extra_form.cleaned_data["coach_features"])
+                    club.features.set(extra_form.cleaned_data.get("features"))
+                    club.coach_features.set(extra_form.cleaned_data.get("coach_features"))
                 elif form.cleaned_data["tipo"] == "club":
                     club = Club.objects.create(
                         owner=user,
@@ -110,8 +116,8 @@ def registro_profesional(request):
                         category="club",
                         plan=form.cleaned_data["plan"],
                     )
-                    club.features.set(extra_form.cleaned_data["features"])
-                    club.coach_features.set(extra_form.cleaned_data["coach_features"])
+                    club.features.set(extra_form.cleaned_data.get("features"))
+                    club.coach_features.set(extra_form.cleaned_data.get("coach_features"))
                     for coach_data in coach_formset.cleaned_data:
                         if coach_data:
                             Entrenador.objects.create(
