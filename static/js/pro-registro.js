@@ -39,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!step) return true;
     const fields = step.querySelectorAll('input, select, textarea');
     for (const field of fields) {
-      if (field.name === 'puerta') continue;
       if (field.type === 'radio') {
         const group = step.querySelectorAll(`input[name="${field.name}"]`);
         if (![...group].some(r => r.checked)) {

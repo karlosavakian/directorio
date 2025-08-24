@@ -63,8 +63,17 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
     )
     ciudad = forms.CharField(label="Ciudad")
     calle = forms.CharField(label="Calle")
-    numero = forms.CharField(label="Número")
-    puerta = forms.CharField(label="Puerta", required=False)
+    numero = forms.IntegerField(
+        label="Número",
+        min_value=0,
+        widget=forms.NumberInput(),
+    )
+    puerta = forms.IntegerField(
+        label="Puerta",
+        required=False,
+        min_value=0,
+        widget=forms.NumberInput(),
+    )
     codigo_postal = forms.CharField(label="Código Postal")
 
     def __init__(self, *args, **kwargs):
