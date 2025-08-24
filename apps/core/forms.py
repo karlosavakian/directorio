@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import formset_factory
 import re
 from apps.core.mixins import UniformFieldsMixin
 from apps.clubs.countries import COUNTRY_CHOICES
@@ -168,4 +169,12 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         widget=forms.CheckboxSelectMultiple,
         error_messages={"required": "Selecciona al menos una característica."},
     )
+
+
+class CoachForm(UniformFieldsMixin, forms.Form):
+    nombre = forms.CharField(label="Nombre")
+    apellidos = forms.CharField(label="Apellidos")
+
+
+CoachFormSet = formset_factory(CoachForm, extra=1, min_num=1, validate_min=True)
 
