@@ -6,13 +6,11 @@
     <main class="flex-grow-1">
         <div class="container-fluid  px-3 py-5 ">
             <div class="col-8 mx-auto">
-                <p class="text-center text-muted mb-4">Completa los pasos y crea tu perfil profesional.</p>
                 <ul class="progress-steps mb-5">
                     <li class="step-item active" data-step="1" id="step-label-1"></li>
                     <li class="step-item" data-step="2" id="step-label-2"></li>
                     <li class="step-item" data-step="3" id="step-label-3"></li>
                     <li class="step-item" data-step="4" id="step-label-4"></li>
-                    <li class="step-item" data-step="5" id="step-label-5"></li>
                 </ul>
                 <form method="post" class="profile-form mt-5" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -21,9 +19,9 @@
                            name="current_step"
                            id="current-step"
                            value="{{ start_step }}">
-                    <div id="step1" class="step">
+                    <div id="step1" class="step  fade-step d-none">
                         <p class="text-muted text-center">Indícanos qué tipo de profesional eres.</p>
-                        <div class="d-flex justify-content-center flex-wrap gap-3">
+                        <div class="m-5 d-flex justify-content-center flex-wrap gap-3">
                             {% for radio in form.tipo %}
                                 <label class="tipo-card">
                                     {{ radio.tag }}
@@ -34,9 +32,6 @@
                         {% if form.tipo.errors %}
                             <div class="invalid-feedback d-block">{{ form.tipo.errors.as_text|striptags }}</div>
                         {% endif %}
-                    </div>
-                    <div id="step2" class="step  fade-step d-none">
-                        <h1 class="text-center mb-3">Nuestros Planes</h1>
                         <p class="text-center text-muted mb-5">
                             Elige la opción que mejor se adapte a tus necesidades y comienza a destacar en nuestro directorio.
                         </p>
@@ -45,15 +40,15 @@
                             <div class="invalid-feedback d-block">{{ form.plan.errors.as_text|striptags }}</div>
                         {% endif %}
                     </div>
-                    <div id="step3" class="step fade-step d-none">
+                    <div id="step2" class="step fade-step d-none">
                         <p class="text-muted">Rellena la información de tu perfil.</p>
                         {% include 'core/_pro_register_form.html' with form=pro_form %}
                     </div>
-                    <div id="step4" class="step fade-step d-none">
+                    <div id="step3" class="step fade-step d-none">
                         <p class="text-muted">Datos adicionales obligatorios para completar tu perfil.</p>
                         {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
                     </div>
-                    <div id="step5" class="step fade-step d-none text-center">
+                    <div id="step4" class="step fade-step d-none text-center">
                         <h1 class="h5 mb-3">Pasarela de pagos</h1>
                         <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
                         <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
