@@ -5,7 +5,7 @@ from apps.core.mixins import UniformFieldsMixin
 from apps.clubs.countries import COUNTRY_CHOICES
 from apps.clubs.spain import REGION_CHOICES
 from django.core.validators import RegexValidator
-from apps.clubs.models import Feature
+from apps.clubs.models import Feature, CoachFeature
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
@@ -166,6 +166,13 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         queryset=Feature.objects.all(),
         label="Instalaciones y Equipamiento",
         required=True,
+        widget=forms.CheckboxSelectMultiple,
+        error_messages={"required": "Selecciona al menos una característica."},
+    )
+    coach_features = forms.ModelMultipleChoiceField(
+        queryset=CoachFeature.objects.all(),
+        label="Especialidades y Servicios",
+        required=False,
         widget=forms.CheckboxSelectMultiple,
         error_messages={"required": "Selecciona al menos una característica."},
     )

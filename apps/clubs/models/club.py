@@ -32,6 +32,7 @@ class Club(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField()
     features = models.ManyToManyField('Feature', blank=True)
+    coach_features = models.ManyToManyField('CoachFeature', blank=True)
     bookmarked_competidores = models.ManyToManyField(
         'Competidor', blank=True, related_name='bookmarked_por_clubes'
     )

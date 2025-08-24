@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const options = document.querySelectorAll('#features-container .feature-option');
-  const selectAllBtn = document.getElementById('features-select-all');
-  const deselectAllBtn = document.getElementById('features-deselect-all');
+  const options = document.querySelectorAll('#coach-features-container .feature-option');
+  const selectAllBtn = document.getElementById('coach-features-select-all');
+  const deselectAllBtn = document.getElementById('coach-features-deselect-all');
 
   const updateButtons = () => {
     const anySelected = Array.from(options).some(option => {

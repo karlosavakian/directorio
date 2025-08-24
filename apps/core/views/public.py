@@ -89,6 +89,7 @@ def registro_profesional(request):
                         plan=form.cleaned_data["plan"],
                     )
                     club.features.set(extra_form.cleaned_data["features"])
+                    club.coach_features.set(extra_form.cleaned_data["coach_features"])
                 elif form.cleaned_data["tipo"] == "club":
                     club = Club.objects.create(
                         owner=user,
@@ -110,6 +111,7 @@ def registro_profesional(request):
                         plan=form.cleaned_data["plan"],
                     )
                     club.features.set(extra_form.cleaned_data["features"])
+                    club.coach_features.set(extra_form.cleaned_data["coach_features"])
                     for coach_data in coach_formset.cleaned_data:
                         if coach_data:
                             Entrenador.objects.create(
