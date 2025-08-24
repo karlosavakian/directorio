@@ -15,6 +15,7 @@ from ..forms import (
     ProExtraForm,
 )
 from ..utils.plans import PLANS
+from apps.clubs.models import Club
 
 
 def home(request):
@@ -51,6 +52,36 @@ def registro_profesional(request):
         extra_form = ProExtraForm(request.POST, request.FILES)
 
         if form.is_valid() and pro_form.is_valid() and extra_form.is_valid():
+            user = request.user
+            profile = user.profile
+            profile.plan = form.cleaned_data["plan"]
+            profile.save()
+
+            user.username = extra_form.cleaned_data["username"]
+            user.first_name = pro_form.cleaned_data["nombre"]
+            user.last_name = pro_form.cleaned_data["apellidos"]
+            user.save()
+
+            if form.cleaned_data["tipo"] == "entrenador":
+                club = Club.objects.create(
+                    owner=user,
+                    name=extra_form.cleaned_data["name"],
+                    about=extra_form.cleaned_data["about"],
+                    logo=extra_form.cleaned_data.get("logotipo"),
+                    prefijo=pro_form.cleaned_data.get("prefijo", ""),
+                    phone=pro_form.cleaned_data.get("telefono", ""),
+                    email=user.email,
+                    country=pro_form.cleaned_data.get("pais", ""),
+                    region=pro_form.cleaned_data.get("comunidad_autonoma", ""),
+                    city=pro_form.cleaned_data.get("ciudad", ""),
+                    street=pro_form.cleaned_data.get("calle", ""),
+                    number=pro_form.cleaned_data.get("numero"),
+                    door=pro_form.cleaned_data.get("puerta", ""),
+                    postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
+                    category="entrenador",
+                    plan=form.cleaned_data["plan"],
+                )
+                club.features.set(extra_form.cleaned_data["features"])
             return render(request, "core/registro_pro_success.html")
         start_step = request.POST.get("current_step", 1)
     else:
