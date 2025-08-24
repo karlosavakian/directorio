@@ -13,9 +13,10 @@ from ..forms import (
     RegistroProfesionalForm,
     ProRegisterForm,
     ProExtraForm,
+    CoachFormSet,
 )
 from ..utils.plans import PLANS
-from apps.clubs.models import Club
+from apps.clubs.models import Club, Entrenador
 
 
 def home(request):
@@ -45,44 +46,76 @@ def registro_profesional(request):
             "name": request.user.get_full_name(),
         }
     )
+    coach_formset = CoachFormSet(prefix="coaches")
 
     if request.method == "POST":
         form = RegistroProfesionalForm(request.POST)
         pro_form = ProRegisterForm(request.POST)
         extra_form = ProExtraForm(request.POST, request.FILES)
-
+        coach_formset = CoachFormSet(request.POST, prefix="coaches")
         if form.is_valid() and pro_form.is_valid() and extra_form.is_valid():
-            user = request.user
-            profile = user.profile
-            profile.plan = form.cleaned_data["plan"]
-            profile.save()
+            coach_valid = True
+            if form.cleaned_data["tipo"] == "club":
+                coach_valid = coach_formset.is_valid()
+            if coach_valid:
+                user = request.user
+                profile = user.profile
+                profile.plan = form.cleaned_data["plan"]
+                profile.save()
 
-            user.username = extra_form.cleaned_data["username"]
-            user.first_name = pro_form.cleaned_data["nombre"]
-            user.last_name = pro_form.cleaned_data["apellidos"]
-            user.save()
+                user.username = extra_form.cleaned_data["username"]
+                user.first_name = pro_form.cleaned_data["nombre"]
+                user.last_name = pro_form.cleaned_data["apellidos"]
+                user.save()
 
-            if form.cleaned_data["tipo"] == "entrenador":
-                club = Club.objects.create(
-                    owner=user,
-                    name=extra_form.cleaned_data["name"],
-                    about=extra_form.cleaned_data["about"],
-                    logo=extra_form.cleaned_data.get("logotipo"),
-                    prefijo=pro_form.cleaned_data.get("prefijo", ""),
-                    phone=pro_form.cleaned_data.get("telefono", ""),
-                    email=user.email,
-                    country=pro_form.cleaned_data.get("pais", ""),
-                    region=pro_form.cleaned_data.get("comunidad_autonoma", ""),
-                    city=pro_form.cleaned_data.get("ciudad", ""),
-                    street=pro_form.cleaned_data.get("calle", ""),
-                    number=pro_form.cleaned_data.get("numero"),
-                    door=pro_form.cleaned_data.get("puerta", ""),
-                    postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
-                    category="entrenador",
-                    plan=form.cleaned_data["plan"],
-                )
-                club.features.set(extra_form.cleaned_data["features"])
-            return render(request, "core/registro_pro_success.html")
+                if form.cleaned_data["tipo"] == "entrenador":
+                    club = Club.objects.create(
+                        owner=user,
+                        name=extra_form.cleaned_data["name"],
+                        about=extra_form.cleaned_data["about"],
+                        logo=extra_form.cleaned_data.get("logotipo"),
+                        prefijo=pro_form.cleaned_data.get("prefijo", ""),
+                        phone=pro_form.cleaned_data.get("telefono", ""),
+                        email=user.email,
+                        country=pro_form.cleaned_data.get("pais", ""),
+                        region=pro_form.cleaned_data.get("comunidad_autonoma", ""),
+                        city=pro_form.cleaned_data.get("ciudad", ""),
+                        street=pro_form.cleaned_data.get("calle", ""),
+                        number=pro_form.cleaned_data.get("numero"),
+                        door=pro_form.cleaned_data.get("puerta", ""),
+                        postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
+                        category="entrenador",
+                        plan=form.cleaned_data["plan"],
+                    )
+                    club.features.set(extra_form.cleaned_data["features"])
+                elif form.cleaned_data["tipo"] == "club":
+                    club = Club.objects.create(
+                        owner=user,
+                        name=extra_form.cleaned_data["name"],
+                        about=extra_form.cleaned_data["about"],
+                        logo=extra_form.cleaned_data.get("logotipo"),
+                        prefijo=pro_form.cleaned_data.get("prefijo", ""),
+                        phone=pro_form.cleaned_data.get("telefono", ""),
+                        email=user.email,
+                        country=pro_form.cleaned_data.get("pais", ""),
+                        region=pro_form.cleaned_data.get("comunidad_autonoma", ""),
+                        city=pro_form.cleaned_data.get("ciudad", ""),
+                        street=pro_form.cleaned_data.get("calle", ""),
+                        number=pro_form.cleaned_data.get("numero"),
+                        door=pro_form.cleaned_data.get("puerta", ""),
+                        postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
+                        category="club",
+                        plan=form.cleaned_data["plan"],
+                    )
+                    club.features.set(extra_form.cleaned_data["features"])
+                    for coach_data in coach_formset.cleaned_data:
+                        if coach_data:
+                            Entrenador.objects.create(
+                                club=club,
+                                nombre=coach_data["nombre"],
+                                apellidos=coach_data["apellidos"],
+                            )
+                return render(request, "core/registro_pro_success.html")
         start_step = request.POST.get("current_step", 1)
     else:
         form = RegistroProfesionalForm()
@@ -95,6 +128,7 @@ def registro_profesional(request):
             "start_step": start_step,
             "pro_form": pro_form,
             "extra_form": extra_form,
+            "coach_formset": coach_formset,
             "plans": PLANS,
             "current_plan": form["plan"].value(),
             "stripe_public_key": settings.STRIPE_PUBLIC_KEY,

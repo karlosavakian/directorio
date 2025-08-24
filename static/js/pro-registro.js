@@ -126,5 +126,21 @@ document.addEventListener('DOMContentLoaded', () => {
   togglePaymentSection();
 
   showStep(current);
+
+  const coachContainer = document.getElementById('coaches-formset');
+  const addCoachBtn = document.getElementById('add-coach-btn');
+  if (coachContainer && addCoachBtn) {
+    const totalForms = coachContainer.querySelector('#id_coaches-TOTAL_FORMS');
+    const templateEl = document.getElementById('coach-empty-form-template');
+    addCoachBtn.addEventListener('click', () => {
+      const index = parseInt(totalForms.value, 10);
+      const newForm = templateEl.innerHTML.replace(/__prefix__/g, index);
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('row', 'g-3', 'coach-form', 'mt-2');
+      wrapper.innerHTML = newForm;
+      coachContainer.appendChild(wrapper);
+      totalForms.value = index + 1;
+    });
+  }
 });
 
