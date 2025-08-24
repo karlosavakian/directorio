@@ -43,11 +43,11 @@
                     </div>
                     <div id="step2" class="step fade-step d-none">{% include 'core/_pro_register_form.html' with form=pro_form %}</div>
                     <div id="step3" class="step fade-step d-none">
-                        {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
+                        {% include 'core/_pro_extra_form.html' with form=extra_form %}
                     </div>
                     <div id="step4" class="step fade-step d-none">
                         <div id="club-feature-form" class="d-none">
-                            {% include 'core/components/_club_features_form.html' with form=extra_form %}
+                            {% include 'core/components/_club_features_form.html' with form=extra_form coach_formset=coach_formset %}
                         </div>
                         <div id="coach-feature-form" class="d-none">
                             {% include 'core/components/_coach_features_form.html' with form=extra_form %}

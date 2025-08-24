@@ -157,7 +157,7 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " ", "pattern": '^[A-Za-z0-9_-]+$'}),
     )
     name = forms.CharField(
-        label="Nombre",
+        label="Nombre del club",
         error_messages={"required": "Rellene este campo"},
         widget=forms.TextInput(attrs={"placeholder": " "}),
     )
