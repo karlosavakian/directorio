@@ -11,6 +11,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
   const stripeBtn = document.getElementById('stripe-connect-btn');
+  const clubFeaturesForm = document.getElementById('club-feature-form');
+  const coachFeaturesForm = document.getElementById('coach-feature-form');
+
+  function updateFeatureForm() {
+    const selectedTipo = document.querySelector('input[name="tipo"]:checked');
+    const tipoVal = selectedTipo ? selectedTipo.value : null;
+    if (clubFeaturesForm) {
+      clubFeaturesForm.classList.toggle('d-none', tipoVal !== 'club');
+    }
+    if (coachFeaturesForm) {
+      coachFeaturesForm.classList.toggle('d-none', tipoVal !== 'entrenador');
+    }
+  }
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -32,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn) prevBtn.classList.toggle('d-none', n === 1);
     if (nextBtn) nextBtn.classList.toggle('d-none', n === steps.length);
     if (finishBtn) finishBtn.classList.toggle('d-none', n !== steps.length);
+    if (n === 4) {
+      updateFeatureForm();
+    }
   }
 
   function validateStep(n) {
@@ -92,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => {
       input.checked = true;
       tipoCards.forEach(c => c.classList.toggle('active', c === card));
+      updateFeatureForm();
     });
   });
 
@@ -126,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
   togglePaymentSection();
 
   showStep(current);
+  updateFeatureForm();
 
   const coachContainer = document.getElementById('coaches-formset');
   const addCoachBtn = document.getElementById('add-coach-btn');
