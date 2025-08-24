@@ -11,6 +11,7 @@
                     <li class="step-item" data-step="2" id="step-label-2"></li>
                     <li class="step-item" data-step="3" id="step-label-3"></li>
                     <li class="step-item" data-step="4" id="step-label-4"></li>
+                    <li class="step-item" data-step="5" id="step-label-5"></li>
                 </ul>
                 <form method="post" class="profile-form mt-5" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -44,7 +45,15 @@
                     <div id="step3" class="step fade-step d-none">
                         {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
                     </div>
-                    <div id="step4" class="step fade-step d-none text-center">
+                    <div id="step4" class="step fade-step d-none">
+                        <div id="club-feature-form" class="d-none">
+                            {% include 'core/components/_club_features_form.html' with form=extra_form %}
+                        </div>
+                        <div id="coach-feature-form" class="d-none">
+                            {% include 'core/components/_coach_feature_form.html' with form=extra_form %}
+                        </div>
+                    </div>
+                    <div id="step5" class="step fade-step d-none text-center">
                         <h1 class="h5 mb-3">Pasarela de pagos</h1>
                         <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
                         <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
