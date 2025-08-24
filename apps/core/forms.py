@@ -145,5 +145,10 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         },
         widget=forms.TextInput(attrs={"minlength": 3, "placeholder": " ", "pattern": '^[A-Za-z0-9_-]+$'}),
     )
-    descripcion = forms.CharField(label="Sobre ti", widget=forms.Textarea)
+    name = forms.CharField(
+        label="Nombre",
+        error_messages={"required": "Rellene este campo"},
+        widget=forms.TextInput(attrs={"placeholder": " "}),
+    )
+    about = forms.CharField(label="Bio", widget=forms.Textarea)
 

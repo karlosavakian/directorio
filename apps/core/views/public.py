@@ -38,7 +38,12 @@ def registro_profesional(request):
 
     start_step = 1
     pro_form = ProRegisterForm()
-    extra_form = ProExtraForm(initial={"username": request.user.username})
+    extra_form = ProExtraForm(
+        initial={
+            "username": request.user.username,
+            "name": request.user.get_full_name(),
+        }
+    )
 
     if request.method == "POST":
         form = RegistroProfesionalForm(request.POST)
