@@ -11,8 +11,8 @@ class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
         label='Selecciona que eres',
         choices=[
-            ('entrenador', 'Entrenador'),
             ('club', 'Club'),
+            ('entrenador', 'Entrenador'),
             ('promotor', 'Promotor'),
             ('servicio', 'Servicio'),
         ],
