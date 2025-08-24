@@ -56,6 +56,8 @@ class RegistroProfesionalTests(TestCase):
         self.assertEqual(club.category, "entrenador")
         self.assertEqual(club.plan, "oro")
         self.assertEqual(club.features.count(), 1)
+        self.assertTrue(club.logo)
+        self.assertTrue(club.profilepic)
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_club_requires_at_least_one_entrenador(self):
@@ -101,3 +103,5 @@ class RegistroProfesionalTests(TestCase):
         self.assertEqual(club.entrenadores.count(), 1)
         coach = club.entrenadores.first()
         self.assertEqual(coach.nombre, "Pedro")
+        self.assertTrue(club.logo)
+        self.assertTrue(club.profilepic)
