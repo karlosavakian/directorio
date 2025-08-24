@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
-from apps.clubs.models import Feature, Club
+from apps.clubs.models import Feature, Club, CoachFeature
 from io import BytesIO
 from PIL import Image
 import tempfile
@@ -16,7 +16,7 @@ class RegistroProfesionalTests(TestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_entrenador_creates_club_and_updates_profile(self):
-        feature = Feature.objects.create(name="Ring")
+        cfeature = CoachFeature.objects.create(name="Tecnica")
         user = User.objects.create_user(username="olduser", password="pass", email="old@example.com")
         self.client.login(username="olduser", password="pass")
 
@@ -39,10 +39,9 @@ class RegistroProfesionalTests(TestCase):
             "puerta": 1,
             "codigo_postal": "28001",
             "username": "newuser",
-            "name": "Club Coach",
             "about": "Algo",
-            "features": [str(feature.id)],
             "logotipo": self._create_image(),
+            "coach_features": [str(cfeature.id)],
         }
 
         response = self.client.post(url, data)
@@ -55,7 +54,8 @@ class RegistroProfesionalTests(TestCase):
         club = Club.objects.get(owner=user)
         self.assertEqual(club.category, "entrenador")
         self.assertEqual(club.plan, "oro")
-        self.assertEqual(club.features.count(), 1)
+        self.assertEqual(club.name, "Juan Perez")
+        self.assertEqual(club.coach_features.count(), 1)
         self.assertTrue(club.logo)
         self.assertTrue(club.profilepic)
 
