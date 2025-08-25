@@ -13,6 +13,13 @@ SOLO_LETRAS = RegexValidator(
     "Solo se permiten letras",
 )
 
+# Patrón y validador para DNI/NIE/NIF
+DNI_REGEX = r"^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[A-Z])$"
+DNI_VALIDATOR = RegexValidator(DNI_REGEX, "Introduce un DNI/NIE/NIF válido.")
+
+# Validador para códigos postales numéricos
+CODIGO_POSTAL_VALIDATOR = RegexValidator(r"^\d+$", "Introduce solo números.")
+
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
         label='Selecciona que eres',
@@ -59,7 +66,11 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         label="Fecha de nacimiento",
         widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
     )
-    dni = forms.CharField(label="DNI/NIE/NIF")
+    dni = forms.CharField(
+        label="DNI/NIE/NIF",
+        validators=[DNI_VALIDATOR],
+        widget=forms.TextInput(attrs={"pattern": DNI_REGEX}),
+    )
     prefijo = forms.CharField(label="Prefijo")
     telefono = forms.CharField(label="Teléfono")
     sexo = forms.ChoiceField(
@@ -92,7 +103,11 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         min_value=0,
         widget=forms.NumberInput(),
     )
-    codigo_postal = forms.CharField(label="Código Postal")
+    codigo_postal = forms.CharField(
+        label="Código Postal",
+        validators=[CODIGO_POSTAL_VALIDATOR],
+        widget=forms.TextInput(attrs={"pattern": CODIGO_POSTAL_VALIDATOR.regex.pattern}),
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -136,9 +151,8 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 
     def clean_dni(self):
         value = self.cleaned_data.get('dni', '').upper()
-        pattern = r'^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[A-Z])$'
-        if not re.fullmatch(pattern, value):
-            raise forms.ValidationError('Introduce un DNI/NIE/NIF válido.')
+        if value and not re.fullmatch(DNI_REGEX, value):
+            raise forms.ValidationError(DNI_VALIDATOR.message)
         return value
 
     def clean_telefono(self):

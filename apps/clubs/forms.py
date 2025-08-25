@@ -10,6 +10,8 @@ from .countries import COUNTRY_CHOICES
 import re
 from django.core.validators import RegexValidator
 
+# Validador para códigos postales numéricos
+CODIGO_POSTAL_VALIDATOR = RegexValidator(r"^\d+$", "Introduce solo números.")
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
         label="Usuario",
@@ -552,6 +554,12 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         label='Comunidad Autónoma',
     )
     localidad = forms.ChoiceField(required=False, choices=[('', '')])
+    codigo_postal = forms.CharField(
+        required=False,
+        label='Código postal',
+        validators=[CODIGO_POSTAL_VALIDATOR],
+        widget=forms.TextInput(attrs={"pattern": CODIGO_POSTAL_VALIDATOR.regex.pattern}),
+    )
 
     class Meta:
         model = models.Miembro
