@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
-from apps.clubs.models import Feature, Club
+from apps.clubs.models import Feature, Club, CoachFeature
 from apps.core.forms import ProRegisterForm
 from io import BytesIO
 from PIL import Image
@@ -17,7 +17,8 @@ class RegistroProfesionalTests(TestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_entrenador_creates_club_and_updates_profile(self):
-        feature = Feature.objects.create(name="Ring")
+        features = [Feature.objects.create(name=f"Feature {i}") for i in range(3)]
+        coach_features = [CoachFeature.objects.create(name=f"CoachFeature {i}") for i in range(3)]
         user = User.objects.create_user(username="olduser", password="pass", email="old@example.com")
         self.client.login(username="olduser", password="pass")
 
@@ -42,7 +43,8 @@ class RegistroProfesionalTests(TestCase):
             "username": "newuser",
             "name": "Club Coach",
             "about": "Algo",
-            "features": [str(feature.id)],
+            "features": [str(f.id) for f in features],
+            "coach_features": [str(cf.id) for cf in coach_features],
             "logotipo": self._create_image(),
         }
 
@@ -56,7 +58,7 @@ class RegistroProfesionalTests(TestCase):
         club = Club.objects.get(owner=user)
         self.assertEqual(club.category, "entrenador")
         self.assertEqual(club.plan, "oro")
-        self.assertEqual(club.features.count(), 1)
+        self.assertEqual(club.features.count(), 3)
         self.assertTrue(club.logo)
         self.assertTrue(club.profilepic)
 
@@ -82,7 +84,7 @@ class RegistroProfesionalTests(TestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_club_requires_at_least_one_entrenador(self):
-        feature = Feature.objects.create(name="Ring")
+        features = [Feature.objects.create(name=f"Feature {i}") for i in range(3)]
         user = User.objects.create_user(username="clubuser", password="pass", email="club@example.com")
         self.client.login(username="clubuser", password="pass")
 
@@ -107,7 +109,7 @@ class RegistroProfesionalTests(TestCase):
             "username": "clubuser",
             "name": "Club Test",
             "about": "Bio",
-            "features": [str(feature.id)],
+            "features": [str(f.id) for f in features],
             "logotipo": self._create_image(),
             "coaches-TOTAL_FORMS": "1",
             "coaches-INITIAL_FORMS": "0",

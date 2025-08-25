@@ -4,7 +4,7 @@ import re
 from apps.core.mixins import UniformFieldsMixin
 from apps.clubs.countries import COUNTRY_CHOICES
 from apps.clubs.spain import REGION_CHOICES
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MinLengthValidator
 from apps.clubs.models import Feature, CoachFeature
 
 # Validator para campos que solo aceptan letras y espacios
@@ -200,15 +200,31 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         label="Instalaciones y Equipamiento",
         required=True,
         widget=forms.CheckboxSelectMultiple,
-        error_messages={"required": "Selecciona al menos una característica."},
+        validators=[MinLengthValidator(3)],
+        error_messages={
+            "required": "Selecciona al menos una característica.",
+            "min_length": "Selecciona al menos 3 características.",
+        },
     )
     coach_features = forms.ModelMultipleChoiceField(
         queryset=CoachFeature.objects.all(),
         label="Especialidades y Servicios",
         required=False,
         widget=forms.CheckboxSelectMultiple,
-        error_messages={"required": "Selecciona al menos una característica."},
     )
+
+    def clean_features(self):
+        features = self.cleaned_data.get("features")
+        if not features or len(features) < 3:
+            raise forms.ValidationError("Selecciona al menos 3 características.")
+        return features
+
+    def clean_coach_features(self):
+        coach_features = self.cleaned_data.get("coach_features")
+        if self.data.get("tipo") == "entrenador":
+            if not coach_features or len(coach_features) < 3:
+                raise forms.ValidationError("Selecciona al menos 3 características.")
+        return coach_features
 
 
 class CoachForm(UniformFieldsMixin, forms.Form):
