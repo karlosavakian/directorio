@@ -198,13 +198,8 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
     features = forms.ModelMultipleChoiceField(
         queryset=Feature.objects.all(),
         label="Instalaciones y Equipamiento",
-        required=True,
+        required=False,
         widget=forms.CheckboxSelectMultiple,
-        validators=[MinLengthValidator(3)],
-        error_messages={
-            "required": "Selecciona al menos una característica.",
-            "min_length": "Selecciona al menos 3 características.",
-        },
     )
     coach_features = forms.ModelMultipleChoiceField(
         queryset=CoachFeature.objects.all(),
@@ -215,8 +210,9 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
 
     def clean_features(self):
         features = self.cleaned_data.get("features")
-        if not features or len(features) < 3:
-            raise forms.ValidationError("Selecciona al menos 3 características.")
+        if self.data.get("tipo") != "entrenador":
+            if not features or len(features) < 3:
+                raise forms.ValidationError("Selecciona al menos 3 características.")
         return features
 
     def clean_coach_features(self):

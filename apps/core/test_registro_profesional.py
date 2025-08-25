@@ -17,7 +17,6 @@ class RegistroProfesionalTests(TestCase):
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_entrenador_creates_club_and_updates_profile(self):
-        features = [Feature.objects.create(name=f"Feature {i}") for i in range(3)]
         coach_features = [CoachFeature.objects.create(name=f"CoachFeature {i}") for i in range(3)]
         user = User.objects.create_user(username="olduser", password="pass", email="old@example.com")
         self.client.login(username="olduser", password="pass")
@@ -43,7 +42,6 @@ class RegistroProfesionalTests(TestCase):
             "username": "newuser",
             "name": "Club Coach",
             "about": "Algo",
-            "features": [str(f.id) for f in features],
             "coach_features": [str(cf.id) for cf in coach_features],
             "logotipo": self._create_image(),
         }
@@ -58,7 +56,8 @@ class RegistroProfesionalTests(TestCase):
         club = Club.objects.get(owner=user)
         self.assertEqual(club.category, "entrenador")
         self.assertEqual(club.plan, "oro")
-        self.assertEqual(club.features.count(), 3)
+        self.assertEqual(club.features.count(), 0)
+        self.assertEqual(club.coach_features.count(), 3)
         self.assertTrue(club.logo)
         self.assertTrue(club.profilepic)
 
