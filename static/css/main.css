@@ -19,15 +19,21 @@
 }
 
 .plan-card.active {
-  border-color: #198754;
-  background-color: rgba(25, 135, 84, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color:rgba(109, 109, 109, 0.2);
 }
 
 .plan-card.featured {
   transform: scale(1.05);
 }
 
+ 
+.plan-card:hover {
+  background-color:rgba(109, 109, 109, 0.2)!important;
+   transition: .2s ease-in-out;
+}
 
+  
 .plan-card-price {
   font-size: 1.5rem;
   font-weight: 700;
@@ -60,14 +66,19 @@
   cursor: pointer;
 }
 
+
 .tipo-card.active {
   border: 1px solid rgba(0, 0, 0, 0.1);
   background-color:rgba(109, 109, 109, 0.2);
 }
 
-.feature-option:hover {
+ .tipo-card:hover {
      background-color:rgba(109, 109, 109, 0.2)!important;
+   transition: .2s ease-in-out;
+}
 
+ .feature-option:hover {
+     background-color:rgba(109, 109, 109, 0.2)!important;
    transition: .2s ease-in-out;
 }
 
