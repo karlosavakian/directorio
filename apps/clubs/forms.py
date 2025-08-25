@@ -213,6 +213,9 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
             'email': 'Correo electrónico',
             'features': 'Instalaciones y Equipamiento',
         }
+        widgets = {
+            'about': forms.Textarea(attrs={'placeholder': 'Comparte tu historia aquí...'}),
+        }
 
     def __init__(self, *args, require_all=False, exclude_required=None, **kwargs):
         exclude_required = exclude_required or []
