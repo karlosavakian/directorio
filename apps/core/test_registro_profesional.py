@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from apps.clubs.models import Feature, Club
+from apps.core.forms import ProRegisterForm
 from io import BytesIO
 from PIL import Image
 import tempfile
@@ -58,6 +59,26 @@ class RegistroProfesionalTests(TestCase):
         self.assertEqual(club.features.count(), 1)
         self.assertTrue(club.logo)
         self.assertTrue(club.profilepic)
+
+    def test_invalid_telefono(self):
+        form = ProRegisterForm(data={
+            "nombre": "Juan",
+            "apellidos": "Perez",
+            "fecha_nacimiento": "1990-01-01",
+            "dni": "12345678Z",
+            "prefijo": "+34",
+            "telefono": "512345678",
+            "sexo": "hombre",
+            "pais": "España",
+            "comunidad_autonoma": "Madrid",
+            "ciudad": "Madrid",
+            "calle": "Calle Falsa",
+            "numero": 1,
+            "puerta": 1,
+            "codigo_postal": "28001",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("telefono", form.errors)
 
     @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
     def test_club_requires_at_least_one_entrenador(self):
