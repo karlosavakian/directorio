@@ -61,10 +61,21 @@
 }
 
 .tipo-card.active {
-  border-color: #198754;
-  background-color: rgba(25, 135, 84, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color:rgba(109, 109, 109, 0.2);
 }
 
+.feature-option:hover {
+     background-color:rgba(109, 109, 109, 0.2)!important;
+
+   transition: .2s ease-in-out;
+}
+
+.feature-option.selected {
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+   background-color:rgba(109, 109, 109, 0.2 !important;
+
+}
 /* Member profile modal alignment */
 #memberProfileModal .modal-dialog {
   max-width: 360px;

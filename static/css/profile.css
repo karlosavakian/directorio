@@ -226,13 +226,10 @@
   cursor: pointer;
 }
 
-.feature-option:hover {
-   border: 1px solid rgb(0, 0, 0);
-   transition: .2s ease-in-out;
-}
-
-.feature-option.selected {
-   background-color:rgba(109, 109, 109, 0.2);
+ 
+.feature-option.selected { 
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color:rgba(109, 109, 109, 0.2);
 
 }
 
