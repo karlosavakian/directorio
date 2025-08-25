@@ -7,6 +7,12 @@ from apps.clubs.spain import REGION_CHOICES
 from django.core.validators import RegexValidator
 from apps.clubs.models import Feature, CoachFeature
 
+# Validator para campos que solo aceptan letras y espacios
+SOLO_LETRAS = RegexValidator(
+    r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$",
+    "Solo se permiten letras",
+)
+
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
         label='Selecciona que eres',
@@ -39,14 +45,16 @@ class RegistroProfesionalForm(UniformFieldsMixin, forms.Form):
 
 class ProRegisterForm(UniformFieldsMixin, forms.Form):
     """Formulario para los datos personales y de dirección del profesional."""
-
-    solo_letras = RegexValidator(
-        r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$",
-        "Solo se permiten letras"
+    nombre = forms.CharField(
+        label="Nombre",
+        validators=[SOLO_LETRAS],
+        widget=forms.TextInput(attrs={"pattern": SOLO_LETRAS.regex.pattern}),
     )
-
-    nombre = forms.CharField(label="Nombre", validators=[solo_letras])
-    apellidos = forms.CharField(label="Apellidos", validators=[solo_letras])
+    apellidos = forms.CharField(
+        label="Apellidos",
+        validators=[SOLO_LETRAS],
+        widget=forms.TextInput(attrs={"pattern": SOLO_LETRAS.regex.pattern}),
+    )
     fecha_nacimiento = forms.DateField(
         label="Fecha de nacimiento",
         widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
@@ -68,7 +76,11 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         label="Comunidad Autónoma", choices=[("", "")] + REGION_CHOICES
     )
     ciudad = forms.ChoiceField(label="Ciudad", choices=[("", "")])
-    calle = forms.CharField(label="Calle", validators=[solo_letras])
+    calle = forms.CharField(
+        label="Calle",
+        validators=[SOLO_LETRAS],
+        widget=forms.TextInput(attrs={"pattern": SOLO_LETRAS.regex.pattern}),
+    )
     numero = forms.IntegerField(
         label="Número",
         min_value=0,
@@ -124,9 +136,9 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 
     def clean_dni(self):
         value = self.cleaned_data.get('dni', '').upper()
-        pattern = r'^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[0-9A-J])$'
+        pattern = r'^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[A-Z])$'
         if not re.fullmatch(pattern, value):
-            raise forms.ValidationError('Introduce un DNI/NIE/CIF válido.')
+            raise forms.ValidationError('Introduce un DNI/NIE/NIF válido.')
         return value
 
     def clean_telefono(self):
@@ -134,9 +146,9 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         prefijo = self.cleaned_data.get('prefijo', '')
         digits = re.sub(r'\D', '', telefono)
         if prefijo == '+34':
-            if len(digits) > 9:
+            if len(digits) != 9:
                 raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
-            if digits and digits[0] not in '679':
+            if digits[0] not in '67':
                 raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
 
@@ -163,8 +175,11 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
     )
     name = forms.CharField(
         label="Nombre",
+        validators=[SOLO_LETRAS],
         error_messages={"required": "Rellene este campo"},
-        widget=forms.TextInput(attrs={"placeholder": " "}),
+        widget=forms.TextInput(
+            attrs={"placeholder": " ", "pattern": SOLO_LETRAS.regex.pattern}
+        ),
     )
     about = forms.CharField(
         label="Bio",
@@ -187,8 +202,16 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
 
 
 class CoachForm(UniformFieldsMixin, forms.Form):
-    nombre = forms.CharField(label="Nombre")
-    apellidos = forms.CharField(label="Apellidos")
+    nombre = forms.CharField(
+        label="Nombre",
+        validators=[SOLO_LETRAS],
+        widget=forms.TextInput(attrs={"pattern": SOLO_LETRAS.regex.pattern}),
+    )
+    apellidos = forms.CharField(
+        label="Apellidos",
+        validators=[SOLO_LETRAS],
+        widget=forms.TextInput(attrs={"pattern": SOLO_LETRAS.regex.pattern}),
+    )
 
 
 CoachFormSet = formset_factory(CoachForm, extra=1, min_num=1, validate_min=True)
