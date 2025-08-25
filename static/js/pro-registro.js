@@ -13,6 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const stripeBtn = document.getElementById('stripe-connect-btn');
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
+  const logoTitle = document.getElementById('logo-title');
+  const nameField = document.getElementById('name-field');
+  const nameInput = document.getElementById('id_name');
+  const firstNameInput = document.getElementById('id_nombre');
+  const lastNameInput = document.getElementById('id_apellidos');
+  const coachesSection = document.getElementById('coaches-section');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -148,18 +154,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateFeatureForms() {
-    if (!clubFeaturesSection || !coachFeaturesSection) return;
     const selected = document.querySelector('input[name="tipo"]:checked');
     const value = selected ? selected.value : null;
+
     if (value === 'club') {
-      clubFeaturesSection.classList.remove('d-none');
-      coachFeaturesSection.classList.add('d-none');
+      if (clubFeaturesSection) clubFeaturesSection.classList.remove('d-none');
+      if (coachFeaturesSection) coachFeaturesSection.classList.add('d-none');
+      if (logoTitle) logoTitle.textContent = 'Logotipo';
+      if (nameField) nameField.classList.remove('d-none');
+      if (nameInput) nameInput.setAttribute('required', 'required');
+      if (coachesSection) coachesSection.classList.remove('d-none');
     } else if (value === 'entrenador') {
-      coachFeaturesSection.classList.remove('d-none');
-      clubFeaturesSection.classList.add('d-none');
+      if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
+      if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
+      if (logoTitle) logoTitle.textContent = 'Foto de perfil';
+      if (nameField) nameField.classList.add('d-none');
+      if (nameInput) {
+        const first = firstNameInput ? firstNameInput.value.trim() : '';
+        const last = lastNameInput ? lastNameInput.value.trim() : '';
+        nameInput.value = `${first} ${last}`.trim();
+        nameInput.removeAttribute('required');
+      }
+      if (coachesSection) {
+        coachesSection.classList.add('d-none');
+        const totalForms = document.querySelector('#id_coaches-TOTAL_FORMS');
+        if (totalForms) totalForms.value = 0;
+        coachesSection.querySelectorAll('input').forEach(input => {
+          input.removeAttribute('required');
+        });
+      }
     } else {
-      clubFeaturesSection.classList.add('d-none');
-      coachFeaturesSection.classList.add('d-none');
+      if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
+      if (coachFeaturesSection) coachFeaturesSection.classList.add('d-none');
     }
   }
 });
