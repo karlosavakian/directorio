@@ -161,7 +161,10 @@ class ProExtraForm(UniformFieldsMixin, forms.Form):
         error_messages={"required": "Rellene este campo"},
         widget=forms.TextInput(attrs={"placeholder": " "}),
     )
-    about = forms.CharField(label="Bio", widget=forms.Textarea)
+    about = forms.CharField(
+        label="Bio",
+        widget=forms.Textarea(attrs={"placeholder": "Comparte tu historia aquí..."}),
+    )
     features = forms.ModelMultipleChoiceField(
         queryset=Feature.objects.all(),
         label="Instalaciones y Equipamiento",

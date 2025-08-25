@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const firstNameInput = document.getElementById('id_nombre');
   const lastNameInput = document.getElementById('id_apellidos');
   const coachesSection = document.getElementById('coaches-section');
+  const usernameField = document.getElementById('username-field');
+  const nameLabel = document.querySelector('label[for="id_name"]');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -164,6 +166,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nameField) nameField.classList.remove('d-none');
       if (nameInput) nameInput.setAttribute('required', 'required');
       if (coachesSection) coachesSection.classList.remove('d-none');
+      if (usernameField) {
+        usernameField.classList.remove('col-md-12');
+        usernameField.classList.add('col-md-6');
+      }
+      if (nameLabel) nameLabel.textContent = 'Nombre del club';
+      const totalForms = document.querySelector('#id_coaches-TOTAL_FORMS');
+      if (totalForms && parseInt(totalForms.value, 10) < 1) {
+        totalForms.value = 1;
+      }
     } else if (value === 'entrenador') {
       if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
       if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
@@ -175,6 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
         nameInput.value = `${first} ${last}`.trim();
         nameInput.removeAttribute('required');
       }
+      if (usernameField) {
+        usernameField.classList.remove('col-md-6');
+        usernameField.classList.add('col-md-12');
+      }
+      if (nameLabel) nameLabel.textContent = 'Nombre';
       if (coachesSection) {
         coachesSection.classList.add('d-none');
         const totalForms = document.querySelector('#id_coaches-TOTAL_FORMS');
@@ -186,6 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
       if (coachFeaturesSection) coachFeaturesSection.classList.add('d-none');
+      if (usernameField) {
+        usernameField.classList.remove('col-md-12');
+        usernameField.classList.add('col-md-6');
+      }
+      if (nameLabel) nameLabel.textContent = 'Nombre';
     }
   }
 });
