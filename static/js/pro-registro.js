@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
   const stripeBtn = document.getElementById('stripe-connect-btn');
+  const clubFeaturesSection = document.getElementById('club-features-section');
+  const coachFeaturesSection = document.getElementById('coach-features-section');
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -32,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prevBtn) prevBtn.classList.toggle('d-none', n === 1);
     if (nextBtn) nextBtn.classList.toggle('d-none', n === steps.length);
     if (finishBtn) finishBtn.classList.toggle('d-none', n !== steps.length);
+    updateFeatureForms();
   }
 
   function validateStep(n) {
@@ -92,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', () => {
       input.checked = true;
       tipoCards.forEach(c => c.classList.toggle('active', c === card));
+      updateFeatureForms();
     });
   });
 
@@ -124,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   togglePaymentSection();
-
   showStep(current);
+  updateFeatureForms();
 
   const coachContainer = document.getElementById('coaches-formset');
   const addCoachBtn = document.getElementById('add-coach-btn');
@@ -141,6 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
       coachContainer.appendChild(wrapper);
       totalForms.value = index + 1;
     });
+  }
+
+  function updateFeatureForms() {
+    if (!clubFeaturesSection || !coachFeaturesSection) return;
+    const selected = document.querySelector('input[name="tipo"]:checked');
+    const value = selected ? selected.value : null;
+    if (value === 'club') {
+      clubFeaturesSection.classList.remove('d-none');
+      coachFeaturesSection.classList.add('d-none');
+    } else if (value === 'entrenador') {
+      coachFeaturesSection.classList.remove('d-none');
+      clubFeaturesSection.classList.add('d-none');
+    } else {
+      clubFeaturesSection.classList.add('d-none');
+      coachFeaturesSection.classList.add('d-none');
+    }
   }
 });
 

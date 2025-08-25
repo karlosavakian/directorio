@@ -99,7 +99,11 @@
     </template>
   </div>
   <div class="col-md-6">
-    {% include 'core/components/_club_features_form.html' %}
-    {% include 'core/components/_coach_feature_form.html' %}
+    <div id="club-features-section" class="d-none">
+      {% include 'core/components/_club_features_form.html' with hide_icons=True %}
+    </div>
+    <div id="coach-features-section" class="d-none">
+      {% include 'core/components/_coach_feature_form.html' with hide_icons=True %}
+    </div>
   </div>
 </div>

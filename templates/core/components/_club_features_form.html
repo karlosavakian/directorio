@@ -21,7 +21,7 @@
                        class="d-none"
                        {% if feature in club.features.all %}checked{% endif %}
                        {% if forloop.first %}required{% endif %} />
-                {% if feature.icon %}
+                {% if not hide_icons and feature.icon %}
                     <img src="{{ feature.icon.url }}"
                          alt="{{ feature.name }}"
                          style="width: 50px;
