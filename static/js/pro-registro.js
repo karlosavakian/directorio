@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const steps = ['step1', 'step2', 'step3', 'step4', 'step5'].map(id => document.getElementById(id));
   const progress = ['step-label-1', 'step-label-2', 'step-label-3', 'step-label-4', 'step-label-5'].map(id => document.getElementById(id));
+  const alerts = ['step1-alert', 'step2-alert', 'step3-alert', 'step4-alert', 'step5-alert'].map(id => document.getElementById(id));
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
   const tipoCards = document.querySelectorAll('.tipo-card');
@@ -66,22 +67,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function validateStep(n) {
     const step = steps[n - 1];
+    const alert = alerts[n - 1];
+    if (alert) alert.classList.add('d-none');
     if (!step) return true;
     const fields = step.querySelectorAll('input, select, textarea');
     for (const field of fields) {
       if (field.type === 'radio') {
         const group = step.querySelectorAll(`input[name="${field.name}"]`);
         if (![...group].some(r => r.checked)) {
+          if (alert) alert.classList.remove('d-none');
           group[0].reportValidity();
           return false;
         }
         continue;
       }
       if (field.hasAttribute('required') && !field.value.trim()) {
+        if (alert) alert.classList.remove('d-none');
         field.reportValidity();
         return false;
       }
       if (!field.checkValidity()) {
+        if (alert) alert.classList.remove('d-none');
         field.reportValidity();
         return false;
       }

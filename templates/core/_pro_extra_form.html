@@ -89,3 +89,6 @@
     </div>
   </div>
 </div>
+<div id="step3-alert" class="alert alert-danger mt-3{% if not form.errors and not coach_formset.errors and not coach_formset.non_form_errors %} d-none{% endif %}" role="alert">
+  Por favor completa todos los campos obligatorios.
+</div>
