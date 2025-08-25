@@ -40,8 +40,13 @@ class RegistroProfesionalForm(UniformFieldsMixin, forms.Form):
 class ProRegisterForm(UniformFieldsMixin, forms.Form):
     """Formulario para los datos personales y de dirección del profesional."""
 
-    nombre = forms.CharField(label="Nombre")
-    apellidos = forms.CharField(label="Apellidos")
+    solo_letras = RegexValidator(
+        r"^[A-Za-zÁÉÍÓÚÜáéíóúüÑñ\s]+$",
+        "Solo se permiten letras"
+    )
+
+    nombre = forms.CharField(label="Nombre", validators=[solo_letras])
+    apellidos = forms.CharField(label="Apellidos", validators=[solo_letras])
     fecha_nacimiento = forms.DateField(
         label="Fecha de nacimiento",
         widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
@@ -60,10 +65,10 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 
     pais = forms.ChoiceField(label="País", choices=COUNTRY_CHOICES)
     comunidad_autonoma = forms.ChoiceField(
-        label="Comunidad Autónoma", choices=REGION_CHOICES
+        label="Comunidad Autónoma", choices=[("", "")] + REGION_CHOICES
     )
-    ciudad = forms.CharField(label="Ciudad")
-    calle = forms.CharField(label="Calle")
+    ciudad = forms.ChoiceField(label="Ciudad", choices=[("", "")])
+    calle = forms.CharField(label="Calle", validators=[solo_letras])
     numero = forms.IntegerField(
         label="Número",
         min_value=0,
