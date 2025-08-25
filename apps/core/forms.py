@@ -59,7 +59,7 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         label="Fecha de nacimiento",
         widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
     )
-    dni = forms.CharField(label="DNI/NIE/CIF")
+    dni = forms.CharField(label="DNI/NIE/NIF")
     prefijo = forms.CharField(label="Prefijo")
     telefono = forms.CharField(label="Teléfono")
     sexo = forms.ChoiceField(
