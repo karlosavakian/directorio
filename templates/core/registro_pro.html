@@ -42,7 +42,7 @@
                     </div>
                     <div id="step2" class="step fade-step d-none">{% include 'core/_pro_register_form.html' with form=pro_form %}</div>
                     <div id="step3" class="step fade-step d-none">
-                        {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
+                        {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset user_type=form.tipo.value %}
                     </div>
                     <div id="step4" class="step fade-step d-none text-center">
                         <h1 class="h5 mb-3">Pasarela de pagos</h1>

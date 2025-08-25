@@ -1,6 +1,6 @@
 <h3 class="h6 mb-3">Datos adicionales</h3>
 <div class="row g-3">
-  <div class="col-md-6">
+  <div class="{% if user_type %}col-md-6{% else %}col-md-12{% endif %}">
     <h4 class="mb-3">Logotipo</h4>
     <div class="mb-5 text-center bg-dark p-3 rounded w-100">
       <div class="avatar-dropzone avatar-dropzone-square p-3">
@@ -98,8 +98,13 @@
       </div>
     </template>
   </div>
+  {% if user_type %}
   <div class="col-md-6">
-    {% include 'core/components/_club_features_form.html' %}
-    {% include 'core/components/_coach_feature_form.html' %}
+    {% if user_type == 'club' %}
+      {% include 'core/components/_club_features_form.html' with hide_icons=True %}
+    {% elif user_type == 'entrenador' %}
+      {% include 'core/components/_coach_feature_form.html' with hide_icons=True %}
+    {% endif %}
   </div>
+  {% endif %}
 </div>

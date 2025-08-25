@@ -21,7 +21,7 @@
                        class="d-none"
                        {% if coach and feature in coach.features.all %}checked{% endif %}
                        {% if forloop.first %}required{% endif %} />
-                {% if feature.icon %}
+                {% if feature.icon and not hide_icons %}
                     <img src="{{ feature.icon.url }}"
                          alt="{{ feature.name }}"
                          style="width: 50px; height: 50px; object-fit: contain; user-select: none"

@@ -13,15 +13,15 @@
     </div>
     <div class="d-flex flex-wrap gap-3" id="features-container">
         {% for feature in form.features.field.queryset %}
-            <div class="feature-option border rounded d-flex align-items-center {% if feature in club.features.all %}selected{% endif %}"
+            <div class="feature-option border rounded d-flex align-items-center {% if club and feature in club.features.all %}selected{% endif %}"
                  style="padding: 8px 16px">
                 <input type="checkbox"
                        name="features"
                        value="{{ feature.id }}"
                        class="d-none"
-                       {% if feature in club.features.all %}checked{% endif %}
+                       {% if club and feature in club.features.all %}checked{% endif %}
                        {% if forloop.first %}required{% endif %} />
-                {% if feature.icon %}
+                {% if feature.icon and not hide_icons %}
                     <img src="{{ feature.icon.url }}"
                          alt="{{ feature.name }}"
                          style="width: 50px;
