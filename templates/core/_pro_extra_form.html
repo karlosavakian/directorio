@@ -47,9 +47,14 @@
     <div id="coaches-section">
       <div class="d-flex justify-content-between align-items-center mt-4">
         <h4 class="mb-0">Entrenadores</h4>
-        <button type="button" class="btn" id="add-coach-btn">
-          <i class="bi bi-plus-circle"></i>
-        </button>
+        <div>
+          <button type="button" class="btn me-2" id="remove-coach-btn">
+            <i class="bi bi-dash-circle"></i>
+          </button>
+          <button type="button" class="btn" id="add-coach-btn">
+            <i class="bi bi-plus-circle"></i>
+          </button>
+        </div>
       </div>
       {% if coach_formset.non_form_errors %}
         <div class="invalid-feedback d-block">{{ coach_formset.non_form_errors.as_text|striptags }}</div>
@@ -60,14 +65,14 @@
       </div>
       <template id="coach-empty-form-template">
         <div class="row g-3 coach-form mt-2 align-items-end">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <div class="form-field">
               {{ coach_formset.empty_form.nombre }}
               <button type="button" class="clear-btn bi bi-x"></button>
               <label for="{{ coach_formset.empty_form.nombre.id_for_label }}">{{ coach_formset.empty_form.nombre.label }}</label>
             </div>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-6">
             <div class="form-field">
               {{ coach_formset.empty_form.apellidos }}
               <button type="button" class="clear-btn bi bi-x"></button>
@@ -75,11 +80,6 @@
                 {{ coach_formset.empty_form.apellidos.label }}
               </label>
             </div>
-          </div>
-          <div class="col-md-2 d-flex align-items-center">
-            <button type="button" class="btn remove-coach-btn">
-              <i class="bi bi-dash-circle"></i>
-            </button>
           </div>
         </div>
       </template>

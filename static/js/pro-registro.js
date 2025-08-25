@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameLabel = document.querySelector('label[for="id_name"]');
     const coachContainer = document.getElementById('coaches-formset');
     const addCoachBtn = document.getElementById('add-coach-btn');
+    const removeCoachBtn = document.getElementById('remove-coach-btn');
     const totalCoachForms = coachContainer ? coachContainer.querySelector('#id_coaches-TOTAL_FORMS') : null;
     const coachTemplate = document.getElementById('coach-empty-form-template');
 
@@ -38,37 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
       totalCoachForms.value = index + 1;
     }
 
-    function removeCoachForm(btn) {
+    function removeLastCoachForm() {
       if (!coachContainer || !totalCoachForms) return;
-      const form = btn.closest('.coach-form');
-      if (!form) return;
       const forms = coachContainer.querySelectorAll('.coach-form');
       if (forms.length <= 1) return;
-      form.remove();
-      const updatedForms = coachContainer.querySelectorAll('.coach-form');
-      totalCoachForms.value = updatedForms.length;
-      updatedForms.forEach((f, idx) => {
-        f.querySelectorAll('input').forEach(input => {
-          input.name = input.name.replace(/coaches-\d+-/, `coaches-${idx}-`);
-          input.id = input.id.replace(/coaches-\d+-/, `coaches-${idx}-`);
-        });
-        f.querySelectorAll('label').forEach(label => {
-          label.htmlFor = label.htmlFor.replace(/coaches-\d+-/, `coaches-${idx}-`);
-        });
-      });
+      forms[forms.length - 1].remove();
+      totalCoachForms.value = forms.length - 1;
     }
 
     if (addCoachBtn) {
       addCoachBtn.addEventListener('click', addCoachForm);
     }
 
-    if (coachContainer) {
-      coachContainer.addEventListener('click', e => {
-        const btn = e.target.closest('.remove-coach-btn');
-        if (btn) {
-          removeCoachForm(btn);
-        }
-      });
+    if (removeCoachBtn) {
+      removeCoachBtn.addEventListener('click', removeLastCoachForm);
     }
 
   function showStep(n) {
@@ -159,8 +143,36 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!firstInvalid) firstInvalid = field;
       }
     }
-    if (firstInvalid) {
-      firstInvalid.reportValidity();
+
+    let featureInvalid = false;
+    if (n === 3) {
+      const checkGroup = (section, name) => {
+        if (!section || section.classList.contains('d-none')) return;
+        const selected = section.querySelectorAll(`input[name="${name}"]:checked`).length;
+        let error = section.querySelector('.min-select-alert');
+        if (selected < 3) {
+          if (!error) {
+            error = document.createElement('div');
+            error.className = 'invalid-feedback d-block min-select-alert';
+            error.textContent = 'Selecciona al menos 3 opciones.';
+            section.appendChild(error);
+          }
+          if (!firstInvalid) {
+            const input = section.querySelector(`input[name="${name}"]`);
+            if (input) firstInvalid = input;
+          }
+          featureInvalid = true;
+        } else if (error) {
+          error.remove();
+        }
+      };
+      checkGroup(clubFeaturesSection, 'features');
+      checkGroup(coachFeaturesSection, 'coach_features');
+    }
+
+    if (firstInvalid || featureInvalid) {
+      if (alert) alert.classList.remove('d-none');
+      if (firstInvalid) firstInvalid.reportValidity();
       return false;
     }
     return true;
