@@ -140,6 +140,11 @@
   opacity: 1;
 }
 
+/* Oculta el placeholder de Bio al enfocar */
+.profile-form textarea#id_about:focus::placeholder {
+  opacity: 0;
+}
+
 .profile-form .clear-btn {
   position: absolute;
   right:15px;

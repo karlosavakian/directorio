@@ -14,13 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
-  const nameField = document.getElementById('name-field');
-  const nameInput = document.getElementById('id_name');
-  const firstNameInput = document.getElementById('id_nombre');
-  const lastNameInput = document.getElementById('id_apellidos');
-  const coachesSection = document.getElementById('coaches-section');
-  const usernameField = document.getElementById('username-field');
-  const nameLabel = document.querySelector('label[for="id_name"]');
+    const nameField = document.getElementById('name-field');
+    const nameInput = document.getElementById('id_name');
+    const firstNameInput = document.getElementById('id_nombre');
+    const lastNameInput = document.getElementById('id_apellidos');
+    const coachesSection = document.getElementById('coaches-section');
+    const usernameField = document.getElementById('username-field');
+    const nameLabel = document.querySelector('label[for="id_name"]');
+    const coachContainer = document.getElementById('coaches-formset');
+    const addCoachBtn = document.getElementById('add-coach-btn');
+    const totalCoachForms = coachContainer ? coachContainer.querySelector('#id_coaches-TOTAL_FORMS') : null;
+    const coachTemplate = document.getElementById('coach-empty-form-template');
+
+    function addCoachForm() {
+      if (!coachContainer || !totalCoachForms || !coachTemplate) return;
+      const index = parseInt(totalCoachForms.value, 10);
+      const newForm = coachTemplate.innerHTML.replace(/__prefix__/g, index);
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('row', 'g-3', 'coach-form', 'mt-2');
+      wrapper.innerHTML = newForm;
+      coachContainer.appendChild(wrapper);
+      totalCoachForms.value = index + 1;
+    }
+
+    if (addCoachBtn) {
+      addCoachBtn.addEventListener('click', addCoachForm);
+    }
 
   function showStep(n) {
     steps.forEach((step, idx) => {
@@ -139,23 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   showStep(current);
   updateFeatureForms();
 
-  const coachContainer = document.getElementById('coaches-formset');
-  const addCoachBtn = document.getElementById('add-coach-btn');
-  if (coachContainer && addCoachBtn) {
-    const totalForms = coachContainer.querySelector('#id_coaches-TOTAL_FORMS');
-    const templateEl = document.getElementById('coach-empty-form-template');
-    addCoachBtn.addEventListener('click', () => {
-      const index = parseInt(totalForms.value, 10);
-      const newForm = templateEl.innerHTML.replace(/__prefix__/g, index);
-      const wrapper = document.createElement('div');
-      wrapper.classList.add('row', 'g-3', 'coach-form', 'mt-2');
-      wrapper.innerHTML = newForm;
-      coachContainer.appendChild(wrapper);
-      totalForms.value = index + 1;
-    });
-  }
-
-  function updateFeatureForms() {
+    function updateFeatureForms() {
     const selected = document.querySelector('input[name="tipo"]:checked');
     const value = selected ? selected.value : null;
 
@@ -171,9 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
         usernameField.classList.add('col-md-6');
       }
       if (nameLabel) nameLabel.textContent = 'Nombre del club';
-      const totalForms = document.querySelector('#id_coaches-TOTAL_FORMS');
-      if (totalForms && parseInt(totalForms.value, 10) < 1) {
-        totalForms.value = 1;
+      if (coachContainer && totalCoachForms) {
+        if (coachContainer.querySelectorAll('.coach-form').length === 0) {
+          totalCoachForms.value = 0;
+          addCoachForm();
+        }
       }
     } else if (value === 'entrenador') {
       if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
@@ -193,11 +198,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nameLabel) nameLabel.textContent = 'Nombre';
       if (coachesSection) {
         coachesSection.classList.add('d-none');
-        const totalForms = document.querySelector('#id_coaches-TOTAL_FORMS');
-        if (totalForms) totalForms.value = 0;
         coachesSection.querySelectorAll('input').forEach(input => {
           input.removeAttribute('required');
         });
+        if (coachContainer) coachContainer.innerHTML = '';
+        if (totalCoachForms) totalCoachForms.value = 0;
       }
     } else {
       if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
