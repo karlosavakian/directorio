@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     let firstInvalid = null;
     for (const field of fields) {
+      if (field.type === 'hidden' || field.offsetParent === null) {
+        continue;
+      }
       if (field.type === 'radio') {
         const group = step.querySelectorAll(`input[name="${field.name}"]`);
         if (![...group].some(r => r.checked)) {
@@ -256,9 +259,9 @@ document.addEventListener('DOMContentLoaded', () => {
         totalCoachForms.value = 0;
         addCoachForm();
       }
-    } else if (value === 'entrenador') {
-      if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
-      if (clubFeaturesSection) clubFeaturesSection.classList.add('d-none');
+      } else if (value === 'entrenador') {
+        if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
+        if (clubFeaturesSection) clubFeaturesSection.classList.remove('d-none');
       if (logoTitle) logoTitle.textContent = 'Foto de perfil';
       if (nameField) nameField.classList.add('d-none');
       if (nameInput) {

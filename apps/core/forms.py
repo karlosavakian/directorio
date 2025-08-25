@@ -157,13 +157,9 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
 
     def clean_telefono(self):
         telefono = self.cleaned_data.get('telefono', '')
-        prefijo = self.cleaned_data.get('prefijo', '')
         digits = re.sub(r'\D', '', telefono)
-        if prefijo == '+34':
-            if len(digits) != 9:
-                raise forms.ValidationError('El teléfono debe tener 9 dígitos.')
-            if digits[0] not in '67':
-                raise forms.ValidationError('Introduce un número de teléfono válido')
+        if len(digits) != 9 or digits[0] not in '67':
+            raise forms.ValidationError('Introduce un número de teléfono válido')
         return digits
 
     def clean_fecha_nacimiento(self):
