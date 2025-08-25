@@ -17,7 +17,8 @@
       {% endif %}
     </div>
     <div class="row g-3">
-      <div class="form-field always-active with-status col-md-6" id="username-field">
+      <div class="form-field always-active with-status col-md-6"
+           id="username-field">
         {{ form.username }}
         <button type="button" class="clear-btn bi bi-x"></button>
         <i class="status-icon bi d-none"></i>
@@ -55,30 +56,7 @@
       {% endif %}
       <div id="coaches-formset">
         {{ coach_formset.management_form }}
-        {% for cform in coach_formset %}
-          <div class="row g-3 coach-form mt-2">
-            <div class="col-md-6">
-              <div class="form-field">
-                {{ cform.nombre }}
-                <button type="button" class="clear-btn bi bi-x"></button>
-                <label for="{{ cform.nombre.id_for_label }}">{{ cform.nombre.label }}</label>
-                {% if cform.nombre.errors %}
-                  <div class="invalid-feedback d-block">{{ cform.nombre.errors.as_text|striptags }}</div>
-                {% endif %}
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-field">
-                {{ cform.apellidos }}
-                <button type="button" class="clear-btn bi bi-x"></button>
-                <label for="{{ cform.apellidos.id_for_label }}">{{ cform.apellidos.label }}</label>
-                {% if cform.apellidos.errors %}
-                  <div class="invalid-feedback d-block">{{ cform.apellidos.errors.as_text|striptags }}</div>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        {% endfor %}
+        {% for cform in coach_formset %}{% endfor %}
       </div>
       <template id="coach-empty-form-template">
         <div class="row g-3 coach-form mt-2">
