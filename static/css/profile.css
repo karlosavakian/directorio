@@ -130,6 +130,16 @@
   color: #000;
 }
 
+/* Oculta el label "Bio" hasta que el usuario interactúe */
+.profile-form textarea#id_about:placeholder-shown ~ label {
+  opacity: 0;
+}
+
+.profile-form textarea#id_about:focus ~ label,
+.profile-form textarea#id_about:not(:placeholder-shown) ~ label {
+  opacity: 1;
+}
+
 .profile-form .clear-btn {
   position: absolute;
   right:15px;
