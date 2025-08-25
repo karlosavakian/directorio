@@ -31,15 +31,44 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!coachContainer || !totalCoachForms || !coachTemplate) return;
       const index = parseInt(totalCoachForms.value, 10);
       const newForm = coachTemplate.innerHTML.replace(/__prefix__/g, index);
-      const wrapper = document.createElement('div');
-      wrapper.classList.add('row', 'g-3', 'coach-form', 'mt-2');
-      wrapper.innerHTML = newForm;
-      coachContainer.appendChild(wrapper);
+      const temp = document.createElement('div');
+      temp.innerHTML = newForm.trim();
+      const formElem = temp.firstElementChild;
+      coachContainer.appendChild(formElem);
       totalCoachForms.value = index + 1;
+    }
+
+    function removeCoachForm(btn) {
+      if (!coachContainer || !totalCoachForms) return;
+      const form = btn.closest('.coach-form');
+      if (!form) return;
+      const forms = coachContainer.querySelectorAll('.coach-form');
+      if (forms.length <= 1) return;
+      form.remove();
+      const updatedForms = coachContainer.querySelectorAll('.coach-form');
+      totalCoachForms.value = updatedForms.length;
+      updatedForms.forEach((f, idx) => {
+        f.querySelectorAll('input').forEach(input => {
+          input.name = input.name.replace(/coaches-\d+-/, `coaches-${idx}-`);
+          input.id = input.id.replace(/coaches-\d+-/, `coaches-${idx}-`);
+        });
+        f.querySelectorAll('label').forEach(label => {
+          label.htmlFor = label.htmlFor.replace(/coaches-\d+-/, `coaches-${idx}-`);
+        });
+      });
     }
 
     if (addCoachBtn) {
       addCoachBtn.addEventListener('click', addCoachForm);
+    }
+
+    if (coachContainer) {
+      coachContainer.addEventListener('click', e => {
+        const btn = e.target.closest('.remove-coach-btn');
+        if (btn) {
+          removeCoachForm(btn);
+        }
+      });
     }
 
   function showStep(n) {
@@ -71,26 +100,65 @@ document.addEventListener('DOMContentLoaded', () => {
     if (alert) alert.classList.add('d-none');
     if (!step) return true;
     const fields = step.querySelectorAll('input, select, textarea');
+    fields.forEach(field => {
+      const label = step.querySelector(`label[for="${field.id}"]`);
+      if (label) {
+        const asterisk = label.querySelector('.required-asterisk');
+        if (asterisk) asterisk.remove();
+      }
+      const container = field.closest('.form-field') || field.parentElement;
+      if (container) {
+        const warn = container.querySelector('.field-required-alert');
+        if (warn) warn.remove();
+      }
+    });
+    let firstInvalid = null;
     for (const field of fields) {
       if (field.type === 'radio') {
         const group = step.querySelectorAll(`input[name="${field.name}"]`);
         if (![...group].some(r => r.checked)) {
           if (alert) alert.classList.remove('d-none');
-          group[0].reportValidity();
-          return false;
+          group.forEach(radio => {
+            const lbl = step.querySelector(`label[for="${radio.id}"]`);
+            if (lbl && !lbl.querySelector('.required-asterisk')) {
+              const span = document.createElement('span');
+              span.className = 'text-danger ms-1 required-asterisk';
+              span.textContent = '*';
+              lbl.appendChild(span);
+            }
+          });
+          firstInvalid = group[0];
+          break;
         }
         continue;
       }
       if (field.hasAttribute('required') && !field.value.trim()) {
         if (alert) alert.classList.remove('d-none');
-        field.reportValidity();
-        return false;
+        const label = step.querySelector(`label[for="${field.id}"]`);
+        if (label && !label.querySelector('.required-asterisk')) {
+          const span = document.createElement('span');
+          span.className = 'text-danger ms-1 required-asterisk';
+          span.textContent = '*';
+          label.appendChild(span);
+        }
+        const container = field.closest('.form-field') || field.parentElement;
+        if (container && !container.querySelector('.field-required-alert')) {
+          const div = document.createElement('div');
+          div.className = 'field-required-alert text-danger small mt-1';
+          div.textContent = 'Este campo es obligatorio.';
+          container.appendChild(div);
+        }
+        if (!firstInvalid) firstInvalid = field;
+        continue;
       }
       if (!field.checkValidity()) {
         if (alert) alert.classList.remove('d-none');
-        field.reportValidity();
-        return false;
+        if (!firstInvalid) firstInvalid = field;
       }
+    }
+    if (firstInvalid) {
+      firstInvalid.reportValidity();
+      return false;
     }
     return true;
   }
@@ -173,7 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (coachFeaturesSection) coachFeaturesSection.classList.add('d-none');
       if (logoTitle) logoTitle.textContent = 'Logotipo';
       if (nameField) nameField.classList.remove('d-none');
-      if (nameInput) nameInput.setAttribute('required', 'required');
+      if (nameInput) {
+        nameInput.value = '';
+        nameInput.setAttribute('required', 'required');
+      }
       if (coachesSection) coachesSection.classList.remove('d-none');
       if (usernameField) {
         usernameField.classList.remove('col-md-12');
@@ -181,10 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (nameLabel) nameLabel.textContent = 'Nombre del club';
       if (coachContainer && totalCoachForms) {
-        if (coachContainer.querySelectorAll('.coach-form').length === 0) {
-          totalCoachForms.value = 0;
-          addCoachForm();
-        }
+        coachContainer.querySelectorAll('.coach-form').forEach(form => form.remove());
+        totalCoachForms.value = 0;
+        addCoachForm();
       }
     } else if (value === 'entrenador') {
       if (coachFeaturesSection) coachFeaturesSection.classList.remove('d-none');
@@ -207,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         coachesSection.querySelectorAll('input').forEach(input => {
           input.removeAttribute('required');
         });
-        if (coachContainer) coachContainer.innerHTML = '';
+        if (coachContainer) coachContainer.querySelectorAll('.coach-form').forEach(f => f.remove());
         if (totalCoachForms) totalCoachForms.value = 0;
       }
     } else {
