@@ -1,7 +1,7 @@
 <h3 class="h6 mb-3">Datos adicionales</h3>
 <div class="row g-3">
   <div class="col-md-6">
-    <h4 class="mb-3">Logotipo</h4>
+    <h4 class="mb-3" id="logo-title">Logotipo</h4>
     <div class="mb-5 text-center bg-dark p-3 rounded w-100">
       <div class="avatar-dropzone avatar-dropzone-square p-3">
         {{ form.logotipo }}
@@ -26,7 +26,7 @@
           <div class="invalid-feedback d-block">{{ form.username.errors.as_text|striptags }}</div>
         {% endif %}
       </div>
-      <div class="form-field col-md-6">
+      <div class="form-field col-md-6" id="name-field">
         {{ form.name }}
         <button type="button" class="clear-btn bi bi-x"></button>
         <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
@@ -43,60 +43,62 @@
         <div class="invalid-feedback d-block">{{ form.about.errors.as_text|striptags }}</div>
       {% endif %}
     </div>
-    <div class="d-flex justify-content-between align-items-center mt-4">
-      <h4 class="mb-0">Entrenadores</h4>
-      <button type="button" class="btn btn-outline-dark btn-sm" id="add-coach-btn">+</button>
-    </div>
-    {% if coach_formset.non_form_errors %}
-      <div class="invalid-feedback d-block">{{ coach_formset.non_form_errors.as_text|striptags }}</div>
-    {% endif %}
-    <div id="coaches-formset">
-      {{ coach_formset.management_form }}
-      {% for cform in coach_formset %}
+    <div id="coaches-section">
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <h4 class="mb-0">Entrenadores</h4>
+        <button type="button" class="btn btn-outline-dark btn-sm" id="add-coach-btn">+</button>
+      </div>
+      {% if coach_formset.non_form_errors %}
+        <div class="invalid-feedback d-block">{{ coach_formset.non_form_errors.as_text|striptags }}</div>
+      {% endif %}
+      <div id="coaches-formset">
+        {{ coach_formset.management_form }}
+        {% for cform in coach_formset %}
+          <div class="row g-3 coach-form mt-2">
+            <div class="col-md-6">
+              <div class="form-field">
+                {{ cform.nombre }}
+                <button type="button" class="clear-btn bi bi-x"></button>
+                <label for="{{ cform.nombre.id_for_label }}">{{ cform.nombre.label }}</label>
+                {% if cform.nombre.errors %}
+                  <div class="invalid-feedback d-block">{{ cform.nombre.errors.as_text|striptags }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-field">
+                {{ cform.apellidos }}
+                <button type="button" class="clear-btn bi bi-x"></button>
+                <label for="{{ cform.apellidos.id_for_label }}">{{ cform.apellidos.label }}</label>
+                {% if cform.apellidos.errors %}
+                  <div class="invalid-feedback d-block">{{ cform.apellidos.errors.as_text|striptags }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <template id="coach-empty-form-template">
         <div class="row g-3 coach-form mt-2">
           <div class="col-md-6">
             <div class="form-field">
-              {{ cform.nombre }}
+              {{ coach_formset.empty_form.nombre }}
               <button type="button" class="clear-btn bi bi-x"></button>
-              <label for="{{ cform.nombre.id_for_label }}">{{ cform.nombre.label }}</label>
-              {% if cform.nombre.errors %}
-                <div class="invalid-feedback d-block">{{ cform.nombre.errors.as_text|striptags }}</div>
-              {% endif %}
+              <label for="{{ coach_formset.empty_form.nombre.id_for_label }}">{{ coach_formset.empty_form.nombre.label }}</label>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-field">
-              {{ cform.apellidos }}
+              {{ coach_formset.empty_form.apellidos }}
               <button type="button" class="clear-btn bi bi-x"></button>
-              <label for="{{ cform.apellidos.id_for_label }}">{{ cform.apellidos.label }}</label>
-              {% if cform.apellidos.errors %}
-                <div class="invalid-feedback d-block">{{ cform.apellidos.errors.as_text|striptags }}</div>
-              {% endif %}
+              <label for="{{ coach_formset.empty_form.apellidos.id_for_label }}">
+                {{ coach_formset.empty_form.apellidos.label }}
+              </label>
             </div>
           </div>
         </div>
-      {% endfor %}
+      </template>
     </div>
-    <template id="coach-empty-form-template">
-      <div class="row g-3 coach-form mt-2">
-        <div class="col-md-6">
-          <div class="form-field">
-            {{ coach_formset.empty_form.nombre }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ coach_formset.empty_form.nombre.id_for_label }}">{{ coach_formset.empty_form.nombre.label }}</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-field">
-            {{ coach_formset.empty_form.apellidos }}
-            <button type="button" class="clear-btn bi bi-x"></button>
-            <label for="{{ coach_formset.empty_form.apellidos.id_for_label }}">
-              {{ coach_formset.empty_form.apellidos.label }}
-            </label>
-          </div>
-        </div>
-      </div>
-    </template>
   </div>
   <div class="col-md-6">
     <div id="club-features-section" class="d-none">
