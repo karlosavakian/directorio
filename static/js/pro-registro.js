@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const steps = ['step1', 'step2', 'step3', 'step4'].map(id => document.getElementById(id));
   const progress = ['step-label-1', 'step-label-2', 'step-label-3', 'step-label-4'].map(id => document.getElementById(id));
-  const alerts = ['step1-alert', 'step2-alert', 'step3-alert', 'step4-alert'].map(id => document.getElementById(id));
+  const alerts = ['step1-alert', null, 'step3-alert', 'step4-alert'].map(id => id ? document.getElementById(id) : null);
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
   const tipoCards = document.querySelectorAll('.tipo-card');
@@ -136,19 +136,20 @@ document.addEventListener('DOMContentLoaded', () => {
           div.textContent = 'Este campo es obligatorio.';
           container.appendChild(div);
         }
-        if (!firstInvalid) firstInvalid = field;
-        continue;
+        firstInvalid = field;
+        break;
       }
       if (!field.checkValidity()) {
         if (alert) alert.classList.remove('d-none');
-        if (!firstInvalid) firstInvalid = field;
+        firstInvalid = field;
+        break;
       }
     }
 
     let featureInvalid = false;
-    if (n === 3) {
+    if (!firstInvalid && n === 3) {
       const checkGroup = (section, name) => {
-        if (!section || section.classList.contains('d-none')) return;
+        if (!section || section.classList.contains('d-none') || firstInvalid) return;
         const selected = section.querySelectorAll(`input[name="${name}"]:checked`).length;
         let error = section.querySelector('.min-select-alert');
         if (selected < 3) {
@@ -158,10 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
             error.textContent = 'Selecciona al menos 3 opciones.';
             section.appendChild(error);
           }
-          if (!firstInvalid) {
-            const input = section.querySelector(`input[name="${name}"]`);
-            if (input) firstInvalid = input;
-          }
+          const input = section.querySelector(`input[name="${name}"]`);
+          if (input) firstInvalid = input;
           featureInvalid = true;
         } else if (error) {
           error.remove();
