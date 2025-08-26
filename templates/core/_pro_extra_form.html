@@ -67,14 +67,14 @@
         <div class="row g-3 coach-form mt-2 align-items-end">
           <div class="col-md-6">
             <div class="form-field">
-              {{ coach_formset.empty_form.nombre }}
+              {{ coach_formset.empty_form.nombre.as_widget(attrs={'required': 'required'}) }}
               <button type="button" class="clear-btn bi bi-x"></button>
               <label for="{{ coach_formset.empty_form.nombre.id_for_label }}">{{ coach_formset.empty_form.nombre.label }}</label>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-field">
-              {{ coach_formset.empty_form.apellidos }}
+              {{ coach_formset.empty_form.apellidos.as_widget(attrs={'required': 'required'}) }}
               <button type="button" class="clear-btn bi bi-x"></button>
               <label for="{{ coach_formset.empty_form.apellidos.id_for_label }}">
                 {{ coach_formset.empty_form.apellidos.label }}

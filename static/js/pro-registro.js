@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
   const stripeBtn = document.getElementById('stripe-connect-btn');
+  const form = document.querySelector('.profile-form');
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
@@ -176,6 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return false;
     }
     return true;
+  }
+
+  if (form) {
+    form.addEventListener('submit', e => {
+      if (!validateStep(current)) {
+        e.preventDefault();
+      }
+    });
   }
 
   if (nextBtn) {
