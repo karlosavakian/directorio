@@ -17,8 +17,9 @@ SOLO_LETRAS = RegexValidator(
 DNI_REGEX = r"^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[A-Z])$"
 DNI_VALIDATOR = RegexValidator(DNI_REGEX, "Introduce un DNI/NIE/NIF válido.")
 
-# Validador para códigos postales numéricos
-CODIGO_POSTAL_VALIDATOR = RegexValidator(r"^\d+$", "Introduce solo números.")
+# Patrón y mensaje para códigos postales de 5 cifras
+CODIGO_POSTAL_REGEX = r"^\d{5}$"
+CODIGO_POSTAL_ERROR = "Introduce un código postal válido de 5 cifras."
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
@@ -64,7 +65,15 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
     )
     fecha_nacimiento = forms.DateField(
         label="Fecha de nacimiento",
-        widget=forms.DateInput(attrs={"type": "date", "min": "1910-01-01"}),
+        widget=forms.DateInput(
+            attrs={
+                "type": "date",
+                "min": "1910-01-01",
+                "max": "9999-12-31",
+                "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}",
+                "maxlength": "10",
+            }
+        ),
     )
     dni = forms.CharField(
         label="DNI/NIE/NIF",
@@ -103,10 +112,12 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         min_value=0,
         widget=forms.NumberInput(),
     )
-    codigo_postal = forms.CharField(
+    codigo_postal = forms.RegexField(
         label="Código Postal",
-        validators=[CODIGO_POSTAL_VALIDATOR],
-        widget=forms.TextInput(attrs={"pattern": CODIGO_POSTAL_VALIDATOR.regex.pattern}),
+        regex=CODIGO_POSTAL_REGEX,
+        max_length=5,
+        error_messages={"invalid": CODIGO_POSTAL_ERROR},
+        widget=forms.TextInput(attrs={"pattern": "[0-9]{5}", "maxlength": "5"}),
     )
 
     def __init__(self, *args, **kwargs):

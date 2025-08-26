@@ -10,8 +10,9 @@ from .countries import COUNTRY_CHOICES
 import re
 from django.core.validators import RegexValidator
 
-# Validador para códigos postales numéricos
-CODIGO_POSTAL_VALIDATOR = RegexValidator(r"^\d+$", "Introduce solo números.")
+# Patrón y mensaje para códigos postales de 5 cifras
+CODIGO_POSTAL_REGEX = r"^\d{5}$"
+CODIGO_POSTAL_ERROR = "Introduce un código postal válido de 5 cifras."
 class LoginForm(UniformFieldsMixin, AuthenticationForm):
     username = forms.CharField(
         label="Usuario",
@@ -187,6 +188,14 @@ class ClubForm(UniformFieldsMixin, forms.ModelForm):
     city = forms.CharField(
         label="Ciudad",
         required=False,
+    )
+    postal_code = forms.RegexField(
+        regex=CODIGO_POSTAL_REGEX,
+        max_length=5,
+        required=False,
+        label="Código Postal",
+        error_messages={'invalid': CODIGO_POSTAL_ERROR},
+        widget=forms.TextInput(attrs={"pattern": "[0-9]{5}", "maxlength": "5"}),
     )
     class Meta:
         model = models.Club
@@ -395,7 +404,15 @@ class CompetidorForm(UniformFieldsMixin, forms.ModelForm):
     fecha_nacimiento = forms.DateField(
         required=False,
         label='Fecha de nacimiento',
-        widget=forms.DateInput(attrs={'type': 'date', 'min': '1910-01-01'}),
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+                'min': '1910-01-01',
+                'max': '9999-12-31',
+                'pattern': '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+                'maxlength': '10',
+            }
+        ),
     )
     tipo_competidor = forms.ChoiceField(
         choices=[('', ''), ('amateur', 'Amateur'), ('profesional', 'Profesional')],
@@ -554,11 +571,13 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
         label='Comunidad Autónoma',
     )
     localidad = forms.ChoiceField(required=False, choices=[('', '')])
-    codigo_postal = forms.CharField(
+    codigo_postal = forms.RegexField(
+        regex=CODIGO_POSTAL_REGEX,
+        max_length=5,
         required=False,
         label='Código postal',
-        validators=[CODIGO_POSTAL_VALIDATOR],
-        widget=forms.TextInput(attrs={"pattern": CODIGO_POSTAL_VALIDATOR.regex.pattern}),
+        error_messages={'invalid': CODIGO_POSTAL_ERROR},
+        widget=forms.TextInput(attrs={"pattern": "[0-9]{5}", "maxlength": "5"}),
     )
 
     class Meta:
@@ -612,8 +631,15 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
         fecha_widget = self.fields.get('fecha_nacimiento')
         if fecha_widget:
-            fecha_widget.widget.input_type = 'date'
-            fecha_widget.widget.attrs.setdefault('min', '1910-01-01')
+            fecha_widget.widget = forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'min': '1910-01-01',
+                    'max': '9999-12-31',
+                    'pattern': '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+                    'maxlength': '10',
+                }
+            )
 
         sexo_field = self.fields.get('sexo')
         if sexo_field: 
@@ -708,7 +734,16 @@ class MiembroForm(UniformFieldsMixin, forms.ModelForm):
 
 
 class PagoForm(UniformFieldsMixin, forms.ModelForm):
-    fecha = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+                'max': '9999-12-31',
+                'pattern': '[0-9]{4}-[0-9]{2}-[0-9]{2}',
+                'maxlength': '10',
+            }
+        )
+    )
     monto = forms.DecimalField(
         max_digits=8,
         decimal_places=2,
