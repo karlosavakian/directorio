@@ -187,7 +187,7 @@ p {
     border-radius: 5px;
 }
 
- .form-field label {
+.form-field label {
   font-size: 12px;
   position: absolute;
   left: 0;
@@ -199,6 +199,16 @@ p {
   color: #666;
   pointer-events: none;
   transition: transform 0.2s, font-size 0.2s, color 0.2s;
+}
+
+/* Asterisk for required fields */
+input[required] ~ label::before,
+textarea[required] ~ label::before,
+select[required] ~ label::before,
+label.required::before {
+  content: "*";
+  color: #dc3545;
+  margin-right: 0.25rem;
 }
 
 .form-control, select   {
