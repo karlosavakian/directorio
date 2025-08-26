@@ -127,3 +127,43 @@ class RegistroProfesionalTests(TestCase):
         self.assertEqual(coach.nombre, "Pedro")
         self.assertTrue(club.logo)
         self.assertTrue(club.profilepic)
+
+    @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+    def test_club_requires_three_features(self):
+        features = [Feature.objects.create(name=f"Feature {i}") for i in range(2)]
+        user = User.objects.create_user(username="clubuser2", password="pass", email="club2@example.com")
+        self.client.login(username="clubuser2", password="pass")
+
+        url = reverse("registro_profesional")
+        data = {
+            "tipo": "club",
+            "plan": "plata",
+            "nombre": "Luis",
+            "apellidos": "Gomez",
+            "fecha_nacimiento": "1990-01-01",
+            "dni": "12345678Z",
+            "prefijo": "+34",
+            "telefono": "612345678",
+            "sexo": "hombre",
+            "pais": "España",
+            "comunidad_autonoma": "Madrid",
+            "ciudad": "Madrid",
+            "calle": "Calle Falsa",
+            "numero": 1,
+            "puerta": 1,
+            "codigo_postal": "28001",
+            "username": "clubuser2",
+            "name": "Club Test",
+            "about": "Bio",
+            "features": [str(f.id) for f in features],
+            "logotipo": self._create_image(),
+            "coaches-TOTAL_FORMS": "1",
+            "coaches-INITIAL_FORMS": "0",
+            "coaches-MIN_NUM_FORMS": "1",
+            "coaches-MAX_NUM_FORMS": "1000",
+            "coaches-0-nombre": "Pedro",
+            "coaches-0-apellidos": "López",
+        }
+
+        response = self.client.post(url, data)
+        self.assertContains(response, "Selecciona al menos 3 características.")

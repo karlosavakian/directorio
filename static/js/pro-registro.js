@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const temp = document.createElement('div');
       temp.innerHTML = newForm.trim();
       const formElem = temp.firstElementChild;
+      formElem.querySelectorAll('input').forEach(input => {
+        input.setAttribute('required', 'required');
+      });
       coachContainer.appendChild(formElem);
       totalCoachForms.value = index + 1;
     }
@@ -147,9 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let featureInvalid = false;
-    if (!firstInvalid && n === 3) {
+    if (n === 3) {
       const checkGroup = (section, name) => {
-        if (!section || section.classList.contains('d-none') || firstInvalid) return;
+        if (!section || section.classList.contains('d-none')) return;
         const selected = section.querySelectorAll(`input[name="${name}"]:checked`).length;
         let error = section.querySelector('.min-select-alert');
         if (selected < 3) {
@@ -159,8 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
             error.textContent = 'Selecciona al menos 3 opciones.';
             section.appendChild(error);
           }
-          const input = section.querySelector(`input[name="${name}"]`);
-          if (input) firstInvalid = input;
+          if (!firstInvalid) {
+            const input = section.querySelector(`input[name="${name}"]`);
+            if (input) firstInvalid = input;
+          }
           featureInvalid = true;
         } else if (error) {
           error.remove();
@@ -172,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (firstInvalid || featureInvalid) {
       if (alert) alert.classList.remove('d-none');
-      if (firstInvalid) firstInvalid.reportValidity();
+      if (firstInvalid && firstInvalid.offsetParent !== null) firstInvalid.reportValidity();
       return false;
     }
     return true;
