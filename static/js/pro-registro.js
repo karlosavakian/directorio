@@ -9,13 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
-  const stripeBtn = document.getElementById('stripe-connect-btn');
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
   const step4Elem = document.getElementById('step4');
   const stepLabel4 = document.getElementById('step-label-4');
   let maxStep = step4Elem ? 4 : 3;
+  const planSummary = document.getElementById('plan-summary');
+  const cardholderName = document.getElementById('cardholder-name');
+  const paymentMessage = document.getElementById('payment-message');
+  const paymentIntentInput = document.getElementById('payment_intent_id');
+  const form = document.querySelector('.profile-form');
+  let stripe = null;
+  let cardElement = null;
+  if (window.stripePublicKey) {
+    stripe = Stripe(window.stripePublicKey);
+    const elements = stripe.elements();
+    cardElement = elements.create('card');
+    const cardElemDiv = document.getElementById('card-element');
+    if (cardElemDiv) cardElement.mount(cardElemDiv);
+  }
     const nameField = document.getElementById('name-field');
     const nameInput = document.getElementById('id_name');
     const firstNameInput = document.getElementById('id_nombre');
@@ -195,21 +208,48 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
   }
 
-  if (stripeBtn && window.stripePublicKey) {
-    const stripe = Stripe(window.stripePublicKey);
-    stripeBtn.addEventListener('click', () => {
+  if (finishBtn && stripe && cardElement) {
+    finishBtn.addEventListener('click', e => {
+      if (current !== maxStep) return;
+      e.preventDefault();
+      if (!validateStep(current)) return;
       const selectedPlan = document.querySelector('input[name="plan"]:checked');
       if (!selectedPlan) return;
-      fetch('/create-checkout-session/', {
+      if (paymentMessage) {
+        paymentMessage.textContent = '';
+        paymentMessage.classList.remove('text-success');
+        paymentMessage.classList.add('text-danger');
+      }
+      fetch('/create-payment-intent/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ plan: selectedPlan.value })
       })
         .then(response => response.json())
         .then(data => {
-          if (data.sessionId) {
-            stripe.redirectToCheckout({ sessionId: data.sessionId });
+          if (!data.clientSecret) throw new Error('no client secret');
+          return stripe.confirmCardPayment(data.clientSecret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: { name: cardholderName ? cardholderName.value : '' }
+            }
+          });
+        })
+        .then(result => {
+          if (result.error) {
+            if (paymentMessage) paymentMessage.textContent = result.error.message;
+          } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+            if (paymentMessage) {
+              paymentMessage.classList.remove('text-danger');
+              paymentMessage.classList.add('text-success');
+              paymentMessage.textContent = 'Pago realizado con éxito';
+            }
+            if (paymentIntentInput) paymentIntentInput.value = result.paymentIntent.id;
+            if (form) form.submit();
           }
+        })
+        .catch(() => {
+          if (paymentMessage) paymentMessage.textContent = 'No se pudo procesar el pago';
         });
     });
   }
@@ -235,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.checked = true;
       planCards.forEach(c => c.classList.toggle('active', c === card));
       togglePaymentStep();
+      updatePlanSummary();
     });
   });
 
@@ -246,11 +287,21 @@ document.addEventListener('DOMContentLoaded', () => {
     maxStep = isBronze ? 3 : 4;
     if (current > maxStep) current = maxStep;
     showStep(current);
+    updatePlanSummary();
+  }
+
+  function updatePlanSummary() {
+    const selected = document.querySelector('input[name="plan"]:checked');
+    if (!selected || !planSummary) return;
+    const title = selected.dataset.title || '';
+    const price = selected.dataset.price || '';
+    planSummary.textContent = `${title} - ${price}`;
   }
 
   togglePaymentStep();
   showStep(current);
   updateFeatureForms();
+  updatePlanSummary();
 
     function updateFeatureForms() {
     const selected = document.querySelector('input[name="tipo"]:checked');

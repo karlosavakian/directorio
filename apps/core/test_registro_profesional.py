@@ -170,17 +170,14 @@ class RegistroProfesionalTests(TestCase):
         self.assertContains(response, "Selecciona al menos 3 características.")
 
 
-class StripeCheckoutSessionTests(TestCase):
-    @override_settings(
-        STRIPE_PRICE_PLATA="price_test",
-        STRIPE_SECRET_KEY="sk_test",
-        STRIPE_PUBLIC_KEY="pk_test",
-    )
-    def test_create_checkout_session_uses_selected_plan(self):
-        url = reverse("create_checkout_session")
-        with patch("stripe.checkout.Session.create") as mock_create:
-            mock_create.return_value = type("obj", (), {"id": "sess_123"})()
+class StripePaymentIntentTests(TestCase):
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_create_payment_intent_uses_selected_plan(self):
+        url = reverse("create_payment_intent")
+        with patch("stripe.PaymentIntent.create") as mock_create:
+            mock_create.return_value = type("obj", (), {"client_secret": "cs_test"})()
             response = self.client.post(url, {"plan": "plata"})
         self.assertEqual(response.status_code, 200)
         _, kwargs = mock_create.call_args
-        self.assertEqual(kwargs["line_items"][0]["price"], "price_test")
+        self.assertEqual(kwargs["amount"], 900)
+        self.assertEqual(kwargs["currency"], "eur")

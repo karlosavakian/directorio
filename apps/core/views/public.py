@@ -181,6 +181,24 @@ def create_checkout_session(request):
     return JsonResponse({"sessionId": session.id})
 
 
+@csrf_exempt
+@require_POST
+def create_payment_intent(request):
+    """Create a Stripe PaymentIntent for the selected plan."""
+    plan = request.POST.get("plan")
+    amount_lookup = {
+        "plata": 900,
+        "oro": 1900,
+    }
+    amount = amount_lookup.get(plan)
+    if not amount:
+        return JsonResponse({"error": "Invalid plan"}, status=400)
+
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
+    return JsonResponse({"clientSecret": intent.client_secret})
+
+
 def checkout_success(request):
     """Display Stripe checkout success page."""
     return render(request, "core/checkout_success.html")

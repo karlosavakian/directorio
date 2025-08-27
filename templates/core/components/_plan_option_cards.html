@@ -4,6 +4,8 @@
             <input type="radio"
                    name="plan"
                    value="{{ p.value }}"
+                   data-title="{{ p.title }}"
+                   data-price="{{ p.price }}"
                    {% if current_plan == p.value %}checked{% endif %}>
             <div class="text-center mb-2">
                 <h3 class="mt-4">{{ p.title }}</h3>
