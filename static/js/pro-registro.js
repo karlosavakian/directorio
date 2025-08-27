@@ -198,7 +198,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (stripeBtn && window.stripePublicKey) {
     const stripe = Stripe(window.stripePublicKey);
     stripeBtn.addEventListener('click', () => {
-      fetch('/create-checkout-session/', { method: 'POST' })
+      const selectedPlan = document.querySelector('input[name="plan"]:checked');
+      if (!selectedPlan) return;
+      fetch('/create-checkout-session/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ plan: selectedPlan.value })
+      })
         .then(response => response.json())
         .then(data => {
           if (data.sessionId) {
