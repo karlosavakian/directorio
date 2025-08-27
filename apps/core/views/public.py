@@ -159,20 +159,22 @@ def cookies(request):
 @csrf_exempt
 @require_POST
 def create_checkout_session(request):
-    """Create a Stripe Checkout session in test mode."""
+    """Create a Stripe Checkout session for the selected plan."""
+    plan = request.POST.get("plan")
+
+    price_lookup = {
+        "bronce": settings.STRIPE_PRICE_BRONZE,
+        "plata": settings.STRIPE_PRICE_PLATA,
+        "oro": settings.STRIPE_PRICE_ORO,
+    }
+    price_id = price_lookup.get(plan)
+    if not price_id:
+        return JsonResponse({"error": "Invalid plan"}, status=400)
+
     stripe.api_key = settings.STRIPE_SECRET_KEY
     session = stripe.checkout.Session.create(
         mode="payment",
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "usd",
-                    "product_data": {"name": "Test plan"},
-                    "unit_amount": 1000,
-                },
-                "quantity": 1,
-            }
-        ],
+        line_items=[{"price": price_id, "quantity": 1}],
         success_url=request.build_absolute_uri(reverse("checkout_success")),
         cancel_url=request.build_absolute_uri(reverse("checkout_cancel")),
     )

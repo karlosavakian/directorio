@@ -7,6 +7,7 @@ from apps.core.forms import ProRegisterForm
 from io import BytesIO
 from PIL import Image
 import tempfile
+from unittest.mock import patch
 
 class RegistroProfesionalTests(TestCase):
     def _create_image(self):
@@ -167,3 +168,19 @@ class RegistroProfesionalTests(TestCase):
 
         response = self.client.post(url, data)
         self.assertContains(response, "Selecciona al menos 3 características.")
+
+
+class StripeCheckoutSessionTests(TestCase):
+    @override_settings(
+        STRIPE_PRICE_PLATA="price_test",
+        STRIPE_SECRET_KEY="sk_test",
+        STRIPE_PUBLIC_KEY="pk_test",
+    )
+    def test_create_checkout_session_uses_selected_plan(self):
+        url = reverse("create_checkout_session")
+        with patch("stripe.checkout.Session.create") as mock_create:
+            mock_create.return_value = type("obj", (), {"id": "sess_123"})()
+            response = self.client.post(url, {"plan": "plata"})
+        self.assertEqual(response.status_code, 200)
+        _, kwargs = mock_create.call_args
+        self.assertEqual(kwargs["line_items"][0]["price"], "price_test")
