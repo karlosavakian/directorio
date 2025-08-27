@@ -39,7 +39,6 @@ class RegistroProfesionalTests(TestCase):
             "calle": "Calle Falsa",
             "numero": 1,
             "puerta": 1,
-            "codigo_postal": "28001",
             "username": "newuser",
             "name": "Club Coach",
             "about": "Algo",
@@ -77,7 +76,6 @@ class RegistroProfesionalTests(TestCase):
             "calle": "Calle Falsa",
             "numero": 1,
             "puerta": 1,
-            "codigo_postal": "28001",
         })
         self.assertFalse(form.is_valid())
         self.assertIn("telefono", form.errors)
@@ -105,7 +103,6 @@ class RegistroProfesionalTests(TestCase):
             "calle": "Calle Falsa",
             "numero": 1,
             "puerta": 1,
-            "codigo_postal": "28001",
             "username": "clubuser",
             "name": "Club Test",
             "about": "Bio",
@@ -152,7 +149,6 @@ class RegistroProfesionalTests(TestCase):
             "calle": "Calle Falsa",
             "numero": 1,
             "puerta": 1,
-            "codigo_postal": "28001",
             "username": "clubuser2",
             "name": "Club Test",
             "about": "Bio",
@@ -181,3 +177,4 @@ class StripePaymentIntentTests(TestCase):
         _, kwargs = mock_create.call_args
         self.assertEqual(kwargs["amount"], 900)
         self.assertEqual(kwargs["currency"], "eur")
+        self.assertEqual(kwargs["payment_method_types"], ["card"])

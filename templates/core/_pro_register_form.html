@@ -129,14 +129,4 @@
       {% endif %}
     </div>
   </div>
-  <div class="col-md-2">
-    <div class="form-field">
-      {{ form.codigo_postal }}
-      <button type="button" class="clear-btn bi bi-x"></button>
-      <label for="{{ form.codigo_postal.id_for_label }}">{{ form.codigo_postal.label }}</label>
-      {% if form.codigo_postal.errors %}
-      <div class="invalid-feedback d-block">{{ form.codigo_postal.errors.as_text|striptags }}</div>
-      {% endif %}
-    </div>
-  </div>
 </div>

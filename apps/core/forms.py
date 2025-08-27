@@ -17,9 +17,6 @@ SOLO_LETRAS = RegexValidator(
 DNI_REGEX = r"^(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z]|[A-Z]\d{7}[A-Z])$"
 DNI_VALIDATOR = RegexValidator(DNI_REGEX, "Introduce un DNI/NIE/NIF válido.")
 
-# Patrón y mensaje para códigos postales de 5 cifras
-CODIGO_POSTAL_REGEX = r"^\d{5}$"
-CODIGO_POSTAL_ERROR = "Introduce un código postal válido de 5 cifras."
 
 class TipoUsuarioForm(UniformFieldsMixin, forms.Form):
     tipo = forms.ChoiceField(
@@ -111,13 +108,6 @@ class ProRegisterForm(UniformFieldsMixin, forms.Form):
         required=False,
         min_value=0,
         widget=forms.NumberInput(),
-    )
-    codigo_postal = forms.RegexField(
-        label="Código Postal",
-        regex=CODIGO_POSTAL_REGEX,
-        max_length=5,
-        error_messages={"invalid": CODIGO_POSTAL_ERROR},
-        widget=forms.TextInput(attrs={"pattern": "[0-9]{5}", "maxlength": "5"}),
     )
 
     def __init__(self, *args, **kwargs):

@@ -84,7 +84,6 @@ def registro_profesional(request):
                         street=pro_form.cleaned_data.get("calle", ""),
                         number=pro_form.cleaned_data.get("numero"),
                         door=pro_form.cleaned_data.get("puerta", ""),
-                        postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
                         category="entrenador",
                         plan=form.cleaned_data["plan"],
                     )
@@ -106,7 +105,6 @@ def registro_profesional(request):
                         street=pro_form.cleaned_data.get("calle", ""),
                         number=pro_form.cleaned_data.get("numero"),
                         door=pro_form.cleaned_data.get("puerta", ""),
-                        postal_code=pro_form.cleaned_data.get("codigo_postal", ""),
                         category="club",
                         plan=form.cleaned_data["plan"],
                     )
@@ -195,7 +193,9 @@ def create_payment_intent(request):
         return JsonResponse({"error": "Invalid plan"}, status=400)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
+    intent = stripe.PaymentIntent.create(
+        amount=amount, currency="eur", payment_method_types=["card"]
+    )
     return JsonResponse({"clientSecret": intent.client_secret})
 
 
