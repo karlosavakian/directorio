@@ -2,6 +2,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
+from django.contrib.messages import get_messages
 from apps.clubs.models import Feature, Club, CoachFeature
 from apps.core.forms import ProRegisterForm
 from io import BytesIO
@@ -47,7 +48,10 @@ class RegistroProfesionalTests(TestCase):
             "logotipo": self._create_image(),
         }
 
-        response = self.client.post(url, data)
+        data["payment_intent_id"] = "pi_test"
+        with patch("stripe.PaymentIntent.retrieve") as mock_retrieve:
+            mock_retrieve.return_value = type("obj", (), {"status": "succeeded", "amount_received": 1900})()
+            response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
 
         user.refresh_from_db()
@@ -119,7 +123,10 @@ class RegistroProfesionalTests(TestCase):
             "coaches-0-apellidos": "López",
         }
 
-        response = self.client.post(url, data)
+        data["payment_intent_id"] = "pi_test"
+        with patch("stripe.PaymentIntent.retrieve") as mock_retrieve:
+            mock_retrieve.return_value = type("obj", (), {"status": "succeeded", "amount_received": 900})()
+            response = self.client.post(url, data)
         self.assertEqual(response.status_code, 200)
         club = Club.objects.get(owner=user)
         self.assertEqual(club.category, "club")
@@ -166,8 +173,52 @@ class RegistroProfesionalTests(TestCase):
             "coaches-0-apellidos": "López",
         }
 
-        response = self.client.post(url, data)
+        data["payment_intent_id"] = "pi_test"
+        with patch("stripe.PaymentIntent.retrieve") as mock_retrieve:
+            mock_retrieve.return_value = type("obj", (), {"status": "succeeded", "amount_received": 900})()
+            response = self.client.post(url, data)
         self.assertContains(response, "Selecciona al menos 3 características.")
+
+    @override_settings(MEDIA_ROOT=tempfile.mkdtemp())
+    def test_payment_intent_verification_failure(self):
+        coach_features = [CoachFeature.objects.create(name=f"CoachFeature {i}") for i in range(3)]
+        user = User.objects.create_user(username="olduser2", password="pass", email="old2@example.com")
+        self.client.login(username="olduser2", password="pass")
+
+        url = reverse("registro_profesional")
+        data = {
+            "tipo": "entrenador",
+            "plan": "oro",
+            "nombre": "Juan",
+            "apellidos": "Perez",
+            "fecha_nacimiento": "1990-01-01",
+            "dni": "12345678Z",
+            "prefijo": "+34",
+            "telefono": "612345678",
+            "sexo": "hombre",
+            "pais": "España",
+            "comunidad_autonoma": "Madrid",
+            "ciudad": "Madrid",
+            "calle": "Calle Falsa",
+            "numero": 1,
+            "puerta": 1,
+            "codigo_postal": "28001",
+            "username": "newuser2",
+            "name": "Club Coach",
+            "about": "Algo",
+            "coach_features": [str(cf.id) for cf in coach_features],
+            "logotipo": self._create_image(),
+            "payment_intent_id": "pi_fail",
+        }
+
+        with patch("stripe.PaymentIntent.retrieve") as mock_retrieve:
+            mock_retrieve.return_value = type("obj", (), {"status": "requires_payment_method", "amount_received": 0})()
+            response = self.client.post(url, data)
+
+        self.assertContains(response, "Error al verificar el pago.")
+        self.assertFalse(Club.objects.filter(owner=user).exists())
+        messages = list(get_messages(response.wsgi_request))
+        self.assertTrue(any("Hubo un problema con el pago" in str(m) for m in messages))
 
 
 class StripePaymentIntentTests(TestCase):
