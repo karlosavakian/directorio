@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardholderName = document.getElementById('cardholder-name');
   const paymentMessage = document.getElementById('payment-message');
   const paymentIntentInput = document.getElementById('payment_intent_id');
+  const billingSame = document.getElementById('billing-same');
+  const billingFields = document.getElementById('billing-fields');
+  const billingLine1 = document.getElementById('billing-line1');
+  const billingPostal = document.getElementById('billing-postal');
+  const billingCity = document.getElementById('billing-city');
+  const billingCountry = document.getElementById('billing-country');
   const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const form = document.querySelector('.profile-form');
   let stripe = null;
@@ -243,10 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const data = await response.json();
         if (!data.clientSecret) throw new Error('no client secret');
+        const billingAddress = billingSame && billingSame.checked
+          ? {
+              line1: document.getElementById('id_calle')?.value || '',
+              postal_code: document.getElementById('id_codigo_postal')?.value || '',
+              city: document.getElementById('id_ciudad')?.value || '',
+              country: document.getElementById('id_pais')?.value || '',
+            }
+          : {
+              line1: billingLine1 ? billingLine1.value : '',
+              postal_code: billingPostal ? billingPostal.value : '',
+              city: billingCity ? billingCity.value : '',
+              country: billingCountry ? billingCountry.value : '',
+            };
         const result = await stripe.confirmCardPayment(data.clientSecret, {
           payment_method: {
             card: cardElement,
-            billing_details: { name: cardholderName ? cardholderName.value : '' }
+            billing_details: {
+              name: cardholderName ? cardholderName.value : '',
+              address: billingAddress,
+            }
           }
         });
         if (result.error) {
@@ -317,6 +339,13 @@ document.addEventListener('DOMContentLoaded', () => {
   showStep(current);
   updateFeatureForms();
   updatePlanSummary();
+
+  if (billingSame && billingFields) {
+    billingFields.classList.toggle('d-none', billingSame.checked);
+    billingSame.addEventListener('change', () => {
+      billingFields.classList.toggle('d-none', billingSame.checked);
+    });
+  }
 
     function updateFeatureForms() {
     const selected = document.querySelector('input[name="tipo"]:checked');
