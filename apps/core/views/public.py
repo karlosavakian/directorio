@@ -2,7 +2,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
-from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
@@ -176,31 +175,6 @@ def cookies(request):
 
 @csrf_exempt
 @require_POST
-def create_checkout_session(request):
-    """Create a Stripe Checkout session for the selected plan."""
-    plan = request.POST.get("plan")
-
-    price_lookup = {
-        "bronce": settings.STRIPE_PRICE_BRONZE,
-        "plata": settings.STRIPE_PRICE_PLATA,
-        "oro": settings.STRIPE_PRICE_ORO,
-    }
-    price_id = price_lookup.get(plan)
-    if not price_id:
-        return JsonResponse({"error": "Invalid plan"}, status=400)
-
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    session = stripe.checkout.Session.create(
-        mode="payment",
-        line_items=[{"price": price_id, "quantity": 1}],
-        success_url=request.build_absolute_uri(reverse("checkout_success")),
-        cancel_url=request.build_absolute_uri(reverse("checkout_cancel")),
-    )
-    return JsonResponse({"sessionId": session.id})
-
-
-@csrf_exempt
-@require_POST
 def create_payment_intent(request):
     """Create a Stripe PaymentIntent for the selected plan."""
     plan = request.POST.get("plan")
@@ -211,16 +185,6 @@ def create_payment_intent(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
     return JsonResponse({"clientSecret": intent.client_secret})
-
-
-def checkout_success(request):
-    """Display Stripe checkout success page."""
-    return render(request, "core/checkout_success.html")
-
-
-def checkout_cancel(request):
-    """Display Stripe checkout cancel page."""
-    return render(request, "core/checkout_cancel.html")
 
 
 def error_404(request, exception=None):
