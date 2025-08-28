@@ -182,7 +182,11 @@ def create_payment_intent(request):
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     try:
-        intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency="eur",
+            automatic_payment_methods={"enabled": True},
+        )
     except stripe.error.StripeError as e:
         return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"clientSecret": intent.client_secret})
