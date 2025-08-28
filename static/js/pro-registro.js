@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const paymentMessage = document.getElementById('payment-message');
   const paymentIntentInput = document.getElementById('payment_intent_id');
   const form = document.querySelector('.profile-form');
+  const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   let stripe = null;
   let cardElement = null;
   if (window.stripePublicKey) {
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       fetch('/create-payment-intent/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': csrfToken },
         body: new URLSearchParams({ plan: selectedPlan.value })
       })
         .then(response => response.json())

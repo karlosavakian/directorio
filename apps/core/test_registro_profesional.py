@@ -1,4 +1,4 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
@@ -171,6 +171,10 @@ class RegistroProfesionalTests(TestCase):
 
 
 class StripePaymentIntentTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tester", password="pass")
+        self.client.login(username="tester", password="pass")
+
     @override_settings(STRIPE_SECRET_KEY="sk_test")
     def test_create_payment_intent_uses_selected_plan(self):
         url = reverse("create_payment_intent")
@@ -181,3 +185,54 @@ class StripePaymentIntentTests(TestCase):
         _, kwargs = mock_create.call_args
         self.assertEqual(kwargs["amount"], 900)
         self.assertEqual(kwargs["currency"], "eur")
+
+    def test_create_payment_intent_requires_authentication(self):
+        self.client.logout()
+        url = reverse("create_payment_intent")
+        response = self.client.post(url, {"plan": "plata"})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("login"), response.url)
+
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_create_payment_intent_requires_csrf(self):
+        client = Client(enforce_csrf_checks=True)
+        client.login(username="tester", password="pass")
+        url = reverse("create_payment_intent")
+        response = client.post(url, {"plan": "plata"})
+        self.assertEqual(response.status_code, 403)
+        client.get(reverse("home"))
+        csrftoken = client.cookies["csrftoken"].value
+        with patch("stripe.PaymentIntent.create") as mock_create:
+            mock_create.return_value = type("obj", (), {"client_secret": "cs_test"})()
+            response = client.post(
+                url, {"plan": "plata"}, HTTP_X_CSRFTOKEN=csrftoken
+            )
+        self.assertEqual(response.status_code, 200)
+
+
+class StripeCheckoutSessionTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="tester", password="pass")
+
+    def test_create_checkout_session_requires_authentication(self):
+        url = reverse("create_checkout_session")
+        response = self.client.post(url, {"plan": "bronce"})
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse("login"), response.url)
+
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_create_checkout_session_requires_csrf(self):
+        client = Client(enforce_csrf_checks=True)
+        client.login(username="tester", password="pass")
+        url = reverse("create_checkout_session")
+        response = client.post(url, {"plan": "bronce"})
+        self.assertEqual(response.status_code, 403)
+        client.get(reverse("home"))
+        csrftoken = client.cookies["csrftoken"].value
+        with patch("stripe.checkout.Session.create") as mock_create:
+            mock_create.return_value = type("obj", (), {"id": "sess_test"})()
+            response = client.post(
+                url, {"plan": "bronce"}, HTTP_X_CSRFTOKEN=csrftoken
+            )
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {"sessionId": "sess_test"})

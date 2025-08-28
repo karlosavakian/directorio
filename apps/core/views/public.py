@@ -4,7 +4,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.urls import reverse
 from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 import stripe
 from ..forms import (
@@ -156,7 +156,7 @@ def cookies(request):
  
  
 
-@csrf_exempt
+@login_required
 @require_POST
 def create_checkout_session(request):
     """Create a Stripe Checkout session for the selected plan."""
@@ -181,7 +181,7 @@ def create_checkout_session(request):
     return JsonResponse({"sessionId": session.id})
 
 
-@csrf_exempt
+@login_required
 @require_POST
 def create_payment_intent(request):
     """Create a Stripe PaymentIntent for the selected plan."""
