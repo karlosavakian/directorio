@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardholderName = document.getElementById('cardholder-name');
   const paymentMessage = document.getElementById('payment-message');
   const paymentIntentInput = document.getElementById('payment_intent_id');
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
   const form = document.querySelector('.profile-form');
   let stripe = null;
   let cardElement = null;
@@ -225,7 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const response = await fetch('/create-payment-intent/', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrftoken,
+          },
           body: new URLSearchParams({ plan: selectedPlan.value })
         });
         if (!response.ok) {

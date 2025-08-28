@@ -19,6 +19,7 @@ urlpatterns = [
     # Core: Página principal
     path('', include('apps.core.urls')),
     path('create-payment-intent/', core_public.create_payment_intent, name='create_payment_intent'),
+    path('create-checkout-session/', core_public.create_checkout_session, name='create_checkout_session'),
 
     # Perfil público de clubs
     path('admin/', dashboard, name='club_dashboard'),
