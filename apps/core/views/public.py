@@ -181,7 +181,10 @@ def create_payment_intent(request):
         return JsonResponse({"error": "Invalid plan"}, status=400)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
+    try:
+        intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
+    except stripe.error.StripeError as e:
+        return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"clientSecret": intent.client_secret})
 
 
@@ -195,21 +198,24 @@ def create_checkout_session(request):
         return JsonResponse({"error": "Invalid plan"}, status=400)
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    session = stripe.checkout.Session.create(
-        mode="payment",
-        line_items=[
-            {
-                "price_data": {
-                    "currency": "eur",
-                    "product_data": {"name": plan},
-                    "unit_amount": amount,
-                },
-                "quantity": 1,
-            }
-        ],
-        success_url=request.build_absolute_uri("/"),
-        cancel_url=request.build_absolute_uri("/"),
-    )
+    try:
+        session = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=[
+                {
+                    "price_data": {
+                        "currency": "eur",
+                        "product_data": {"name": plan},
+                        "unit_amount": amount,
+                    },
+                    "quantity": 1,
+                }
+            ],
+            success_url=request.build_absolute_uri("/"),
+            cancel_url=request.build_absolute_uri("/"),
+        )
+    except stripe.error.StripeError as e:
+        return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"id": session.id})
 
 
