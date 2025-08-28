@@ -8,6 +8,7 @@ from io import BytesIO
 from PIL import Image
 import tempfile
 from unittest.mock import patch
+from apps.core.utils.plans import PLAN_PRICES, PLANS
 
 class RegistroProfesionalTests(TestCase):
     def _create_image(self):
@@ -179,5 +180,18 @@ class StripePaymentIntentTests(TestCase):
             response = self.client.post(url, {"plan": "plata"})
         self.assertEqual(response.status_code, 200)
         _, kwargs = mock_create.call_args
-        self.assertEqual(kwargs["amount"], 900)
+        self.assertEqual(kwargs["amount"], PLAN_PRICES["plata"])
         self.assertEqual(kwargs["currency"], "eur")
+
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_payment_intent_amount_matches_displayed_price(self):
+        plan = "oro"
+        url = reverse("create_payment_intent")
+        with patch("stripe.PaymentIntent.create") as mock_create:
+            mock_create.return_value = type("obj", (), {"client_secret": "cs_test"})()
+            response = self.client.post(url, {"plan": plan})
+        self.assertEqual(response.status_code, 200)
+        _, kwargs = mock_create.call_args
+        display_plan = next(p for p in PLANS if p["value"] == plan)
+        displayed_amount = int(display_plan["price"].split("€")[0].strip()) * 100
+        self.assertEqual(kwargs["amount"], displayed_amount)

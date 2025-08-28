@@ -15,7 +15,7 @@ from ..forms import (
     ProExtraForm,
     CoachFormSet,
 )
-from ..utils.plans import PLANS
+from ..utils.plans import PLANS, PLAN_PRICES
 from apps.clubs.models import Club, Entrenador
 
 
@@ -186,11 +186,7 @@ def create_checkout_session(request):
 def create_payment_intent(request):
     """Create a Stripe PaymentIntent for the selected plan."""
     plan = request.POST.get("plan")
-    amount_lookup = {
-        "plata": 900,
-        "oro": 1900,
-    }
-    amount = amount_lookup.get(plan)
+    amount = PLAN_PRICES.get(plan)
     if not amount:
         return JsonResponse({"error": "Invalid plan"}, status=400)
 
