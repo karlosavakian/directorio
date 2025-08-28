@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
+  const finishBtnText = finishBtn ? finishBtn.textContent : '';
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
@@ -209,48 +210,58 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (finishBtn && stripe && cardElement) {
-    finishBtn.addEventListener('click', e => {
+    finishBtn.addEventListener('click', async e => {
       if (current !== maxStep) return;
       e.preventDefault();
       if (!validateStep(current)) return;
       const selectedPlan = document.querySelector('input[name="plan"]:checked');
       if (!selectedPlan) return;
       if (paymentMessage) {
-        paymentMessage.textContent = '';
-        paymentMessage.classList.remove('text-success');
-        paymentMessage.classList.add('text-danger');
+        paymentMessage.classList.remove('text-success', 'text-danger');
+        paymentMessage.textContent = 'Procesando...';
       }
-      fetch('/create-payment-intent/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ plan: selectedPlan.value })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (!data.clientSecret) throw new Error('no client secret');
-          return stripe.confirmCardPayment(data.clientSecret, {
-            payment_method: {
-              card: cardElement,
-              billing_details: { name: cardholderName ? cardholderName.value : '' }
-            }
-          });
-        })
-        .then(result => {
-          if (result.error) {
-            if (paymentMessage) paymentMessage.textContent = result.error.message;
-          } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-            if (paymentMessage) {
-              paymentMessage.classList.remove('text-danger');
-              paymentMessage.classList.add('text-success');
-              paymentMessage.textContent = 'Pago realizado con éxito';
-            }
-            if (paymentIntentInput) paymentIntentInput.value = result.paymentIntent.id;
-            if (form) form.submit();
-          }
-        })
-        .catch(() => {
-          if (paymentMessage) paymentMessage.textContent = 'No se pudo procesar el pago';
+      finishBtn.disabled = true;
+      finishBtn.textContent = 'Procesando...';
+      try {
+        const response = await fetch('/create-payment-intent/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ plan: selectedPlan.value })
         });
+        if (!response.ok) {
+          let msg = 'No se pudo iniciar el pago';
+          try {
+            const err = await response.json();
+            if (err && err.error) msg = err.error;
+          } catch (_) {}
+          if (paymentMessage) paymentMessage.textContent = msg;
+          return;
+        }
+        const data = await response.json();
+        if (!data.clientSecret) throw new Error('no client secret');
+        const result = await stripe.confirmCardPayment(data.clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: { name: cardholderName ? cardholderName.value : '' }
+          }
+        });
+        if (result.error) {
+          if (paymentMessage) paymentMessage.textContent = result.error.message;
+        } else if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+          if (paymentMessage) {
+            paymentMessage.classList.remove('text-danger');
+            paymentMessage.classList.add('text-success');
+            paymentMessage.textContent = 'Pago realizado con éxito';
+          }
+          if (paymentIntentInput) paymentIntentInput.value = result.paymentIntent.id;
+          if (form) form.submit();
+        }
+      } catch (_) {
+        if (paymentMessage) paymentMessage.textContent = 'No se pudo procesar el pago';
+      } finally {
+        finishBtn.disabled = false;
+        finishBtn.textContent = finishBtnText;
+      }
     });
   }
 

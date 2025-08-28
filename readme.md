@@ -121,4 +121,12 @@ directorio_boxeo/
 ├── manage.py                        -> Script de Django para tareas administrativas.
 │
 └── requirements.txt                 -> Dependencias del proyecto.
- 
+
+## QA manual
+
+Para comprobar el manejo de errores en el flujo de pago:
+
+1. Completa el formulario de registro profesional hasta el último paso.
+2. Abre las herramientas de desarrollador del navegador y activa el modo "Offline" en la pestaña **Network** para simular un fallo de red. Pulsa **Finalizar** y comprueba que el botón queda deshabilitado, aparece el mensaje de procesamiento y luego se muestra un error claro.
+3. Vuelve a habilitar la red. En el paso de pago utiliza la tarjeta de prueba de Stripe `4000 0000 0000 0002` para simular un pago rechazado. Asegúrate de que el mensaje de error de Stripe se muestra y el botón se rehabilita al terminar.
+
