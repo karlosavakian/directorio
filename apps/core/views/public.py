@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 import stripe
 from ..forms import (
@@ -171,9 +171,7 @@ def cookies(request):
     """Display cookies policy page."""
     return render(request, 'core/politica_cookies.html')
  
- 
-
-@csrf_exempt
+@login_required
 @require_POST
 def create_payment_intent(request):
     """Create a Stripe PaymentIntent for the selected plan."""
@@ -185,6 +183,34 @@ def create_payment_intent(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
     intent = stripe.PaymentIntent.create(amount=amount, currency="eur")
     return JsonResponse({"clientSecret": intent.client_secret})
+
+
+@login_required
+@require_POST
+def create_checkout_session(request):
+    """Create a Stripe Checkout Session for the selected plan."""
+    plan = request.POST.get("plan")
+    amount = PLAN_PRICES.get(plan)
+    if not amount:
+        return JsonResponse({"error": "Invalid plan"}, status=400)
+
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    session = stripe.checkout.Session.create(
+        mode="payment",
+        line_items=[
+            {
+                "price_data": {
+                    "currency": "eur",
+                    "product_data": {"name": plan},
+                    "unit_amount": amount,
+                },
+                "quantity": 1,
+            }
+        ],
+        success_url=request.build_absolute_uri("/"),
+        cancel_url=request.build_absolute_uri("/"),
+    )
+    return JsonResponse({"id": session.id})
 
 
 def error_404(request, exception=None):
