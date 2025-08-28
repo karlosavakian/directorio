@@ -1,14 +1,20 @@
 """Utility definitions for subscription plans used across the site."""
 
+# Centralized price definitions (amounts in euro cents) so both the
+# templates and Stripe interactions stay in sync.
+PLAN_PRICES = {
+    "bronce": 0,
+    "plata": 900,
+    "oro": 1900,
+}
+
 # Centralized list of available plans so templates can render
 # consistent information whether they are used on the profile or
 # professional registration pages.
-
 PLANS = [
     {
         "value": "bronce",
         "title": "Plan Bronce",
-        "price": "0€ / mes",
         "features": [
             "Presencia básica en el directorio",
             "Publicación de eventos",
@@ -18,7 +24,6 @@ PLANS = [
     {
         "value": "plata",
         "title": "Plan Plata",
-        "price": "9€ / mes",
         "features": [
             "Todos los beneficios del Plan Bronce",
             "Publicaciones ilimitadas",
@@ -29,7 +34,6 @@ PLANS = [
     {
         "value": "oro",
         "title": "Plan Oro",
-        "price": "19€ / mes",
         "features": [
             "Todos los beneficios del Plan Plata",
             "Badge de verificación",
@@ -38,3 +42,8 @@ PLANS = [
     },
 ]
 
+# Enrich plan definitions with price information derived from PLAN_PRICES
+for plan in PLANS:
+    amount = PLAN_PRICES[plan["value"]]
+    plan["amount"] = amount
+    plan["price"] = f"{amount // 100}€ / mes"
