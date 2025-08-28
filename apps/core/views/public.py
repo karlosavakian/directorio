@@ -187,6 +187,8 @@ def create_payment_intent(request):
             currency="eur",
             automatic_payment_methods={"enabled": True},
         )
+    except stripe.error.AuthenticationError:
+        return JsonResponse({"error": "Invalid Stripe API key"}, status=400)
     except stripe.error.StripeError as e:
         return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"clientSecret": intent.client_secret})
@@ -218,6 +220,8 @@ def create_checkout_session(request):
             success_url=request.build_absolute_uri("/"),
             cancel_url=request.build_absolute_uri("/"),
         )
+    except stripe.error.AuthenticationError:
+        return JsonResponse({"error": "Invalid Stripe API key"}, status=400)
     except stripe.error.StripeError as e:
         return JsonResponse({"error": str(e)}, status=400)
     return JsonResponse({"id": session.id})

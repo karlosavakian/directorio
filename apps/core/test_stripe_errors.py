@@ -35,3 +35,33 @@ class StripeErrorHandlingTests(TestCase):
             )
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.json())
+
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_create_payment_intent_masks_api_key_on_auth_error(self):
+        url = reverse("create_payment_intent")
+        with patch(
+            "stripe.PaymentIntent.create",
+            side_effect=stripe.error.AuthenticationError("Invalid API Key provided: pk_test"),
+        ):
+            response = self.client.post(
+                url,
+                {"plan": "plata"},
+                HTTP_X_CSRFTOKEN=self.csrftoken,
+            )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json().get("error"), "Invalid Stripe API key")
+
+    @override_settings(STRIPE_SECRET_KEY="sk_test")
+    def test_create_checkout_session_masks_api_key_on_auth_error(self):
+        url = reverse("create_checkout_session")
+        with patch(
+            "stripe.checkout.Session.create",
+            side_effect=stripe.error.AuthenticationError("Invalid API Key provided: pk_test"),
+        ):
+            response = self.client.post(
+                url,
+                {"plan": "plata"},
+                HTTP_X_CSRFTOKEN=self.csrftoken,
+            )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json().get("error"), "Invalid Stripe API key")
