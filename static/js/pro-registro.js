@@ -280,6 +280,10 @@ document.addEventListener('DOMContentLoaded', () => {
       })
         .then(res => res.json())
         .then(data => {
+          if (!data.clientSecret) {
+            if (cardErrors) cardErrors.textContent = data.error || 'No se pudo iniciar el pago.';
+            return;
+          }
           clientSecret = data.clientSecret;
           if (stripe && !cardNumberElement) {
             const elements = stripe.elements();
@@ -296,6 +300,9 @@ document.addEventListener('DOMContentLoaded', () => {
             cardExpiryElement.on('change', handleCardErrors);
             cardCvcElement.on('change', handleCardErrors);
           }
+        })
+        .catch(() => {
+          if (cardErrors) cardErrors.textContent = 'No se pudo conectar con el servicio de pago.';
         });
     }
   }
