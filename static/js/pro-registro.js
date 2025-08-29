@@ -13,10 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const paymentForm = document.getElementById('payment-form');
   const cardErrors = document.getElementById('card-errors');
   const submitPaymentBtn = document.getElementById('submit-payment');
-  const billingFirstName = document.getElementById('billing-nombre');
-  const billingLastName = document.getElementById('billing-apellidos');
-  const billingEmail = document.getElementById('billing-email');
-  const copyBillingBtn = document.getElementById('copy-billing-data');
   const summaryType = document.getElementById('summary-type');
     const summaryPlan = document.getElementById('summary-plan');
     const summaryPrice = document.getElementById('summary-price');
@@ -258,12 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const billingDetails = {};
           if (cardHolder && cardHolder.value) {
             billingDetails.name = cardHolder.value;
-          } else if (billingFirstName || billingLastName) {
-            const first = billingFirstName ? billingFirstName.value : '';
-            const last = billingLastName ? billingLastName.value : '';
-            billingDetails.name = `${first} ${last}`.trim();
           }
-          if (billingEmail) billingDetails.email = billingEmail.value;
           const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
             payment_method: {
               card: cardNumberElement,
@@ -334,30 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (copyBillingBtn) {
-    copyBillingBtn.addEventListener('click', () => {
-      const map = {
-        nombre: 'id_nombre',
-        apellidos: 'id_apellidos',
-        email: 'id_email',
-        dni: 'id_dni',
-        prefijo: 'id_prefijo',
-        telefono: 'id_telefono',
-        pais: 'id_pais',
-        comunidad_autonoma: 'id_comunidad_autonoma',
-        ciudad: 'id_ciudad',
-        calle: 'id_calle',
-        numero: 'id_numero',
-        puerta: 'id_puerta',
-        codigo_postal: 'id_codigo_postal'
-      };
-      Object.entries(map).forEach(([target, sourceId]) => {
-        const src = document.getElementById(sourceId);
-        const dest = document.getElementById(`billing-${target}`);
-        if (src && dest) dest.value = src.value;
-      });
-    });
-  }
 
   function updateSummary() {
     if (summaryType) {
