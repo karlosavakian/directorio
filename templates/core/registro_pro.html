@@ -49,16 +49,127 @@
                         <p class="text-muted mb-4 text-center">Ingresa los datos de facturación y de tu tarjeta para completar el registro.</p>
                         <div class="row">
                             <div class="col-md-6">
-                                <form id="billing-form" class="mb-4">
-                                    <div class="mb-3">
-                                        <label for="billing-name" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="billing-name" placeholder="Nombre completo" required>
+                                <div id="billing-form" class="mb-4">
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" id="copy-billing-data">Usar datos del registro</button>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="billing-email" class="form-label">Correo electrónico</label>
-                                        <input type="email" class="form-control" id="billing-email" placeholder="correo@example.com" required>
+                                    <h3 class="h6 mb-3">Datos de facturación</h3>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-nombre" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-nombre">Nombre</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-apellidos" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-apellidos">Apellidos</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </form>
+                                    <div class="row g-3 mt-0">
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <input type="email" id="billing-email" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-email">Correo electrónico</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-field">
+                                                <input type="date" id="billing-fecha_nacimiento" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-fecha_nacimiento">Fecha de nacimiento</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-field">
+                                                <select id="billing-sexo" class="form-select" required>
+                                                    <option value=""></option>
+                                                    <option value="hombre">Hombre</option>
+                                                    <option value="mujer">Mujer</option>
+                                                </select>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-sexo">Sexo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 mt-0">
+                                        <div class="col-md-3">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-dni" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-dni">DNI</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-field phone-field">
+                                                <input type="text" id="billing-prefijo" class="form-control" value="+34" required>
+                                                <input type="text" id="billing-telefono" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-telefono">Teléfono</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"></div>
+                                    </div>
+                                    <h3 class="h6 my-3">Dirección</h3>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-pais" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-pais">País</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-comunidad_autonoma" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-comunidad_autonoma">Comunidad autónoma</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-ciudad" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-ciudad">Ciudad</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-calle" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-calle">Calle</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-numero" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-numero">Número</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-puerta" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-puerta">Puerta</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-field">
+                                                <input type="text" id="billing-codigo_postal" class="form-control" required>
+                                                <button type="button" class="clear-btn bi bi-x"></button>
+                                                <label for="billing-codigo_postal">Código postal</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <form id="payment-form">
                                     <div id="card-element" class="mb-3"></div>
                                     <div id="card-errors" class="text-danger mb-3" role="alert"></div>
@@ -71,6 +182,7 @@
                             <div class="col-md-6">
                                 <div id="purchase-summary" class="border p-3 rounded">
                                     <h2 class="h6 mb-3">Resumen de la compra</h2>
+                                    <p class="mb-1"><strong>Tipo:</strong> <span id="summary-type">-</span></p>
                                     <p class="mb-1"><strong>Plan:</strong> <span id="summary-plan">-</span></p>
                                     <p class="mb-0"><strong>Precio:</strong> <span id="summary-price">-</span></p>
                                 </div>
