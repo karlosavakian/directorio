@@ -18,11 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const billingEmail = document.getElementById('billing-email');
   const copyBillingBtn = document.getElementById('copy-billing-data');
   const summaryType = document.getElementById('summary-type');
-  const summaryPlan = document.getElementById('summary-plan');
-  const summaryPrice = document.getElementById('summary-price');
-  let cardElement = null;
-  let paymentCompleted = false;
-  let requiresPayment = false;
+    const summaryPlan = document.getElementById('summary-plan');
+    const summaryPrice = document.getElementById('summary-price');
+    const cardHolder = document.getElementById('card-holder-name');
+    let cardNumberElement = null;
+    let cardExpiryElement = null;
+    let cardCvcElement = null;
+    let paymentCompleted = false;
+    let requiresPayment = false;
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
@@ -227,42 +230,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (paymentForm && window.stripePublicKey) {
-    const stripe = Stripe(window.stripePublicKey);
-    const elements = stripe.elements();
-    cardElement = elements.create('card');
-    cardElement.mount('#card-element');
+    if (paymentForm && window.stripePublicKey) {
+      const stripe = Stripe(window.stripePublicKey);
+      const elements = stripe.elements();
+      cardNumberElement = elements.create('cardNumber');
+      cardNumberElement.mount('#card-number-element');
+      cardExpiryElement = elements.create('cardExpiry');
+      cardExpiryElement.mount('#card-expiry-element');
+      cardCvcElement = elements.create('cardCvc');
+      cardCvcElement.mount('#card-cvc-element');
 
-    paymentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (cardErrors) {
-        cardErrors.textContent = '';
-        cardErrors.classList.remove('text-success');
-        cardErrors.classList.add('text-danger');
-      }
-      if (step4Alert) step4Alert.classList.add('d-none');
-      if (submitPaymentBtn) {
-        submitPaymentBtn.disabled = true;
-        submitPaymentBtn.textContent = 'Procesando...';
-      }
-      try {
-        const response = await fetch('/create-payment-intent/', { method: 'POST' });
-        const data = await response.json();
-        const billingDetails = {};
-        if (billingFirstName || billingLastName) {
-          const first = billingFirstName ? billingFirstName.value : '';
-          const last = billingLastName ? billingLastName.value : '';
-          billingDetails.name = `${first} ${last}`.trim();
+      paymentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (cardErrors) {
+          cardErrors.textContent = '';
+          cardErrors.classList.remove('text-success');
+          cardErrors.classList.add('text-danger');
         }
-        if (billingEmail) billingDetails.email = billingEmail.value;
-        const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
-          payment_method: {
-            card: cardElement,
-            billing_details: billingDetails
+        if (step4Alert) step4Alert.classList.add('d-none');
+        if (submitPaymentBtn) {
+          submitPaymentBtn.disabled = true;
+          submitPaymentBtn.textContent = 'Procesando...';
+        }
+        try {
+          const response = await fetch('/create-payment-intent/', { method: 'POST' });
+          const data = await response.json();
+          const billingDetails = {};
+          if (cardHolder && cardHolder.value) {
+            billingDetails.name = cardHolder.value;
+          } else if (billingFirstName || billingLastName) {
+            const first = billingFirstName ? billingFirstName.value : '';
+            const last = billingLastName ? billingLastName.value : '';
+            billingDetails.name = `${first} ${last}`.trim();
           }
-        });
-        if (error) {
-          if (cardErrors) cardErrors.textContent = error.message || 'Error al procesar el pago.';
+          if (billingEmail) billingDetails.email = billingEmail.value;
+          const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
+            payment_method: {
+              card: cardNumberElement,
+              billing_details: billingDetails
+            }
+          });
+          if (error) {
+            if (cardErrors) cardErrors.textContent = error.message || 'Error al procesar el pago.';
+            if (step4Alert) {
+              step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
+              step4Alert.classList.remove('d-none');
+            }
+            if (submitPaymentBtn) {
+              submitPaymentBtn.disabled = false;
+              submitPaymentBtn.textContent = 'Pagar';
+            }
+          } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+            paymentCompleted = true;
+            if (cardErrors) {
+              cardErrors.classList.remove('text-danger');
+              cardErrors.classList.add('text-success');
+              cardErrors.textContent = 'Pago realizado con éxito.';
+            }
+            if (submitPaymentBtn) {
+              submitPaymentBtn.classList.add('d-none');
+              submitPaymentBtn.disabled = false;
+              submitPaymentBtn.textContent = 'Pagar';
+            }
+            showStep(maxStep);
+          }
+        } catch (err) {
+          if (cardErrors) cardErrors.textContent = 'Error al procesar el pago.';
           if (step4Alert) {
             step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
             step4Alert.classList.remove('d-none');
@@ -271,33 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
             submitPaymentBtn.disabled = false;
             submitPaymentBtn.textContent = 'Pagar';
           }
-        } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-          paymentCompleted = true;
-          if (cardErrors) {
-            cardErrors.classList.remove('text-danger');
-            cardErrors.classList.add('text-success');
-            cardErrors.textContent = 'Pago realizado con éxito.';
-          }
-          if (submitPaymentBtn) {
-            submitPaymentBtn.classList.add('d-none');
-            submitPaymentBtn.disabled = false;
-            submitPaymentBtn.textContent = 'Pagar';
-          }
-          showStep(maxStep);
         }
-      } catch (err) {
-        if (cardErrors) cardErrors.textContent = 'Error al procesar el pago.';
-        if (step4Alert) {
-          step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
-          step4Alert.classList.remove('d-none');
-        }
-        if (submitPaymentBtn) {
-          submitPaymentBtn.disabled = false;
-          submitPaymentBtn.textContent = 'Pagar';
-        }
-      }
-    });
-  }
+      });
+    }
 
   tipoCards.forEach(card => {
     const input = card.querySelector('input');
@@ -331,8 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
         nombre: 'id_nombre',
         apellidos: 'id_apellidos',
         email: 'id_email',
-        fecha_nacimiento: 'id_fecha_nacimiento',
-        sexo: 'id_sexo',
         dni: 'id_dni',
         prefijo: 'id_prefijo',
         telefono: 'id_telefono',
