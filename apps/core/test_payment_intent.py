@@ -22,7 +22,7 @@ class PaymentIntentTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content, {"clientSecret": "cs_test"})
         mock_stripe.PaymentIntent.create.assert_called_once_with(
-            amount=900, currency="eur", automatic_payment_methods={"enabled": True}
+            amount=900, currency="eur", payment_method_types=["card"]
         )
 
     @patch("apps.core.views.public.get_stripe")

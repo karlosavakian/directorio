@@ -175,10 +175,13 @@ def create_payment_intent(request):
 
     try:
         stripe_client = get_stripe()
+        # Usamos los elementos de tarjeta, por lo que especificamos
+        # explícitamente el método de pago "card" en lugar de confiar
+        # en los "automatic_payment_methods" de Stripe.
         intent = stripe_client.PaymentIntent.create(
             amount=plan["amount"],
             currency="eur",
-            automatic_payment_methods={"enabled": True},
+            payment_method_types=["card"],
         )
     except (ImproperlyConfigured, stripe.error.StripeError):
         return JsonResponse({"error": "No se pudo iniciar el pago"}, status=400)
