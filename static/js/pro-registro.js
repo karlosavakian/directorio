@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    if (paymentForm && window.stripePublicKey) {
+  if (paymentForm && submitPaymentBtn && window.stripePublicKey) {
       const stripe = Stripe(window.stripePublicKey);
       const elements = stripe.elements();
       cardNumberElement = elements.create('cardNumber');
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cardCvcElement = elements.create('cardCvc');
       cardCvcElement.mount('#card-cvc-element');
 
-      paymentForm.addEventListener('submit', async (e) => {
+      submitPaymentBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         if (cardErrors) {
           cardErrors.textContent = '';
@@ -244,10 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
           cardErrors.classList.add('text-danger');
         }
         if (step4Alert) step4Alert.classList.add('d-none');
-        if (submitPaymentBtn) {
-          submitPaymentBtn.disabled = true;
-          submitPaymentBtn.textContent = 'Procesando...';
-        }
+        submitPaymentBtn.disabled = true;
+        submitPaymentBtn.textContent = 'Procesando...';
         try {
           const response = await fetch('/create-payment-intent/', { method: 'POST' });
           const data = await response.json();
@@ -267,10 +265,8 @@ document.addEventListener('DOMContentLoaded', () => {
               step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
               step4Alert.classList.remove('d-none');
             }
-            if (submitPaymentBtn) {
-              submitPaymentBtn.disabled = false;
-              submitPaymentBtn.textContent = 'Pagar';
-            }
+            submitPaymentBtn.disabled = false;
+            submitPaymentBtn.textContent = 'Pagar';
           } else if (paymentIntent && paymentIntent.status === 'succeeded') {
             paymentCompleted = true;
             if (cardErrors) {
@@ -278,11 +274,9 @@ document.addEventListener('DOMContentLoaded', () => {
               cardErrors.classList.add('text-success');
               cardErrors.textContent = 'Pago realizado con éxito.';
             }
-            if (submitPaymentBtn) {
-              submitPaymentBtn.classList.add('d-none');
-              submitPaymentBtn.disabled = false;
-              submitPaymentBtn.textContent = 'Pagar';
-            }
+            submitPaymentBtn.classList.add('d-none');
+            submitPaymentBtn.disabled = false;
+            submitPaymentBtn.textContent = 'Pagar';
             showStep(maxStep);
           }
         } catch (err) {
@@ -291,10 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
             step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
             step4Alert.classList.remove('d-none');
           }
-          if (submitPaymentBtn) {
-            submitPaymentBtn.disabled = false;
-            submitPaymentBtn.textContent = 'Pagar';
-          }
+          submitPaymentBtn.disabled = false;
+          submitPaymentBtn.textContent = 'Pagar';
         }
       });
     }
