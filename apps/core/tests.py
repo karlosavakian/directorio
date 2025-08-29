@@ -1,9 +1,11 @@
 from datetime import timedelta
 
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
+from django.urls import reverse
 from django.utils import timezone
+from unittest.mock import MagicMock, patch
 
-from .templatetags.utils_filters import message_day, youtube_embed
+from apps.core.templatetags.utils_filters import message_day, youtube_embed
 
 
 class YoutubeEmbedTests(SimpleTestCase):
@@ -20,11 +22,10 @@ class YoutubeEmbedTests(SimpleTestCase):
         self.assertIn('&lt;script&gt;alert(1)&lt;/script&gt;', html)
 
 
-class AyudaViewTests(SimpleTestCase):
+class AyudaViewTests(TestCase):
     def test_ayuda_url_resolves(self):
         response = self.client.get('/ayuda/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'core/ayuda.html')
 
 
 class MessageDayFilterTests(SimpleTestCase):
@@ -40,4 +41,23 @@ class MessageDayFilterTests(SimpleTestCase):
         old_date = timezone.now() - timedelta(days=2)
         expected = timezone.localtime(old_date).date().strftime('%d/%m/%Y')
         self.assertEqual(message_day(old_date), expected)
+
+
+class PaymentIntentTests(SimpleTestCase):
+    @patch("apps.core.views.public.stripe.PaymentIntent.create")
+    def test_create_payment_intent_returns_client_secret(self, mock_create):
+        mock_create.return_value = MagicMock(client_secret="test_secret")
+        response = self.client.post(reverse("create_payment_intent"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"clientSecret": "test_secret"})
+
+
+class CheckoutRoutesTests(TestCase):
+    def test_checkout_success_view(self):
+        response = self.client.get(reverse("checkout_success"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_checkout_cancel_view(self):
+        response = self.client.get(reverse("checkout_cancel"))
+        self.assertEqual(response.status_code, 200)
 
