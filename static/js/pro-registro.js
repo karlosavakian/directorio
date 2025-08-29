@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const paymentForm = document.getElementById('payment-form');
   const cardErrors = document.getElementById('card-errors');
   const submitPaymentBtn = document.getElementById('submit-payment');
+  const billingName = document.getElementById('billing-name');
+  const billingEmail = document.getElementById('billing-email');
+  const summaryPlan = document.getElementById('summary-plan');
+  const summaryPrice = document.getElementById('summary-price');
   let cardElement = null;
   let paymentCompleted = false;
   let requiresPayment = false;
@@ -241,8 +245,14 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const response = await fetch('/create-payment-intent/', { method: 'POST' });
         const data = await response.json();
+        const billingDetails = {};
+        if (billingName) billingDetails.name = billingName.value;
+        if (billingEmail) billingDetails.email = billingEmail.value;
         const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
-          payment_method: { card: cardElement }
+          payment_method: {
+            card: cardElement,
+            billing_details: billingDetails
+          }
         });
         if (error) {
           if (cardErrors) cardErrors.textContent = error.message || 'Error al procesar el pago.';
@@ -303,8 +313,24 @@ document.addEventListener('DOMContentLoaded', () => {
       input.checked = true;
       planCards.forEach(c => c.classList.toggle('active', c === card));
       togglePaymentStep();
+      updateSummary();
     });
   });
+
+  function updateSummary() {
+    if (!summaryPlan || !summaryPrice) return;
+    const selected = document.querySelector('input[name="plan"]:checked');
+    if (!selected) {
+      summaryPlan.textContent = '-';
+      summaryPrice.textContent = '-';
+      return;
+    }
+    const card = selected.closest('.plan-card');
+    const title = card ? card.querySelector('h3').textContent.trim() : '';
+    const price = card ? card.querySelector('.plan-card-price').textContent.trim() : '';
+    summaryPlan.textContent = title;
+    summaryPrice.textContent = price;
+  }
 
   function togglePaymentStep() {
     const selected = document.querySelector('input[name="plan"]:checked');
@@ -321,11 +347,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (current > maxStep) current = maxStep;
     showStep(current);
+    updateSummary();
   }
 
   togglePaymentStep();
   showStep(current);
   updateFeatureForms();
+  updateSummary();
 
     function updateFeatureForms() {
     const selected = document.querySelector('input[name="tipo"]:checked');
