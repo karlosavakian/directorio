@@ -78,31 +78,14 @@
                                                 <label for="billing-email">Correo electrónico</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="form-field">
-                                                <input type="date" id="billing-fecha_nacimiento" class="form-control" required>
-                                                <button type="button" class="clear-btn bi bi-x"></button>
-                                                <label for="billing-fecha_nacimiento">Fecha de nacimiento</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-field">
-                                                <select id="billing-sexo" class="form-select" required>
-                                                    <option value=""></option>
-                                                    <option value="hombre">Hombre</option>
-                                                    <option value="mujer">Mujer</option>
-                                                </select>
-                                                <button type="button" class="clear-btn bi bi-x"></button>
-                                                <label for="billing-sexo">Sexo</label>
-                                            </div>
-                                        </div>
+                                        <div class="col-md-6"></div>
                                     </div>
                                     <div class="row g-3 mt-0">
                                         <div class="col-md-3">
                                             <div class="form-field">
                                                 <input type="text" id="billing-dni" class="form-control" required>
                                                 <button type="button" class="clear-btn bi bi-x"></button>
-                                                <label for="billing-dni">DNI</label>
+                                                <label for="billing-dni">DNI / NIE / NIF</label>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -171,7 +154,29 @@
                                     </div>
                                 </div>
                                 <form id="payment-form">
-                                    <div id="card-element" class="mb-3"></div>
+                                    <div class="form-field">
+                                        <input type="text" id="card-holder-name" class="form-control" required>
+                                        <button type="button" class="clear-btn bi bi-x"></button>
+                                        <label for="card-holder-name">Titular de la tarjeta</label>
+                                    </div>
+                                    <div class="form-field">
+                                        <div id="card-number-element" class="form-control"></div>
+                                        <label for="card-number-element">Número de tarjeta</label>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <div id="card-expiry-element" class="form-control"></div>
+                                                <label for="card-expiry-element">Fecha de caducidad</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-field">
+                                                <div id="card-cvc-element" class="form-control"></div>
+                                                <label for="card-cvc-element">CVV</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div id="card-errors" class="text-danger mb-3" role="alert"></div>
                                     <button id="submit-payment" class="btn btn-primary w-100">Pagar</button>
                                 </form>
