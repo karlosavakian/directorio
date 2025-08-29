@@ -13,8 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const paymentForm = document.getElementById('payment-form');
   const cardErrors = document.getElementById('card-errors');
   const submitPaymentBtn = document.getElementById('submit-payment');
-  const billingName = document.getElementById('billing-name');
+  const billingFirstName = document.getElementById('billing-nombre');
+  const billingLastName = document.getElementById('billing-apellidos');
   const billingEmail = document.getElementById('billing-email');
+  const copyBillingBtn = document.getElementById('copy-billing-data');
+  const summaryType = document.getElementById('summary-type');
   const summaryPlan = document.getElementById('summary-plan');
   const summaryPrice = document.getElementById('summary-price');
   let cardElement = null;
@@ -246,7 +249,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch('/create-payment-intent/', { method: 'POST' });
         const data = await response.json();
         const billingDetails = {};
-        if (billingName) billingDetails.name = billingName.value;
+        if (billingFirstName || billingLastName) {
+          const first = billingFirstName ? billingFirstName.value : '';
+          const last = billingLastName ? billingLastName.value : '';
+          billingDetails.name = `${first} ${last}`.trim();
+        }
         if (billingEmail) billingDetails.email = billingEmail.value;
         const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
           payment_method: {
@@ -301,6 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
       input.checked = true;
       tipoCards.forEach(c => c.classList.toggle('active', c === card));
       updateFeatureForms();
+      updateSummary();
     });
   });
 
@@ -317,7 +325,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  if (copyBillingBtn) {
+    copyBillingBtn.addEventListener('click', () => {
+      const map = {
+        nombre: 'id_nombre',
+        apellidos: 'id_apellidos',
+        email: 'id_email',
+        fecha_nacimiento: 'id_fecha_nacimiento',
+        sexo: 'id_sexo',
+        dni: 'id_dni',
+        prefijo: 'id_prefijo',
+        telefono: 'id_telefono',
+        pais: 'id_pais',
+        comunidad_autonoma: 'id_comunidad_autonoma',
+        ciudad: 'id_ciudad',
+        calle: 'id_calle',
+        numero: 'id_numero',
+        puerta: 'id_puerta',
+        codigo_postal: 'id_codigo_postal'
+      };
+      Object.entries(map).forEach(([target, sourceId]) => {
+        const src = document.getElementById(sourceId);
+        const dest = document.getElementById(`billing-${target}`);
+        if (src && dest) dest.value = src.value;
+      });
+    });
+  }
+
   function updateSummary() {
+    if (summaryType) {
+      const selectedTipo = document.querySelector('input[name="tipo"]:checked');
+      if (selectedTipo) {
+        const card = selectedTipo.closest('.tipo-card');
+        const label = card ? card.querySelector('.fw-medium').textContent.trim() : selectedTipo.value;
+        summaryType.textContent = label;
+      } else {
+        summaryType.textContent = '-';
+      }
+    }
     if (!summaryPlan || !summaryPrice) return;
     const selected = document.querySelector('input[name="plan"]:checked');
     if (!selected) {
