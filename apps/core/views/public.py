@@ -182,6 +182,11 @@ def create_payment_intent(request):
             amount=plan["amount"],
             currency="eur",
             payment_method_types=["card"],
+            description=f"Registro Pro - Plan {plan_value}",
+            metadata={
+                "plan": plan_value,
+                "user_id": request.user.id if request.user.is_authenticated else None,
+            },
         )
     except (ImproperlyConfigured, stripe.error.StripeError):
         return JsonResponse({"error": "No se pudo iniciar el pago"}, status=400)

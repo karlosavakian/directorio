@@ -22,7 +22,11 @@ class PaymentIntentTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertJSONEqual(response.content, {"clientSecret": "cs_test"})
         mock_stripe.PaymentIntent.create.assert_called_once_with(
-            amount=900, currency="eur", payment_method_types=["card"]
+            amount=900,
+            currency="eur",
+            payment_method_types=["card"],
+            description="Registro Pro - Plan plata",
+            metadata={"plan": "plata", "user_id": None},
         )
 
     @patch("apps.core.views.public.get_stripe")
