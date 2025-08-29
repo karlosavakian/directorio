@@ -44,10 +44,26 @@
                     <div id="step3" class="step fade-step d-none">
                         {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
                     </div> -->
-                    <div id="step4" class="step fade-step d-none text-center">
-                        <h1 class="h5 mb-3">Pasarela de pagos</h1>
-                        <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
-                        <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
+                    <div id="step4" class="step fade-step d-none text-start">
+                        <h1 class="h5 mb-4">Pasarela de pagos</h1>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="mb-3">
+                                    <label for="card-holder-name" class="form-label">Titular de la tarjeta</label>
+                                    <input type="text" id="card-holder-name" class="form-control" placeholder="Nombre del titular">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Detalles de la tarjeta</label>
+                                    <div id="card-element" class="form-control"></div>
+                                    <div id="card-errors" class="text-danger mt-2"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h2 class="h6">Resumen de la compra</h2>
+                                <p class="mb-1" id="summary-plan"></p>
+                                <p class="mb-0" id="summary-price"></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex mt-4">
                         <button type="button" class="btn btn-outline-dark d-none" id="prevBtn">Atrás</button>
@@ -62,6 +78,7 @@
     </main>
 {% endblock %}
 {% block extra_js %}
+    {{ plans|json_script:'plans-data' }}
     <script>window.stripePublicKey = "{{ stripe_public_key }}";</script>
     <script src="https://js.stripe.com/v3/"></script>
     <script src="{% static 'js/member-location.js' %}"></script>
