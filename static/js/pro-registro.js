@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
-  const stripeBtn = document.getElementById('stripe-connect-btn');
+  const paymentForm = document.getElementById('payment-form');
+  const cardErrors = document.getElementById('card-errors');
+  let cardElement = null;
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
@@ -195,16 +197,38 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
   }
 
-  if (stripeBtn && window.stripePublicKey) {
+  if (paymentForm && window.stripePublicKey) {
     const stripe = Stripe(window.stripePublicKey);
-    stripeBtn.addEventListener('click', () => {
-      fetch('/create-checkout-session/', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-          if (data.sessionId) {
-            stripe.redirectToCheckout({ sessionId: data.sessionId });
-          }
+    const elements = stripe.elements();
+    cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+
+    paymentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (cardErrors) {
+        cardErrors.textContent = '';
+        cardErrors.classList.remove('text-success');
+        cardErrors.classList.add('text-danger');
+      }
+      try {
+        const response = await fetch('/create-payment-intent/', { method: 'POST' });
+        const data = await response.json();
+        const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
+          payment_method: { card: cardElement }
         });
+        if (error) {
+          if (cardErrors) cardErrors.textContent = error.message || 'Error al procesar el pago.';
+        } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+          if (cardErrors) {
+            cardErrors.classList.remove('text-danger');
+            cardErrors.classList.add('text-success');
+            cardErrors.textContent = 'Pago realizado con éxito.';
+          }
+          if (finishBtn) finishBtn.disabled = false;
+        }
+      } catch (err) {
+        if (cardErrors) cardErrors.textContent = 'Error al procesar el pago.';
+      }
     });
   }
 
@@ -238,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (step4Elem) step4Elem.classList.toggle('d-none', isBronze);
     if (stepLabel4) stepLabel4.classList.toggle('d-none', isBronze);
     maxStep = isBronze ? 3 : 4;
+    if (finishBtn) finishBtn.disabled = !isBronze;
     if (current > maxStep) current = maxStep;
     showStep(current);
   }

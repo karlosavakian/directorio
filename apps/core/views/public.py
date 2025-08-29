@@ -179,6 +179,18 @@ def create_checkout_session(request):
     return JsonResponse({"sessionId": session.id})
 
 
+@csrf_exempt
+@require_POST
+def create_payment_intent(request):
+    """Create a Stripe PaymentIntent in test mode."""
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    intent = stripe.PaymentIntent.create(
+        amount=1000,
+        currency="usd",
+    )
+    return JsonResponse({"clientSecret": intent.client_secret})
+
+
 def checkout_success(request):
     """Display Stripe checkout success page."""
     return render(request, "core/checkout_success.html")
