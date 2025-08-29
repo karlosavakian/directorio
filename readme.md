@@ -51,6 +51,25 @@ pip install -r requirements.txt
 Las pruebas requieren Django y Pillow, ya incluidos en `requirements.txt`.
 
 
+## Pagos con Stripe
+
+1. **Obtén las claves de prueba**
+   - Inicia sesión en tu [dashboard de Stripe](https://dashboard.stripe.com/).
+   - Activa el modo de pruebas y ve a *Developers → API keys* para copiar la `Publishable key`, la `Secret key` y el `Client ID` de Connect si corresponde.
+
+2. **Configura el archivo `.env`**
+   - Copia el archivo de ejemplo si aún no lo hiciste: `cp .env.example .env`.
+   - Rellena `STRIPE_PUBLIC_KEY`, `STRIPE_SECRET_KEY` y `STRIPE_CONNECT_CLIENT_ID` con las claves de prueba obtenidas.
+
+3. **Dependencias y migraciones**
+   - Instala las dependencias con `pip install -r requirements.txt` (la librería `stripe` ya está incluida).
+   - Ejecuta las migraciones necesarias con `python manage.py migrate`.
+
+4. **Pago de prueba**
+   - Inicia el servidor (`python manage.py runserver`, paso 4 de la puesta en marcha).
+   - Realiza un pago usando una tarjeta de prueba como `4242 4242 4242 4242`, cualquier fecha futura y código CVC.
+
+
 
 
 directorio_boxeo/
