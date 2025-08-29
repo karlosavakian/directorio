@@ -44,10 +44,82 @@
                     <div id="step3" class="step fade-step d-none">
                         {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
                     </div>
-                    <div id="step4" class="step fade-step d-none text-center">
-                        <h1 class="h5 mb-3">Pasarela de pagos</h1>
-                        <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
-                        <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
+                    <div id="step4" class="step fade-step d-none">
+                        <div class="row g-5">
+                            <div class="col-md-8">
+                                <h1 class="h5 mb-3 text-center">Pasarela de pagos</h1>
+                                <h2 class="h6">Dirección de facturación</h2>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="billing-same-address">
+                                    <label class="form-check-label" for="billing-same-address">
+                                        Utilizar la dirección del paso anterior
+                                    </label>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="billing-first-name" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="billing-first-name" name="billing_first_name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-last-name" class="form-label">Apellido</label>
+                                        <input type="text" class="form-control" id="billing-last-name" name="billing_last_name">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-id" class="form-label">DNI/NIE/NIF</label>
+                                        <input type="text" class="form-control" id="billing-id" name="billing_id">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-autonomy" class="form-label">Comunidad autónoma</label>
+                                        <input type="text" class="form-control" id="billing-autonomy" name="billing_autonomy">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-province" class="form-label">Provincia</label>
+                                        <input type="text" class="form-control" id="billing-province" name="billing_province">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-postal-code" class="form-label">Código postal</label>
+                                        <input type="text" class="form-control" id="billing-postal-code" name="billing_postal_code">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="billing-street" class="form-label">Calle</label>
+                                        <input type="text" class="form-control" id="billing-street" name="billing_street">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="billing-number" class="form-label">Número</label>
+                                        <input type="text" class="form-control" id="billing-number" name="billing_number">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="billing-door" class="form-label">Puerta</label>
+                                        <input type="text" class="form-control" id="billing-door" name="billing_door">
+                                    </div>
+                                </div>
+                                <h2 class="h6 mt-4">Método de pago</h2>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment-card" value="card" checked>
+                                        <label class="form-check-label" for="payment-card">Tarjeta</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment-bizum" value="bizum">
+                                        <label class="form-check-label" for="payment-bizum">Bizum</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment-transfer" value="transfer">
+                                        <label class="form-check-label" for="payment-transfer">Transferencia</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="payment-paypal" value="paypal">
+                                        <label class="form-check-label" for="payment-paypal">Paypal</label>
+                                    </div>
+                                </div>
+                                <div id="card-element" class="mb-3"></div>
+                                <button type="button" class="btn btn-primary" id="stripe-connect-btn">Pagar</button>
+                            </div>
+                            <div class="col-md-4">
+                                <h2 class="h6">Resumen de la compra</h2>
+                                <div id="order-summary"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="d-flex mt-4">
                         <button type="button" class="btn btn-outline-dark d-none" id="prevBtn">Atrás</button>
