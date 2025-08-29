@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import JsonResponse
+from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -162,19 +163,26 @@ def cookies(request):
 @require_POST
 def create_payment_intent(request):
     """Create a Stripe PaymentIntent for the selected plan."""
-    stripe_client = get_stripe()
     try:
-        data = json.loads(request.body or '{}')
+        data = json.loads(request.body or "{}")
     except json.JSONDecodeError:
-        data = {}
-    plan_value = data.get('plan')
+        return JsonResponse({"error": "No se pudo iniciar el pago"}, status=400)
+
+    plan_value = data.get("plan")
     plan = next((p for p in PLANS if p["value"] == plan_value), None)
     if not plan or plan.get("amount") is None:
         return JsonResponse({"error": "Plan inválido"}, status=400)
-    intent = stripe_client.PaymentIntent.create(
-        amount=plan["amount"],
-        currency="eur",
-    )
+
+    try:
+        stripe_client = get_stripe()
+        intent = stripe_client.PaymentIntent.create(
+            amount=plan["amount"],
+            currency="eur",
+            automatic_payment_methods={"enabled": True},
+        )
+    except (ImproperlyConfigured, stripe.error.StripeError):
+        return JsonResponse({"error": "No se pudo iniciar el pago"}, status=400)
+
     return JsonResponse({"clientSecret": intent.client_secret})
 
 
