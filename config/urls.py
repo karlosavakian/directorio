@@ -19,6 +19,7 @@ urlpatterns = [
     # Core: Página principal
     path('', include('apps.core.urls')),
     path('create-checkout-session/', core_public.create_checkout_session, name='create_checkout_session'),
+    path('create-payment-intent/', core_public.create_payment_intent, name='create_payment_intent'),
     path('checkout/success/', core_public.checkout_success, name='checkout_success'),
     path('checkout/cancel/', core_public.checkout_cancel, name='checkout_cancel'),
 

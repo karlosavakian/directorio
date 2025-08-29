@@ -7,12 +7,19 @@ source venv/bin/activate  # En Windows usa 'venv\\Scripts\\activate'
 pip install -r requirements.txt
 ```
 
-2. Aplica las migraciones de la base de datos:
+2. Copia el archivo de ejemplo y completa las claves de Stripe en modo test:
+```bash
+cp .env.example .env
+# Edita .env y rellena STRIPE_PUBLIC_KEY, STRIPE_SECRET_KEY y
+# STRIPE_CONNECT_CLIENT_ID con tus claves de prueba de Stripe
+```
+
+3. Aplica las migraciones de la base de datos:
 ```bash
 python manage.py migrate
 ```
 
-3. Inicia el servidor de desarrollo:
+4. Inicia el servidor de desarrollo:
 ```bash
 python manage.py runserver
 ```
@@ -22,7 +29,7 @@ python manage.py runserver
 ```bash
 export CSRF_TRUSTED_ORIGINS="https://tu-dominio.example.com"
 ```
-4. Configura los proveedores sociales (Google o Facebook) en el panel de
+5. Configura los proveedores sociales (Google o Facebook) en el panel de
    administración dentro de "Social applications". Guarda las credenciales
    correspondientes y ejecuta `python manage.py migrate` para aplicar las
    tablas de `django-allauth`.
@@ -42,6 +49,25 @@ pip install -r requirements.txt
 ```
 
 Las pruebas requieren Django y Pillow, ya incluidos en `requirements.txt`.
+
+
+## Pagos con Stripe
+
+1. **Obtén las claves de prueba**
+   - Inicia sesión en tu [dashboard de Stripe](https://dashboard.stripe.com/).
+   - Activa el modo de pruebas y ve a *Developers → API keys* para copiar la `Publishable key`, la `Secret key` y el `Client ID` de Connect si corresponde.
+
+2. **Configura el archivo `.env`**
+   - Copia el archivo de ejemplo si aún no lo hiciste: `cp .env.example .env`.
+   - Rellena `STRIPE_PUBLIC_KEY`, `STRIPE_SECRET_KEY` y `STRIPE_CONNECT_CLIENT_ID` con las claves de prueba obtenidas.
+
+3. **Dependencias y migraciones**
+   - Instala las dependencias con `pip install -r requirements.txt` (la librería `stripe` ya está incluida).
+   - Ejecuta las migraciones necesarias con `python manage.py migrate`.
+
+4. **Pago de prueba**
+   - Inicia el servidor (`python manage.py runserver`, paso 4 de la puesta en marcha).
+   - Realiza un pago usando una tarjeta de prueba como `4242 4242 4242 4242`, cualquier fecha futura y código CVC.
 
 
 
