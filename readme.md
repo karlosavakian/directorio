@@ -7,12 +7,19 @@ source venv/bin/activate  # En Windows usa 'venv\\Scripts\\activate'
 pip install -r requirements.txt
 ```
 
-2. Aplica las migraciones de la base de datos:
+2. Copia el archivo de ejemplo y completa las claves de Stripe en modo test:
+```bash
+cp .env.example .env
+# Edita .env y rellena STRIPE_PUBLIC_KEY, STRIPE_SECRET_KEY y
+# STRIPE_CONNECT_CLIENT_ID con tus claves de prueba de Stripe
+```
+
+3. Aplica las migraciones de la base de datos:
 ```bash
 python manage.py migrate
 ```
 
-3. Inicia el servidor de desarrollo:
+4. Inicia el servidor de desarrollo:
 ```bash
 python manage.py runserver
 ```
@@ -22,7 +29,7 @@ python manage.py runserver
 ```bash
 export CSRF_TRUSTED_ORIGINS="https://tu-dominio.example.com"
 ```
-4. Configura los proveedores sociales (Google o Facebook) en el panel de
+5. Configura los proveedores sociales (Google o Facebook) en el panel de
    administración dentro de "Social applications". Guarda las credenciales
    correspondientes y ejecuta `python manage.py migrate` para aplicar las
    tablas de `django-allauth`.
