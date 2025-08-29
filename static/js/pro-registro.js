@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const steps = ['step1', 'step2', 'step3', 'step4'].map(id => document.getElementById(id));
   const progress = ['step-label-1', 'step-label-2', 'step-label-3', 'step-label-4'].map(id => document.getElementById(id));
   const alerts = ['step1-alert', null, 'step3-alert', 'step4-alert'].map(id => id ? document.getElementById(id) : null);
+  const step4Alert = alerts[3];
   const currentInput = document.getElementById('current-step');
   let current = parseInt(currentInput.value, 10) || 1;
   const tipoCards = document.querySelectorAll('.tipo-card');
@@ -11,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const finishBtn = document.getElementById('finishBtn');
   const paymentForm = document.getElementById('payment-form');
   const cardErrors = document.getElementById('card-errors');
+  const submitPaymentBtn = document.getElementById('submit-payment');
   let cardElement = null;
+  let paymentCompleted = false;
+  let requiresPayment = false;
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
@@ -80,7 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
     currentInput.value = current;
     if (prevBtn) prevBtn.classList.toggle('d-none', n === 1);
     if (nextBtn) nextBtn.classList.toggle('d-none', n === maxStep);
-    if (finishBtn) finishBtn.classList.toggle('d-none', n !== maxStep);
+    if (finishBtn) {
+      const hideFinish = n !== maxStep || (requiresPayment && !paymentCompleted);
+      finishBtn.classList.toggle('d-none', hideFinish);
+      finishBtn.disabled = requiresPayment && !paymentCompleted;
+    }
     updateFeatureForms();
   }
 
@@ -182,6 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (firstInvalid && firstInvalid.offsetParent !== null) firstInvalid.reportValidity();
       return false;
     }
+    if (n === maxStep && requiresPayment && !paymentCompleted) {
+      if (alert) {
+        alert.textContent = 'Completa el pago antes de continuar.';
+        alert.classList.remove('d-none');
+      }
+      return false;
+    }
     return true;
   }
 
@@ -197,6 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
   }
 
+  if (finishBtn) {
+    finishBtn.addEventListener('click', (e) => {
+      if (!validateStep(current)) {
+        e.preventDefault();
+      }
+    });
+  }
+
   if (paymentForm && window.stripePublicKey) {
     const stripe = Stripe(window.stripePublicKey);
     const elements = stripe.elements();
@@ -210,6 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
         cardErrors.classList.remove('text-success');
         cardErrors.classList.add('text-danger');
       }
+      if (step4Alert) step4Alert.classList.add('d-none');
+      if (submitPaymentBtn) {
+        submitPaymentBtn.disabled = true;
+        submitPaymentBtn.textContent = 'Procesando...';
+      }
       try {
         const response = await fetch('/create-payment-intent/', { method: 'POST' });
         const data = await response.json();
@@ -218,16 +246,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (error) {
           if (cardErrors) cardErrors.textContent = error.message || 'Error al procesar el pago.';
+          if (step4Alert) {
+            step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
+            step4Alert.classList.remove('d-none');
+          }
+          if (submitPaymentBtn) {
+            submitPaymentBtn.disabled = false;
+            submitPaymentBtn.textContent = 'Pagar';
+          }
         } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+          paymentCompleted = true;
           if (cardErrors) {
             cardErrors.classList.remove('text-danger');
             cardErrors.classList.add('text-success');
             cardErrors.textContent = 'Pago realizado con éxito.';
           }
-          if (finishBtn) finishBtn.disabled = false;
+          if (submitPaymentBtn) {
+            submitPaymentBtn.classList.add('d-none');
+            submitPaymentBtn.disabled = false;
+            submitPaymentBtn.textContent = 'Pagar';
+          }
+          showStep(maxStep);
         }
       } catch (err) {
         if (cardErrors) cardErrors.textContent = 'Error al procesar el pago.';
+        if (step4Alert) {
+          step4Alert.textContent = 'Se produjo un error al procesar la tarjeta.';
+          step4Alert.classList.remove('d-none');
+        }
+        if (submitPaymentBtn) {
+          submitPaymentBtn.disabled = false;
+          submitPaymentBtn.textContent = 'Pagar';
+        }
       }
     });
   }
@@ -258,11 +308,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function togglePaymentStep() {
     const selected = document.querySelector('input[name="plan"]:checked');
-    const isBronze = selected && selected.value === 'bronce';
-    if (step4Elem) step4Elem.classList.toggle('d-none', isBronze);
-    if (stepLabel4) stepLabel4.classList.toggle('d-none', isBronze);
-    maxStep = isBronze ? 3 : 4;
-    if (finishBtn) finishBtn.disabled = !isBronze;
+    requiresPayment = !!(selected && selected.value !== 'bronce' && paymentForm);
+    paymentCompleted = false;
+    if (step4Elem) step4Elem.classList.toggle('d-none', !requiresPayment);
+    if (stepLabel4) stepLabel4.classList.toggle('d-none', !requiresPayment);
+    maxStep = requiresPayment ? 4 : 3;
+    if (finishBtn) finishBtn.disabled = requiresPayment;
+    if (submitPaymentBtn) {
+      submitPaymentBtn.classList.toggle('d-none', !requiresPayment);
+      submitPaymentBtn.disabled = false;
+      submitPaymentBtn.textContent = 'Pagar';
+    }
     if (current > maxStep) current = maxStep;
     showStep(current);
   }
