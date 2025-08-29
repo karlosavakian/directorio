@@ -7,6 +7,8 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
 import stripe
+import json
+from ..stripe_client import get_stripe
 from ..forms import (
     TipoUsuarioForm,
     PlanForm,
@@ -153,8 +155,28 @@ def privacidad(request):
 def cookies(request):
     """Display cookies policy page."""
     return render(request, 'core/politica_cookies.html')
- 
- 
+
+
+
+@csrf_exempt
+@require_POST
+def create_payment_intent(request):
+    """Create a Stripe PaymentIntent for the selected plan."""
+    stripe_client = get_stripe()
+    try:
+        data = json.loads(request.body or '{}')
+    except json.JSONDecodeError:
+        data = {}
+    plan_value = data.get('plan')
+    plan = next((p for p in PLANS if p["value"] == plan_value), None)
+    if not plan or plan.get("amount") is None:
+        return JsonResponse({"error": "Plan inválido"}, status=400)
+    intent = stripe_client.PaymentIntent.create(
+        amount=plan["amount"],
+        currency="eur",
+    )
+    return JsonResponse({"clientSecret": intent.client_secret})
+
 
 @csrf_exempt
 @require_POST

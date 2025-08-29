@@ -9,13 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const prevBtn = document.getElementById('prevBtn');
   const finishBtn = document.getElementById('finishBtn');
-  const stripeBtn = document.getElementById('stripe-connect-btn');
+  const form = document.querySelector('.profile-form');
   const clubFeaturesSection = document.getElementById('club-features-section');
   const coachFeaturesSection = document.getElementById('coach-features-section');
   const logoTitle = document.getElementById('logo-title');
   const step4Elem = document.getElementById('step4');
   const stepLabel4 = document.getElementById('step-label-4');
   let maxStep = step4Elem ? 4 : 3;
+  const cardHolderInput = document.getElementById('card-holder-name');
+  const cardErrors = document.getElementById('card-errors');
+  const summaryPlan = document.getElementById('summary-plan');
+  const summaryPrice = document.getElementById('summary-price');
+  const plansData = JSON.parse(document.getElementById('plans-data').textContent);
+  let stripe = window.stripePublicKey ? Stripe(window.stripePublicKey) : null;
+  let cardElement = null;
+  let clientSecret = null;
     const nameField = document.getElementById('name-field');
     const nameInput = document.getElementById('id_name');
     const firstNameInput = document.getElementById('id_nombre');
@@ -195,16 +203,29 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn.addEventListener('click', () => showStep(Math.max(current - 1, 1)));
   }
 
-  if (stripeBtn && window.stripePublicKey) {
-    const stripe = Stripe(window.stripePublicKey);
-    stripeBtn.addEventListener('click', () => {
-      fetch('/create-checkout-session/', { method: 'POST' })
-        .then(response => response.json())
-        .then(data => {
-          if (data.sessionId) {
-            stripe.redirectToCheckout({ sessionId: data.sessionId });
-          }
-        });
+  async function processPayment() {
+    if (!stripe || !cardElement || !clientSecret) return null;
+    const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { name: cardHolderInput ? cardHolderInput.value : '' }
+      }
+    });
+    if (error) {
+      if (cardErrors) cardErrors.textContent = error.message;
+      return null;
+    }
+    if (cardErrors) cardErrors.textContent = '';
+    return paymentIntent;
+  }
+
+  if (finishBtn) {
+    finishBtn.addEventListener('click', async (e) => {
+      if (maxStep === 4) {
+        e.preventDefault();
+        const result = await processPayment();
+        if (result && form) form.submit();
+      }
     });
   }
 
@@ -240,10 +261,34 @@ document.addEventListener('DOMContentLoaded', () => {
     maxStep = isBronze ? 3 : 4;
     if (current > maxStep) current = maxStep;
     showStep(current);
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const selected = document.querySelector('input[name="plan"]:checked');
+    if (!selected) return;
+    const planInfo = plansData.find(p => p.value === selected.value);
+    if (summaryPlan) summaryPlan.textContent = planInfo ? planInfo.title : '';
+    if (summaryPrice) summaryPrice.textContent = planInfo ? planInfo.price : '';
+    if (planInfo && planInfo.value !== 'bronce') {
+      fetch('/create-payment-intent/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planInfo.value })
+      })
+        .then(res => res.json())
+        .then(data => {
+          clientSecret = data.clientSecret;
+          if (stripe && !cardElement) {
+            const elements = stripe.elements();
+            cardElement = elements.create('card');
+            cardElement.mount('#card-element');
+          }
+        });
+    }
   }
 
   togglePaymentStep();
-  showStep(current);
   updateFeatureForms();
 
     function updateFeatureForms() {

@@ -9,6 +9,7 @@ PLANS = [
         "value": "bronce",
         "title": "Plan Bronce",
         "price": "0€ / mes",
+        "amount": 0,
         "features": [
             "Presencia básica en el directorio",
             "Publicación de eventos",
@@ -19,6 +20,7 @@ PLANS = [
         "value": "plata",
         "title": "Plan Plata",
         "price": "9€ / mes",
+        "amount": 900,
         "features": [
             "Todos los beneficios del Plan Bronce",
             "Publicaciones ilimitadas",
@@ -30,6 +32,7 @@ PLANS = [
         "value": "oro",
         "title": "Plan Oro",
         "price": "19€ / mes",
+        "amount": 1900,
         "features": [
             "Todos los beneficios del Plan Plata",
             "Badge de verificación",
