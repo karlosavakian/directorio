@@ -44,10 +44,22 @@
                     <div id="step3" class="step fade-step d-none">
                         {% include 'core/_pro_extra_form.html' with form=extra_form coach_formset=coach_formset %}
                     </div>
-                    <div id="step4" class="step fade-step d-none text-center">
-                        <h1 class="h5 mb-3">Pasarela de pagos</h1>
-                        <p class="text-muted mb-4">Conecta con Stripe para habilitar los cobros.</p>
-                        <button type="button" class="btn btn-primary" id="stripe-connect-btn">Conectar con Stripe</button>
+                    <div id="step4" class="step fade-step d-none">
+                        <h1 class="h5 mb-3 text-center">Resumen y pago</h1>
+                        <div class="mb-3">
+                            <p class="mb-1">Plan seleccionado:</p>
+                            <div id="plan-summary" class="fw-medium"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cardholder-name" class="form-label">Nombre y apellidos</label>
+                            <input type="text" id="cardholder-name" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="card-element" class="form-label">Datos de la tarjeta</label>
+                            <div id="card-element" class="form-control"></div>
+                        </div>
+                        <div id="payment-message" class="text-danger small mt-2"></div>
+                        <input type="hidden" name="payment_intent_id" id="payment_intent_id">
                     </div>
                     <div class="d-flex mt-4">
                         <button type="button" class="btn btn-outline-dark d-none" id="prevBtn">Atrás</button>
