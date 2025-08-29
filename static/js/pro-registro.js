@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryPrice = document.getElementById('summary-price');
   const plansData = JSON.parse(document.getElementById('plans-data').textContent);
   let stripe = window.stripePublicKey ? Stripe(window.stripePublicKey) : null;
-  let cardElement = null;
+  let cardNumberElement = null;
+  let cardExpiryElement = null;
+  let cardCvcElement = null;
   let clientSecret = null;
     const nameField = document.getElementById('name-field');
     const nameInput = document.getElementById('id_name');
@@ -204,10 +206,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function processPayment() {
-    if (!stripe || !cardElement || !clientSecret) return null;
+    if (!stripe || !cardNumberElement || !clientSecret) return null;
     const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: cardElement,
+        card: cardNumberElement,
         billing_details: { name: cardHolderInput ? cardHolderInput.value : '' }
       }
     });
@@ -279,10 +281,20 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
           clientSecret = data.clientSecret;
-          if (stripe && !cardElement) {
+          if (stripe && !cardNumberElement) {
             const elements = stripe.elements();
-            cardElement = elements.create('card');
-            cardElement.mount('#card-element');
+            cardNumberElement = elements.create('cardNumber');
+            cardNumberElement.mount('#card-number-element');
+            cardExpiryElement = elements.create('cardExpiry');
+            cardExpiryElement.mount('#card-expiry-element');
+            cardCvcElement = elements.create('cardCvc');
+            cardCvcElement.mount('#card-cvc-element');
+            const handleCardErrors = (event) => {
+              if (cardErrors) cardErrors.textContent = event.error ? event.error.message : '';
+            };
+            cardNumberElement.on('change', handleCardErrors);
+            cardExpiryElement.on('change', handleCardErrors);
+            cardCvcElement.on('change', handleCardErrors);
           }
         });
     }
