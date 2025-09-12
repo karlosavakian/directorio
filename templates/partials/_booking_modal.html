@@ -4,7 +4,10 @@
       <form id="booking-form">
         <div class="modal-header">
           <h5 class="modal-title w-100 text-center" id="booking-month-title"></h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="mb-3" id="booking-days-wrapper">
@@ -16,109 +19,147 @@
               <i class="bi bi-chevron-right"></i>
             </button>
           </div>
-          <ul class="nav nav-tabs custom-tab-menu justify-content-center" id="timeTabs" role="tablist">
+          <ul class="nav nav-tabs custom-tab-menu justify-content-center"
+              id="timeTabs"
+              role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="morning-tab" data-bs-toggle="tab" data-bs-target="#morning" type="button" role="tab">Mañana</button>
+              <button class="nav-link active"
+                      id="morning-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#morning"
+                      type="button"
+                      role="tab">Mañana</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="afternoon-tab" data-bs-toggle="tab" data-bs-target="#afternoon" type="button" role="tab">Tarde</button>
+              <button class="nav-link"
+                      id="afternoon-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#afternoon"
+                      type="button"
+                      role="tab">Tarde</button>
             </li>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="evening-tab" data-bs-toggle="tab" data-bs-target="#evening" type="button" role="tab">Noche</button>
+              <button class="nav-link"
+                      id="evening-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#evening"
+                      type="button"
+                      role="tab">Noche</button>
             </li>
           </ul>
           <div class="tab-content py-3">
             <div class="tab-pane fade show active" id="morning" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="morning">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-prev"
+                        data-target="morning">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="morning-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="morning">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-next"
+                        data-target="morning">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
             </div>
             <div class="tab-pane fade" id="afternoon" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="afternoon">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-prev"
+                        data-target="afternoon">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="afternoon-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="afternoon">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-next"
+                        data-target="afternoon">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
             </div>
             <div class="tab-pane fade" id="evening" role="tabpanel">
               <div class="d-flex align-items-center justify-content-center gap-2">
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-prev" data-target="evening">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-prev"
+                        data-target="evening">
                   <i class="bi bi-chevron-left"></i>
                 </button>
                 <div id="evening-slots" class="d-flex flex-nowrap gap-2"></div>
-                <button type="button" class="btn btn-link text-black p-0 px-2 time-next" data-target="evening">
+                <button type="button"
+                        class="btn btn-link text-black p-0 px-2 time-next"
+                        data-target="evening">
                   <i class="bi bi-chevron-right"></i>
                 </button>
               </div>
             </div>
           </div>
-        <div class="mt-3 d-flex align-items-center justify-content-center gap-2">
-          <button type="button" class="btn btn-link text-black p-0 px-2 class-prev">
-            <i class="bi bi-chevron-left"></i>
-          </button>
-          <div id="class-cards-container" class="d-flex flex-nowrap gap-3">
-            {% for c in booking_classes %}
-            <div class="form-check class-card border rounded text-center p-3 {% if c.destacado %}highlighted{% endif %} position-relative">
-              {% if c.destacado %}
-              <span class="offer-badge position-absolute top-0 end-0 m-1 text-danger">Oferta <i class="bi bi-fire"></i></span>
-              {% endif %}
-              {% if c.detalle %}
-              <span class="d-block">
-                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="{{ c.detalle }}"></i>
-              </span>
-              {% endif %}
-              <input class="form-check-input" type="radio" name="clase_id" id="clase_{{ c.id }}" value="{{ c.id }}">
-              <label class="form-check-label fw-bold text-uppercase" for="clase_{{ c.id }}">{{ c.titulo }} </label>
-              <span class="d-block text-center">
-                {% if c.precio == 0 %}
-                  Gratis
-                {% else %}
-                  {{ c.precio }} €
-                {% endif %}
-              </span>
-              <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
-             
+          <div class="mt-3 d-flex align-items-center justify-content-center gap-2">
+            <button type="button" class="btn btn-link text-black p-0 px-2 class-prev">
+              <i class="bi bi-chevron-left"></i>
+            </button>
+            <div id="class-cards-container" class="d-flex flex-nowrap gap-3">
+              {% for c in booking_classes %}
+                <div class="form-check class-card border rounded text-center p-3 {% if c.destacado %}highlighted{% endif %} position-relative">
+                  {% if c.destacado %}
+                    <span class="offer-badge position-absolute top-0 end-0 m-1 text-danger">Oferta <i class="bi bi-fire"></i></span>
+                  {% endif %}
+                  {% if c.detalle %}
+                    <span class="d-block">
+                      <i class="bi bi-info-circle"
+                         data-bs-toggle="tooltip"
+                         title="{{ c.detalle }}"></i>
+                    </span>
+                  {% endif %}
+                  <input class="form-check-input"
+                         type="radio"
+                         name="clase_id"
+                         id="clase_{{ c.id }}"
+                         value="{{ c.id }}">
+                  <label class="form-check-label fw-bold text-uppercase"
+                         for="clase_{{ c.id }}">{{ c.titulo }}</label>
+                  <span class="d-block text-center">
+                    {% if c.precio == 0 %}
+                      Gratis
+                    {% else %}
+                      {{ c.precio }} €
+                    {% endif %}
+                  </span>
+                  <span class="d-block text-center fst-italic fw-light"><small><i class="bi bi-clock"></i> {{ c.duracion }} minutos</small></span>
+                </div>
+              {% empty %}
+                <p>No hay clases disponibles.</p>
+              {% endfor %}
             </div>
-            {% empty %}
-            <p>No hay clases disponibles.</p>
-            {% endfor %}
+            <button type="button" class="btn btn-link text-black p-0 px-2 class-next">
+              <i class="bi bi-chevron-right"></i>
+            </button>
           </div>
-          <button type="button" class="btn btn-link text-black p-0 px-2 class-next">
-            <i class="bi bi-chevron-right"></i>
-          </button>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="submit" class="btn btn-dark mx-auto ">Reservar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="confirmCancelModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">¿Cancelar reserva?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ¿Seguro que quieres cancelar la reserva? Los cambios no guardados se perderán.
-      </div>
-      <div class="modal-footer d-flex flex-column gap-2">
-        <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Continuar reserva</button>
-        <button type="button" class="btn btn-danger w-100 confirm-cancel">Si, descartar</button>
+          <div class="modal-footer border-0">
+            <button type="submit" class="btn btn-dark mx-auto ">Reservar</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
-</div>
+  <div class="modal fade"
+       id="confirmCancelModal"
+       tabindex="-1"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">¿Cancelar reserva?</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">¿Seguro que quieres cancelar la reserva? Los cambios no guardados se perderán.</div>
+        <div class="modal-footer d-flex flex-column gap-2">
+          <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Continuar reserva</button>
+          <button type="button" class="btn btn-danger w-100 confirm-cancel">Si, descartar</button>
+        </div>
+      </div>
+    </div>
+  </div>
