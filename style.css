@@ -1,0 +1,175 @@
+:root {
+    --blue: #008CA2;
+    --light-gray: #f0f0f0;
+    --text-gray: #555;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background: #fff;
+    color: var(--text-gray);
+}
+
+.primary-btn {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.field select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+}
+
+.calendar {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.calendar button {
+    flex: 1;
+    margin: 0 2px;
+    padding: 0.5rem;
+    border: 1px solid var(--light-gray);
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.calendar button.selected {
+    background: var(--blue);
+    color: #fff;
+}
+
+.time-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    background: #fff;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: var(--blue);
+    color: #fff;
+}
+
+.time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.time-slots button {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--light-gray);
+    background: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.time-slots button.selected {
+    background: var(--blue);
+    color: #fff;
+}
+
+.class-info {
+    margin-top: 1rem;
+}
+
+.info-card {
+    border: 1px solid var(--light-gray);
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.info-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.add-class {
+    margin-top: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--blue);
+    cursor: pointer;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.reserve-btn {
+    width: 100%;
+    margin-top: 1rem;
+}
